@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="schema.sch" type="application/xml" schematypens="http://purl.oclc.org/dsdl/schematron"?>
+<root>
+    <element attribute="value"/>
+    <?sqfc-start attribute-change-d2e6?><element attribute="value"><?sqfc-end attribute-change-d2e6?><?sqfc-start add-d2e6?><element attribute="value"/><?sqfc-end add-d2e6?></element>
+    <element attribute="xyz">Text to match something.</element>
+    <element>Text to   match somehing.</element>
+    <element>Text to <br/> match<br/> something</element>
+</root>

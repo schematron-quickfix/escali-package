@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="../input/test.sch" type="application/xml" schematypens="http://purl.oclc.org/dsdl/schematron"?>
+<!DOCTYPE root [
+<!--23 zeichen-->
+<!ENTITY m "match">
+<!ENTITY ms "match somehing">
+<!--1 zeichen-->
+<!ENTITY kurz "x">
+<!ELEMENT root ANY>
+<!ELEMENT element ANY>
+<!ATTLIST element attribute CDATA #IMPLIED>
+<!ELEMENT br ANY>
+]>
+<root>
+    <?sqfc-start ?><element attribute="new value"><?sqfc-end ?></element>
+    <element></element>
+    <element>Te&kurz;t to &m; something.</element>
+    <element>Te&kurz;t to   &ms;.</element>
+    <element>Te&kurz;t to <br/> &m;<br/> something</element>
+</root>

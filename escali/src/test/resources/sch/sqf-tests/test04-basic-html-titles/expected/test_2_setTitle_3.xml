@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+    <head>
+        <?sqfc-start ?><title>Last short title</title><?sqfc-end ?>
+    </head>
+    <body>
+        <h1>Usefull and short title</h1>
+        <!-- Content -->
+        <h1>Next usefull and short title.</h1>
+        <!--  Other contetn -->
+        <h1>Last short title</h1>
+    </body>
+</html>

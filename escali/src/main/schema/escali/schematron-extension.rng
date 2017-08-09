@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grammar 
+    xmlns="http://relaxng.org/ns/structure/1.0"
+    xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"
+    datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
+    <include href="../SQF/schematron-quickFix.rng">
+        <define name="foreign-attributes">
+            <zeroOrMore>
+                <attribute>
+                    <anyName>
+                        <except>
+                            <nsName ns=""/>
+                            <nsName ns="http://www.w3.org/XML/1998/namespace"/>
+                        </except>
+                    </anyName>
+                </attribute>
+            </zeroOrMore>
+            <optional>
+                <attribute name="base" ns="http://www.w3.org/XML/1998/namespace">
+                    <data type="anyURI"/>
+                </attribute>
+            </optional>
+        </define>
+    </include>
+</grammar>

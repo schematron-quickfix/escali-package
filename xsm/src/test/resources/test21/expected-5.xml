@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="schema.sch" type="application/xml" schematypens="http://purl.oclc.org/dsdl/schematron"?>
+<!DOCTYPE root [
+<!--23 zeichen-->
+<!ENTITY lang "sehr langer entity text">
+<!--1 zeichen-->
+<!ENTITY kurz "x">
+
+]>
+<root>
+    <!--  8, 31, 38, 39, 49  -->
+    <section xmlns:es="escali"><es:element>Text to &lang; match &kurz; something</es:element></section><es:element xmlns:es="escali">Text to &lang; match &kurz; something</es:element>
+    <element>Text to &lang; match &kurz; something</element>
+    <element>&lang; Text to &lang; match &kurz; something</element>
+    <element>&lang; Text to &lang; match &kurz; something</element>
+</root>

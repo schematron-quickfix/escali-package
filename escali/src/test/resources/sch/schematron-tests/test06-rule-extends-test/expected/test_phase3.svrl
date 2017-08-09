@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svrl:schematron-output xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+    xmlns:es="http://www.escali.schematron-quickfix.com/"
+    phase="phase3"
+    title="Extends test"
+    es:schema="file:/D:/nico/Work/Java/net.sqf.tester/data/schematron/sch-tests/test6/in/extends.sch"
+    es:instance="file:/D:/nico/Work/Java/net.sqf.tester/data/schematron/sch-tests/test6/in/extends.xml">
+    <svrl:ns-prefix-in-attribute-values uri="http://www.schematron.info/arche"
+        prefix="arc" />
+    <svrl:active-pattern id="pattern3" es:is-a="pattern4" es:phases="phase3 #ALL"/>
+    <svrl:fired-rule context="arc:tier" />
+    <svrl:fired-rule context="arc:tier" />
+    <svrl:successful-report location="/*:arche[namespace-uri()='http://www.schematron.info/arche'][1]/*:ladung[namespace-uri()='http://www.schematron.info/arche'][1]/*:zimmer[namespace-uri()='http://www.schematron.info/arche'][1]/*:tier[namespace-uri()='http://www.schematron.info/arche'][2]"
+        test="parent::*/arc:tier/arc:gewicht &lt; $minGewicht">
+        <svrl:text>Noah, das Tier ist zu schwer für seine Zimmergenossen! Es könnte einen zertrampeln/angreifen.</svrl:text>
+    </svrl:successful-report>
+    <svrl:fired-rule context="arc:tier" />
+    <svrl:successful-report location="/*:arche[namespace-uri()='http://www.schematron.info/arche'][1]/*:ladung[namespace-uri()='http://www.schematron.info/arche'][1]/*:zimmer[namespace-uri()='http://www.schematron.info/arche'][2]/*:tier[namespace-uri()='http://www.schematron.info/arche'][1]"
+        test="parent::*/arc:tier/arc:gewicht &lt; $minGewicht">
+        <svrl:text>Noah, das Tier ist zu schwer für seine Zimmergenossen! Es könnte einen zertrampeln/angreifen.</svrl:text>
+    </svrl:successful-report>
+    <svrl:fired-rule context="arc:tier" />
+    <svrl:fired-rule context="arc:tier" />
+    <svrl:successful-report location="/*:arche[namespace-uri()='http://www.schematron.info/arche'][1]/*:ladung[namespace-uri()='http://www.schematron.info/arche'][1]/*:zimmer[namespace-uri()='http://www.schematron.info/arche'][3]/*:tier[namespace-uri()='http://www.schematron.info/arche'][1]"
+        test="parent::*/arc:tier/arc:gewicht &lt; $minGewicht">
+        <svrl:text>Noah, das Tier ist zu schwer für seine Zimmergenossen! Es könnte einen zertrampeln/angreifen.</svrl:text>
+    </svrl:successful-report>
+    <svrl:fired-rule context="arc:tier" />
+</svrl:schematron-output>

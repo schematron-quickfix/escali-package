@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqf:manipulator xmlns:sqf="http://www.schematron-quickfix.com/manipulator/process" document="base.xml">
+    <sqf:replace node="/root/a/text()">
+        <sqf:content>replaceing text</sqf:content>
+    </sqf:replace>
+    <sqf:replace node="/root/d/@def">
+        <sqf:content test="test-wert"/>
+    </sqf:replace>
+    <sqf:replace node="/root">
+        <sqf:content><root/></sqf:content>
+    </sqf:replace>
+</sqf:manipulator>

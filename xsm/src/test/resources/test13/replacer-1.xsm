@@ -1,0 +1,9 @@
+<xsm:manipulator xmlns:xsm="http://www.schematron-quickfix.com/manipulator/process" xmlns="http://www.w3.org/1999/xhtml" document="base.xml">
+    <xsm:add position="before" node="/*[namespace-uri()='http://www.w3.org/1999/xhtml'][local-name()='html'][1]/*[namespace-uri()='http://www.w3.org/1999/xhtml'][local-name()='body'][1]/*[namespace-uri()='http://www.w3.org/1999/xhtml'][local-name()='table'][1]/*[namespace-uri()='http://www.w3.org/1999/xhtml'][local-name()='tr'][3]/*[namespace-uri()='http://www.w3.org/1999/xhtml'][local-name()='td'][1]/@*[namespace-uri()=''][local-name()='colspan'][1]">
+        <xsm:content/>
+    </xsm:add>
+    <xsm:delete node="/*[namespace-uri()='http://www.w3.org/1999/xhtml'][local-name()='html'][1]/*[namespace-uri()='http://www.w3.org/1999/xhtml'][local-name()='body'][1]/*[namespace-uri()='http://www.w3.org/1999/xhtml'][local-name()='table'][1]/*[namespace-uri()='http://www.w3.org/1999/xhtml'][local-name()='tr'][3]/*[namespace-uri()='http://www.w3.org/1999/xhtml'][local-name()='td'][1]/@*[namespace-uri()=''][local-name()='colspan'][1]"/>
+    <xsm:add position="first-child" node="/*[namespace-uri()='http://www.w3.org/1999/xhtml'][local-name()='html'][1]/*[namespace-uri()='http://www.w3.org/1999/xhtml'][local-name()='body'][1]/*[namespace-uri()='http://www.w3.org/1999/xhtml'][local-name()='table'][1]/*[namespace-uri()='http://www.w3.org/1999/xhtml'][local-name()='tr'][3]/*[namespace-uri()='http://www.w3.org/1999/xhtml'][local-name()='td'][1]/@*[namespace-uri()=''][local-name()='colspan'][1]">
+        <xsm:content/>
+    </xsm:add>
+</xsm:manipulator>

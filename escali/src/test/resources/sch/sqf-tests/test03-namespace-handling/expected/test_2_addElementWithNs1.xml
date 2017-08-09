@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ns1:root xmlns:ns1="namespace1">
+    <section title="without namespaces">
+        
+    </section>
+    
+    <ns2:section title="without namespaces" xmlns:ns2="namespace2"><?sqfc-start ?><ns1:e/><?sqfc-end ?>
+        
+    </ns2:section>
+    
+    <section title="with default namespace" xmlns:ns2="namespace2" xmlns="namespace2">
+        
+    </section>
+    
+</ns1:root>

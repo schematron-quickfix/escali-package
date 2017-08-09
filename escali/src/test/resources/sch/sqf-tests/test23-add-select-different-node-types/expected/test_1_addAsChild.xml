@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="schema.sch" type="application/xml" schematypens="http://purl.oclc.org/dsdl/schematron"?>
+<root>
+    <element attribute="value"/>
+    <element><?sqfc-start ?><element attribute="value"/><?sqfc-end ?></element>
+    <element attribute="xyz"><?sqfc-start ?><element attribute="value"/><?sqfc-end ?>Text to match something.</element>
+    <element><?sqfc-start ?><element attribute="value"/><?sqfc-end ?>Text to   match somehing.</element>
+    <element><?sqfc-start ?><element attribute="value"/><?sqfc-end ?>Text to <br/> match<br/> something</element>
+</root>

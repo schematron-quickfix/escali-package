@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<article xmlns="http://docbook.org/ns/docbook" version="5.0">
+    <info>
+        <title>XSLT introduction</title>
+    </info>
+    <sect1>
+        <title>XSLT introduction to the transformation language</title>
+        <para>This section shall serve as an introduction to the transformation language XSLT. As already shown in the previous sections, XSLT is essential for the practical work with <?sqf_together start?>XSL-FO<?sqf_together end?>. The following explanations shall help to introduce <?sqfc-start ?><?sqfc-end ?>XSL-FO<?together end?> and to understand the examples and applications in the text. In order to gain a deeper understanding of XSLT with all its facets, the book "Web-Design mit XML“ ("Web design with XML") by Manfred Knobloch and Matthias Kopp is recommended. This book was also published in the xml.bibliothek series of the publishing company dpunkt-Verlag.</para>
+    </sect1>
+</article>

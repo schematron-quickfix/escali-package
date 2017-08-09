@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xpm:manipulator xmlns:xpm="http://www.schematron-quickfix.com/manipulator/process" document="base.xml">
+    <xpm:delete node="/comment()"/>
+</xpm:manipulator>

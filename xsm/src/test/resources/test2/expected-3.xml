@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!-- this is a comment before doctype decl-->
+<!DOCTYPE root [
+<!-- Kommentar in dtd.dtd -->
+<?pi in dtd.dtd?>
+<!ELEMENT root (a, b, d)>
+<!ELEMENT a (#PCDATA) >
+<!ELEMENT b (#PCDATA) >
+<!ENTITY abc "def">
+<!ELEMENT d (#PCDATA) >
+<!ATTLIST d def CDATA #IMPLIED >
+]>
+<!-- this is a comment after doctype decl-->
+
+<root><a>&abc;another text</a><b></b>
+    <d             def="hallo">
+        <![CDATA[ <xml> ]]>
+    </d>
+</root>

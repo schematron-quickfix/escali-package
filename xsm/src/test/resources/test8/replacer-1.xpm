@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xpm:manipulator xmlns="http://www.w3.org/1999/xhtml" xmlns:xpm="http://www.schematron-quickfix.com/manipulator/process" document="base.xml">
+    <xpm:delete node="/*[namespace-uri()='http://www.w3.org/1999/xhtml'][local-name()='html'][1]/*[namespace-uri()='http://www.w3.org/1999/xhtml'][local-name()='head'][1]/*[namespace-uri()='http://www.w3.org/1999/xhtml'][local-name()='title'][1]/comment()[1]"/>
+</xpm:manipulator>

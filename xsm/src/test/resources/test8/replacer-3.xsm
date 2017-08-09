@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsm:manipulator xmlns="http://www.w3.org/1999/xhtml" xmlns:xsm="http://www.schematron-quickfix.com/manipulator/process" document="base.xml">
+    <xsm:replace node="/*[namespace-uri()='http://www.w3.org/1999/xhtml'][local-name()='html'][1]/*[namespace-uri()='http://www.w3.org/1999/xhtml'][local-name()='head'][1]/*[namespace-uri()='http://www.w3.org/1999/xhtml'][local-name()='title'][1]">
+        <xsm:content><title>No useful &lt;title&gt; element with too many characters because it co</title></xsm:content>
+    </xsm:replace>
+</xsm:manipulator>

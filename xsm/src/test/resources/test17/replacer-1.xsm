@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsm:manipulator xmlns:xsm="http://www.schematron-quickfix.com/manipulator/process" document="base.xml">
+    <xsm:add position="after" node="/*:html[namespace-uri()='http://www.w3.org/1999/xhtml'][1]/*:body[namespace-uri()='http://www.w3.org/1999/xhtml'][1]/*:p[namespace-uri()='http://www.w3.org/1999/xhtml'][1]/processing-instruction()[local-name()='pi'][1]">
+        <xsm:content><?sqfc-start add-d2p18?><e/><?sqfc-end add-d2p18?></xsm:content>
+    </xsm:add>
+</xsm:manipulator>

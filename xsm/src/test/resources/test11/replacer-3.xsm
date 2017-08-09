@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqf:manipulator xmlns:sqf="http://www.schematron-quickfix.com/manipulator/process" document="base.xml">
+    <sqf:add node="/root/e" position="first-child">
+        <sqf:content>add text</sqf:content>
+    </sqf:add>
+</sqf:manipulator>

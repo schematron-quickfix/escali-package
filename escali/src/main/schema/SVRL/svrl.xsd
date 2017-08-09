@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  
+  	(c) International Organization for Standardization 2005.
+  	Permission to copy in any form is granted for use with conforming
+  	SGML systems and applications as defined in ISO 8879,
+  	provided this notice is included in all copies.
+  	
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://purl.oclc.org/dsdl/svrl" xmlns:svrl="http://purl.oclc.org/dsdl/svrl" xmlns:sqf="http://www.schematron-quickfix.com/validator/process" xmlns:es="http://www.escali.schematron-quickfix.com/" xml:lang="en">
+    
+    <xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="xml.xsd"/>
+    <xs:import namespace="http://www.schematron-quickfix.com/validator/process" schemaLocation="sqf-svrl.xsd"/>
+    <xs:import namespace="http://www.escali.schematron-quickfix.com/" schemaLocation="escali-svrl.xsd"/>
+    
+    <xs:annotation>
+        <xs:appinfo source="sqf:meta">
+            <meta keywords="SVRL, SQF changes in SVRL, SVRL extension, SVRL extension reference, QuickFixes in SVRL">
+                <title>Schematron QuickFix &#x2013; SVRL reference</title>
+                <navTitle idx="6" subMenuLevel="4">SVRL reference</navTitle>
+                <description>A documenation of the extension of the Schematron Validation Report Language (SVRL) for Schematron QuickFix.</description>
+            </meta>
+            <title>SVRL SQF/extension reference</title>
+        </xs:appinfo>
+        <xs:appinfo source="sqf:meta" xml:lang="de">
+            <meta>
+                <title>Schematron QuickFix &#x2013; SVRL-Referenz</title>
+                <navTitle idx="6" subMenuLevel="4">SVRL-Referenz</navTitle>
+            </meta>
+            <title>SVRL-Erweiterungsreferenz</title>
+        </xs:appinfo>
+    </xs:annotation>
+    
+    <xs:element name="schematron-output">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="sqf:topLevel" minOccurs="0"/>
+                <xs:element ref="svrl:ns-prefix-in-attribute-values" minOccurs="0" maxOccurs="unbounded"/>
+                
+                <xs:choice minOccurs="0" maxOccurs="unbounded">
+                    <xs:element ref="svrl:text" minOccurs="0" maxOccurs="unbounded"/>
+                    <xs:element ref="svrl:active-pattern"/>
+                    <xs:sequence minOccurs="0" maxOccurs="unbounded">
+                        <xs:element ref="svrl:fired-rule"/>
+                        <xs:choice minOccurs="0" maxOccurs="unbounded">
+                            <xs:element ref="svrl:failed-assert"/>
+                            <xs:element ref="svrl:successful-report"/>
+                        </xs:choice>
+                    </xs:sequence>
+                </xs:choice>
+            </xs:sequence>
+            <xs:attribute name="title"/>
+            <xs:attribute name="phase" type="xs:string"/>
+            <xs:attribute name="schemaVersion"/>
+            <xs:attributeGroup ref="es:schema.instance"/>
+            <xs:attributeGroup ref="es:icon.link"/>
+        </xs:complexType>
+    </xs:element>
+    <!-- only namespaces from sch:ns need to be reported -->
+    <xs:element name="ns-prefix-in-attribute-values">
+        <xs:complexType>
+            <xs:attribute name="prefix" use="required" type="xs:NMTOKEN"/>
+            <xs:attribute name="uri" use="required"/>
+        </xs:complexType>
+    </xs:element>
+    <!-- only active patterns are reported -->
+    <xs:element name="active-pattern">
+        <xs:complexType>
+            <xs:attribute name="id" type="xs:ID"/>
+            <xs:attribute name="name"/>
+            <xs:attribute name="role" type="xs:NMTOKEN"/>
+            <xs:attribute ref="es:roleLabel"/>
+            <xs:attribute ref="es:is-a"/>
+            <xs:attribute ref="es:id" use="required"/>
+            <xs:attributeGroup ref="es:icon.link"/>
+            <xs:attribute ref="es:phases"/>
+        </xs:complexType>
+    </xs:element>
+    <!-- only rules that are fired are reported, -->
+    <xs:element name="fired-rule">
+        <xs:complexType>
+            <xs:attribute name="id" type="xs:ID"/>
+            <xs:attribute name="context" use="required"/>
+            <xs:attribute name="role" type="xs:NMTOKEN"/>
+            <xs:attribute name="flag" type="xs:NMTOKEN"/>
+            <xs:attribute ref="es:roleLabel"/>
+            <xs:attribute ref="es:id" use="required"/>
+            <xs:attribute ref="xml:base" use="optional"/>
+            <xs:attribute ref="es:regex" use="optional"/>
+        <xs:attributeGroup ref="es:icon.link"/>
+        </xs:complexType>
+    </xs:element>
+    <!-- only references are reported, not the diagnostic -->
+    <xs:element name="diagnostic-reference">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="svrl:text"/>
+            </xs:sequence>
+            <xs:attribute name="diagnostic" use="required" type="xs:NMTOKEN"/>
+            <xs:attributeGroup ref="es:icon.link"></xs:attributeGroup>
+        </xs:complexType>
+    </xs:element>
+    <!-- only failed assertions are reported -->
+    <xs:element name="failed-assert">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" maxOccurs="unbounded" ref="svrl:diagnostic-reference"/>
+                <xs:element ref="svrl:text"/>
+                <xs:element ref="sqf:fix" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+            <xs:attributeGroup ref="svrl:attlist.assert-and-report"/>
+        </xs:complexType>
+    </xs:element>
+    <!-- only successful asserts are reported -->
+    <xs:element name="successful-report">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" maxOccurs="unbounded" ref="svrl:diagnostic-reference"/>
+                <xs:element ref="svrl:text"/>
+                <xs:element ref="sqf:fix" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+            <xs:attributeGroup ref="svrl:attlist.assert-and-report"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="text">
+        <xs:complexType mixed="true">
+            <xs:group ref="es:inline" maxOccurs="unbounded" minOccurs="0"/>
+            <xs:attribute ref="es:ref" use="optional"/>
+            <xs:attributeGroup ref="es:icon.link"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:attributeGroup name="attlist.assert-and-report">
+        <xs:attribute name="id" type="xs:ID"/>
+        <xs:attribute name="location" use="required"/>
+        <xs:attribute name="test" use="required"/>
+        <xs:attribute name="role" type="xs:NMTOKEN"/>
+        <xs:attribute ref="es:roleLabel"/>
+        <xs:attribute name="flag" type="xs:NMTOKEN"/>
+        <xs:attribute ref="xml:base" use="optional"/>
+        <xs:attribute ref="es:id" use="required"/>
+        <xs:attribute ref="sqf:default-fix"/>
+        <xs:attributeGroup ref="es:icon.link"/>
+        <xs:attribute ref="es:substring" use="optional"/>
+    </xs:attributeGroup>
+</xs:schema>

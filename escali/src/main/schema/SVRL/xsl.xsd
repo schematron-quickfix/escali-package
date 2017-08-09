@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://www.w3.org/1999/XSL/Transform">
+    <xs:element name="stylesheet" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+        <xs:complexType>
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+                <xs:any namespace="http://www.w3.org/1999/XSL/Transform" processContents="skip"/>
+                <xs:any namespace="http://www.schematron-quickfix.com/validator/process" processContents="skip"/>
+            </xs:choice>
+            <xs:anyAttribute processContents="skip"/>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

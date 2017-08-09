@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsm:manipulator xmlns:xsm="http://www.schematron-quickfix.com/manipulator/process" xmlns="http://www.w3.org/1999/xhtml" document="base.xml">
+    <xsm:replace node="/*[namespace-uri()='http://www.w3.org/1999/xhtml'][local-name()='html'][1]/*[namespace-uri()='http://www.w3.org/1999/xhtml'][local-name()='head'][1]/*[namespace-uri()='http://www.w3.org/1999/xhtml'][local-name()='title'][1]">
+        <xsm:content><title>Useful and short title</title></xsm:content>
+    </xsm:replace>
+</xsm:manipulator>

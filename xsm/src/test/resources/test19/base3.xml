@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="schema.sch" type="application/xml" schematypens="http://purl.oclc.org/dsdl/schematron"?>
+<!DOCTYPE root SYSTEM "dtd.dtd">
+<root>
+    <element attribute="val&abc;value"/>
+    <element attribute="&short;value"/>
+    <element attribute="val&long;ue">Text to match something.</element>
+    <element attribute="value&lt;value">Text to &abc; match &abc; something</element>
+    <element attribute="value&#xA;">Text to &abc; match &abc; something</element>
+    <element attribute="&short;value&long;">Text to   match somehing.</element>
+    <element attribute="value&short;value&long;value">Text to   match somehing.</element>
+</root>

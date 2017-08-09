@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>Headlines</title>
+    </head>
+    <body>
+        <h1>This is a new headline</h1><h2>headline level 2</h2>
+        <h1>headline level 1</h1>
+        <p>paragraph</p>
+        <h4>headline level 4</h4>
+        <h1>headline level 1</h1>
+        <p>paragraph</p>
+        <h3>headline level 3</h3>
+        <h1>headline level 1</h1>
+        <h3>headline level 3</h3>
+        <h4>headline level 4</h4>
+    </body>
+</html>

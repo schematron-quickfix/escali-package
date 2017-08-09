@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svrl:schematron-output xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+    xmlns:es="http://www.escali.schematron-quickfix.com/"
+    title="localisation test"
+    phase="#ALL"
+    es:schema="file:/D:/nico/Work/Java/net.sqf.tester/data/schematron/sch-tests/test5/in/lang.sch"
+    es:instance="file:/D:/nico/Work/Java/net.sqf.tester/data/schematron/sch-tests/test5/in/lang.xhtml">
+    <svrl:active-pattern es:phases="#ALL"/>
+    <svrl:fired-rule context="html" />
+    <svrl:failed-assert location="/*:html[namespace-uri()=''][1]"
+        test="@lang">
+        <svrl:text>Das Attribut "lang" fehlt.</svrl:text>
+    </svrl:failed-assert>
+    <svrl:failed-assert location="/*:html[namespace-uri()=''][1]"
+        test="@xml:lang">
+        <svrl:text>Das Attribut "lang" fehlt.</svrl:text>
+    </svrl:failed-assert>
+</svrl:schematron-output>

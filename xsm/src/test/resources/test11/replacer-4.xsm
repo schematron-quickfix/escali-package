@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sqf:manipulator xmlns:sqf="http://www.schematron-quickfix.com/manipulator/process" document="base.xml">
+    <sqf:add node="/root/b" position="before">
+        <sqf:content><c>element c</c></sqf:content>
+    </sqf:add>
+    <sqf:add node="/root/b" position="attribute">
+        <sqf:content test="test-wert"/>
+    </sqf:add>
+    <sqf:add node="/root/d" position="after">
+        <sqf:content><e/></sqf:content>
+    </sqf:add>
+</sqf:manipulator>

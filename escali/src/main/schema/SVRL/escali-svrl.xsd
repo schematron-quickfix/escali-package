@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--  
+    Copyright (c) 2014 Nico Kutscherauer
+        
+    This file is part of Escali Schematron.
+    
+    Escali Schematron is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+    
+    Escali Schematron is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+    
+    You should have received a copy of the GNU General Public License
+    along with Escali Schematron.  If not, see http://www.gnu.org/licenses/gpl-3.0.
+    
+    -->
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:svrl="http://purl.oclc.org/dsdl/svrl" elementFormDefault="qualified" attributeFormDefault="unqualified" targetNamespace="http://www.escali.schematron-quickfix.com/" xmlns:es="http://www.escali.schematron-quickfix.com/" xml:lang="en">
+    <xs:annotation>
+        <xs:appinfo source="sqf:meta">
+            <title>Escali SVRL extensions</title>
+        </xs:appinfo>
+        <xs:appinfo source="sqf:meta" xml:lang="de">
+            <title>Escali SVRL-Erweiterungen</title>
+        </xs:appinfo>
+    </xs:annotation>
+    <xs:attribute name="ref" type="xs:string">
+        <xs:annotation>
+            <xs:documentation>Reference of a paragraph to a <icode type="element">svrl:active-pattern</icode> or <icode type="element">svrl:fired-rule</icode> element.</xs:documentation>
+            <xs:documentation source="Value">The value must correspond to the value of the <icode type="attribute">es:id</icode> attribute of a <icode type="element">svrl:active-pattern</icode> or <icode type="element">svrl:fired-rule</icode> element.</xs:documentation>
+            <xs:documentation source="Use">optional</xs:documentation>
+
+            <xs:documentation xml:lang="de">Referenz eines Absatzes auf ein <icode type="element">svrl:active-pattern</icode> oder <icode type="element">svrl:fired-rule</icode>.</xs:documentation>
+            <xs:documentation xml:lang="de" source="Value">Der Wert muss mit dem Wert des <icode type="attribute">es:id</icode>-Attributs eines <icode type="element">svrl:active-pattern</icode> oder <icode type="element">svrl:fired-rule</icode> Elementes übereinstimmen.</xs:documentation>
+            <xs:documentation source="Use" xml:lang="de">Optional</xs:documentation>
+        </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="id" type="xs:string">
+        <xs:annotation>
+            <xs:documentation>ID for the determination of the origin of a SVRL element.</xs:documentation>
+            <xs:documentation source="Value">A value being unique for the appropriate Schematron element.</xs:documentation>
+            <xs:documentation source="Use">required</xs:documentation>
+            <xs:documentation xml:lang="de">ID zur Bestimmung der Herkunft eines SVRL-Elements.</xs:documentation>
+            <xs:documentation source="Value" xml:lang="de">Für das entsprechende Schematron-Element eindeutiger Wert.</xs:documentation>
+            <xs:documentation source="Use" xml:lang="de">Pflicht</xs:documentation>
+        </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="is-a" type="xs:string">
+        <xs:annotation>
+            <xs:documentation>Pattern ID of the abstract pattern called up.</xs:documentation>
+            <xs:documentation xml:lang="de">Pattern-ID des aufgerufenen abstakten Patterns.</xs:documentation>
+        </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="regex" type="xs:string"/>
+    <xs:attribute name="phases" type="xs:string"/>
+    <xs:attribute name="roleLabel" type="xs:string"/>
+    <xs:attributeGroup name="icon.link">
+        <xs:attribute name="link" type="xs:anyURI" use="optional" form="qualified">
+            <xs:annotation>
+                <xs:documentation>By means of an URI, a link is indicated to the further documentation.</xs:documentation>
+                <xs:documentation xml:lang="de">Gibt mit einem URI einen Link zur weiterführenden Dokumentation an.</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="icon" type="xs:anyURI" use="optional" form="qualified">
+            <xs:annotation>
+                <xs:documentation>By means of an URI, an image file is indicated for an icon which can be used for the depiction of the SVRL element.</xs:documentation>
+                <xs:documentation xml:lang="de">Gibt mit einem URI eine Bilddatei an für ein Icon, das zur Darstellung des SVRL-Elementes verwendet werden kann.</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:attributeGroup>
+    <xs:attribute name="substring">
+        <xs:simpleType>
+            <xs:list itemType="xs:integer"/>
+        </xs:simpleType>
+    </xs:attribute>
+    <xs:attributeGroup name="schema.instance">
+        <xs:attribute name="schema" type="xs:anyURI" use="optional" form="qualified"/>
+        <xs:attribute name="instance" type="xs:anyURI" use="optional" form="qualified"/>
+    </xs:attributeGroup>
+    <xs:group name="inline">
+        <xs:annotation>
+            <xs:documentation>Group of the inline elements which can be used for human readable text.</xs:documentation>
+            <xs:documentation xml:lang="de">Gruppe der inzeiligen Elemente die für human-readable Text verwendet werden kann.</xs:documentation>
+        </xs:annotation>
+        <xs:choice>
+            <xs:element ref="es:span"/>
+            <xs:element ref="es:dir"/>
+            <xs:element ref="es:emph"/>
+        </xs:choice>
+    </xs:group>
+    <xs:element name="span">
+        <xs:annotation>
+            <xs:documentation>Implementation for the inline Schematron element <icode type="element">sch:span</icode>.</xs:documentation>
+            <xs:documentation xml:lang="de">Umsetzung für das inzeilige Schematron-Element <icode type="element">sch:span</icode>.</xs:documentation>
+        </xs:annotation>
+        <xs:complexType mixed="true">
+            <xs:group ref="es:inline" maxOccurs="unbounded" minOccurs="0"/>
+            <xs:attribute name="class" type="xs:string" use="required">
+                <xs:annotation>
+                    <xs:documentation>One-to-one implementation of the same-named Schematron attribute.</xs:documentation>
+                    <xs:documentation xml:lang="de">Eins-zu-eins Umsetzung des gleichnamigen Schematron-Attributs.</xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="dir">
+        <xs:annotation>
+            <xs:documentation>Implementation for the inline Schematron element <icode type="element">sch:dir</icode>.</xs:documentation>
+            <xs:documentation xml:lang="de">Umsetzung für das inzeilige Schematron-Element <icode type="element">sch:dir</icode>.</xs:documentation>
+        </xs:annotation>
+        <xs:complexType mixed="true">
+            <xs:group ref="es:inline" maxOccurs="unbounded" minOccurs="0"/>
+            <xs:attribute name="value" use="optional">
+                <xs:annotation>
+                    <xs:documentation>One-to-one implementation of the same-named Schematron attribute.</xs:documentation>
+                    <xs:documentation xml:lang="de">Eins-zu-eins Umsetzung des gleichnamigen Schematron-Attributs.</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:enumeration value="ltr"/>
+                        <xs:enumeration value="rtl"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:attribute>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="emph">
+        <xs:annotation>
+            <xs:documentation>Implementation for the inline Schematron element <icode type="element">sch:emph</icode>.</xs:documentation>
+            <xs:documentation xml:lang="de">Umsetzung für das inzeilige Schematron-Element <icode type="element">sch:emph</icode>.</xs:documentation>
+        </xs:annotation>
+        <xs:complexType mixed="true">
+            <xs:group ref="es:inline" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

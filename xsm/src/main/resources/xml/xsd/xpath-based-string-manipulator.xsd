@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsm="http://www.schematron-quickfix.com/manipulator/process" xmlns:sqf="http://www.schematron-quickfix.com/validator/process" elementFormDefault="qualified" targetNamespace="http://www.schematron-quickfix.com/manipulator/process">
+    <xs:annotation>
+        <xs:appinfo source="sqf:meta">
+            <meta keywords="XSM, XSM language reference, XSM reference, XPath-based String Manipulation, processing XML, Entities, CDATA, attributes defined by default values, XML declaration, DTD declaration, alternative to XSLT">
+                <title>XPath-based String Manipulation &#x2013; reference</title>
+                <navTitle idx="8" subMenuLevel="4">XSM reference</navTitle>
+                <description>Reference of the XSM language to process XML by XPath, but without resolving CDATA, Entities, Attributes defined by default values, etc.</description>
+            </meta>
+            <title>SQF reference</title>
+        </xs:appinfo>
+        <xs:appinfo source="sqf:meta" xml:lang="de">
+            <meta>
+                <title>XPath basierte String-Manipulation &#x2013; Referenz</title>
+                <navTitle idx="8" subMenuLevel="4">XSM-Referenz</navTitle>
+            </meta>
+            <title>XSM-Referenz</title>
+        </xs:appinfo>
+    </xs:annotation>
+    <xs:annotation>
+        <xs:documentation xml:lang="en">In this reference, the following terms being unknown or having another meaning within XSLT/XPath are used. The following table contains the declarations of these terms:</xs:documentation>
+        <xs:documentation source="Source document" xml:lang="en">The source document is the document which shall be manipulated per XSM process. It must be a XML well-formed document.</xs:documentation>
+        <xs:documentation source="Manipulator sheet" xml:lang="en">The manipulator sheet defines the manipulations which shall be performed in the source document. It must correspond to the XSM schema documented below.</xs:documentation>
+        <xs:documentation source="Manipulation instruction" xml:lang="en">There are three types of manipulation instructions: delete, replace and add. A manipulator sheet consists of one or more manipulation instructions.</xs:documentation>
+        <xs:documentation xml:lang="de">In dieser Referenz werden folgende Begriffe verwendet, die innerhalb von XSLT/XPath unbekannt sind oder eine andere Bedeutung haben. Die anschließende Tabelle enthält die Definitionen dieser Begriffe:</xs:documentation>
+        <xs:documentation source="Quelldokument" xml:lang="de">Das Quelldokument ist das Dokument, das per XSM-Prozess manipuliert werden soll. Es muss sich um ein XML-wohlgeformtes Dokument handeln.</xs:documentation>
+        <xs:documentation source="Manipulator-Sheet" xml:lang="de">Das Manipulator-Sheet definiert die Manipulationen, die am Quelldokument durchgeführt werden sollen. Es muss dem unten dokumentierten XSM-Schema entsprechen.</xs:documentation>
+        <xs:documentation source="Manipulations-Anweisung" xml:lang="de">Es gibt drei Arten der Manipulations-Anweisung: Löschen, Ersetzen und Hinzufügen. Ein Manipulator-Sheet besteht aus einem oder mehreren Manipulations-Anweisungen.</xs:documentation>
+    </xs:annotation>
+    
+    <xs:element name="manipulator">
+        <xs:annotation>
+            <xs:documentation xml:lang="en">The root element of the manipulator sheet.</xs:documentation>
+            <xs:documentation xml:lang="en">The element contains any number of manipulation instructions.</xs:documentation>
+            
+            <xs:documentation xml:lang="de">Wurzel-Element des Manipulator-Sheets.</xs:documentation>
+            <xs:documentation xml:lang="de">Es enthält beliebig viele Manipulations-Anweisungen.</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+                <xs:element ref="xsm:delete"/>
+                <xs:element ref="xsm:add"/>
+                <xs:element ref="xsm:replace"/>
+            </xs:choice>
+            <xs:attribute name="document" type="xs:anyURI" use="optional">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">Indicates the source document which shall be manipulated. If no document is indicated, the source document must be passed on to the XSM processor during the call.</xs:documentation>
+                    <xs:documentation xml:lang="en" source="Value">The value must be an URI to the document. Relative paths reference to the document starting from the manipulator sheet.</xs:documentation>
+                    
+                    <xs:documentation xml:lang="de">Gibt das Quelldokument an, das manipuliert werden soll. Wird kein Dokument angegeben, muss das Quelldokument dem XSM-Prozessor beim Aufruf übergeben werden.</xs:documentation>
+                    <xs:documentation xml:lang="de" source="Value">Der Wert muss ein URI auf das Dokument sein. Relative Pfade referenzieren vom Manipulator-Sheet aus auf das Dokument.</xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="add">
+        <xs:annotation>
+            <xs:documentation xml:lang="en">Manipulation instruction: adds nodes to the source document starting from the node indicated in <icode type="attribute">@node</icode>.</xs:documentation>
+            <xs:documentation xml:lang="en">The nodes indicated in <icode type="element">xsm:content</icode> are added as child, attribute and sibling nodes to each context node indicated in <icode type="attribute">@node</icode>. The <icode type="attribute">axis</icode> attribute determines on which axis the nodes are added starting from the context node.</xs:documentation>
+            <xs:documentation xml:lang="en">The node set indicated in <icode type="attribute">@node</icode> must not contain any attributes.</xs:documentation>
+            <xs:documentation xml:lang="en">The adding is done by means of string operations. After the addition, the manipulated source document must comply with the standards of well-formed XML.</xs:documentation>
+            
+            <xs:documentation xml:lang="de">Manipulations-Anweisung: Fügt dem Quelldokument, ausgehend von den in <icode type="attribute">@node</icode> angegebenen Knoten, Knoten hinzu.</xs:documentation>
+            <xs:documentation xml:lang="de">Jedem in <icode type="attribute">@node</icode> angegebenen Kontext-Knoten werden die in <icode type="element">xsm:content</icode> angegebenen Knoten als Kind-, Attribut- oder Geschwister-Knoten hinzugefügt. Das <icode type="attribute">axis</icode>-Attribut bestimmt, auf welcher Achse die Knoten vom Kontext-Knoten aus hinzugefügt werden.</xs:documentation>
+            <xs:documentation xml:lang="de">Die in <icode type="attribute">@node</icode> angegebene Knotenmenge darf keine Attribute enthalten.</xs:documentation>
+            <xs:documentation xml:lang="de">Das Hinzufügen erfolgt durch String-Operationen. Nach dem Hinzufügen muss das manipulierte Quelldokument den Wohlgeformtheits-Standards von XML entsprechen.</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="xsm:content"/>
+            </xs:sequence>
+            <xs:attribute name="position" use="required">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">Indicates the axis on which the added nodes are inserted into the source document. The axis starts from the context node which is determined in <icode type="attribute">@node</icode>.</xs:documentation>
+                    <xs:documentation xml:lang="de">Gibt die Achse an, auf der die Knoten in das Quelldokument eingefügt werden. Die Achse geht vom Kontext-Knoten aus, der in <icode type="attribute">@node</icode> bestimmt wird.</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:enumeration value="attribute">
+                            <xs:annotation>
+                                <xs:documentation xml:lang="en">The nodes to be added are attributes or namespace nodes and they are also to be added to the context node as attributes/namespaces.</xs:documentation>
+                                <xs:documentation xml:lang="de">Die einzufügenden Knoten sind Attribute oder Namespace-Knoten und werden auch als Attribute/Namespaces dem Kontext-Knoten hinzugefügt.</xs:documentation>
+                            </xs:annotation>
+                        </xs:enumeration>
+                        <xs:enumeration value="@">
+                            <xs:annotation>
+                                <xs:documentation xml:lang="en">Short notation for "attribute".</xs:documentation>
+                                <xs:documentation xml:lang="de">Kurzform für "attribute".</xs:documentation>
+                            </xs:annotation>
+                        </xs:enumeration>
+                        <xs:enumeration value="first-child">
+                            <xs:annotation>
+                                <xs:documentation xml:lang="en">The nodes to be added are inserted before the first child node of the context node. If there is no child node, they are inserted as child nodes.</xs:documentation>
+                                <xs:documentation xml:lang="de">Die einzufügenden Knoten werden vor dem ersten Kindknoten des Kontext-Knotens eingefügt. Gibt es kein Kindknoten, werden sie als Kindknoten eingefügt.</xs:documentation>
+                            </xs:annotation>
+                        </xs:enumeration>
+                        <xs:enumeration value="last-child">
+                            <xs:annotation>
+                                <xs:documentation xml:lang="en">The nodes to be added are inserted after the last child node of the context node. If there is no child node, they are inserted as child nodes.</xs:documentation>
+                                <xs:documentation xml:lang="de">Die einzufügenden Knoten werden nach dem letzten Kindknoten des Kontext-Knotens eingefügt. Gibt es kein Kindknoten, werden sie als Kindknoten eingefügt.</xs:documentation>
+                            </xs:annotation>
+                        </xs:enumeration>
+                        <xs:enumeration value="before">
+                            <xs:annotation>
+                                <xs:documentation xml:lang="en">The nodes to be added are inserted directly before the context node.</xs:documentation>
+                                <xs:documentation xml:lang="de">Die einzufügenden Knoten werden direkt vor dem Kontext-Knoten eingefügt.</xs:documentation>
+                            </xs:annotation>
+                        </xs:enumeration>
+                        <xs:enumeration value="after">
+                            <xs:annotation>
+                                <xs:documentation xml:lang="en">The nodes to be added are inserted directly after the context node.</xs:documentation>
+                                <xs:documentation xml:lang="de">Die einzufügenden Knoten werden direkt nach dem Kontext-Knoten eingefügt.</xs:documentation>
+                            </xs:annotation>
+                        </xs:enumeration>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:attribute>
+            <xs:attribute name="node" type="xs:string" use="required">
+                <xs:annotation>
+                    
+                    <xs:documentation xml:lang="en">Indicates the nodes which shall serve as context nodes in order to add nodes to the source document.</xs:documentation>
+                    <xs:documentation xml:lang="en" source="Value">An absolute XPath expression. At the moment, only XPath 1.0 is supported.</xs:documentation>
+                    
+                    <xs:documentation xml:lang="de">Gibt die Knoten an, die als Kontext-Knoten dienen sollen, um Knoten in das Quelldokument einzufügen.</xs:documentation>
+                    <xs:documentation xml:lang="de" source="Value">Absoluter XPath-Ausdruck, unterstützt wird zur Zeit nur XPath 1.0.</xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="start-position" type="xs:integer">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">Tbd.</xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="end-position" type="xs:integer">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">Tbd.</xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="replace">
+        <xs:annotation>
+            <xs:documentation xml:lang="en">Manipulation instruction: replaces the nodes indicated in <icode type="attribute">@node</icode> by the child/attribute nodes of the <icode type="element">xsm:content</icode> element.</xs:documentation>
+            <xs:documentation xml:lang="en">If the nodes indicated in <icode type="attribute">@node</icode> are attribute nodes, they are replaced by the attributes of the <icode type="element">xsm:content</icode> element. Otherwise, by the child nodes of the <icode type="element">xsm:content</icode> element.</xs:documentation>
+            <xs:documentation xml:lang="en">The node set indicated in <icode type="attribute">@node</icode> must not be a mixture of attributes and non-attributes.</xs:documentation>
+            <xs:documentation xml:lang="en">The replacing is done by means of string operations. After the replacement, the manipulated source document must comply with the standards of well-formed XML.</xs:documentation>
+            
+            <xs:documentation xml:lang="de">Manipulations-Anweisung: Ersetzt die in <icode type="attribute">@node</icode> angegebenen Knoten durch die Kind-/Attribut-Knoten des <icode type="element">xsm:content</icode>-Elements.</xs:documentation>
+            <xs:documentation xml:lang="de">Handelt es sich bei den in <icode type="attribute">@node</icode> angegebenen Knoten um Attribut-Knoten, werden sie durch die Attribute des <icode type="element">xsm:content</icode>-Elements ersetzt, andernfalls durch die Kindknoten des <icode type="element">xsm:content</icode>-Elements.</xs:documentation>
+            <xs:documentation xml:lang="de">Die in <icode type="attribute">@node</icode> angebenen Knotenmenge darf keine Mischung aus Attributen und Nicht-Attributen sein.</xs:documentation>
+            <xs:documentation xml:lang="de">Das Ersetzen erfolgt durch String-Operationen. Nach der Ersetzung muss das manipulierte Quelldokument den Wohlgeformtheits-Standards von XML entsprechen.</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="xsm:content"/>
+            </xs:sequence>
+            <xs:attribute name="node" type="xs:string" use="required">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">Indicates the nodes which shall be replaced.</xs:documentation>
+                    <xs:documentation xml:lang="en" source="Value">An absolute XPath expression. At the moment, only XPath 1.0 is supported.</xs:documentation>
+                    
+                    <xs:documentation xml:lang="de">Gibt die Knoten an, die ersetzt werden sollen.</xs:documentation>
+                    <xs:documentation xml:lang="de" source="Value">Absoluter XPath-Ausdruck, unterstützt wird zur Zeit nur XPath 1.0.</xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="start-position" type="xs:integer">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">Tbd.</xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="end-position" type="xs:integer">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">Tbd.</xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="delete">
+        <xs:annotation>
+            <xs:documentation xml:lang="en">Manipulation instruction: deletes the nodes indicated in <icode type="attribute">@node</icode>.</xs:documentation>
+            
+            <xs:documentation xml:lang="de">Manipulations-Anweisung: Löscht die in <icode type="attribute">@node</icode> angegebenen Knoten.</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:attribute name="node" type="xs:string" use="required">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">Indicates the nodes which shall be deleted.</xs:documentation>
+                    <xs:documentation xml:lang="en" source="Value">An absolute XPath expression. At the moment, only XPath 1.0 is supported.</xs:documentation>
+                    
+                    <xs:documentation xml:lang="de">Gibt die Knoten an, die gelöscht werden sollen.</xs:documentation>
+                    <xs:documentation xml:lang="de" source="Value">Absoluter XPath-Ausdruck, unterstützt wird zur Zeit nur XPath 1.0.</xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="start-position" type="xs:integer">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">Tbd.</xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="end-position" type="xs:integer">
+                <xs:annotation>
+                    <xs:documentation xml:lang="en">Tbd.</xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+        </xs:complexType>
+    </xs:element>
+    
+    
+    
+    <xs:element name="content">
+        <xs:annotation>
+            <xs:documentation xml:lang="en">Defines the nodes to be inserted into the source document for the manipulation instructions <icode type="element">xsm:add</icode> and <icode type="element">xsm:replace</icode>.</xs:documentation>
+            <xs:documentation xml:lang="en">The <icode type="element">xsm:content</icode> element may contain any elements and/or attributes. However, depending on the application, there may be restrictions by the manipulation instruction (e.g. that the element may only have attributes or only child nodes).</xs:documentation>
+            
+            <xs:documentation xml:lang="de">Definiert für die Manipulations-Anweisungen <icode type="element">xsm:add</icode> und <icode type="element">xsm:replace</icode> die in das Quelldokument einzufügenden Knoten.</xs:documentation>
+            <xs:documentation xml:lang="de">Das <icode type="element">xsm:content</icode> Element darf beliebige Elemente und/oder Attribute enthalten. Je nach Einsatz kann es jedoch Einschränkungen durch die Manipulations-Anweisung geben (z. B. dass es nur Attribute oder nur Kindknoten haben darf).</xs:documentation>
+        </xs:annotation>
+        <xs:complexType mixed="true">
+            <xs:sequence minOccurs="0" maxOccurs="unbounded">
+                <xs:any processContents="skip"/>
+            </xs:sequence>
+            <xs:anyAttribute namespace="##any" processContents="skip"/>
+        </xs:complexType>
+    </xs:element>
+    
+</xs:schema>

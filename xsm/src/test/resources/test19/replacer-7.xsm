@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsm:manipulator xmlns:xsm="http://www.schematron-quickfix.com/manipulator/process" document="base3.xml">
+    <xsm:replace node="/root/element[1]/@attribute" start-position="0" end-position="3">
+        <xsm:content>replace1</xsm:content>
+    </xsm:replace>
+    <xsm:replace node="/root/element[2]/@attribute" start-position="1" end-position="4">
+        <xsm:content>replace2</xsm:content>
+    </xsm:replace>
+    <xsm:replace node="/root/element[3]/@attribute" start-position="13" end-position="15">
+        <xsm:content>replace3</xsm:content>
+    </xsm:replace>
+    <xsm:replace node="/root/element[4]/@attribute" start-position="0" end-position="5">
+        <xsm:content>replace4</xsm:content>
+    </xsm:replace>
+    <xsm:replace node="/root/element[4]/@attribute" start-position="6" end-position="11">
+        <xsm:content>replace5</xsm:content>
+    </xsm:replace>
+    <xsm:replace node="/root/element[5]/@attribute" start-position="5" end-position="6">
+        <xsm:content>replace6</xsm:content>
+    </xsm:replace>
+    <xsm:replace node="/root/element[6]/@attribute" start-position="1" end-position="10">
+        <xsm:content>replace7</xsm:content>
+    </xsm:replace>
+    <xsm:replace node="/root/element[7]/@attribute" start-position="13" end-position="18">
+        <xsm:content>replace8</xsm:content>
+    </xsm:replace>
+</xsm:manipulator>

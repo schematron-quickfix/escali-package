@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?sqf-root-schema iso-schematron-hub.xsd?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://purl.oclc.org/dsdl/schematron">
+    <xs:annotation>
+        <xs:appinfo source="sqf:meta" xml:lang="en">
+            <meta keywords="Schematron QuickFix reference, Escalie reference, Schematron QuickFix elements, QuickFix element, sqf:fix, &lt;sqf:fix&gt;, QuickFixes for Schematron, QuickFix syntax">
+                <title>Schematron QuickFix &#x2013; extension references</title>
+                <navTitle idx="5" subMenuLevel="4">Extension references</navTitle>
+                <description>This page contains the reference of the Schematron QuickFix extension language.</description>
+            </meta>
+            <title>Extension references</title>
+        </xs:appinfo>
+        <xs:appinfo source="sqf:meta" xml:lang="de">
+            <meta>
+                <title>Schematron QuickFix &#x2013; Erweiterungsreferenzen</title>
+                <navTitle idx="5" subMenuLevel="4">Erweiterungsreferenz</navTitle>
+            </meta>
+            <title>Erweiterungsreferenzen</title>
+        </xs:appinfo>
+    </xs:annotation>
+    <xs:include schemaLocation="SQF/iso-schematron.xsd"/>
+</xs:schema>

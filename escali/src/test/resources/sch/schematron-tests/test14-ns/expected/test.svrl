@@ -1,0 +1,20 @@
+<svrl:schematron-output xmlns:svrl="http://purl.oclc.org/dsdl/svrl" xmlns:es="http://www.escali.schematron-quickfix.com/" xmlns:xs="http://www.w3.org/2001/XMLSchema" title="Schematron unit test" phase="#ALL"
+    es:schema="file:/D:/nico/Work/Java/net.sqf.tester/data/schematron/sch-tests/test14/in/test14.sch"
+    es:instance="file:/D:/nico/Work/Java/net.sqf.tester/data/schematron/sch-tests/test14/in/test14.xml">
+    <svrl:ns-prefix-in-attribute-values uri="a" prefix="a" />
+    <svrl:active-pattern es:id="d5e11" id="a" es:phases="#ALL"/>
+    <svrl:fired-rule context="a:pattern1" es:id="d5e13"/>
+    <svrl:failed-assert location="/*:root[namespace-uri()=''][1]/*:pattern1[namespace-uri()='a'][1]" test="false()">
+        <svrl:text>Prefix a</svrl:text>
+    </svrl:failed-assert>
+    <svrl:active-pattern es:id="d5e11" id="b" es:phases="#ALL"/>
+    <svrl:fired-rule context="b:pattern1" es:id="d5e13"/>
+    <svrl:failed-assert location="/*:root[namespace-uri()=''][1]/*:pattern1[namespace-uri()='a'][1]" test="false()">
+        <svrl:text>Prefix a</svrl:text>
+    </svrl:failed-assert>
+    <svrl:active-pattern es:id="d5e11" id="c" es:phases="#ALL"/>
+    <svrl:fired-rule context="c:pattern1" es:id="d5e13"/>
+    <svrl:failed-assert location="/*:root[namespace-uri()=''][1]/*:pattern1[namespace-uri()='b'][1]" test="false()">
+        <svrl:text>Prefix b</svrl:text>
+    </svrl:failed-assert>
+</svrl:schematron-output>

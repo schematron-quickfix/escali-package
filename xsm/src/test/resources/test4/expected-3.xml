@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!-- this is a comment before doctype decl-->
+<!DOCTYPE root SYSTEM "dtd.dtd" [
+<!ENTITY abc "yxz">
+]>
+<!-- this is a comment after doctype decl-->
+
+<root>
+    
+</root>

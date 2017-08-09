@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+    <info>
+        <title>Newsletter</title>
+    </info>
+    <section>
+        <title>Newsletter</title>
+        <para>If you want to be informed about changes in <?sqfc-start ?>QuickFix<?sqfc-end ?>es of Schematron <?sqfc-start ?>QuickFix<?sqfc-end ?>, please fill out this form:</para>
+    </section>
+</root>

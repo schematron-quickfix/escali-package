@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsm:manipulator xmlns:h="http://www.w3.org/1999/xhtml" xmlns:xsm="http://www.schematron-quickfix.com/manipulator/process" document="base.xml">
+    <xsm:replace node="/Vokabel/Eintrag/MAT/MetaTech/Sort/SachSort">
+        <xsm:content><?deleted?></xsm:content>
+    </xsm:replace>
+</xsm:manipulator>

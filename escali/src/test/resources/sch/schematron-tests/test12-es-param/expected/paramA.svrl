@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svrl:schematron-output xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+    xmlns:es="http://www.escali.schematron-quickfix.com/"
+    title="Schematron unit test"
+    phase="#ALL"
+    es:schema="file:/D:/nico/Work/Java/net.sqf.tester/data/schematron/sch-tests/test12/in/param.sch"
+    es:instance="file:/D:/nico/Work/Java/net.sqf.tester/data/schematron/sch-tests/test12/in/param.xml">
+    <svrl:active-pattern id="pattern1" es:phases="#ALL" />
+    <svrl:fired-rule context="pattern1" />
+    <svrl:failed-assert location="/*:root[namespace-uri()=''][1]/*:pattern1[namespace-uri()=''][1]"
+        test="$configDoc/config/test='no'">
+        <svrl:text>The config says 'yes'!</svrl:text>
+    </svrl:failed-assert>
+    <svrl:active-pattern id="pattern2" es:phases="#ALL" />
+    <svrl:fired-rule context="pattern2" />
+</svrl:schematron-output>

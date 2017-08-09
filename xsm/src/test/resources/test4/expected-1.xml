@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<!DOCTYPE root SYSTEM "dtd.dtd" [
+<!ENTITY abc "yxz">
+]>
+
+
+<root><a>&abc;another text</a><b>&abc;&#x20;</b>
+    <d             def="hallo">
+        <![CDATA[ <xml> ]]>
+    </d>
+</root>

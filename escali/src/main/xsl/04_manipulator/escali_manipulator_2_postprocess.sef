@@ -1,0 +1,346 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://ns.saxonica.com/xslt/export" xmlns:fn="http://www.w3.org/2005/xpath-functions" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:vv="http://saxon.sf.net/generated-variable" xmlns:java-type="http://saxon.sf.net/java-type" version="20" packageVersion="1" saxonVersion="9.7.0.14" timeStamp="2017-02-09T17:16:28.338+01:00" target="JS">
+ <co id="0" binds="">
+  <template name="Q{}copyNamespaces" flags="os" line="75" module="file:/D:/nico/Work/Java/net.sqf.escali/xml/xsl/04_manipulator/escali_manipulator_2_postprocess.xsl" slots="0">
+   <forEach role="body" vn="20" baseUri="file:/D:/nico/Work/Java/net.sqf.escali/xml/xsl/04_manipulator/escali_manipulator_2_postprocess.xsl" ns="xsl=http://www.w3.org/1999/XSL/Transform xsm=http://www.schematron-quickfix.com/manipulator/process xs=http://www.w3.org/2001/XMLSchema xd=http://www.oxygenxml.com/ns/doc/xsl sqfc=http://www.schematron-quickfix.com/validator/process/changes" line="76">
+    <fn name="reverse">
+     <slash simple="1">
+      <treat as="node()" jsTest="return SaxonJS.U.isNode(item);" diag="14|8|XPTY0020|">
+       <dot flags="a"/>
+      </treat>
+      <axis name="namespace" nodeTest="namespace-node()" jsTest="return SaxonJS.U.isNamespaceNode(item)"/>
+     </slash>
+    </fn>
+    <choose line="77">
+     <vc op="ne" onEmpty="0" comp="GAC|http://www.w3.org/2005/xpath-functions/collation/codepoint">
+      <data>
+       <dot type="namespace-node()"/>
+      </data>
+      <str val="http://www.schematron-quickfix.com/validator/process/changes"/>
+     </vc>
+     <namespace line="78">
+      <fn role="name" name="name">
+       <dot type="namespace-node()"/>
+      </fn>
+      <convert role="select" line="79" from="xs:untypedAtomic" to="xs:string">
+       <cast as="xs:untypedAtomic" emptiable="0">
+        <data>
+         <dot type="namespace-node()"/>
+        </data>
+       </cast>
+      </convert>
+     </namespace>
+    </choose>
+   </forEach>
+  </template>
+ </co>
+ <co id="1" binds="0 1 1 1 1 0 1 1">
+  <mode onNo="TC" flags="dW" patternSlots="0">
+   <templateRule prec="0" prio="1000.0" seq="2" rank="4" minImp="0" slots="1" flags="os" line="85" module="file:/D:/nico/Work/Java/net.sqf.escali/xml/xsl/04_manipulator/escali_manipulator_2_postprocess.xsl">
+    <p.withPredicate role="match">
+     <p.nodeTest test="element()" jsTest="return SaxonJS.U.isNode(item) &amp;&amp; item.nodeType==1;"/>
+     <vc vn="20" baseUri="file:/D:/nico/Work/Java/net.sqf.escali/xml/xsl/04_manipulator/escali_manipulator_2_postprocess.xsl" ns="xsl=http://www.w3.org/1999/XSL/Transform xsm=http://www.schematron-quickfix.com/manipulator/process xs=http://www.w3.org/2001/XMLSchema xd=http://www.oxygenxml.com/ns/doc/xsl sqfc=http://www.schematron-quickfix.com/validator/process/changes" line="85" op="eq" comp="CCC">
+      <fn name="namespace-uri">
+       <dot type="element()"/>
+      </fn>
+      <str val="http://www.escali.schematron-quickfix.com/null-namespace"/>
+     </vc>
+    </p.withPredicate>
+    <let role="action" vn="20" baseUri="file:/D:/nico/Work/Java/net.sqf.escali/xml/xsl/04_manipulator/escali_manipulator_2_postprocess.xsl" ns="xsl=http://www.w3.org/1999/XSL/Transform xsm=http://www.schematron-quickfix.com/manipulator/process xs=http://www.w3.org/2001/XMLSchema xd=http://www.oxygenxml.com/ns/doc/xsl sqfc=http://www.schematron-quickfix.com/validator/process/changes" line="86" var="next-match" as="node()?" slot="0" eval="7">
+     <treat as="node()" jsTest="return SaxonJS.U.isNode(item);" diag="3|0|XTTE0570|next-match">
+      <check card="?" diag="3|0|XTTE0570|next-match">
+       <nextMatch flags=""/>
+      </check>
+     </treat>
+     <forEach line="89">
+      <varRef name="next-match" slot="0"/>
+      <choose line="91">
+       <instance of="element()" jsTest="return item.nodeType==1;">
+        <dot type="node()"/>
+       </instance>
+       <compElem line="92">
+        <fn role="name" name="local-name">
+         <dot type="node()"/>
+        </fn>
+        <str role="namespace" val=""/>
+        <copyOf role="content" line="93" flags="vsc">
+         <axis name="child" nodeTest="( element() | text() | comment() | processing-instruction() )" jsTest="return SaxonJS.U.isNode(item) &amp;&amp; (item.nodeType==1 || item.nodeType==3 || item.nodeType==7 || item.nodeType==8);"/>
+        </copyOf>
+       </compElem>
+       <instance line="96" of="attribute()" jsTest="return SaxonJS.U.isAttr(item)">
+        <dot type="node()"/>
+       </instance>
+       <compAtt line="97">
+        <fn role="name" name="local-name">
+         <dot type="node()"/>
+        </fn>
+        <str role="namespace" val=""/>
+        <convert role="select" from="xs:anyAtomicType" to="xs:string">
+         <data>
+          <dot type="node()"/>
+         </data>
+        </convert>
+       </compAtt>
+       <true/>
+       <copyOf line="100" flags="vsc">
+        <dot type="node()"/>
+       </copyOf>
+      </choose>
+     </forEach>
+    </let>
+   </templateRule>
+   <templateRule prec="0" prio="0.5" seq="1" rank="1" minImp="0" slots="2" flags="os" line="63" module="file:/D:/nico/Work/Java/net.sqf.escali/xml/xsl/04_manipulator/escali_manipulator_2_postprocess.xsl">
+    <p.withPredicate role="match">
+     <p.nodeTest test="element()" jsTest="return SaxonJS.U.isNode(item) &amp;&amp; item.nodeType==1;"/>
+     <axis vn="20" baseUri="file:/D:/nico/Work/Java/net.sqf.escali/xml/xsl/04_manipulator/escali_manipulator_2_postprocess.xsl" ns="xsl=http://www.w3.org/1999/XSL/Transform xsm=http://www.schematron-quickfix.com/manipulator/process xs=http://www.w3.org/2001/XMLSchema xd=http://www.oxygenxml.com/ns/doc/xsl sqfc=http://www.schematron-quickfix.com/validator/process/changes" line="63" name="attribute" nodeTest="@Q{http://www.schematron-quickfix.com/validator/process/changes}*" jsTest="var q=SaxonJS.U.nameOfNode(item); return SaxonJS.U.isNode(item) &amp;&amp; item.nodeType==2&amp;&amp;q.uri == 'http://www.schematron-quickfix.com/validator/process/changes'"/>
+    </p.withPredicate>
+    <let role="action" vn="20" baseUri="file:/D:/nico/Work/Java/net.sqf.escali/xml/xsl/04_manipulator/escali_manipulator_2_postprocess.xsl" ns="xsl=http://www.w3.org/1999/XSL/Transform xsm=http://www.schematron-quickfix.com/manipulator/process xs=http://www.w3.org/2001/XMLSchema xd=http://www.oxygenxml.com/ns/doc/xsl sqfc=http://www.schematron-quickfix.com/validator/process/changes" line="64" var="firstChangeAttr" as="@Q{http://www.schematron-quickfix.com/validator/process/changes}*?" slot="0" eval="7">
+     <first>
+      <axis name="attribute" nodeTest="@Q{http://www.schematron-quickfix.com/validator/process/changes}*" jsTest="var q=SaxonJS.U.nameOfNode(item); return SaxonJS.U.isNode(item) &amp;&amp; item.nodeType==2&amp;&amp;q.uri == 'http://www.schematron-quickfix.com/validator/process/changes'"/>
+     </first>
+     <let line="65" var="changePrefix" as="xs:NCName?" slot="1" eval="8">
+      <fn name="prefix-from-QName">
+       <fn name="QName">
+        <fn name="namespace-uri">
+         <varRef name="firstChangeAttr" slot="0"/>
+        </fn>
+        <fn name="name">
+         <varRef name="firstChangeAttr" slot="0"/>
+        </fn>
+       </fn>
+      </fn>
+      <sequence line="66">
+       <procInst>
+        <fn role="name" name="concat">
+         <fn name="string">
+          <varRef name="changePrefix" slot="1"/>
+         </fn>
+         <str val="-start"/>
+        </fn>
+        <fn role="select" name="string-join">
+         <convert from="xs:untypedAtomic" to="xs:string">
+          <data>
+           <mergeAdj>
+            <sequence>
+             <valueOf flags="S">
+              <str val="attribute-change-"/>
+             </valueOf>
+             <valueOf>
+              <fn name="string-join">
+               <convert from="xs:anyAtomicType" to="xs:string">
+                <sequence>
+                 <data>
+                  <axis name="attribute" nodeTest="@Q{http://www.schematron-quickfix.com/validator/process/changes}*" jsTest="var q=SaxonJS.U.nameOfNode(item); return SaxonJS.U.isNode(item) &amp;&amp; item.nodeType==2&amp;&amp;q.uri == 'http://www.schematron-quickfix.com/validator/process/changes'"/>
+                 </data>
+                 <fn name="generate-id">
+                  <dot type="element()"/>
+                 </fn>
+                </sequence>
+               </convert>
+               <str val="-"/>
+              </fn>
+             </valueOf>
+            </sequence>
+           </mergeAdj>
+          </data>
+         </convert>
+         <str val=" "/>
+        </fn>
+       </procInst>
+       <copy line="68" flags="in">
+        <sequence role="content">
+         <callT name="copyNamespaces" bSlot="0"/>
+         <applyT line="69" bSlot="1">
+          <axis role="select" name="attribute" nodeTest="(attribute() except @Q{http://www.schematron-quickfix.com/validator/process/changes}*)" jsTest="function a() {return SaxonJS.U.isAttr(item)};function b() {var q=SaxonJS.U.nameOfNode(item); return SaxonJS.U.isNode(item) &amp;&amp; item.nodeType==2&amp;&amp;q.uri == 'http://www.schematron-quickfix.com/validator/process/changes'};return a()&amp;&amp;!b();"/>
+         </applyT>
+         <procInst line="70">
+          <fn role="name" name="concat">
+           <fn name="string">
+            <varRef name="changePrefix" slot="1"/>
+           </fn>
+           <str val="-end"/>
+          </fn>
+          <fn role="select" name="string-join">
+           <convert from="xs:untypedAtomic" to="xs:string">
+            <data>
+             <mergeAdj>
+              <sequence>
+               <valueOf flags="S">
+                <str val="attribute-change-"/>
+               </valueOf>
+               <valueOf>
+                <fn name="string-join">
+                 <convert from="xs:anyAtomicType" to="xs:string">
+                  <sequence>
+                   <data>
+                    <axis name="attribute" nodeTest="@Q{http://www.schematron-quickfix.com/validator/process/changes}*" jsTest="var q=SaxonJS.U.nameOfNode(item); return SaxonJS.U.isNode(item) &amp;&amp; item.nodeType==2&amp;&amp;q.uri == 'http://www.schematron-quickfix.com/validator/process/changes'"/>
+                   </data>
+                   <fn name="generate-id">
+                    <dot type="element()"/>
+                   </fn>
+                  </sequence>
+                 </convert>
+                 <str val="-"/>
+                </fn>
+               </valueOf>
+              </sequence>
+             </mergeAdj>
+            </data>
+           </convert>
+           <str val=" "/>
+          </fn>
+         </procInst>
+         <applyT line="71" bSlot="2">
+          <axis role="select" name="child" nodeTest="( element() | text() | comment() | processing-instruction() )" jsTest="return SaxonJS.U.isNode(item) &amp;&amp; (item.nodeType==1 || item.nodeType==3 || item.nodeType==7 || item.nodeType==8);"/>
+         </applyT>
+        </sequence>
+       </copy>
+      </sequence>
+     </let>
+    </let>
+   </templateRule>
+   <templateRule prec="0" prio="900.0" seq="4" rank="3" minImp="0" slots="1" flags="os" line="132" module="file:/D:/nico/Work/Java/net.sqf.escali/xml/xsl/04_manipulator/escali_manipulator_2_postprocess.xsl">
+    <p.nodeTest role="match" test="element(Q{http://www.schematron-quickfix.com/manipulator/process}manipulator)" jsTest="var q=SaxonJS.U.nameOfNode(item); return SaxonJS.U.isNode(item) &amp;&amp; item.nodeType==1 &amp;&amp; q.uri=='http://www.schematron-quickfix.com/manipulator/process'&amp;&amp;q.local=='manipulator';"/>
+    <let role="action" vn="20" baseUri="file:/D:/nico/Work/Java/net.sqf.escali/xml/xsl/04_manipulator/escali_manipulator_2_postprocess.xsl" ns="xsl=http://www.w3.org/1999/XSL/Transform xsm=http://www.schematron-quickfix.com/manipulator/process xs=http://www.w3.org/2001/XMLSchema xd=http://www.oxygenxml.com/ns/doc/xsl sqfc=http://www.schematron-quickfix.com/validator/process/changes" line="133" var="next-match" as="node()?" slot="0" eval="7">
+     <treat as="node()" jsTest="return SaxonJS.U.isNode(item);" diag="3|0|XTTE0570|next-match">
+      <check card="?" diag="3|0|XTTE0570|next-match">
+       <nextMatch flags=""/>
+      </check>
+     </treat>
+     <forEach line="136">
+      <varRef name="next-match" slot="0"/>
+      <copy line="138" flags="cin">
+       <sequence role="content">
+        <choose>
+         <fn name="not">
+          <gcEE op="=" card="N:1" comp="CCC">
+           <slash>
+            <axis name="namespace" nodeTest="namespace-node()" jsTest="return SaxonJS.U.isNamespaceNode(item)"/>
+            <fn name="name">
+             <dot type="namespace-node()"/>
+            </fn>
+           </slash>
+           <str val=""/>
+          </gcEE>
+         </fn>
+         <namespace line="139">
+          <str role="name" val=""/>
+          <str role="select" val="http://www.escali.schematron-quickfix.com/null-namespace"/>
+         </namespace>
+        </choose>
+        <applyT line="141" bSlot="3">
+         <axis role="select" name="attribute" nodeTest="attribute()" jsTest="return SaxonJS.U.isAttr(item)"/>
+        </applyT>
+        <applyT line="142" bSlot="4">
+         <axis role="select" name="child" nodeTest="( element() | text() | comment() | processing-instruction() )" jsTest="return SaxonJS.U.isNode(item) &amp;&amp; (item.nodeType==1 || item.nodeType==3 || item.nodeType==7 || item.nodeType==8);"/>
+        </applyT>
+       </sequence>
+      </copy>
+     </forEach>
+    </let>
+   </templateRule>
+   <templateRule prec="0" prio="800.0" seq="3" rank="2" minImp="0" slots="0" flags="os" line="106" module="file:/D:/nico/Work/Java/net.sqf.escali/xml/xsl/04_manipulator/escali_manipulator_2_postprocess.xsl">
+    <p.nodeTest role="match" test="element(Q{http://www.schematron-quickfix.com/manipulator/process}manipulator)" jsTest="var q=SaxonJS.U.nameOfNode(item); return SaxonJS.U.isNode(item) &amp;&amp; item.nodeType==1 &amp;&amp; q.uri=='http://www.schematron-quickfix.com/manipulator/process'&amp;&amp;q.local=='manipulator';"/>
+    <copy role="action" vn="20" baseUri="file:/D:/nico/Work/Java/net.sqf.escali/xml/xsl/04_manipulator/escali_manipulator_2_postprocess.xsl" ns="xsl=http://www.w3.org/1999/XSL/Transform xsm=http://www.schematron-quickfix.com/manipulator/process xs=http://www.w3.org/2001/XMLSchema xd=http://www.oxygenxml.com/ns/doc/xsl sqfc=http://www.schematron-quickfix.com/validator/process/changes" line="108" flags="cin">
+     <sequence role="content">
+      <applyT flags="c" bSlot="0">
+       <axis role="select" name="attribute" nodeTest="attribute()" jsTest="return SaxonJS.U.isAttr(item)"/>
+      </applyT>
+      <forEachGroup line="113" algorithm="by">
+       <axis role="select" name="child" nodeTest="Q{http://www.schematron-quickfix.com/manipulator/process}*" jsTest="var q=SaxonJS.U.nameOfNode(item); return SaxonJS.U.isNode(item) &amp;&amp; item.nodeType==1&amp;&amp;q.uri == 'http://www.schematron-quickfix.com/manipulator/process'"/>
+       <choose role="key">
+        <fn name="exists">
+         <axis name="attribute" nodeTest="attribute(Q{http://www.schematron-quickfix.com/validator/process/changes}changeMarkerGroup)" jsTest="var q=SaxonJS.U.nameOfNode(item); return q.uri=='http://www.schematron-quickfix.com/validator/process/changes'&amp;&amp;q.local=='changeMarkerGroup';"/>
+        </fn>
+        <fn name="concat">
+         <data>
+          <axis name="attribute" nodeTest="attribute(Q{}position)" jsTest="return item.name=='position'"/>
+         </data>
+         <str val="_"/>
+         <data>
+          <axis name="attribute" nodeTest="attribute(Q{}node)" jsTest="return item.name=='node'"/>
+         </data>
+         <str val="_"/>
+         <data>
+          <axis name="attribute" nodeTest="attribute(Q{http://www.schematron-quickfix.com/validator/process/changes}changeMarkerGroup)" jsTest="var q=SaxonJS.U.nameOfNode(item); return q.uri=='http://www.schematron-quickfix.com/validator/process/changes'&amp;&amp;q.local=='changeMarkerGroup';"/>
+         </data>
+        </fn>
+        <true/>
+        <fn name="generate-id">
+         <dot type="Q{http://www.schematron-quickfix.com/manipulator/process}*"/>
+        </fn>
+       </choose>
+       <sortKey role="sort" line="119" comp="NC">
+        <choose role="select">
+         <fn name="exists">
+          <axis name="attribute" nodeTest="attribute(Q{http://www.schematron-quickfix.com/validator/process/changes}changeMarkerGroup)" jsTest="var q=SaxonJS.U.nameOfNode(item); return q.uri=='http://www.schematron-quickfix.com/validator/process/changes'&amp;&amp;q.local=='changeMarkerGroup';"/>
+         </fn>
+         <int val="1"/>
+         <true/>
+         <int val="2"/>
+        </choose>
+        <str role="order" val="ascending"/>
+        <str role="dataType" val="number"/>
+        <str role="lang" val=""/>
+        <str role="caseOrder" val="#default"/>
+        <str role="stable" val="yes"/>
+        <str role="collation" val="http://www.w3.org/2005/xpath-functions/collation/codepoint"/>
+       </sortKey>
+       <str role="collation" val="http://www.w3.org/2005/xpath-functions/collation/codepoint"/>
+       <forEach role="content" line="121">
+        <first>
+         <currentGroup/>
+        </first>
+        <copy line="123" flags="cin">
+         <sequence role="content">
+          <applyT flags="c" bSlot="0">
+           <axis role="select" name="attribute" nodeTest="(attribute() except attribute(Q{http://www.schematron-quickfix.com/validator/process/changes}changeMarkerGroup))" jsTest="function a() {return SaxonJS.U.isAttr(item)};function b() {var q=SaxonJS.U.nameOfNode(item); return q.uri=='http://www.schematron-quickfix.com/validator/process/changes'&amp;&amp;q.local=='changeMarkerGroup';};return a()&amp;&amp;!b();"/>
+          </applyT>
+          <applyT line="124" flags="c" bSlot="0">
+           <axis role="select" name="child" nodeTest="( element() | text() | comment() | processing-instruction() )" jsTest="return SaxonJS.U.isNode(item) &amp;&amp; (item.nodeType==1 || item.nodeType==3 || item.nodeType==7 || item.nodeType==8);"/>
+          </applyT>
+         </sequence>
+        </copy>
+       </forEach>
+      </forEachGroup>
+     </sequence>
+    </copy>
+   </templateRule>
+   <templateRule prec="0" prio="-0.5" seq="0" rank="0" minImp="0" slots="0" flags="os" line="52" module="file:/D:/nico/Work/Java/net.sqf.escali/xml/xsl/04_manipulator/escali_manipulator_2_postprocess.xsl">
+    <p.nodeTest role="match" test="attribute()" jsTest="return SaxonJS.U.isAttr(item)"/>
+    <copy role="action" vn="20" baseUri="file:/D:/nico/Work/Java/net.sqf.escali/xml/xsl/04_manipulator/escali_manipulator_2_postprocess.xsl" ns="xsl=http://www.w3.org/1999/XSL/Transform xsm=http://www.schematron-quickfix.com/manipulator/process xs=http://www.w3.org/2001/XMLSchema xd=http://www.oxygenxml.com/ns/doc/xsl sqfc=http://www.schematron-quickfix.com/validator/process/changes" line="54" flags="in">
+     <sequence role="content">
+      <callT name="copyNamespaces" bSlot="5"/>
+      <applyT line="55" bSlot="6">
+       <axis role="select" name="attribute" nodeTest="attribute()" jsTest="return SaxonJS.U.isAttr(item)"/>
+      </applyT>
+      <applyT line="56" bSlot="7">
+       <axis role="select" name="child" nodeTest="( element() | text() | comment() | processing-instruction() )" jsTest="return SaxonJS.U.isNode(item) &amp;&amp; (item.nodeType==1 || item.nodeType==3 || item.nodeType==7 || item.nodeType==8);"/>
+      </applyT>
+     </sequence>
+    </copy>
+   </templateRule>
+   <templateRule prec="0" prio="-0.5" seq="0" rank="0" minImp="0" slots="0" flags="os" line="52" module="file:/D:/nico/Work/Java/net.sqf.escali/xml/xsl/04_manipulator/escali_manipulator_2_postprocess.xsl">
+    <p.nodeTest role="match" test="( element() | text() | comment() | processing-instruction() )" jsTest="return SaxonJS.U.isNode(item) &amp;&amp; (item.nodeType==1 || item.nodeType==3 || item.nodeType==7 || item.nodeType==8);"/>
+    <copy role="action" vn="20" baseUri="file:/D:/nico/Work/Java/net.sqf.escali/xml/xsl/04_manipulator/escali_manipulator_2_postprocess.xsl" ns="xsl=http://www.w3.org/1999/XSL/Transform xsm=http://www.schematron-quickfix.com/manipulator/process xs=http://www.w3.org/2001/XMLSchema xd=http://www.oxygenxml.com/ns/doc/xsl sqfc=http://www.schematron-quickfix.com/validator/process/changes" line="54" flags="in">
+     <sequence role="content">
+      <callT name="copyNamespaces" bSlot="5"/>
+      <applyT line="55" bSlot="6">
+       <axis role="select" name="attribute" nodeTest="attribute()" jsTest="return SaxonJS.U.isAttr(item)"/>
+      </applyT>
+      <applyT line="56" bSlot="7">
+       <axis role="select" name="child" nodeTest="( element() | text() | comment() | processing-instruction() )" jsTest="return SaxonJS.U.isNode(item) &amp;&amp; (item.nodeType==1 || item.nodeType==3 || item.nodeType==7 || item.nodeType==8);"/>
+      </applyT>
+     </sequence>
+    </copy>
+   </templateRule>
+  </mode>
+ </co>
+ <overridden/>
+ <output>
+  <property name="{http://saxon.sf.net/}stylesheet-version" value="20"/>
+  <property name="method" value="xml"/>
+ </output>
+ <decimalFormat decimal-separator="46" grouping-separator="44" digit="35" minus-sign="45" percent="37" per-mille="8240" zero-digit="48" exponent-separator="101" pattern-separator="59" infinity="Infinity" NaN="NaN"/>
+</package>
+<?Σ 52893866?>

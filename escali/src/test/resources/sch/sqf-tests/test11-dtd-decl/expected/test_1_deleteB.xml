@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE root SYSTEM "%5Bdtd%5D.dtd">
+<root>
+    <a>testa</a>
+    <?sqfc-start ?><?sqfc-end ?>
+    <d def="abc">testd</d>
+</root>

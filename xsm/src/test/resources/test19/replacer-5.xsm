@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsm:manipulator xmlns:xsm="http://www.schematron-quickfix.com/manipulator/process" document="base2.xml">
+    <xsm:replace node="/root/element[1]/text()[1]" start-position="20" end-position="37">
+        <xsm:content>replace1</xsm:content>
+    </xsm:replace>
+    <xsm:replace node="/root/element[3]/text()[1]" start-position="44" end-position="61">
+        <xsm:content>replace2</xsm:content>
+    </xsm:replace>
+</xsm:manipulator>

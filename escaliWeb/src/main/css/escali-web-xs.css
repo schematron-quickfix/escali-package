@@ -1,0 +1,15 @@
+@import 'escali-web.css';
+
+.drop_zone {
+    height:40vh;
+}
+
+#spinnerMessage{
+    width:60%;
+    left:20%;
+}
+
+.userEntryMenu{
+    transform:translateX(0%);
+    right:2em;
+}

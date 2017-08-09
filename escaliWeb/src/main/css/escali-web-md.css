@@ -1,0 +1,36 @@
+@import 'escali-web.css';
+
+.drop_zone {
+    height:95%;
+    min-height:300px;
+}
+#spinnerMessage {
+    width:25%;
+    left:37.5%;
+}
+
+.userEntryMenu{
+    transform:translateX(0%);
+    right:1.5em;
+}
+
+#body{
+    
+  position: absolute;
+  top: 60px;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  
+  display: flex;
+    
+}
+
+#schema {
+  overflow-y:auto;
+}
+
+#instance{
+  overflow: auto;
+  flex:1;
+}

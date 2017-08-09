@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsm:manipulator xmlns:xsm="http://www.schematron-quickfix.com/manipulator/process" xmlns="http://www.escali.schematron-quickfix.com/null-namespace" document="base5.xml">
+    <xsm:add start-position="22" end-position="26" position="before" node="/*:root[namespace-uri()=''][1]/*:p[namespace-uri()=''][4]/@*:style[namespace-uri()=''][1]">
+        <xsm:content>ADD</xsm:content>
+    </xsm:add>
+</xsm:manipulator>

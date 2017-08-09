@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="oxygenIssues.sch" type="application/xml" schematypens="http://purl.oclc.org/dsdl/schematron"?>
+<root>
+    <?sqfc-start ?><element><?sqfc-end ?></element>
+    <element/>
+    <element attribute="xyz">Text to match something.</element>
+    <element>Text to   match somehing.</element>
+    <element>Text to <br/> match<br/> something</element>
+</root>

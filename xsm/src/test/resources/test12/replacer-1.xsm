@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsm:manipulator xmlns:abc="http://www.abc.de/" xmlns:xyz="http://www.xyz.de/" xmlns:xsm="http://www.schematron-quickfix.com/manipulator/process" document="base.xml">
+    <xsm:add node="/abc:root/xyz:a" position="first-child">
+        <xsm:content><xyz:b/></xsm:content>
+    </xsm:add>
+</xsm:manipulator>

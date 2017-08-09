@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xpm:manipulator xmlns:xpm="http://www.schematron-quickfix.com/manipulator/process" document="base.xml">
+    <xpm:replace node="/root/a/text()">
+        <xpm:content>replaceing text</xpm:content>
+    </xpm:replace>
+    <xpm:replace node="/root/d/@def">
+        <xpm:content test="test-wert"/>
+    </xpm:replace>
+</xpm:manipulator>

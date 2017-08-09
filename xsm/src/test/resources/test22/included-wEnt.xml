@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE root [
+<!--23 zeichen-->
+<!ENTITY lang "sehr langer entity text">
+<!--1 zeichen-->
+<!ENTITY included "x">
+]>
+<element included="true">
+    <e>&included;</e>
+    <e>&lang;</e>
+</element>

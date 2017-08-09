@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<article xmlns="http://docbook.org/ns/docbook" version="5.0">
+    <info>
+        <title>XSL functions</title>
+    </info>
+    <sect1>
+        <title>XSLT introduction to the transformation language<footnote>
+                <para>by Manuel Montero Pineda, CEO<?sqfc-start ?><?sqfc-end ?> of data2type GmbH</para>
+            </footnote></title>
+        <para>This section shall serve as an introduction to the transformation language XSLT. As already shown in the previous sections, XSLT is essential for the practical work with XSL-FO. The following explanations shall help to introduce XSL-FO and to understand the examples and applications in the text. In order to gain a deeper understanding of XSLT with all its facets, the book "Web-Design mit XML“<footnote>
+                <para>engl.: "Webdesign with XML"<footnote>
+                        <para>Authors:</para>
+                        <itemizedlist>
+                            <listitem>
+                                <para>Manfred Knobloch</para>
+                            </listitem>
+                            <listitem>
+                                <para>Matthias Kopp</para>
+                            </listitem>
+                        </itemizedlist>
+                    </footnote></para>
+            </footnote> is recommended. This book was also published in the xml.bibliothek series of the publishing company dpunkt-Verlag.</para>
+    </sect1>
+</article>

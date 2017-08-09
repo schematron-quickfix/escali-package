@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="schema.sch" type="application/xml" schematypens="http://purl.oclc.org/dsdl/schematron"?>
+<!DOCTYPE root [
+<!--23 zeichen-->
+<!ENTITY lang "sehr langer entity text">
+<!--1 zeichen-->
+<!ENTITY kurz "x">
+<!ENTITY ext_entity SYSTEM "included.xml"> 
+]>
+<root>
+    &ext_entity;
+    &ext_entity;
+    <element attribute="value"/>
+</root>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Kommentar in dtd.dtd -->
+<?pi in dtd.dtd?>
+<!ELEMENT root (a, b?, d)>
+<!ELEMENT a (#PCDATA) >
+<!ELEMENT b (#PCDATA) >
+<!ENTITY abc "def">
+<!ELEMENT d (#PCDATA) >
+<!ATTLIST d def CDATA #IMPLIED >

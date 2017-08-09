@@ -1,0 +1,11 @@
+<xsm:manipulator xmlns:xsm="http://www.schematron-quickfix.com/manipulator/process" document="base.xml">
+    <xsm:add position="before" node="/*:html[namespace-uri()='http://www.w3.org/1999/xhtml'][1]/*:body[namespace-uri()='http://www.w3.org/1999/xhtml'][1]/*:p[namespace-uri()='http://www.w3.org/1999/xhtml'][2]">
+        <xsm:content><?sqfc-start attribute-change-d29e21a1685?></xsm:content>
+    </xsm:add>
+    <xsm:add xmlns:sqf="http://www.schematron-quickfix.com/validator/process" position="attribute" node="/*:html[namespace-uri()='http://www.w3.org/1999/xhtml'][1]/*:body[namespace-uri()='http://www.w3.org/1999/xhtml'][1]/*:p[namespace-uri()='http://www.w3.org/1999/xhtml'][2]">
+        <xsm:content a=""/>
+    </xsm:add>
+    <xsm:add position="first-child" node="/*:html[namespace-uri()='http://www.w3.org/1999/xhtml'][1]/*:body[namespace-uri()='http://www.w3.org/1999/xhtml'][1]/*:p[namespace-uri()='http://www.w3.org/1999/xhtml'][2]">
+        <xsm:content><?sqfc-end attribute-change-d29e21a1685?></xsm:content>
+    </xsm:add>
+</xsm:manipulator>

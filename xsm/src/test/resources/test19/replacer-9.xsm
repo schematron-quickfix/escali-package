@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsm:manipulator xmlns:xsm="http://www.schematron-quickfix.com/manipulator/process" document="base4.xml">
+    <xsm:add node="/root/comment()[1]" start-position="2" end-position="7" position="after">
+        <xsm:content>add1</xsm:content>
+    </xsm:add>
+    <xsm:add node="/root/processing-instruction()[1]" start-position="0" end-position="5" position="before">
+        <xsm:content>add2</xsm:content>
+    </xsm:add>
+</xsm:manipulator>

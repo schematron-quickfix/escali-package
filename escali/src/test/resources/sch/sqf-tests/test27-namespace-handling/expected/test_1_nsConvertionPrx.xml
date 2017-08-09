@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="../input/test.sch"?>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+    <head>
+        <?sqfc-start ?><html:element xmlns:html="http://www.w3.org/1999/xhtml"/><?sqfc-end ?>
+        <element xmlns=""/>
+        <title>No useful &lt;title&gt; element with too many characters because it contains more than 70 characters and a <!--forbidden comment-->.</title>
+        <extern>
+            <element/>
+        </extern>
+    </head>
+    <body>
+        <h1>Usefull and short title</h1>
+        <!-- Content -->
+        <h1>Next usefull and short title.</h1>
+        <!--  Other contetn -->
+        <h1>Last short title</h1>
+    </body>
+</html>

@@ -1,0 +1,7 @@
+<c:errors xmlns:c="http://www.w3.org/ns/xproc-step">
+    <error xmlns="http://www.w3.org/ns/xproc-step"
+        code="XTMM9000"
+        type="fatal-error"
+        href="file:/D:/nico/Work/Java/net.sqf.escali/xml/xsl/01_compiler/escali_compiler_0_functions.xsl"
+        line="1048575">net.sf.saxon.expr.instruct.TerminationException: Processing terminated by xsl:message at line 1048575 in escali_compiler_0_functions.xsl</error>
+</c:errors>

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://ns.saxonica.com/xslt/export" xmlns:fn="http://www.w3.org/2005/xpath-functions" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:vv="http://saxon.sf.net/generated-variable" xmlns:java-type="http://saxon.sf.net/java-type" version="20" packageVersion="1" saxonVersion="9.7.0.14" timeStamp="2017-02-09T17:16:21.618+01:00" target="JS">
+ <co id="0" binds="1">
+  <template name="Q{}standalone" flags="os" line="8" module="file:/D:/nico/Work/Java/net.sqf.escali/xml/xsl/04_manipulator/escali_manipulator_0_removeChangePIs.xsl" slots="0">
+   <applyT role="body" vn="20" baseUri="file:/D:/nico/Work/Java/net.sqf.escali/xml/xsl/04_manipulator/escali_manipulator_0_removeChangePIs.xsl" ns="xsl=http://www.w3.org/1999/XSL/Transform sqf=http://www.schematron-quickfix.com/validator/process xs=http://www.w3.org/2001/XMLSchema" line="9" mode="Q{http://www.schematron-quickfix.com/validator/process}standalone" flags="t" bSlot="0">
+    <root role="select"/>
+   </applyT>
+  </template>
+ </co>
+ <co id="2" vis="PUBLIC" binds="">
+  <globalParam name="Q{http://www.schematron-quickfix.com/validator/process}changePrefix" type="xs:string" line="0" visibility="PUBLIC" jsAcceptor="return SaxonJS.U.Atomic.string.cast(val);" jsCardCheck="function c(n) {return n==1;};">
+   <str val="sqfc"/>
+  </globalParam>
+ </co>
+ <co id="1" binds="2">
+  <mode name="Q{http://www.schematron-quickfix.com/validator/process}standalone" onNo="TC" flags="W" patternSlots="0">
+   <templateRule prec="0" prio="-0.5" seq="1" rank="0" minImp="0" slots="0" flags="os" line="16" module="file:/D:/nico/Work/Java/net.sqf.escali/xml/xsl/04_manipulator/escali_manipulator_0_removeChangePIs.xsl">
+    <p.nodeTest role="match" test="attribute()" jsTest="return SaxonJS.U.isAttr(item)"/>
+    <copy role="action" vn="20" baseUri="file:/D:/nico/Work/Java/net.sqf.escali/xml/xsl/04_manipulator/escali_manipulator_0_removeChangePIs.xsl" ns="xsl=http://www.w3.org/1999/XSL/Transform sqf=http://www.schematron-quickfix.com/validator/process xs=http://www.w3.org/2001/XMLSchema" line="18" flags="cin">
+     <sequence role="content">
+      <applyT flags="c" bSlot="0">
+       <axis role="select" name="attribute" nodeTest="attribute()" jsTest="return SaxonJS.U.isAttr(item)"/>
+      </applyT>
+      <applyT line="19" flags="c" bSlot="0">
+       <axis role="select" name="child" nodeTest="( element() | text() | comment() | processing-instruction() )" jsTest="return SaxonJS.U.isNode(item) &amp;&amp; (item.nodeType==1 || item.nodeType==3 || item.nodeType==7 || item.nodeType==8);"/>
+      </applyT>
+     </sequence>
+    </copy>
+   </templateRule>
+   <templateRule prec="0" prio="1000.0" seq="0" rank="1" minImp="0" slots="0" flags="os" line="12" module="file:/D:/nico/Work/Java/net.sqf.escali/xml/xsl/04_manipulator/escali_manipulator_0_removeChangePIs.xsl">
+    <p.withPredicate role="match">
+     <p.nodeTest test="processing-instruction()" jsTest="return SaxonJS.U.isNode(item) &amp;&amp; item.nodeType==7&amp;&amp;item.target!='xml';"/>
+     <fn vn="20" baseUri="file:/D:/nico/Work/Java/net.sqf.escali/xml/xsl/04_manipulator/escali_manipulator_0_removeChangePIs.xsl" ns="xsl=http://www.w3.org/1999/XSL/Transform sqf=http://www.schematron-quickfix.com/validator/process xs=http://www.w3.org/2001/XMLSchema" line="12" name="matches">
+      <fn name="name">
+       <dot type="processing-instruction()"/>
+      </fn>
+      <fn name="concat">
+       <gVarRef name="Q{http://www.schematron-quickfix.com/validator/process}changePrefix" bSlot="0"/>
+       <str val="-(end|start)"/>
+      </fn>
+      <str val=""/>
+     </fn>
+    </p.withPredicate>
+    <empty role="action"/>
+   </templateRule>
+   <templateRule prec="0" prio="-0.5" seq="1" rank="0" minImp="0" slots="0" flags="os" line="16" module="file:/D:/nico/Work/Java/net.sqf.escali/xml/xsl/04_manipulator/escali_manipulator_0_removeChangePIs.xsl">
+    <p.nodeTest role="match" test="( element() | text() | comment() | processing-instruction() )" jsTest="return SaxonJS.U.isNode(item) &amp;&amp; (item.nodeType==1 || item.nodeType==3 || item.nodeType==7 || item.nodeType==8);"/>
+    <copy role="action" vn="20" baseUri="file:/D:/nico/Work/Java/net.sqf.escali/xml/xsl/04_manipulator/escali_manipulator_0_removeChangePIs.xsl" ns="xsl=http://www.w3.org/1999/XSL/Transform sqf=http://www.schematron-quickfix.com/validator/process xs=http://www.w3.org/2001/XMLSchema" line="18" flags="cin">
+     <sequence role="content">
+      <applyT flags="c" bSlot="0">
+       <axis role="select" name="attribute" nodeTest="attribute()" jsTest="return SaxonJS.U.isAttr(item)"/>
+      </applyT>
+      <applyT line="19" flags="c" bSlot="0">
+       <axis role="select" name="child" nodeTest="( element() | text() | comment() | processing-instruction() )" jsTest="return SaxonJS.U.isNode(item) &amp;&amp; (item.nodeType==1 || item.nodeType==3 || item.nodeType==7 || item.nodeType==8);"/>
+      </applyT>
+     </sequence>
+    </copy>
+   </templateRule>
+  </mode>
+ </co>
+ <co id="3" binds="2">
+  <mode onNo="TC" flags="dW" patternSlots="0">
+   <templateRule prec="0" prio="1000.0" seq="0" rank="0" minImp="0" slots="0" flags="os" line="12" module="file:/D:/nico/Work/Java/net.sqf.escali/xml/xsl/04_manipulator/escali_manipulator_0_removeChangePIs.xsl">
+    <p.withPredicate role="match">
+     <p.nodeTest test="processing-instruction()" jsTest="return SaxonJS.U.isNode(item) &amp;&amp; item.nodeType==7&amp;&amp;item.target!='xml';"/>
+     <fn vn="20" baseUri="file:/D:/nico/Work/Java/net.sqf.escali/xml/xsl/04_manipulator/escali_manipulator_0_removeChangePIs.xsl" ns="xsl=http://www.w3.org/1999/XSL/Transform sqf=http://www.schematron-quickfix.com/validator/process xs=http://www.w3.org/2001/XMLSchema" line="12" name="matches">
+      <fn name="name">
+       <dot type="processing-instruction()"/>
+      </fn>
+      <fn name="concat">
+       <gVarRef name="Q{http://www.schematron-quickfix.com/validator/process}changePrefix" bSlot="0"/>
+       <str val="-(end|start)"/>
+      </fn>
+      <str val=""/>
+     </fn>
+    </p.withPredicate>
+    <empty role="action"/>
+   </templateRule>
+  </mode>
+ </co>
+ <overridden/>
+ <output>
+  <property name="{http://saxon.sf.net/}stylesheet-version" value="20"/>
+ </output>
+ <decimalFormat decimal-separator="46" grouping-separator="44" digit="35" minus-sign="45" percent="37" per-mille="8240" zero-digit="48" exponent-separator="101" pattern-separator="59" infinity="Infinity" NaN="NaN"/>
+</package>
+<?Σ 82289b90?>

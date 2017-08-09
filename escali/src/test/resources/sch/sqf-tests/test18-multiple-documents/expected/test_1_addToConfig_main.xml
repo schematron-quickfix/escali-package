@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="lang.sch" type="application/xml" schematypens="http://purl.oclc.org/dsdl/schematron"?>
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>Citations Niccolò Machiavelli</title>
+    </head>
+    <body>
+        <h1>Citations <span lang="it">Niccolò Machiavelli</span></h1>
+        <p><?pi?>Wars begin when you will, but they do not end when you please.</p>
+        <p lang="it" xml:lang="en">Può la disciplina nella guerra più che il furore.</p>
+        <p lang="it" xml:lang="it">Può la disciplina nella guerra più che il furore.</p>
+    </body>
+</html>
+
+

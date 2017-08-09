@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<x:description xmlns:x="http://www.jenitennison.com/xslt/xspec" xmlns:es="http://www.escali.schematron-quickfix.com/" stylesheet="../../main/xsl/01_compiler/escali_compiler_0_functions.xsl">
+
+    <x:scenario label="Scenario for testing function getNodePath">
+        <x:call function="es:getNodePath"> </x:call>
+        <x:scenario label="Root Element">
+            <x:call>
+                <x:param name="node" select="/*" href="xml/getNodePath.xml"/>
+            </x:call>
+            <x:expect label="Simple Element" select="string(.)">/*:root[namespace-uri()=''][1]</x:expect>
+        </x:scenario>
+        <x:scenario label="Simple Element">
+            <x:call>
+                <x:param name="node" select="/*/*[1]" href="xml/getNodePath.xml"/>
+            </x:call>
+            <x:expect label="Simple Element" select="string(.)">/*:root[namespace-uri()=''][1]/*:element1[namespace-uri()=''][1]</x:expect>
+        </x:scenario>
+        <x:scenario label="Simple PI">
+            <x:call>
+                <x:param name="node" select="/*/processing-instruction()[1]" href="xml/getNodePath.xml"/>
+            </x:call>
+            <x:expect label="Simple PI" select="string(.)">/*:root[namespace-uri()=''][1]/processing-instruction()[local-name()='processing-instr'][1]</x:expect>
+        </x:scenario>
+        <x:scenario label="Element with NS">
+            <x:call>
+                <x:param name="node" select="/*/*[2]" href="xml/getNodePath.xml"/>
+            </x:call>
+            <x:expect label="Element with NS" select="string(.)">/*:root[namespace-uri()=''][1]/*:elementWithNS[namespace-uri()='www.schematron-quickfix.com'][1]</x:expect>
+        </x:scenario>
+        <x:scenario label="Simple Attribute">
+            <x:call>
+                <x:param name="node" select="/*/*[1]/@*" href="xml/getNodePath.xml"/>
+            </x:call>
+            <x:expect label="SimpleAttribute" select="string(.)">/*:root[namespace-uri()=''][1]/*:element1[namespace-uri()=''][1]/@*:attribute[namespace-uri()=''][1]</x:expect>
+        </x:scenario>
+        <x:scenario label="Document node">
+            <x:call>
+                <x:param name="node" select="/" href="xml/getNodePath.xml"/>
+            </x:call>
+            <x:expect label="Document node" select="string(.)">/</x:expect>
+        </x:scenario>
+    </x:scenario>
+    <x:scenario label="Scenario for testing function getNodePath with includes only">
+        <x:call function="es:getNodePath">
+            <x:param position="2" select="true()"/>
+        </x:call>
+        <x:like label="Scenario for testing function getNodePath"/>
+        <x:scenario label="Test XIncludes">
+            <x:scenario label="Root Element included">
+                <x:call>
+                    <x:param position="1" select="/*/root" href="xml/getNodePath-xinclude.xml"/>
+                </x:call>
+                <x:expect label="Simple Element" select="string(.)">/*:root[namespace-uri()=''][1]</x:expect>
+            </x:scenario>
+            <x:scenario label="Simple Element included">
+                <x:call>
+                    <x:param name="node" select="/*/root/*[1]" href="xml/getNodePath-xinclude.xml"/>
+                </x:call>
+                <x:expect label="Simple Element" select="string(.)">/*:root[namespace-uri()=''][1]/*:element1[namespace-uri()=''][1]</x:expect>
+            </x:scenario>
+            <x:scenario label="Simple PI included">
+                <x:call>
+                    <x:param name="node" select="/*/root/processing-instruction()[1]" href="xml/getNodePath-xinclude.xml"/>
+                </x:call>
+                <x:expect label="Simple PI" select="string(.)">/*:root[namespace-uri()=''][1]/processing-instruction()[local-name()='processing-instr'][1]</x:expect>
+            </x:scenario>
+            <x:scenario label="Element with NS included">
+                <x:call>
+                    <x:param name="node" select="/*/root/*[2]" href="xml/getNodePath-xinclude.xml"/>
+                </x:call>
+                <x:expect label="Element with NS" select="string(.)">/*:root[namespace-uri()=''][1]/*:elementWithNS[namespace-uri()='www.schematron-quickfix.com'][1]</x:expect>
+            </x:scenario>
+            <x:scenario label="Simple Attribute included">
+                <x:call>
+                    <x:param name="node" select="/*/root/*[1]/@*" href="xml/getNodePath-xinclude.xml"/>
+                </x:call>
+                <x:expect label="SimpleAttribute" select="string(.)">/*:root[namespace-uri()=''][1]/*:element1[namespace-uri()=''][1]/@*:attribute[namespace-uri()=''][1]</x:expect>
+            </x:scenario>
+        </x:scenario>
+    </x:scenario>
+
+    <x:scenario label="Scenario for testing function getNodeType">
+        <x:call function="es:getNodeType"/>
+        <x:scenario label="Simple Element">
+            <x:call>
+                <x:param name="node" select="/*/*[1]" href="xml/getNodePath.xml"/>
+            </x:call>
+            <x:expect label="Simple Element" select="'element'"/>
+        </x:scenario>
+        <x:scenario label="Simple PI">
+            <x:call>
+                <x:param name="node" select="/*/processing-instruction()[1]" href="xml/getNodePath.xml"/>
+            </x:call>
+            <x:expect label="Simple PI" select="'processing-instruction'"/>
+        </x:scenario>
+        <x:scenario label="Element with NS">
+            <x:call>
+                <x:param name="node" select="/*/*[2]" href="xml/getNodePath.xml"/>
+            </x:call>
+            <x:expect label="Element with NS" select="'element'"/>
+        </x:scenario>
+        <x:scenario label="Simple Attribute">
+            <x:call>
+                <x:param name="node" select="/*/*[1]/@*" href="xml/getNodePath.xml"/>
+            </x:call>
+            <x:expect label="SimpleAttribute" select="'attribute'"/>
+        </x:scenario>
+        <x:scenario label="Document node">
+            <x:call>
+                <x:param name="node" select="/" href="xml/getNodePath.xml"/>
+            </x:call>
+            <x:expect label="Document node" select="'document'"/>
+        </x:scenario>
+        
+        <x:scenario label="All elements">
+            <x:call>
+                <x:param name="node" select="//*" href="xml/getNodePath.xml"/>
+            </x:call>
+            <x:expect label="All elements" select="'element'"/>
+        </x:scenario>
+        <x:scenario label="All attributes">
+            <x:call>
+                <x:param name="node" select="//@*" href="xml/getNodePath.xml"/>
+            </x:call>
+            <x:expect label="All attributes" select="'attribute'"/>
+        </x:scenario>
+        <x:scenario label="All elements and attributes">
+            <x:call>
+                <x:param name="node" select="//@* | //*" href="xml/getNodePath.xml"/>
+            </x:call>
+            <x:expect label="All elements and attributes" select="'mixed'"/>
+        </x:scenario>
+
+    </x:scenario>
+</x:description>

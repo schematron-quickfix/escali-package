@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+	<info>
+	    <title>Newsletter</title>
+	</info>
+	<section>
+	    <title>Newsletter</title>
+	    <para>If you want to be informed about changes in Schematron QuickFix, please fill out this form:</para>
+	    <para>First name: ..........................</para>
+	    <para>Second name: ...........................................</para>
+	    <para>E-mail: <?sqfc-start ?><form length="21" type="line"/><?sqfc-end ?>@<?sqfc-start ?><form length="21" type="line"/><?sqfc-end ?>.<?sqfc-start ?><form length="3" type="line"/><?sqfc-end ?></para>
+    </section>
+</root>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsm:manipulator xmlns:xsm="http://www.schematron-quickfix.com/manipulator/process" document="base.xml">
+    <xsm:add node="/*[namespace-uri()='http://www.w3.org/1999/xhtml'][local-name()='html'][1]/*[namespace-uri()='http://www.w3.org/1999/xhtml'][local-name()='body'][1]//*[namespace-uri()='http://www.w3.org/1999/xhtml'][local-name()='h1'][1]/*[namespace-uri()='http://www.w3.org/1999/xhtml'][local-name()='span'][1]" position="attribute">
+        <xsm:content xml:lang="it"/>
+    </xsm:add>
+</xsm:manipulator>

@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--  
+    Copyright (c) 2014 Nico Kutscherauer
+        
+    This file is part of Escali Schematron.
+    
+    Escali Schematron is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+    
+    Escali Schematron is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+    
+    You should have received a copy of the GNU General Public License
+    along with Escali Schematron.  If not, see http://www.gnu.org/licenses/gpl-3.0.
+    
+    -->
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:svrl="http://purl.oclc.org/dsdl/svrl" elementFormDefault="qualified" attributeFormDefault="unqualified" targetNamespace="http://www.schematron-quickfix.com/validator/process" xmlns:sqf="http://www.schematron-quickfix.com/validator/process" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xml:lang="en">
+    <xs:import namespace="http://purl.oclc.org/dsdl/svrl" schemaLocation="svrl.xsd"/>
+    <xs:import namespace="http://www.w3.org/1999/XSL/Transform" schemaLocation="xsl.xsd"/>
+    <xs:annotation>
+        <xs:appinfo source="sqf:meta">
+            <title>QuickFixes in SVRL</title>
+        </xs:appinfo>
+        <xs:appinfo source="sqf:meta" xml:lang="de">
+            <title>QuickFixes in SVRL</title>
+        </xs:appinfo>
+    </xs:annotation>
+    <xs:element name="topLevel">
+        <xs:annotation>
+            <xs:documentation>Contains the stylesheet framework of the manipulator.</xs:documentation>
+            <xs:documentation xml:lang="de">Enthält den Stylesheet-Rumpf des Manipulators.</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="xsl:stylesheet"/>
+            </xs:sequence>
+            <xs:attribute name="schema" use="required" type="xs:anyURI">
+                <xs:annotation>
+                    <xs:documentation>Indicates the absolute path of the Schematron schema used.</xs:documentation>
+                    <xs:documentation xml:lang="de">Gibt den absoluten Pfad des verwendeten Schematron-Schemas an.</xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="instance" use="required" type="xs:anyURI">
+                <xs:annotation>
+                    <xs:documentation>Indicates the absolute path of the validated instance.</xs:documentation>
+                    <xs:documentation xml:lang="de">Gibt den absoluten Pfad der validierten Instanz an.</xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="fix">
+        <xs:annotation>
+            <xs:documentation>Defines a QuickFix within a SVRL report.</xs:documentation>
+            <xs:documentation xml:lang="de">Definiert einen QuickFix innerhalb eines SVRL-Reports.</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="sqf:description"/>
+                <xs:element ref="sqf:user-entry" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element ref="sqf:sheet"/>
+            </xs:sequence>
+            <xs:attribute name="fixId" use="required" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation>The <icode type="attribute">fixId</icode> attribute contains the ID of the QuickFix from the Schematron schema. This ID offers the possibility to group the QuickFixes. For example, if the user decides to apply a QuickFix (from the Schematron schema) for a document in all cases, in this way the related QuickFixes can be determined in the SVRL.</xs:documentation>
+                    <xs:documentation xml:lang="de">Das <icode type="attribute">fixId</icode> Attribut enhält die ID des QuickFixes aus dem Schematron Schema. Diese ID bietet die Möglichkeit die QuickFixes zu gruppieren. Sollte ein User beispielsweise für ein Dokument entscheiden einen QuickFix (aus dem Schematron Schema) in allen Fällen anzuwenden, können so die zugehörigen QuickFixes im SVRL ermittelt werden.</xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="messageId" use="required" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation>The <icode type="attribute">messageId</icode> attribute is unique for the appropriate <icode type="element">sch:assert</icode> or <icode type="element">sch:report</icode> element and is a supplement for the <icode type="attribute">fixID</icode>. Since in the Schematron schema a QuickFix can be linked with different <icode type="element">sch:assert</icode>/<icode type="element">sch:report</icode> elements and double assigned <icode type="attribute">fixID</icode> attributes may exist because of global and local QuickFixes, the grouping by means of the <icode type="attribute">fixId</icode> attributes is in some cases not exactly enough. The combination of <icode type="attribute">fixID</icode> and <icode type="attribute">messageID</icode> may provide the user the possibility to concretise the relationship between the QuickFixes.</xs:documentation>
+                    <xs:documentation xml:lang="de">Die Message-ID (<icode type="attribute">messageId</icode>) ist eindeutig für das entsprechende <icode type="element">sch:assert</icode> bzw. <icode type="element">sch:report</icode> Element und ist eine Ergänzung für die Fix-ID. Da im Schematron Schema ein QuickFix mit verschiedenen <icode type="element">sch:assert</icode>/<icode type="element">sch:report</icode> Elementen verknüpft werden kann und es durch globale und lokale QuickFixes doppelt belegte Fix-IDs geben kann, kann die Gruppierung anhand der <icode type="attribute">fixId</icode> attribute in manchen Fällen nicht genau genug sein. Die Kombination aus Fix-ID und Message-ID kann dem User die Möglichkeit bieten die Beziehungen zwischen den QuickFixes zu konkretisieren.</xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="contextId" use="required" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation>The <icode type="attribute">contextId</icode> attribute is an additional ID - unique for the context node which was selected for the <icode type="element">svrl:failed-assert</icode>/<icode type="element">svrl:successful-report</icode> element.</xs:documentation>
+                    <xs:documentation xml:lang="de">Das <icode type="attribute">contextId</icode> Attribut ist eine ergänzende ID &#x2013; eindeutig für den Kontext-Knoten der für den <icode type="element">svrl:failed-assert</icode>/<icode type="element">svrl:successful-report</icode> ausgewählt wurde.</xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="id" use="required" type="xs:ID">
+                <xs:annotation>
+                    <xs:documentation>Is used for the unique identification of a QuickFix (ID). Each QuickFix within a SVRL report must have an unique ID.</xs:documentation>
+                    <xs:documentation>The extractor uses this ID in order to activate the QuickFix.</xs:documentation>
+                    <xs:documentation>The ID consists of the three other ID attributes (<icode type="attribute">contextID</icode>, <icode type="attribute">fixID</icode> and <icode type="attribute">messageID</icode>) separated by dashes and becomes unique in this way.</xs:documentation>
+                    <xs:documentation xml:lang="de">Dient zur eindeutigen Identifikation eines QuickFixes (ID). Kein QuickFix innerhalb eines SVRL-Reports darf die gleiche ID haben.</xs:documentation>
+                    <xs:documentation xml:lang="de">Der Extractor verwendet diese ID zur aktivierung des QuickFixes.</xs:documentation>
+                    <xs:documentation xml:lang="de">Die ID setzt sich aus den drei weiteren IDs (<icode type="attribute">contextID</icode>, <icode type="attribute">fixID</icode> und <icode type="attribute">messageID</icode>), getrennt durch Bindestriche, zusammen und wird so eindeutig.</xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="role" use="required">
+                <xs:annotation>
+                    <xs:documentation>Implementation for the <icode type="attribute">role</icode> attribute of the SQF element <icode type="element">sqf:fix</icode>.</xs:documentation>
+                    <xs:documentation xml:lang="de">Umsetzung für das Attribut <icode type="attribute">role</icode> vom SQF-Element <icode type="element">sqf:fix</icode>.</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:enumeration value="replace"/>
+                        <xs:enumeration value="add"/>
+                        <xs:enumeration value="stringReplace"/>
+                        <xs:enumeration value="delete"/>
+                        <xs:enumeration value="mix"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:attribute>
+            <xs:attribute name="default" type="xs:boolean"/>
+            <xs:attribute name="base-uris" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation>Document URIs which are subject of the QuickFix. Multiple URIs are separated by whitespace.</xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="description">
+        <xs:annotation>
+            <xs:documentation>Adds a human readable description to the parent element.</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="sqf:title"/>
+                <xs:element ref="svrl:text" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="title" type="xs:string"/>
+    
+    <xs:element name="sheet">
+        <xs:annotation>
+            <xs:documentation>Contains the QuickFix-specific XSLT elements of the manipulator.</xs:documentation>
+            <xs:documentation xml:lang="de">Enthält die QuickFix-spezifischen XSLT-Elemente des Manipulators.</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence minOccurs="0" maxOccurs="unbounded">
+                <xs:any namespace="http://www.w3.org/1999/XSL/Transform" processContents="skip"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="user-entry">
+        <xs:annotation>
+            <xs:documentation>Defines an user entry. With the help of the user entry, the user can interact with the QuickFix. The user entry contains a <icode type="element">sqf:param</icode> element. The value of the parameter is set manually by the user. The implementation should provide the user entry when the user selects the QuickFix.</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="sqf:description"/>
+                <xs:element ref="sqf:param"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="param">
+        <xs:annotation>
+            <xs:documentation>Determines for the parameter of a user entry the name (<icode type="attribute">name</icode>), the ID (<icode type="attribute">param-id</icode>), where applicable the type (<icode type="attribute">as</icode>) and whether the user entry is obligatory (<icode type="attribute">required</icode>). The content determines the default value of the user entry.</xs:documentation>
+            <xs:documentation xml:lang="de">Bestimmt für den Parameter eines User-Entrys den Namen (<icode type="attribute">name</icode>), die ID (<icode type="attribute">param-id</icode>), gegebenenfalls den Typen (<icode type="attribute">as</icode>) und ob der User-Entry obligatorisch ist (<icode type="attribute">required</icode>). Der Inhalt bestimmt den Defaultwert des User-Entrys.</xs:documentation>
+        </xs:annotation>
+        <xs:complexType mixed="true">
+            <xs:sequence minOccurs="0" maxOccurs="unbounded">
+                <xs:any processContents="skip"/>
+            </xs:sequence>
+            <xs:attribute name="name" type="xs:string" use="required">
+                <xs:annotation>
+                    <xs:documentation>Indicates the name of the parameter as used in the Schematron QuickFix schema.</xs:documentation>
+                    <xs:documentation xml:lang="de">Gibt den Namen des Parameters an, wie er im Schematron QuickFix Schema verwendet wurde.</xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="type" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation>Indicates the determined type of the parameter. The value passed on must correspond to this type.</xs:documentation>
+                    <xs:documentation xml:lang="de">Gibt den festgelegten Typen des Parameters an. Der übergebene Wert muss diesem Type entsprechen.</xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="required" default="no">
+                <xs:annotation>
+                    <xs:documentation>Indicates with <icode type="none">yes</icode> whether an entry of the user in the user entry is required for the execution of the QuickFix.</xs:documentation>
+                    <xs:documentation xml:lang="de">Gibt mit <icode type="none">yes</icode> an, ob eine Eingabe des Users im User-Entry zum Ausführen des QuickFixes erforderlich ist.</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:enumeration value="yes"/>
+                        <xs:enumeration value="no"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:attribute>
+            <xs:attribute name="param-id" type="xs:ID" use="required">
+                <xs:annotation>
+                    <xs:documentation>Indicates an ID for the parameter. This ID is used as local name for the passing on of the parameter when calling the manipulator. The namespace of the parameter is the SQF namespace. Since the ID is unique within the SVRL report, parameter dublicates are prevented.</xs:documentation>
+                    <xs:documentation xml:lang="de">Gibt eine ID für den Parameter an. Diese ID wird als local name zur Parameterübergabe beim Aufruf des Manipulators verwendet. Der Namespace des Parameters ist dabei der SQF-Namespace. Da die ID innerhalb des SVRL-Reports eindeutig ist, werden so Parameter-Doubletten verhindert.</xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="default" type="xs:string" use="optional">
+                <xs:annotation>
+                    <xs:documentation>This attribute defines a default value for a parameter or User Entry by using a XPath expression. If the attribute is set to a <icode type="element">sqf:param</icode> element, the element must be empty.</xs:documentation>
+                    <xs:documentation source="Value">Must be a valid XPath expression.</xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:attribute name="default-fix" type="xs:IDREF">
+        <xs:annotation>
+            <xs:documentation>Determines the default QuickFix for a <icode type="element">svrl:failed-assert</icode>/<icode type="element">svrl:successful-report</icode> element.</xs:documentation>
+            <xs:documentation source="Value">Must reference with the value to an ID of a QuickFix of the <icode type="element">svrl:failed-assert</icode>/<icode type="element">svrl:successful-report</icode> element.</xs:documentation>
+            <xs:documentation xml:lang="de">Bestimmt den Default-QuickFix für ein <icode type="element">svrl:failed-assert</icode>/<icode type="element">svrl:successful-report</icode> Element.</xs:documentation>
+            <xs:documentation xml:lang="de" source="Value">Muss mit dem Wert auf eine ID eines QuickFixes des <icode type="element">svrl:failed-assert</icode>/<icode type="element">svrl:successful-report</icode> Elements referenzieren.</xs:documentation>
+        </xs:annotation>
+    </xs:attribute>
+</xs:schema>

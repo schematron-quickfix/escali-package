@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsm:manipulator xmlns:xsm="http://www.schematron-quickfix.com/manipulator/process" document="base-Attr2.xml">
+    <xsm:replace node="/root/element[1]/@a">
+        <xsm:content b="xyz"/>
+    </xsm:replace>
+</xsm:manipulator>

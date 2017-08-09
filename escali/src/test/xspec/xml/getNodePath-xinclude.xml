@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+    <element1 attribute="blub"/>
+    <?processing-instr?>
+    <elementWithNS xmlns="www.schematron-quickfix.com"/>
+    <xi:include href="getNodePath.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
+</root>

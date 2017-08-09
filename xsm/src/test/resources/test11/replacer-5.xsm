@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsm:manipulator xmlns:xsm="http://www.schematron-quickfix.com/manipulator/process" document="base.xml">
+    <xsm:delete node="/comment()"/>
+    <xsm:replace node="/root/a/text()">
+        <xsm:content>replaceing text</xsm:content>
+    </xsm:replace>
+    <xsm:replace node="/root/d/@def">
+        <xsm:content test="test-wert"/>
+    </xsm:replace>
+    <xsm:replace node="/root">
+        <xsm:content><root/></xsm:content>
+    </xsm:replace>
+    <xsm:add node="/root" position="attribute">
+        <xsm:content test="test-wert"/>
+    </xsm:add>
+</xsm:manipulator>

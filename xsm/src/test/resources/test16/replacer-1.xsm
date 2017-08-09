@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsm:manipulator xmlns:h="http://www.w3.org/1999/xhtml" xmlns:xsm="http://www.schematron-quickfix.com/manipulator/process" document="base.xml">
+    <xsm:delete node="/h:html[1]/h:body[1]/@style"/>
+    <xsm:replace node="/h:html/h:body[1]/@lang">
+        <xsm:content xml:lang="en"></xsm:content>
+    </xsm:replace>
+</xsm:manipulator>

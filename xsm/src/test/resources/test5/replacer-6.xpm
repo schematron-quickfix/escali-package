@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xpm:manipulator xmlns:xpm="http://www.schematron-quickfix.com/manipulator/process" document="base.xml">
+    <xpm:add node="/root/d" anchor="preceding">
+        <xpm:content><f/></xpm:content>
+    </xpm:add>
+    <xpm:replace node="/root/d">
+        <xpm:content><e/></xpm:content>
+    </xpm:replace>
+</xpm:manipulator>

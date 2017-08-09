@@ -1,0 +1,25 @@
+<svrl:schematron-output xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+    xmlns:es="http://www.escali.schematron-quickfix.com/"
+    title="Schematron unit test"
+    phase="phase3"
+    es:schema="file:/D:/nico/Work/Java/net.sqf.tester/data/schematron/sch-tests/test3/in/test3.sch"
+    es:instance="file:/D:/nico/Work/Java/net.sqf.tester/data/schematron/sch-tests/test3/in/test3.xml">
+    <svrl:active-pattern id="pattern1" es:phases="phase1 phase3 phase4 phase5 phase6 #ALL" />
+    <svrl:fired-rule context="pattern1" />
+    <svrl:failed-assert location="/*:root[namespace-uri()=''][1]/*:pattern1[namespace-uri()=''][1]"
+        test="false()">
+        <svrl:text>Test 1</svrl:text>
+    </svrl:failed-assert>
+    <svrl:active-pattern id="pattern2" es:phases="phase1 phase2 phase3 phase5 phase6 #ALL" />
+    <svrl:fired-rule context="pattern2" />
+    <svrl:failed-assert location="/*:root[namespace-uri()=''][1]/*:pattern2[namespace-uri()=''][1]"
+        test="false()">
+        <svrl:text>Test 2</svrl:text>
+    </svrl:failed-assert>
+    <svrl:active-pattern id="pattern3" es:phases="phase3 phase5 phase6 #ALL" />
+    <svrl:fired-rule context="pattern3" />
+    <svrl:failed-assert location="/*:root[namespace-uri()=''][1]/*:pattern3[namespace-uri()=''][1]"
+        test="false()">
+        <svrl:text>Test 3</svrl:text>
+    </svrl:failed-assert>
+</svrl:schematron-output>

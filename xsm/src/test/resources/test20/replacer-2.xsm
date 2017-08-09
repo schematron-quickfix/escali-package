@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsm:manipulator xmlns:xsm="http://www.schematron-quickfix.com/manipulator/process" document="base.xml">
+    <xsm:replace node="/root/element[4]">
+        <xsm:content><element><xsm:copy select="/root/element[1]"></xsm:copy></element></xsm:content>
+    </xsm:replace>
+</xsm:manipulator>

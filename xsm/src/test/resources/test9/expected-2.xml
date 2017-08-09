@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+    <head>
+        <title>No useful &lt;title&gt; element with too many characters because it contains more than 70 characters and a forbidden comment.</title>
+    </head>
+    <body>
+        <h1>Useful and short title</h1>
+        <!-- Content -->
+    </body>
+</html>

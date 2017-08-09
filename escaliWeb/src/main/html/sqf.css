@@ -1,0 +1,456 @@
+/*  
+    Copyright (c) 2014 Nico Kutscherauer
+        
+    This file is part of Escali Schematron.
+    
+    Escali Schematron is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+    
+    Escali Schematron is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+    
+    You should have received a copy of the GNU General Public License
+    along with Escali Schematron.  If not, see http://www.gnu.org/licenses/gpl-3.0.
+    
+    */
+
+
+/* menu */
+
+#logo {
+    background-image:url(../../images/sqf-logo-small.jpg);
+    width:140px;
+    height:75px;
+    float:left;
+    margin-left:20px;
+    margin-right:40px;
+}
+
+div.menu {
+    display:inline;
+    position:absolute;
+    left:-190px;
+    top:0px;
+    right:0px;
+    background-color:white;
+    z-index:10;    
+    height:100px;
+    min-width:1000px;
+    margin:30px 25% 0px;
+    vertical-align:central;
+}
+div.menu-links {
+    margin:20px 40px 0px;
+    padding-left:40px;
+    left:40px;
+}
+div.menu-button, div.menu-button-self, div.menu-button-parent {
+    display:inline;
+}
+
+a.menu:link, a.menu:visited {
+    color:#aaa;
+    font-family:arial, helvetica, sans-serif;
+    font-size:20px;
+    text-decoration:none;
+    padding:0.5em;
+    border-bottom:2px solid #fff;
+}
+a.menu-self:link, a.menu-self:visited{
+    color:#007;
+    font-family:arial, helvetica, sans-serif;
+    font-size:20px;
+    text-decoration:none;
+    padding:0.5em;
+    border-bottom:2px solid #007;
+}
+a.menu-parent:link, a.menu-parent:visited{
+    color:#aaa;
+    font-family:arial, helvetica, sans-serif;
+    font-size:20px;
+    text-decoration:none;
+    padding:0.5em;
+    border-bottom:2px solid #aaa;
+}
+a.menu-self:hover, a.menu:hover {
+    color:#007;
+    text-decoration:none;
+    padding:0.5em;
+    border-bottom:2px solid #007;
+}
+
+/* sub menu */
+
+div.sub-menu div{
+    display:block;
+}
+div.sub-menu {
+    position:absolute;
+    top:140px;
+    right:76%;
+}
+div.sub-menu a:link, div.sub-menu a:visited {
+    font-size:16px;
+    width:140px;
+    display:block;
+}
+/* 
+    sub menu's
+*/
+div.menu-l3 div{
+    display:block;
+    padding-left:0.5em;
+}
+div.menu-l3 a:link, div.menu-l3 a:visited {
+    font-size:12px;
+    width:140px;
+    display:block;
+}
+div.menu-l4 div{
+    display:block;
+    padding-left:1em;
+}
+div.menu-l4 a:link, div.menu-l4 a:visited {
+    font-size:11px;
+    width:140px;
+    max-width:140px;
+    display:block;
+}
+
+/*
+    lang menu
+ */
+ 
+ div.lang-menu {
+     display:inline;
+     position:absolute;
+     top:20px;
+     right:0px;
+     margin-right:25%;
+     z-index:100;
+ }
+ div.lang-button, div.lang-button-self{
+     display:inline;
+     margin:2px 3px;
+ }
+ 
+  div.lang-button a, div.lang-button-self a{
+     border-bottom:none;
+ }
+ 
+
+/* fix divs */
+.warning {
+    padding:5px;
+    border:2px dashed #007;
+}
+.warning td {
+    padding:10px;
+    height:50px;
+    vertical-align:middle;
+}
+/* body */
+div.body {
+    margin:140px 25% 30px;
+    min-width:710px;
+    padding-left:0px 20px;
+    font-family:arial, helvetica, sans-serif;
+    opacity:1;
+    z-index:10;
+}
+
+
+/* deco */
+div.deco-hor {
+    position:fixed;
+    left:0px;
+    top:90%;
+    width:100%;
+    z-index:-5;
+    border-bottom:1px solid #007;
+    opacity:0.3;
+}
+div.deco-ver {
+    position:fixed;
+    left:90%;
+    top:0px;
+    height:100%;
+    width:50px;
+    z-index:105;
+    border-right:1px solid #007;
+    border-left:1px solid #007;
+    opacity:0.3;
+}
+div.deco-body {
+    position:fixed;
+    left:24%;
+    top:89%;
+    width:52%;
+    height:2%;
+    z-index:-4;
+    background-color:white;
+    opacity:0.5;
+}
+
+
+div.uplink {
+    text-align:right;
+    font-size:8pt;
+    padding:0.5em 1.5em;
+}
+div.uplink a:link, div.uplink a:visited{
+    text-decoration:none;
+    color:#aaa;
+    border-bottom:none;
+}
+
+div.body > div.section {
+    padding-bottom:1em;
+    border-bottom:2px solid #eee;
+}
+
+div.section {
+    margin-top:1em;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color:#007;
+}
+h1 {
+    font-size:24px;
+}
+h2 {
+    margin-top:3em;
+    font-size:20px;
+}
+h3 {
+    margin-top:2em;
+    font-size:16px;
+}
+h4 {
+    margin-top:0.5em;
+    font-size:14px;
+}
+h5 {
+    margin-top:0.5em;
+    font-size:12px;
+}
+h6 {
+    margin-top:0.5em;
+    font-size:12px;
+    font-weight:normal;
+    margin-bottom:1px;
+    margin-top:0.5em;
+}
+ul {
+   list-style-image:url(../../images/list-bullit-2.gif);
+   font-size:9pt;
+}
+li p {
+    margin:2px;
+    padding:0px;
+}
+.liTitle {
+    color:#007;
+}
+p {
+    margin-top:0.5em;
+    font-size:10pt;
+    line-height:13.5pt;
+}
+a.image:link {
+    border:none;
+}
+a:link, a.intern:visited {
+    white-space: nowrap;
+    color:#007;
+    text-decoration:none;
+    border-bottom:#007 dashed 1px;
+}
+a:visited{
+    white-space: nowrap;
+    color:#777;
+    text-decoration:none;
+    border-bottom:#aaa dashed 1px;
+}
+a:hover {
+    border-bottom-style:solid;
+}
+a:focus, a:active {
+    border-bottom-style:solid;
+    outline:none;
+}
+
+img.inline {
+    display:inline;
+    margin:0;
+    padding:0;
+}
+img.inlineImg {
+    display:inline;
+    height:18pt;
+    margin:0;
+    padding:0;
+}
+
+div.me-img {
+    float:right;
+    margin:-40px 1em 1em 1em;
+}
+/*
+    inline code
+ */
+span.icode-element {
+    font-family: consolas, courier, monospace;
+    color:#000096;
+}
+span.icode-element-sqf {
+    font-family: consolas, courier, monospace;
+    color:#006600;
+}
+span.icode-element-xsl {
+    font-family: consolas, courier, monospace;
+    color:#005AB4;
+}
+span.icode-attribute, span.icode-attribute-sqf, span.icode-attribute-xsl {
+    font-family: consolas, courier, monospace;
+    color:#F5844C;
+}
+span.icode-attributeValue {
+    font-family: consolas, courier, monospace;
+    color:#993300;
+}
+span.icode-pi {
+    font-family: consolas, courier, monospace;
+    color:#8B26C9;
+}
+span.icode-none, span.icode-none-sqf {
+    font-family: consolas, courier, monospace;
+    color:black;
+}
+
+
+/* code */
+.code *{
+    margin:0px;
+    padding:0px;
+}
+.code {
+    font-family: consolas, courier, monospace;
+    font-size:10pt;
+    /*border-top: 1px solid #ee1200;
+    border-bottom: 1px solid #ee1200;*/
+    padding: 1em 1em;
+    background-color:#eee;
+}
+
+.code td {
+    font-size:10pt;
+}
+
+.code-line {
+    
+}
+
+.element {
+    color:#000096;
+}
+.element-sqf {
+    color:#006600;
+}
+.element-xsl {
+    color:#005AB4;
+}
+.attribute {
+    color:#F5844C;
+}
+.attributeValue {
+    color:#993300;
+}
+.pi {
+    color:#8B26C9;
+}
+.comment {
+    color:#006400;
+}
+
+
+.skip, .unhighlight {
+    color:#aaa;
+}
+
+td.lineNr {
+    color:#aaa;
+    padding-right: 0.5em;
+    border-right: 1px solid #ee1200;
+    margin-right: 0.5em;
+    vertical-align:central;
+}
+td.line {
+    padding-left:0.5em;
+}
+div.code-ref {
+    text-align:right;
+    font-size:8pt;
+}
+div.code-ref a:link, div.code-ref a:visited {
+    text-decoration:none;
+    color:#aaa;
+    border-bottom:none;
+}
+table.default th {
+    vertical-align:top;
+    background-color:#eee;
+    color:#007;
+    font-weight:normal;
+    padding:0.5em;
+    margin:0;
+}
+table.default td{
+    vertical-align:top;
+    border:1pt solid #eee;
+    padding:0.5em;
+    margin:0;
+}
+table.default {
+    border:1pt solid #eee;
+    background-color:white;
+}
+/*
+ * reference
+ */
+table.reference-attribute th{
+    vertical-align:top;
+    background-color:#eee;
+    color:#007;
+    font-weight:normal;
+    padding:0.5em;
+    margin:0;
+}
+table.reference-attribute td{
+    vertical-align:top;
+    border:1pt solid #eee;
+    padding:0.5em;
+    margin:0;
+}
+table.reference-attribute{
+    border:1pt solid #eee;
+    background-color:white;
+    width:70%;
+}
+
+.translation {
+    color:red !important;
+}
+*.translation * {
+    color:red !important;
+}
+
+g.svg-element-ref:hover path{
+    background-color:blue;
+    color:white;
+}

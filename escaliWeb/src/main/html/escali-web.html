@@ -1,0 +1,283 @@
+<!DOCTYPE html SYSTEM "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+    <head>
+        <title>Escali Web Implementation</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <script type="application/javascript" src="../js/jquery.min.js"></script>
+        <script type="text/javascript" language="javascript" src="../js/Saxon-JS-1.0.0/SaxonJS.min.js"></script>
+        <script type="text/javascript" language="javascript" src="../js/Saxonce/Saxonce.nocache.js"></script>
+        <script type="application/javascript" src="../js/escali.js"></script>
+
+        <link rel="stylesheet" href="../css/bootstrap.min.css" type="text/css" />
+        <link rel="stylesheet" href="../css/normalize.css" type="text/css" />
+
+        <link href="http://www.schematron-quickfix.com/images/sqf-logo-tiny.ico" rel="icon" type="image/x-icon" />
+        <link href="http://www.schematron-quickfix.com/images/sqf-logo-tiny.ico" rel="shortcut icon" type="image/x-icon" />
+
+
+        <link rel="stylesheet" href="../css/escali-web-xs.css" media="(max-width : 768px)" type="text/css" />
+        <link rel="stylesheet" href="../css/escali-web-sm.css" media="(min-width : 768px)" type="text/css" />
+        <link rel="stylesheet" href="../css/escali-web-md.css" media="(min-width : 992px)" type="text/css" />
+        <link rel="stylesheet" href="../css/escali-web-lg.css" media="(min-width : 1200px)" type="text/css" />
+
+        <!--<link rel="stylesheet" href="../css/style.css" type="text/css" />
+        <link rel="stylesheet" href="../css/fehlerprotokoll.css" type="text/css" />
+        <link rel="stylesheet" href="../css/defaultPreview.css" type="text/css" />-->
+        <script type="application/javascript" src="../js/report.js"></script>
+    </head>
+    <body>
+        <div id="content" onclick="hideOrShowMenu();">
+            <div class="container-fluid">
+                <nav class="navbar navbar-default navbar-fixed-top" id="mainnav">
+                    <div class="container-fluid">
+                        <!-- Brand and toggle get grouped for better mobile display -->
+                        <div class="navbar-header">
+                            <a class="navbar-brand" href="http://www.schematron-quickfix.com" style="margin-top: -4px;" title="Back to the SQF main page">
+                                <img src="http://www.schematron-quickfix.com/images/sqf-logo-tiny_trans.png" alt="Offline mode" width="60px" />
+                            </a>
+                        </div>
+
+                        <!-- Collect the nav links, forms, and other content for toggling -->
+                        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                            <ul class="nav navbar-nav">
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                        <span class="glyphicon glyphicon-folder-open" title="File"></span>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <!--                                        
+                                        Instance
+                                        -->
+                                        <li class="schemaMenu">
+                                            <a href="#" onclick="createFileOpenDialog(loadInstance);"><span class="glyphicon glyphicon-file"></span> Open XML instance</a>
+                                        </li>
+                                        <li class="schemaMenu">
+                                            <a href="#" onclick="saveInstance();"><span class="glyphicon glyphicon-floppy-disk"></span> Save instance</a>
+                                        </li>
+                                        <li class="schemaMenu">
+                                            <a href="#" onclick="resetInstance();"><span class="glyphicon glyphicon-floppy-remove"></span> Close instance</a>
+                                        </li>
+                                        <li role="separator" class="divider"></li>
+                                        <!--                                        
+                                        Schema
+                                        -->
+                                        <li class="instanceMenu">
+                                            <a href="#" onclick="createFileOpenDialog(loadSchema);"><span class="glyphicon glyphicon-book"></span> Load schema</a>
+                                        </li>
+                                        <li class="instanceMenu">
+                                            <a href="#" onclick="resetSchema();"><span class="glyphicon glyphicon-floppy-remove"></span> Close schema</a>
+                                        </li>
+                                        <li class="schemaMenu">
+                                            <a href="#" onclick="saveSchema();"><span class="glyphicon glyphicon-floppy-disk"></span> Save compiled schema</a>
+                                        </li>
+                                        <li role="separator" class="divider"></li>
+                                        <!--                                        
+                                        Both
+                                        -->
+                                        <li class="generalMenu">
+                                            <a href="#" onclick="resetSchema();resetInstance();"><span class="glyphicon glyphicon-off"></span> Close all</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <!--<li class="inactive"><a href="#"><span class="glyphicon glyphicon-check" title="Validate"></span></a></li>-->
+                                <li>
+                                    <a class="link" onclick="hideShowChanges();">
+                                        <span class="glyphicon glyphicon-eye-close" title="Hide change markers" id="hideShowChangeButton"></span>
+                                    </a>
+                                </li>
+                                <li class="inactive" id="undoButton">
+                                    <a href="#">
+                                        <span class="glyphicon glyphicon glyphicon-chevron-left" title="Undo"></span>
+                                    </a>
+                                </li>
+                                <li class="inactive" id="redoButton">
+                                    <a href="#">
+                                        <span class="glyphicon glyphicon glyphicon-chevron-right" title="Redo"></span>
+                                    </a>
+                                </li>
+                            </ul>
+                            <ul class="nav navbar-nav navbar-right">
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" title="Options">
+                                        <span class="glyphicon glyphicon-cog"></span>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li>Links</li>
+                                        <li>
+                                            <a href="http://www.schematron-quickfix.com" target="_blank">Schematron-QuickFix.com</a>
+                                        </li>
+                                        <li role="separator" class="divider"></li>
+                                        <li>
+                                            <a href="http://www.schematron-quickfix.com/about/imprint.html" target="_blank">Imprint</a>
+                                        </li>
+                                        <li>
+                                            <a href="#" onclick="showInMessageBox('about');">About</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- /.navbar-collapse -->
+                    </div>
+                    <!-- /.container-fluid -->
+                </nav>
+
+                <div id="body">
+                    <div class="col-md-6 col-lg-4" id="schema"> </div>
+                    <div class="col-md-6 col-lg-8 instanceRoot" id="instance" onclick="clearCash()"> </div>
+                </div>
+
+
+
+            </div>
+
+
+
+        </div>
+        <div id="bottom" class="sr-only">
+
+            <div id="instanceDrop" class="drop_zone">
+                <div class="alert alert-warning" role="alert">You need to open an XML instance!</div>
+                <div class="drop_zone_label">Drop Instance file here</div>
+                <script type="application/javascript">createCombiDropZone('instanceDrop');</script>
+            </div>
+            <div id="schemaDrop" class="drop_zone">
+                <div class="alert alert-warning" role="alert">You need to load a Schema!</div>
+                <div class="drop_zone_label">Drop Schema file here</div>
+                <script type="application/javascript">createCombiDropZone('schemaDrop');</script>
+            </div>
+            <div id="spinnerScreen"></div>
+            <div id="spinnerFrame">
+                <div id="spinnerCancelBtn" title="Cancel" onclick="stopSpinner();">
+                    <span class="glyphicon glyphicon-remove"></span>
+                </div>
+                <div id="spinnerContent">
+                    <div id="spinner"></div>
+                    <div class="progress" id="spinnerMessage">
+                        <div class="progress-bar progress-bar-striped" id="spinnerMessageBar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">Waiting</div>
+                    </div>
+                </div>
+            </div>
+            <div id="messageBox"></div>
+            <div id="messageBoxCancel" onclick="hideMessageBox()">
+                <div id="messageBoxCancelLeftBottomEdge"></div>
+                <span class="glyphicon glyphicon-remove"></span>
+            </div>
+            <div id="about" class="panel panel-default messageBoxContent">
+                <div class="panel-heading">
+                    <h3>About Escali Web Implementation</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <p>This Escali Web Implementation is part of the Schematron QuickFix project. The Escali is the XSLT based implementation of Schematron and Schematron QuickFix.</p>
+                            <p>The Escali Web Implementation is using the Escali scripts in a javascript implementation to validate XML documents by Schematron schemas and execute embeded QuickFixes in the browser. Please read on the <a href="http://www.schematron-quickfix.com/quickFix/guide.html">Schematron QuickFix User Guide</a> how to extend Schematron Schemas with QuickFixes.</p>
+                            <h4>Used Libraries</h4>
+                            <p>To call the Escali XSLT 2.0 scripts, this javascript implementation is using the <a href="https://github.com/Saxonica/Saxon-CE">Saxon-CE</a> processor of <a href="http://www.saxonica.com">Saxonica</a>.</p>
+                            <p>To design this Webpage, the popular framework <a href="http://getbootstrap.com/">Bootstrap</a> was used, which includes icons of <a href="http://glyphicons.com/">Glyphicons</a>.</p>
+                            <h4>Download</h4>
+                            <p>You can download all Escali stylesheets including a standalone version of this implementation from the <a href="http://www.schematron-quickfix.com/downloads.html">Schematron QuickFix download page</a>.</p>
+
+                        </div>
+                        <div class="col-md-4">
+                            <h4>Further Links</h4>
+                            <ul class="nav nav-pills nav-stacked">
+                                <li role="presentation">
+                                    <a href="http://www.schematron-quickfix.com" target="_blank">Schematron QuickFix home</a>
+                                </li>
+                                <li role="presentation">
+                                    <a href="https://github.com/Saxonica/Saxon-CE" target="_blank">Saxon-CE GitHub project</a>
+                                </li>
+                                <li role="presentation">
+                                    <a href="http://getbootstrap.com/" target="_blank">Bootstrap</a>
+                                </li>
+                                <li role="presentation">
+                                    <a href="http://glyphicons.com/">Glyphicons</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="errorPage" class="panel panel-default messageBoxContent">
+                <div class="panel-heading">
+                    <h3>Uuups!</h3>
+                </div>
+                <div class="panel-body">
+                    <p class="lead">There seems to be an error!</p>
+                    <p>Please have a look at the error message:</p>
+                    <pre id="errorMessage"></pre>
+                    <p>If you can't solve the error by yourself, you can contact me on the <a href="http://www.schematron-quickfix.com/about/contact.html">SQF contact page</a>.</p>
+                    <p>
+                        <em>Please respect, that this is not a "service hotline", so be patience with me.</em>
+                    </p>
+                </div>
+            </div>
+
+            <div class="panel panel-default messageBoxContent" id="askForUserEntryPage">
+                <div class="panel-heading">
+                    <strong>Please set the following UserEntries:</strong>
+                </div>
+                <div class="panel-body">
+                    <div id="askForUserEntryPage_body"></div>
+                    <div class="row" id="askForUserEntryPage_btnRow">
+                        <button type="button" class="btn btn-success" id="askForUserEntryPage_btnOK">OK</button>
+                        <span style="padding-left:.5em"></span>
+                        <button type="button" class="btn btn-warning" id="askForUserEntryPage_btnCancel">Cancel</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel panel-default messageBoxContent" id="commitUnselectionFixes">
+                <div class="panel-heading">
+                    <strong>If you continue, you will loose your selection.</strong>
+                </div>
+                <div class="panel-body">
+                    <div id="commitUnselectionFixes_body">
+                        <p>You have selected QuickFixes. This action does not respect this selection.</p>
+                        <p><strong>Please note:</strong> If you continue, this selection will be lost.</p>
+                    </div>
+                    <div class="row" id="commitUnselectionFixes_btnRow">
+                        <button type="button" class="btn btn-success" id="commitUnselectionFixes_btnOK">Continue</button>
+                        <span style="padding-left:.5em"></span>
+                        <button type="button" class="btn btn-warning" id="commitUnselectionFixes_btnCancel">Cancel</button>
+                    </div>
+                </div>
+            </div>
+
+
+            <script type="application/javascript" src="../js/bootstrap.min.js"></script>
+            <script type="application/javascript" src="../js/spin.min.js"></script>
+            <script type="">spinner = new Spinner(spinOpts).spin(document.getElementById('spinner'));</script>
+            <script type="application/javascript">load();</script>
+
+            <div id="doubleArrow">
+                <span class="doubleArrow down" style="transform: rotate(90deg);display:inline-block;font-size:0.8em;"><span class="glyphicon glyphicon-menu-right"></span><span style="margin-left:-0.5em" class="glyphicon glyphicon-menu-right"></span></span>
+                <span class="doubleArrow up" style="transform: rotate(-90deg);display:inline-block;font-size:0.8em;"><span class="glyphicon glyphicon-menu-right"></span><span style="margin-left:-0.5em" class="glyphicon glyphicon-menu-right"></span></span>
+                <span class="doubleArrow left" style="display:inline-block;"><span class="glyphicon glyphicon-menu-left"></span><span style="margin-left:-0.5em" class="glyphicon glyphicon-menu-right"></span></span>
+                <span class="doubleArrow right" style="display:inline-block;"><span class="glyphicon glyphicon-menu-right"></span><span style="margin-left:-0.5em" class="glyphicon glyphicon-menu-right"></span></span>
+                <script type="application/javascript">
+                    function getDoubleArrowIcon(direction){
+                        var $div = $('#doubleArrow');
+                        var $orig = $('.' + direction, $div);
+                        return $orig.clone(false);
+                    }
+                    // document.currentScript
+                    function addDoubleArrow(direction, context){
+                        if(context == null){
+                            var $context = $(document.currentScript).parent();
+                        } else {
+                            var $context = $(context);
+                        }
+                        $context.append(getDoubleArrowIcon(direction));
+                    }
+                    
+                </script>
+
+            </div>
+
+        </div>
+    </body>
+</html>

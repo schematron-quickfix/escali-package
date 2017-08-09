@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<abc:root xmlns:abc="http://www.abc.de/" xmlns:xyz="http://www.xyz.de/">
+    <xyz:a/>
+</abc:root>

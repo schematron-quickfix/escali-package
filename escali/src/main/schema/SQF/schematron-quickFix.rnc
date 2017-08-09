@@ -1,0 +1,182 @@
+# Copyright (c) 2016 Nico Kutscherauer
+# 
+# This file is part of Escali Schematron.
+# 
+# Escali Schematron is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+# 
+# Escali Schematron is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with Escali Schematron.  If not, see http://www.gnu.org/licenses/gpl-3.0.
+#
+
+namespace a = "http://relaxng.org/ns/compatibility/annotations/1.0"
+namespace local = ""
+namespace ns1 = "http://purl.oclc.org/dsdl/schematron"
+default namespace sqf =
+  "http://www.schematron-quickfix.com/validator/process"
+
+include "iso-schematron.rnc" {
+  foreign-element =
+    element * - (ns1:* | sqf:*) {
+      (attribute * { text }
+       | foreign-element
+       | schema
+       | text)*
+    }*
+    & fix*
+    & fixes*
+    & group*
+}
+xml_lang = attribute xml:lang { xsd:language }?
+messageAttributes =
+  attribute sqf:fix { xsd:string }?,
+  attribute sqf:default-fix { xsd:string }?
+rootAttributes = attribute version { xsd:token }?
+parameterAttributes =
+  attribute name { xsd:string },
+  attribute default { xsd:string }?,
+  attribute type { xsd:string }?
+templateElements =
+  (element * - (ns1:* | sqf:*) {
+     (attribute * { text }
+      | templateElements
+      | text)*
+   }*
+   | keep*
+   | copy-of*
+   | let*
+   | value-of*
+   | name*
+   | text)*
+activityElements = add*, delete*, replace*, stringReplace*
+fixElements = fix | group
+fixes =
+  element fixes {
+    fixElements*,
+    (xml_lang,
+     attribute id { xsd:ID }?,
+     foreign)?
+  }
+group =
+  element group {
+    fix*,
+    attribute id { xsd:string },
+    [ a:defaultValue = "true()" ] attribute use-when { xsd:string }?,
+    xml_lang,
+    foreign
+  }
+fix =
+  element fix {
+    sqf_param*,
+    foreign-element*,
+    let*,
+    description*,
+    foreign-element*,
+    let*,
+    user-entry*,
+    (foreign-element* | let* | call-fix* | activityElements*)*,
+    attribute id { xsd:NCName },
+    [ a:defaultValue = "true()" ] attribute use-when { xsd:string }?,
+    [ a:defaultValue = "." ] attribute use-for-each { xsd:string }?,
+    attribute role {
+      "replace" | "add" | "stringReplace" | "delete" | "mix"
+    }?,
+    xml_lang,
+    foreign
+  }
+description =
+  element description { sqf_title, sqf_p*, xml_lang, foreign? }
+user-entry =
+  element user-entry {
+    (description+ & foreign-element*),
+    parameterAttributes?,
+    xml_lang,
+    foreign
+  }
+call-fix =
+  element call-fix {
+    with-param*,
+    attribute ref { xsd:string },
+    foreign?
+  }
+with-param =
+  element with-param {
+    foreign-element,
+    attribute name { xsd:string },
+    attribute select { xsd:string }?,
+    foreign
+  }
+sqf_param =
+  element param {
+    #             <ref name="anycontents"/>
+    [ a:defaultValue = "no" ] attribute required { "yes" | "no" }?,
+    [ a:defaultValue = "false" ] attribute abstract { xsd:boolean }?,
+    parameterAttributes,
+    foreign
+  }
+sqf_title =
+  element sqf:title {
+    mixed { (foreign-element | name | value-of)* },
+    xml_lang,
+    foreign
+  }
+sqf_p =
+  element sqf:p {
+    mixed { (foreign-element | name | value-of | emph | dir | span)* },
+    xml_lang,
+    foreign
+  }
+replace = element replace { templateElements, activityManipulate }
+delete = element delete { empty, activityBase }
+add =
+  element add {
+    templateElements,
+    attribute position { positionType }?,
+    activityManipulate
+  }
+stringReplace =
+  element stringReplace {
+    templateElements,
+    activityBase,
+    attribute regex { xsd:string },
+    attribute select { xsd:string }?,
+    attribute flags { xsd:string }?
+  }
+activityBase =
+  [ a:defaultValue = "." ] attribute match { xsd:string }?,
+  [ a:defaultValue = "true()" ] attribute use-when { xsd:string }?,
+  foreign?
+activityManipulate =
+  activityBase,
+  attribute node-type { nodeTypeType }?,
+  attribute select { xsd:string }?,
+  attribute target { xsd:string }?
+positionType = "after" | "before" | "first-child" | "last-child"
+nodeTypeType =
+  "keep"
+  | "element"
+  | "attribute"
+  | "processing-instruction"
+  | "pi"
+  | "comment"
+keep =
+  element keep {
+    [ a:defaultValue = "node()" ] attribute select { xsd:string }?
+  }
+copy-of =
+  element copy-of {
+    [ a:defaultValue = "node()" ] attribute select { xsd:string }?
+  }
+anycontents =
+  mixed {
+    (attribute * - (sqf:* | local:*) { text }
+     | any)*
+  }
+any = element * - sqf:* { anycontents }
