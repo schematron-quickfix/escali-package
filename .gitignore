@@ -11,6 +11,7 @@ buildNumber.properties
 .project
 .classpath
 
+
 # =========================
 # Operating System Files
 # =========================
@@ -58,6 +59,8 @@ $RECYCLE.BIN/
 *.msi
 *.msm
 *.msp
+/**/.tmp
 
 # Windows shortcuts
 *.lnk
+*.tmp
