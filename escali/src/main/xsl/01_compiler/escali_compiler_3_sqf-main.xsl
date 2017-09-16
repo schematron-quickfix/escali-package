@@ -396,35 +396,40 @@
                 <xsl:with-param name="base-uri-scope" select="true()"/>
             </xsl:call-template>
         </axsl:variable>
-        <axsl:if test="$sqf:match != ''">
-            <bxsl:template>
-                <xsl:apply-templates select="preceding-sibling::xsl:variable | preceding-sibling::sch:let | preceding-sibling::sqf:param"/>
+        <axsl:variable name="sqf:ruleContext" select="."/>
+        <axsl:for-each-group select="{$sqf:match}" group-by="es:base-uri(.)">
+            <axsl:for-each select="$sqf:ruleContext">
+                <axsl:if test="$sqf:match != ''">
+                    <bxsl:template>
+                        <xsl:apply-templates select="preceding-sibling::xsl:variable | preceding-sibling::sch:let | preceding-sibling::sqf:param"/>
 
-                <axsl:attribute name="match" select="$sqf:match"/>
-                <axsl:attribute name="priority">
-                    <xsl:value-of select="count(following-sibling::node()) + 10"/>
-                </axsl:attribute>
-                <xsl:call-template name="multiplyDocsMode">
-                    <xsl:with-param name="nodes" select="$sqf:match"/>
-                </xsl:call-template>
-                <bxsl:param name="xsm:xml-save-mode" select="false()" as="xs:boolean" tunnel="yes"/>
+                        <axsl:attribute name="match" select="$sqf:match"/>
+                        <axsl:attribute name="priority">
+                            <xsl:value-of select="count(following-sibling::node()) + 10"/>
+                        </axsl:attribute>
+                        <xsl:call-template name="multiplyDocsMode">
+                            <xsl:with-param name="nodes" select="'current-group()'"/>
+                        </xsl:call-template>
+                        <bxsl:param name="xsm:xml-save-mode" select="false()" as="xs:boolean" tunnel="yes"/>
 
-                <xsl:call-template name="setVarContext">
-                    <xsl:with-param name="messageId" select="$messageId"/>
-                    <xsl:with-param name="templateBody">
-                        <xsl:choose>
-                            <xsl:when test="$xsm:xml-save-mode">
-                                <xsl:apply-templates select="." mode="xsm:save-mode"/>
-                            </xsl:when>
-                            <xsl:otherwise>
-                                <xsl:apply-templates select="." mode="xsm:no-xsm"/>
-                            </xsl:otherwise>
-                        </xsl:choose>
-                    </xsl:with-param>
-                </xsl:call-template>
+                        <xsl:call-template name="setVarContext">
+                            <xsl:with-param name="messageId" select="$messageId"/>
+                            <xsl:with-param name="templateBody">
+                                <xsl:choose>
+                                    <xsl:when test="$xsm:xml-save-mode">
+                                        <xsl:apply-templates select="." mode="xsm:save-mode"/>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <xsl:apply-templates select="." mode="xsm:no-xsm"/>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                            </xsl:with-param>
+                        </xsl:call-template>
 
-            </bxsl:template>
-        </axsl:if>
+                    </bxsl:template>
+                </axsl:if>
+            </axsl:for-each>
+        </axsl:for-each-group>
     </xsl:template>
 
     <xsl:template match="sqf:add">
@@ -435,126 +440,131 @@
                     (@match)
                 else
                     ('self::node()')"/>
-        <axsl:variable name="sqf:match">
-            <xsl:call-template name="nodeMatching">
-                <xsl:with-param name="sqf:add" select="true() and not($es:regex)"/>
-                <xsl:with-param name="nodes" select="$sqf:match"/>
-                <xsl:with-param name="base-uri-scope" select="true()"/>
-            </xsl:call-template>
-        </axsl:variable>
-        <axsl:if test="$sqf:match != ''">
-            <bxsl:template>
-                <xsl:apply-templates select="preceding-sibling::xsl:variable | preceding-sibling::sch:let | preceding-sibling::sqf:param"/>
-                <axsl:attribute name="match" select="$sqf:match"/>
-                <axsl:attribute name="priority">
-                    <xsl:value-of select="count(following-sibling::node()) + 10"/>
-                </axsl:attribute>
-                <xsl:choose>
-                    <xsl:when test="@position = ('last-child')">
-                        <axsl:attribute name="mode">
-                            <axsl:text>addLastChild</axsl:text>
-                        </axsl:attribute>
-                    </xsl:when>
-                    <xsl:when test="@node-type = ('attribute') or @position = ('first-child') or not(@position)">
-                        <axsl:attribute name="mode">
-                            <axsl:text>addChild</axsl:text>
-                        </axsl:attribute>
-                    </xsl:when>
-                </xsl:choose>
-                <!--<xsl:call-template name="multiplyDocsMode">
-                    <xsl:with-param name="nodes" select="$sqf:match"/>
-                    <xsl:with-param name="suffix">
-                        <xsl:choose>
-                            <xsl:when test="@position = ('last-child')">
-                                <axsl:text>addLastChild</axsl:text>
-                            </xsl:when>
-                            <xsl:when test="@node-type = ('attribute') or @position = ('first-child') or not(@position)">
-                                <axsl:text>addChild</axsl:text>
-                            </xsl:when>
-                        </xsl:choose>
-                    </xsl:with-param>
-                </xsl:call-template>-->
-                <bxsl:param name="xsm:xml-save-mode" select="false()" as="xs:boolean" tunnel="yes"/>
-                <bxsl:param name="sqf:mode" select="'#default'" tunnel="yes"/>
-                <xsl:choose>
-                    <xsl:when test="@position = ('after')">
-                        <bxsl:next-match/>
-                        <xsl:call-template name="setVarContext">
-                            <xsl:with-param name="messageId" select="$messageId"/>
-                            <xsl:with-param name="templateBody">
-                                <xsl:choose>
-                                    <xsl:when test="$xsm:xml-save-mode">
-                                        <xsl:apply-templates select="." mode="xsm:save-mode"/>
-                                    </xsl:when>
-                                    <xsl:otherwise>
-                                        <xsl:apply-templates select="." mode="xsm:no-xsm"/>
-                                    </xsl:otherwise>
-                                </xsl:choose>
-                            </xsl:with-param>
-                        </xsl:call-template>
-                    </xsl:when>
-                    <xsl:otherwise>
-                        <xsl:call-template name="setVarContext">
-                            <xsl:with-param name="messageId" select="$messageId"/>
-                            <xsl:with-param name="templateBody">
-                                <xsl:choose>
-                                    <xsl:when test="$xsm:xml-save-mode">
-                                        <xsl:apply-templates select="." mode="xsm:save-mode"/>
-                                    </xsl:when>
-                                    <xsl:otherwise>
-                                        <xsl:apply-templates select="." mode="xsm:no-xsm"/>
-                                    </xsl:otherwise>
-                                </xsl:choose>
-                            </xsl:with-param>
-                        </xsl:call-template>
-                        <bxsl:next-match/>
-                    </xsl:otherwise>
-                </xsl:choose>
-            </bxsl:template>
-        </axsl:if>
-        <xsl:if test="
-                @position = ('first-child',
-                'last-child') or not(@position)">
-            <xsl:variable name="sqf:match" select="
-                    if (@match) then
-                        (@match)
-                    else
-                        ('self::node()')"/>
-            <axsl:if test="$sqf:match != ''">
-                <bxsl:template>
-                    <xsl:apply-templates select="preceding-sibling::xsl:variable | preceding-sibling::sch:let | preceding-sibling::sqf:param"/>
-                    <axsl:attribute name="match" select="$sqf:match"/>
-                    <axsl:attribute name="priority">
-                        <xsl:value-of select="10 - count(preceding-sibling::*)"/>
-                    </axsl:attribute>
-                    <xsl:call-template name="multiplyDocsMode">
-                        <xsl:with-param name="nodes" select="$sqf:match"/>
+        <axsl:variable name="sqf:ruleContext" select="."/>
+        <axsl:for-each-group select="{$sqf:match}" group-by="es:base-uri(.)">
+            <axsl:for-each select="$sqf:ruleContext">
+                <axsl:variable name="sqf:match">
+                    <xsl:call-template name="nodeMatching">
+                        <xsl:with-param name="sqf:add" select="true() and not($es:regex)"/>
+                        <xsl:with-param name="nodes" select="'current-group()'"/>
+                        <xsl:with-param name="base-uri-scope" select="true()"/>
                     </xsl:call-template>
-                    <bxsl:param name="xsm:xml-save-mode" select="false()" as="xs:boolean" tunnel="yes"/>
+                </axsl:variable>
 
-                    <bxsl:variable name="sqf:addChilds" as="node()*">
-                        <bxsl:apply-templates select="self::node()">
-                            <axsl:attribute name="mode" select="'addChild'"/>
-                        </bxsl:apply-templates>
-                    </bxsl:variable>
-                    <bxsl:variable name="sqf:addLastChilds" as="node()*">
-                        <bxsl:apply-templates select="self::node()">
-                            <axsl:attribute name="mode" select="'addLastChild'"/>
-                        </bxsl:apply-templates>
-                    </bxsl:variable>
+                <axsl:if test="$sqf:match != ''">
+                    <bxsl:template>
+                        <xsl:apply-templates select="preceding-sibling::xsl:variable | preceding-sibling::sch:let | preceding-sibling::sqf:param"/>
+                        <axsl:attribute name="match" select="$sqf:match"/>
+                        <axsl:attribute name="priority">
+                            <xsl:value-of select="count(following-sibling::node()) + 10"/>
+                        </axsl:attribute>
+                        <xsl:call-template name="multiplyDocsMode">
+                            <xsl:with-param name="nodes" select="'current-group()'"/>
+                            <xsl:with-param name="suffix">
+                                <xsl:choose>
+                                    <xsl:when test="@position = ('last-child')">
+                                        <axsl:text>addLastChild</axsl:text>
+                                    </xsl:when>
+                                    <xsl:when test="@node-type = ('attribute') or @position = ('first-child') or not(@position)">
+                                        <axsl:text>addChild</axsl:text>
+                                    </xsl:when>
+                                </xsl:choose>
+                            </xsl:with-param>
+                        </xsl:call-template>
+                        <bxsl:param name="xsm:xml-save-mode" select="false()" as="xs:boolean" tunnel="yes"/>
+                        <xsl:choose>
+                            <xsl:when test="@position = ('after')">
+                                <bxsl:next-match/>
+                                <xsl:call-template name="setVarContext">
+                                    <xsl:with-param name="messageId" select="$messageId"/>
+                                    <xsl:with-param name="templateBody">
+                                        <xsl:choose>
+                                            <xsl:when test="$xsm:xml-save-mode">
+                                                <xsl:apply-templates select="." mode="xsm:save-mode"/>
+                                            </xsl:when>
+                                            <xsl:otherwise>
+                                                <xsl:apply-templates select="." mode="xsm:no-xsm"/>
+                                            </xsl:otherwise>
+                                        </xsl:choose>
+                                    </xsl:with-param>
+                                </xsl:call-template>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:call-template name="setVarContext">
+                                    <xsl:with-param name="messageId" select="$messageId"/>
+                                    <xsl:with-param name="templateBody">
+                                        <xsl:choose>
+                                            <xsl:when test="$xsm:xml-save-mode">
+                                                <xsl:apply-templates select="." mode="xsm:save-mode"/>
+                                            </xsl:when>
+                                            <xsl:otherwise>
+                                                <xsl:apply-templates select="." mode="xsm:no-xsm"/>
+                                            </xsl:otherwise>
+                                        </xsl:choose>
+                                    </xsl:with-param>
+                                </xsl:call-template>
+                                <bxsl:next-match/>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </bxsl:template>
+                </axsl:if>
+                <xsl:if test="
+                        @position = ('first-child',
+                        'last-child') or not(@position)">
+                    <xsl:variable name="sqf:match" select="
+                            if (@match) then
+                                (@match)
+                            else
+                                ('self::node()')"/>
+                    <axsl:if test="$sqf:match != ''">
+                        <bxsl:template>
+                            <xsl:apply-templates select="preceding-sibling::xsl:variable | preceding-sibling::sch:let | preceding-sibling::sqf:param"/>
+                            <axsl:attribute name="match" select="$sqf:match"/>
+                            <axsl:attribute name="priority">
+                                <xsl:value-of select="10 - count(preceding-sibling::*)"/>
+                            </axsl:attribute>
+                            <xsl:call-template name="multiplyDocsMode">
+                                <xsl:with-param name="nodes" select="'current-group()'"/>
+                            </xsl:call-template>
+                            <bxsl:param name="xsm:xml-save-mode" select="false()" as="xs:boolean" tunnel="yes"/>
 
-                    <xsl:choose>
-                        <xsl:when test="$xsm:xml-save-mode">
-                            <xsl:call-template name="xsm:save-mode-add"/>
-                        </xsl:when>
-                        <xsl:otherwise>
-                            <xsl:call-template name="xsm:no-save-add"/>
-                        </xsl:otherwise>
-                    </xsl:choose>
+                            <bxsl:variable name="sqf:addChilds" as="node()*">
+                                <bxsl:apply-templates select="self::node()">
+                                    <axsl:attribute name="mode" select="
+                                            for $sqf:m in $sqf:mode
+                                            return
+                                                if ($sqf:m = '#default') then
+                                                    ('addChild')
+                                                else
+                                                    (concat($sqf:m, '_', 'addChild'))"/>
+                                </bxsl:apply-templates>
+                            </bxsl:variable>
+                            <bxsl:variable name="sqf:addLastChilds" as="node()*">
+                                <bxsl:apply-templates select="self::node()">
+                                    <axsl:attribute name="mode" select="
+                                            for $sqf:m in $sqf:mode
+                                            return
+                                                if ($sqf:m = '#default') then
+                                                    ('addLastChild')
+                                                else
+                                                    (concat($sqf:m, '_', 'addLastChild'))"/>
+                                </bxsl:apply-templates>
+                            </bxsl:variable>
 
-                </bxsl:template>
-            </axsl:if>
-        </xsl:if>
+                            <xsl:choose>
+                                <xsl:when test="$xsm:xml-save-mode">
+                                    <xsl:call-template name="xsm:save-mode-add"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:call-template name="xsm:no-save-add"/>
+                                </xsl:otherwise>
+                            </xsl:choose>
+
+                        </bxsl:template>
+                    </axsl:if>
+                </xsl:if>
+            </axsl:for-each>
+        </axsl:for-each-group>
     </xsl:template>
 
 

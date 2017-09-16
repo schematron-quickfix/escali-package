@@ -245,7 +245,6 @@
             <xsl:attribute name="mode" select="$mode" separator=" "/>
             <xsl:apply-templates select="@*" mode="#current"/>
             <xsl:apply-templates select="node()" mode="#current"/>
-            <axsl:with-param name="sqf:mode" select="'{$mode}'" tunnel="yes"/>
         </xsl:copy>
     </xsl:template>
 
