@@ -33,7 +33,7 @@ import com.schematronQuickfix.xsm.operations.PositionalReplace;
 
 @RunWith(value = Parameterized.class)
 
-public class SchematronTestParam {
+public class SchematronTest {
 	private static File rootFolder = new File("src/test/resources/sch/schematron-tests/");
 	
 	private final File folder;
@@ -95,7 +95,7 @@ public class SchematronTestParam {
         
     }
 	
-	public SchematronTestParam(String folder, String phase, String lang){
+	public SchematronTest(String folder, String phase, String lang){
 		this.folder = new File(rootFolder, folder);
 		this.phase = phase;
 		this.lang = lang;
