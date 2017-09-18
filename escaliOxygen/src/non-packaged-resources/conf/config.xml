@@ -1,0 +1,10 @@
+<config>
+    <main>
+        <group>EXT</group>
+        <sort reverse="false">ALPH</sort>
+        <closed>0</closed>
+    </main>
+    <search instant="true" fullPath="false" regex="false">
+        <filter>*.xml</filter>
+    </search>
+</config>

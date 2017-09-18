@@ -1,0 +1,53 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.schematron-quickfix</groupId>
+		<artifactId>escali-main-package</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+	<artifactId>escaliOxygen</artifactId>
+	<name>Escali Oxygen Plugin</name>
+	<description>The Escali Oxygen Plugin is a plugin for the Oxygen XML Editor of Syncro Soft. With the plugin you should be able to use the Escali Schematron Processor inside of Oxygen, hence it is an alternative SQF implementation for the Oxygen editor.</description>
+
+	<dependencies>
+		<dependency>
+			<groupId>commons-cli</groupId>
+			<artifactId>commons-cli</artifactId>
+			<version>1.1</version>
+		</dependency>
+		<dependency>
+			<groupId>com.github.oxygen-plugins</groupId>
+			<artifactId>common-gui</artifactId>
+			<version>0.0.2-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.schematron-quickfix</groupId>
+			<artifactId>xsm</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.oxygenxml</groupId>
+			<artifactId>oxygen-sdk</artifactId>
+			<version>18.1.0.3</version>
+		</dependency>
+		<dependency>
+			<groupId>com.schematron-quickfix</groupId>
+			<artifactId>escali</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.schematron-quickfix</groupId>
+			<artifactId>escaliGuiComponents</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.schematron-quickfix</groupId>
+			<artifactId>common-oxygen</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+	</dependencies>
+
+	
+
+</project>
