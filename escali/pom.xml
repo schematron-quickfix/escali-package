@@ -20,7 +20,7 @@
 		<dependency>
 			<groupId>com.github.oxygen-plugins</groupId>
 			<artifactId>common-gui</artifactId>
-			<version>v0.0.1-alpha</version>
+			<version>0.0.2-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>com.schematron-quickfix</groupId>
@@ -55,7 +55,7 @@
 			<plugin>
 				<groupId>io.xspec.maven</groupId>
 				<artifactId>xspec-maven-plugin</artifactId>
-				<version>1.5.0</version>
+				<version>1.5.1-RC2</version>
 				<dependencies>
 					<!-- if you have a license, feel free to add Saxon-PE or Saxon-EE instead 
 						of Saxon-HE -->
@@ -67,6 +67,9 @@
 				</dependencies>
 				<configuration>
 					<catalogFile>catalog.xml</catalogFile>
+					<saxonOptions>
+						<xi>on</xi>
+					</saxonOptions>
 					<generateSurefireReport>true</generateSurefireReport>
 				</configuration>
 				<executions>
