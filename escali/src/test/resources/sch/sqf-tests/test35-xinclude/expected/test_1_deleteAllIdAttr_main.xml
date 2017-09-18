@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <root>
     <xi:include href="test_include.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
-    <element id="e2"><?sqfc-start ?><add>e2</add><?sqfc-end ?></element>
+    <?sqfc-start ?><element><?sqfc-end ?></element>
 </root>

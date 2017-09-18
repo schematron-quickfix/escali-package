@@ -117,6 +117,9 @@ public class QuickFixTest {
 		public String toString() {
 			// TODO Auto-generated method stub
 			String name = "";
+			
+			name += status == FOCUS ? "FOCUS - " : status == PENDING ? "SKIPPED - " : "";
+			
 			name += title + " - ";
 			name += msgPos + " - ";
 			name += fixName + " - ";
@@ -565,11 +568,15 @@ public class QuickFixTest {
 
 		// test35
 
-		QuickFixTestGroup test35 = new QuickFixTestGroup("test35-xinclude", FOCUS);
+		QuickFixTestGroup test35 = new QuickFixTestGroup("test35-xinclude");
 
 		test35.createTest(1, "addElement", null, new String[]{"main", "included"});
 		test35.createTest(1, "addAllElement", null, new String[]{"main", "included"});
+		test35.createTest(1, "deleteAllIdAttr", null, new String[]{"main", "included"});
+		test35.createTest(1, "replaceAllElement", null, new String[]{"main", "included"});
 		test35.createTest(2, "addElement");
+		test35.createTest(2, "deleteIdAttr");
+		test35.createTest(2, "replaceElement");
 
 		test35.addToList(labels);
 		
@@ -630,6 +637,15 @@ public class QuickFixTest {
 					this.testParams.parameter);
 			
 			if(result.size() < expectedResult.length){
+				System.out.println("EXPECTED: ");
+				for (File eresult : expectedResult) {
+					System.out.println(eresult.getAbsolutePath());
+				}
+				System.out.println("RESULT: ");
+				for (TextSource r : result) {
+					System.out.println(r.getFile().getAbsolutePath());
+				}
+				
 				fail("Some Results are missing!");
 			}
 			if(testParams.exception != null){
