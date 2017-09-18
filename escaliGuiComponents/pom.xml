@@ -1,0 +1,25 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.schematron-quickfix</groupId>
+		<artifactId>escali-main-package</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+	<artifactId>escaliGuiComponents</artifactId>
+	<name>Escali Gui Components</name>
+	<description>This project provides gui components to call the Escali Processor and embedd viewer components inside of an editor.</description>
+	
+	<dependencies>
+		<dependency>
+			<groupId>com.github.oxygen-plugins</groupId>
+			<artifactId>common-gui</artifactId>
+			<version>0.0.2-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.schematron-quickfix</groupId>
+			<artifactId>escali</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+	</dependencies>
+</project>
