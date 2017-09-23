@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin id="net.sqf.oxygens${version}" name="Escali Schematron for oXygen (v${version})" description="Implementation of Escali for oXygen"
+    version="${version}" vendor="schematron-quickfix.com" class="com.schematronQuickfix.escaliOxygen.EscaliPlugin"
+	classLoaderType="preferReferencedResources">
+	<runtime>
+	    <librariesFolder name="lib"/>
+	</runtime>
+    <extension type="WorkspaceAccess" class="com.schematronQuickfix.escaliOxygen.EscaliPluginExtension"/>
+    <extension type="OptionPage" class="com.schematronQuickfix.escaliOxygen.EscaliPluginOptions"/>
+    <!--The sample toolbar which will present messages from the sample plugin.-->
+    <view id="EscaliView" initialSide="EAST" initialRow="1"/>
+    <view id="QuickFixView" initialSide="EAST" initialRow="2"/>
+    <view id="UserEntryView" initialSide="EAST" initialRow="3"/>
+    <toolbar id="EscaliToolbar" initialSide="NORTH" initialRow="2"/>
+</plugin>
