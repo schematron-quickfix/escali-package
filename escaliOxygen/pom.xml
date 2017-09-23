@@ -10,6 +10,10 @@
 	<name>Escali Oxygen Plugin</name>
 	<description>The Escali Oxygen Plugin is a plugin for the Oxygen XML Editor of Syncro Soft. With the plugin you should be able to use the Escali Schematron Processor inside of Oxygen, hence it is an alternative SQF implementation for the Oxygen editor.</description>
 
+	<properties>
+    	<debug.oxygen.version>18.0</debug.oxygen.version>
+    </properties>
+    
 	<dependencies>
 		<dependency>
 			<groupId>commons-cli</groupId>
@@ -47,7 +51,46 @@
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
-
-	
+	<build>
+		<plugins>
+			<plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>2.5.3</version>
+                <configuration>
+                    <descriptor>src/assembly/assembly.xml</descriptor>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+			<plugin>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>3.0.2</version>
+				<executions>
+					<execution>
+						<id>debug-install</id>
+						<phase>package</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${user.home}/AppData/Roaming/com.oxygenxml/extensions/v${debug.oxygen.version}/plugins/debug/</outputDirectory>
+							<resources>
+								<resource>
+									<directory>${project.build.directory}/${project.artifactId}-${project.version}-plugin/</directory>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
 
 </project>
