@@ -23,7 +23,7 @@
             <outputDirectory>/</outputDirectory>
             <excludes>
                 <exclude>plugin.dtd</exclude>
-                <exclude>icons/diagona_my.gif</exclude>
+                <exclude>**/*.gif</exclude>
             </excludes>
             <filtered>true</filtered>
         </fileSet>
@@ -32,7 +32,7 @@
             <directory>${project.basedir}/src/non-packaged-resources</directory>
             <outputDirectory>/</outputDirectory>
             <includes>
-                <include>*.gif</include>
+                <include>**/*.gif</include>
             </includes>
             <filtered>false</filtered>
         </fileSet>
