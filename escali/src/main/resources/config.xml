@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<es:config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://www.escali.schematron-quickfix.com/ ../xml/schema/escali/config.xsd"
+ xmlns:es="http://www.escali.schematron-quickfix.com/">
+    <es:tempFolder>../temp/</es:tempFolder>
+    <es:phase>#ALL</es:phase>
+    <es:output>
+        <es:xml-save-mode>true</es:xml-save-mode>
+        <es:xsm-processor/>
+    </es:output>
+</es:config>
