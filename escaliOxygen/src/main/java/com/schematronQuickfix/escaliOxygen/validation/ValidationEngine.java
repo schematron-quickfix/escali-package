@@ -23,6 +23,7 @@ import com.schematronQuickfix.escali.control.Escali;
 import com.schematronQuickfix.escali.control.SVRLReport;
 import com.schematronQuickfix.escali.control.report._QuickFix;
 import com.schematronQuickfix.escali.control.report._SVRLMessage;
+import com.schematronQuickfix.escali.resources.EscaliArchiveResources;
 import com.schematronQuickfix.escali.resources.EscaliFileResources;
 import com.schematronQuickfix.escaliOxygen.EscaliPlugin;
 import com.schematronQuickfix.escaliOxygen.options.EscaliPluginConfig;
@@ -40,7 +41,7 @@ public class ValidationEngine {
 	private final TextSource xsmChangeMarker;
 	
 	public ValidationEngine() throws XSLTErrorListener, FileNotFoundException {
-		escali =  new Escali(new EscaliFileResources(new File(EscaliPlugin.descriptor.getBaseDir(), "lib")));
+		escali =  new Escali(new EscaliArchiveResources("/"));
 		xsmChangeMarker = TextSource.createVirtualTextSource(new File(EscaliPlugin.descriptor.getBaseDir(), "lib/xml/xsm/xsmChangeMarker.xsm"));
 		xsmChangeMarker.setData("<xsm:manipulator xmlns:xsm=\"http://www.schematron-quickfix.com/manipulator/process\">" +
 				"<xsm:replace node=\"" +

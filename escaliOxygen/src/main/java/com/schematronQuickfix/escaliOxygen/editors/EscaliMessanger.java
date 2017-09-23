@@ -30,6 +30,7 @@ import com.schematronQuickfix.escali.control.report._ModelNode;
 import com.schematronQuickfix.escali.control.report._Phase;
 import com.schematronQuickfix.escali.control.report._QuickFix;
 import com.schematronQuickfix.escali.control.report._SVRLMessage;
+import com.schematronQuickfix.escali.resources.EscaliArchiveResources;
 import com.schematronQuickfix.escali.resources.EscaliFileResources;
 import com.schematronQuickfix.escaliGuiComponents.adapter.EscaliMessangerAdapter;
 import com.schematronQuickfix.escaliOxygen.EscaliPlugin;
@@ -53,7 +54,8 @@ public class EscaliMessanger extends EscaliMessangerAdapter {
 
 	public EscaliMessanger(OxygenEscaliGui gui, StandalonePluginWorkspace spw,
 			ToolbarMenuAdapter tma) throws XSLTErrorListener, IOException {
-		super(gui, new EscaliFileResources(new File(EscaliPlugin.descriptor.getBaseDir(), "lib")), false);
+//		new EscaliFileResources(new File(EscaliPlugin.descriptor.getBaseDir(), "lib"))
+		super(gui, new EscaliArchiveResources(), false);
 		this.spw = spw;
 		this.tma = tma;
 		this.editorListener = new EditorChangeListener(this);
