@@ -44,6 +44,7 @@
                 <include>org.codehaus.woodstox</include>
                 <include>com.github.nkutsche</include>
                 <include>com.github.oxygen-plugins</include>
+                <include>com.schematron-quickfix</include>
             </includes>
         </dependencySet>
     </dependencySets>
