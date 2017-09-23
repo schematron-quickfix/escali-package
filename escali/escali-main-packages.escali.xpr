@@ -3399,6 +3399,7 @@
             <file name="src/main/xsl/01_compiler/escali_compiler_2_abstract-patterns.xsl"/>
             <file name="src/main/xsl/01_compiler/escali_compiler_3_main.xsl"/>
         </folder>
+        <folder path="../../com.github.oxygen-plugins.common-xml/"/>
         <folder path="."/>
         <folder path="../xsm/"/>
     </projectTree>
