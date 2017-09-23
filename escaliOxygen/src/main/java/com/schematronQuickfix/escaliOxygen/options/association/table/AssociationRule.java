@@ -56,15 +56,27 @@ public class AssociationRule {
 	}
 
 	private boolean isSelected = false;
-	private File schema = null;
+	private URL schema = null;
 	private int matchMode = URL_MATCH_MODE;
 	private String pattern = "*.*";
 	private String[] phases = new String[] {};
 	private int phaseSel = -1;
 	private String[] langs = new String[] {};
 	private int langSel = -1;
+	
+	private static URL getURL(File file){
+		try {
+			return file.toURI().toURL();
+		} catch (MalformedURLException e) {
+			return null;
+		}
+	}
 
 	AssociationRule(File schema, String[] phases, String[] langs) {
+		this(getURL(schema), phases, langs);
+	}
+	
+	AssociationRule(URL schema, String[] phases, String[] langs) {
 		this.schema = schema;
 		this.setPhases(phases);
 		this.setLanguages(langs);
@@ -80,7 +92,7 @@ public class AssociationRule {
 	}
 
 	// Column 2: schema
-	public File getSchema() {
+	public URL getSchema() {
 		return this.schema;
 	}
 
@@ -95,8 +107,12 @@ public class AssociationRule {
 	void setSchema(SchemaCell schemaCell) {
 		setSchema(schemaCell.getSchema());
 	}
-
+	
 	void setSchema(File schema) {
+		setSchema(schema.toURI());
+	}
+	
+	void setSchema(URL schema) {
 		if (schema == null)
 			return;
 		try {
@@ -317,7 +333,7 @@ public class AssociationRule {
 
 	@Override
 	public String toString() {
-		String name = this.schema != null ? schema.getName() : "...";
+		String name = this.schema != null ? schema.getPath() : "...";
 		return name + " " + this.getPattern();
 	}
 
@@ -326,7 +342,7 @@ public class AssociationRule {
 			return "";
 
 		String rule = "<es:rule ";
-		rule += " schema=\"" + this.schema.toURI() + "\"";
+		rule += " schema=\"" + this.schema.toString() + "\"";
 		rule += " matchMode=\"" + this.matchMode + "\"";
 		rule += " pattern=\"" + this.getPattern().replace("\"", "&quot;") + "\"";
 		rule += " phase=\"" + this.getPhaseSelectionValue() + "\"";
@@ -353,6 +369,7 @@ public class AssociationRule {
 									"", true, true).toURI());
 		} catch (MalformedURLException e) {
 		} catch (URISyntaxException e) {
+		} catch (Exception e) {
 		}
 
 		AssociationRule schematronValidationRule = new AssociationRule(sqfSch,
@@ -371,7 +388,8 @@ public class AssociationRule {
 	}
 
 	public static AssociationRule createRule() {
-		return new AssociationRule(null, new String[] {}, new String[] {});
+		File nullFile = null;
+		return new AssociationRule(nullFile, new String[] {}, new String[] {});
 	}
 
 	public static AssociationRule createRule(Node item) {

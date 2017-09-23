@@ -7,6 +7,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.net.URL;
 
 import javax.swing.AbstractCellEditor;
 import javax.swing.Icon;
@@ -24,22 +27,22 @@ import com.github.oxygenPlugins.common.gui.swing.SwingUtil;
 public class SchemaCell extends JPanel {
 	
 	private final GridBagLayout gbl;
-	private File schemaFile;
+	private URL schemaFile;
 	private final FileCellEditor cellEditor = new FileCellEditor();
 	private final int rowIndex;
 	private JLabel label;
 	private JLabel iconLabel;
 	
-	protected SchemaCell(File schemaFile, int rowIndex){
+	protected SchemaCell(URL schemaURL, int rowIndex){
 		super(new GridBagLayout());
-		this.schemaFile = schemaFile;
+		this.schemaFile = schemaURL;
 		this.rowIndex = rowIndex;
 		this.gbl = (GridBagLayout) this.getLayout();
 		this.setBackground(Color.WHITE);
 		
 		label = new JLabel("...");
-		if(schemaFile != null){
-			label.setText(schemaFile.getName());
+		if(schemaURL != null){
+			label.setText(schemaURL.getPath());
 		}
 		Icon openIc = null;
 		try {
@@ -71,12 +74,21 @@ public class SchemaCell extends JPanel {
 	
 	private void setSchema(File schema){
 		if(schema != null){
-			this.schemaFile = schema;
+			try {
+				this.schemaFile = schema.toURI().toURL();
+			} catch (MalformedURLException e) {
+				e.printStackTrace();
+			}
 			this.updateUI();
 		}
 	}
 	public File getSchema(){
-		return this.schemaFile;
+		try {
+			return new File(this.schemaFile.toURI());
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 	
 	TableCellEditor getCellEditor(){
@@ -118,7 +130,7 @@ public class SchemaCell extends JPanel {
 		}
 
 		public void mouseClicked(MouseEvent e) {
-			schemaFile = AssociationTable.askForFile(schemaFile);
+			setSchema(AssociationTable.askForFile(getSchema()));
 			fireEditingStopped();
 		}
 		

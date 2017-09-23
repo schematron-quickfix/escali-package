@@ -1,6 +1,7 @@
 package com.schematronQuickfix.escaliOxygen.options.association;
 
 import java.io.File;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -24,12 +25,12 @@ public class ValidationInfoSet extends ArrayList<ValidationInfo> {
 	public static class ValidationInfo {
 
 		private final URL baseURL;
-		private final File schemaLocation;
+		private final URL schemaLocation;
 		private String phase;
 		private String lang;
 		private final String title;
 
-		private ValidationInfo(URL baseURL, File schemaLocation, String phase,
+		private ValidationInfo(URL baseURL, URL schemaLocation, String phase,
 				String lang, String title) {
 			this.baseURL = baseURL;
 			this.schemaLocation = schemaLocation;
@@ -38,7 +39,7 @@ public class ValidationInfoSet extends ArrayList<ValidationInfo> {
 			this.title = title;
 		}
 
-		private ValidationInfo(URL baseURL, File schemaLocation, String phase,
+		private ValidationInfo(URL baseURL, URL schemaLocation, String phase,
 				String lang) {
 			this(baseURL, schemaLocation, phase, lang, "");
 		}
@@ -51,7 +52,7 @@ public class ValidationInfoSet extends ArrayList<ValidationInfo> {
 			return this.phase;
 		}
 
-		public File getSchema() {
+		public URL getSchema() {
 			return this.schemaLocation;
 		}
 
@@ -62,9 +63,14 @@ public class ValidationInfoSet extends ArrayList<ValidationInfo> {
 	}
 
 	public void add(XmlModel model) {
-		ValidationInfo vi = new ValidationInfo(this.editorLoc, model.getHref(),
-				model.getPhase(), "#ALL");
-		this.add(vi);
+		ValidationInfo vi;
+		try {
+			vi = new ValidationInfo(this.editorLoc, model.getHref().toURI().toURL(),
+					model.getPhase(), "#ALL");
+			this.add(vi);
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void add(AssociationRule rule) {
