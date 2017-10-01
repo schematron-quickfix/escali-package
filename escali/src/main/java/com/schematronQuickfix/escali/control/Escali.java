@@ -22,13 +22,13 @@ import com.github.oxygenPlugins.common.xml.xslt.Parameter;
 import com.github.oxygenPlugins.common.xml.xslt.XSLTPipe;
 import com.schematronQuickfix.escali.control.report._QuickFix;
 import com.schematronQuickfix.escali.resources.EscaliArchiveResources;
-import com.schematronQuickfix.escali.resources.EscaliRsourcesInterface;
+import com.schematronQuickfix.escali.resources.EscaliResourcesInterface;
 
 public class Escali {
 	private final Validator val;
 	private final Executor exec;
 	private Config config;
-	private final EscaliRsourcesInterface resource;
+	private final EscaliResourcesInterface resource;
 
 	private XSLTPipe htmlPrinter = new XSLTPipe("Escali HTML output");
 	private XSLTPipe textPrinter = new XSLTPipe("Escali Text output");
@@ -40,16 +40,16 @@ public class Escali {
 		this(new EscaliArchiveResources());
 	}
 
-	public Escali(EscaliRsourcesInterface resource) throws XSLTErrorListener, FileNotFoundException {
+	public Escali(EscaliResourcesInterface resource) throws XSLTErrorListener, FileNotFoundException {
 		this(ConfigFactory.createConfig(resource.getConfig()), resource);
 
 	}
 
-	public Escali(Config config, EscaliRsourcesInterface resource) throws XSLTErrorListener, FileNotFoundException {
+	public Escali(Config config, EscaliResourcesInterface resource) throws XSLTErrorListener, FileNotFoundException {
 		this(config, resource, true);
 	}
 
-	protected Escali(Config config, EscaliRsourcesInterface resource, boolean needsBaseValidation)
+	protected Escali(Config config, EscaliResourcesInterface resource, boolean needsBaseValidation)
 			throws XSLTErrorListener, FileNotFoundException {
 		this.config = config;
 		this.resource = resource;

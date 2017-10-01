@@ -11,7 +11,7 @@ import com.github.oxygenPlugins.common.text.TextSource;
 import com.github.oxygenPlugins.common.xml.exceptions.XSLTErrorListener;
 import com.github.oxygenPlugins.common.xml.xslt.Parameter;
 import com.github.oxygenPlugins.common.xml.xslt.XSLTPipe;
-import com.schematronQuickfix.escali.resources.EscaliRsourcesInterface;
+import com.schematronQuickfix.escali.resources.EscaliResourcesInterface;
 
 
 public class Validator {
@@ -23,14 +23,14 @@ public class Validator {
 
 	private TextSource schema;
 
-	private final EscaliRsourcesInterface resource;
+	private final EscaliResourcesInterface resource;
 
 	private ArrayList<TextSource> fixParts;
 
 	private final Config config;
 	
 	
-	public Validator(EscaliRsourcesInterface resource, Config config)
+	public Validator(EscaliResourcesInterface resource, Config config)
 			throws XSLTErrorListener, FileNotFoundException {
 		this.resource = resource;
 		this.config = config;

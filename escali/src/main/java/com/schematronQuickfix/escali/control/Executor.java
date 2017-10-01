@@ -23,18 +23,19 @@ import com.github.oxygenPlugins.common.xml.exceptions.XSLTErrorListener;
 import com.github.oxygenPlugins.common.xml.xpath.ProcessNamespaces;
 import com.github.oxygenPlugins.common.xml.xslt.Parameter;
 import com.github.oxygenPlugins.common.xml.xslt.XSLTPipe;
+import com.github.oxygenPlugins.common.xml.xslt.XSLTStep;
 import com.schematronQuickfix.escali.control.report._QuickFix;
 import com.schematronQuickfix.escali.control.report._UserEntry;
-import com.schematronQuickfix.escali.resources.EscaliRsourcesInterface;
+import com.schematronQuickfix.escali.resources.EscaliResourcesInterface;
 import com.schematronQuickfix.xsm.operations.PositionalReplace;
 
 public class Executor {
 	
 	private XSLTPipe extractor = new XSLTPipe("Extractor");
-	private Source[] manipulatorSrc = null; 
-	public Executor(EscaliRsourcesInterface resource) throws XSLTErrorListener, FileNotFoundException{
+	private XSLTStep[] manipulatorGenSteps = null; 
+	public Executor(EscaliResourcesInterface resource) throws XSLTErrorListener, FileNotFoundException{
 		extractor.addStep(resource.getExtractor());
-		manipulatorSrc = resource.getManipulator();
+		manipulatorGenSteps = new XSLTStep[]{new XSLTStep(resource.getManipulator()[0], new ArrayList<Parameter>())};
 	}
 
 //	public TextSource execute(_QuickFix[] fixes, SVRLReport report, Config config) throws XSLTErrorListener{
@@ -79,7 +80,7 @@ public class Executor {
 		
 		TextSource extractorXSL = extractor.pipeMain(svrl, params); 
 		manipulator.addStep(extractorXSL, ueParams);
-		manipulator.addStep(manipulatorSrc[0]);
+		manipulator.addStep(manipulatorGenSteps[0]);
 		ArrayList<TextSource> extractorResult = manipulator.pipe(input, config.createManipulatorParams());
 		
 		if(config.isXmlSaveMode()){

@@ -7,7 +7,7 @@ import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
 
 
-public class EscaliFileResources implements EscaliRsourcesInterface {
+public class EscaliFileResources implements EscaliResourcesInterface {
 	private final File baseFolder;
 	private final File escaliFolder;
 	private final File valFolder;

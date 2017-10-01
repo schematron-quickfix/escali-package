@@ -18,13 +18,13 @@ import com.github.oxygenPlugins.common.xml.xpath.ProcessNamespaces;
 import com.github.oxygenPlugins.common.xml.xsd.Xerces;
 import com.schematronQuickfix.escali.control.report._Report;
 import com.schematronQuickfix.escali.control.report._SVRLMessage;
-import com.schematronQuickfix.escali.resources.EscaliRsourcesInterface;
+import com.schematronQuickfix.escali.resources.EscaliResourcesInterface;
 
 public class SchematronBaseValidator {
 	private Xerces xerces;
 	private Escali internEscali;
 
-	public SchematronBaseValidator(EscaliRsourcesInterface resource, Config config) throws SAXNotRecognizedException,
+	public SchematronBaseValidator(EscaliResourcesInterface resource, Config config) throws SAXNotRecognizedException,
 			SAXNotSupportedException, XSLTErrorListener, IOException, CancelException {
 		xerces = new Xerces(ProcessNamespaces.SCH_NS, resource.getSchematronSchema());
 		this.internEscali = new Escali(config, resource, false);

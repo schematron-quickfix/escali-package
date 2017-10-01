@@ -13,7 +13,7 @@ import com.github.oxygenPlugins.common.xml.exceptions.XSLTErrorListener;
 import com.github.oxygenPlugins.common.xml.staxParser.StringNode;
 import com.github.oxygenPlugins.common.xml.xpath.XPathReader;
 import com.github.oxygenPlugins.common.xml.xslt.XSLTPipe;
-import com.schematronQuickfix.escali.resources.EscaliRsourcesInterface;
+import com.schematronQuickfix.escali.resources.EscaliResourcesInterface;
 
 public class SchemaInfo {
 	private XSLTPipe infoGenerator = new XSLTPipe("Schema anlayzer");
@@ -26,7 +26,7 @@ public class SchemaInfo {
 	private String defaultLang;
 	private final TextSource schema;
 	
-	protected SchemaInfo(TextSource source, EscaliRsourcesInterface resource) throws XSLTErrorListener, IOException, SAXException, XMLStreamException, XPathExpressionException{
+	protected SchemaInfo(TextSource source, EscaliResourcesInterface resource) throws XSLTErrorListener, IOException, SAXException, XMLStreamException, XPathExpressionException{
 		this.schema = source;
 		infoGenerator.addStep(resource.getSchemaInfo());
 		StringNode schemaInfoDoc = new StringNode(infoGenerator.pipeMain(source));

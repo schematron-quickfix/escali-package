@@ -25,7 +25,7 @@ import com.schematronQuickfix.escali.control.report.ModelNodeFac;
 import com.schematronQuickfix.escali.control.report.SVRLMessage;
 import com.schematronQuickfix.escali.control.report._Report;
 import com.schematronQuickfix.escali.control.report._SVRLMessage;
-import com.schematronQuickfix.escali.resources.EscaliRsourcesInterface;
+import com.schematronQuickfix.escali.resources.EscaliResourcesInterface;
 
 public class SVRLReport {
 	public static String HTML_FORMAT = "html";
@@ -49,7 +49,7 @@ public class SVRLReport {
 	private final HashMap<String, TextSource> fixPartsBySystemId = new HashMap<String, TextSource>();
 
 	
-	public SVRLReport(TextSource svrl, ArrayList<TextSource> fixParts, TextSource input, TextSource schema, EscaliRsourcesInterface resource) throws XSLTErrorListener, IOException, SAXException, XMLStreamException, XPathExpressionException, DOMException, URISyntaxException{
+	public SVRLReport(TextSource svrl, ArrayList<TextSource> fixParts, TextSource input, TextSource schema, EscaliResourcesInterface resource) throws XSLTErrorListener, IOException, SAXException, XMLStreamException, XPathExpressionException, DOMException, URISyntaxException{
 		
 		
 		for (TextSource fixPart : fixParts) {

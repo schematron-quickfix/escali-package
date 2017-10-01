@@ -7,7 +7,7 @@ import java.net.URL;
 import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
 
-public class EscaliArchiveResources implements EscaliRsourcesInterface {
+public class EscaliArchiveResources implements EscaliResourcesInterface {
 	private final String escaliFolder;
 	private final String valFolder;
 	private final String extractorFolder;

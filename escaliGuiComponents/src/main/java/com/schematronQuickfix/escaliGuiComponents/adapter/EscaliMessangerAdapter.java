@@ -36,7 +36,7 @@ import com.schematronQuickfix.escali.control.report._QuickFix;
 import com.schematronQuickfix.escali.control.report._Report;
 import com.schematronQuickfix.escali.control.report._SVRLMessage;
 import com.schematronQuickfix.escali.resources.EscaliArchiveResources;
-import com.schematronQuickfix.escali.resources.EscaliRsourcesInterface;
+import com.schematronQuickfix.escali.resources.EscaliResourcesInterface;
 import com.schematronQuickfix.escaliGuiComponents.buttons._ToolbarButtonAction;
 import com.schematronQuickfix.escaliGuiComponents.lists.MessageList;
 import com.schematronQuickfix.escaliGuiComponents.lists.QuickFixList;
@@ -83,7 +83,7 @@ public abstract class EscaliMessangerAdapter implements ErrorViewer {
 	}
 	public abstract void viewException(Exception e) throws CancelException;
 	
-	public EscaliMessangerAdapter(EscaliGuiAdapter gui, EscaliRsourcesInterface resources, boolean standalone) throws XSLTErrorListener, IOException{
+	public EscaliMessangerAdapter(EscaliGuiAdapter gui, EscaliResourcesInterface resources, boolean standalone) throws XSLTErrorListener, IOException{
 		this.gui = gui;
 		this.escali = new Escali(resources);
 		
