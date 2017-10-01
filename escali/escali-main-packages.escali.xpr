@@ -14,6 +14,66 @@
                         <scenarioAssociation-array>
                             <scenarioAssociation>
                                 <field name="url">
+                                    <String>target/debug/compile/01_compilied.xsl</String>
+                                </field>
+                                <field name="scenarioIds">
+                                    <list>
+                                        <String>Escali Schematron (validator)</String>
+                                    </list>
+                                </field>
+                                <field name="scenarioTypes">
+                                    <list>
+                                        <String>XML</String>
+                                    </list>
+                                </field>
+                            </scenarioAssociation>
+                            <scenarioAssociation>
+                                <field name="url">
+                                    <String>src/main/schema/SQF/sqf.sch</String>
+                                </field>
+                                <field name="scenarioIds">
+                                    <list>
+                                        <String>Escali Schematron (compile)</String>
+                                    </list>
+                                </field>
+                                <field name="scenarioTypes">
+                                    <list>
+                                        <String>XSL</String>
+                                    </list>
+                                </field>
+                            </scenarioAssociation>
+                            <scenarioAssociation>
+                                <field name="url">
+                                    <String>src/test/resources/sch/sqf-tests/test01-basic-localisation-html/input/test.sch</String>
+                                </field>
+                                <field name="scenarioIds">
+                                    <list>
+                                        <String>Escali Schematron (compile)</String>
+                                    </list>
+                                </field>
+                                <field name="scenarioTypes">
+                                    <list>
+                                        <String>XSL</String>
+                                    </list>
+                                </field>
+                            </scenarioAssociation>
+                            <scenarioAssociation>
+                                <field name="url">
+                                    <String>src/test/xspec/Test.xspec</String>
+                                </field>
+                                <field name="scenarioIds">
+                                    <list>
+                                        <String>XSpec for XSLT - XInclude</String>
+                                    </list>
+                                </field>
+                                <field name="scenarioTypes">
+                                    <list>
+                                        <String>ANT</String>
+                                    </list>
+                                </field>
+                            </scenarioAssociation>
+                            <scenarioAssociation>
+                                <field name="url">
                                     <String>target/debug/compile/03_resolved.xsl</String>
                                 </field>
                                 <field name="scenarioIds">
@@ -39,21 +99,6 @@
                                 <field name="scenarioTypes">
                                     <list>
                                         <String>XSL</String>
-                                    </list>
-                                </field>
-                            </scenarioAssociation>
-                            <scenarioAssociation>
-                                <field name="url">
-                                    <String>target/debug/compile/01_compilied.xsl</String>
-                                </field>
-                                <field name="scenarioIds">
-                                    <list>
-                                        <String>Escali Schematron (validator)</String>
-                                    </list>
-                                </field>
-                                <field name="scenarioTypes">
-                                    <list>
-                                        <String>XML</String>
                                     </list>
                                 </field>
                             </scenarioAssociation>
@@ -129,21 +174,6 @@
                                 <field name="scenarioTypes">
                                     <list>
                                         <String>XSL</String>
-                                    </list>
-                                </field>
-                            </scenarioAssociation>
-                            <scenarioAssociation>
-                                <field name="url">
-                                    <String>src/test/xspec/Test.xspec</String>
-                                </field>
-                                <field name="scenarioIds">
-                                    <list>
-                                        <String>XSpec for XSLT - XInclude</String>
-                                    </list>
-                                </field>
-                                <field name="scenarioTypes">
-                                    <list>
-                                        <String>ANT</String>
                                     </list>
                                 </field>
                             </scenarioAssociation>
@@ -300,21 +330,6 @@
                             <scenarioAssociation>
                                 <field name="url">
                                     <String>src/test/resources/sch/sqf-tests/test08-basic-docbook-lists/input/test.sch</String>
-                                </field>
-                                <field name="scenarioIds">
-                                    <list>
-                                        <String>Escali Schematron (compile)</String>
-                                    </list>
-                                </field>
-                                <field name="scenarioTypes">
-                                    <list>
-                                        <String>XSL</String>
-                                    </list>
-                                </field>
-                            </scenarioAssociation>
-                            <scenarioAssociation>
-                                <field name="url">
-                                    <String>src/test/resources/sch/sqf-tests/test01-basic-localisation-html/input/test.sch</String>
                                 </field>
                                 <field name="scenarioIds">
                                     <list>
@@ -3065,7 +3080,7 @@
                                     <String>${currentFileURL}</String>
                                 </field>
                                 <field name="inputXMLURL">
-                                    <String>file:/D:/nico/Work/Java2/escali-main-package/escali/src/test/resources/sch/sqf-tests/test35-xinclude/input/test.xml</String>
+                                    <String>file:/D:/nico/Work/Java2/escali-main-package/escali/src/test/resources/sch/sqf-tests/test01-basic-localisation-html/input/test.sch</String>
                                 </field>
                                 <field name="defaultScenario">
                                     <Boolean>false</Boolean>
