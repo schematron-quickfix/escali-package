@@ -22,6 +22,7 @@ import com.schematronQuickfix.escaliOxygen.editors.EscaliMessanger;
 public abstract class UserEntryDialog extends JDialog {
 	private static final long serialVersionUID = -6111053496870017022L;
 	private final EscaliMessanger ema;
+	private UserEntryList userEntryList;
 
 	public UserEntryDialog(final _QuickFix[] fixes, EscaliMessanger ema){
 		this.ema = ema;
@@ -67,15 +68,15 @@ public abstract class UserEntryDialog extends JDialog {
 		});
 		int i = 0;
 		
-		UserEntryList uel = new UserEntryList(ema, this);
-		uel.showUserEntries(fixes, okBtn, cancelBtn);
+		userEntryList = new UserEntryList(ema, this);
+		userEntryList.showUserEntries(fixes, okBtn, cancelBtn);
 //		for (_QuickFix fix : fixes) {
 //			
 //			UserEntryList uel = new UserEntryList(ema, this);
 //			uel.showUserEntries(fix);
 //
 //		}
-		SwingUtil.addComponent(contentPane, gblCP, uel, 		0, 0, 2, 1, 1.0, 1.0, GridBagConstraints.NORTHWEST, GridBagConstraints.BOTH, new Insets(3, 3, 3, 3));
+		SwingUtil.addComponent(contentPane, gblCP, userEntryList, 		0, 0, 2, 1, 1.0, 1.0, GridBagConstraints.NORTHWEST, GridBagConstraints.BOTH, new Insets(3, 3, 3, 3));
 		
 
 		
@@ -97,6 +98,7 @@ public abstract class UserEntryDialog extends JDialog {
 	public void showDialog(JFrame frame){
 		this.pack();
 		SwingUtil.centerFrame(this, frame);
+		this.userEntryList.requestFocus();
 		this.setVisible(true);
 	}
 	

@@ -88,6 +88,7 @@ public class QuickFixMenuItem extends JMenuItem implements ActionListener{
 			HashMap<String, WSEditor> editors = ema.getEditorsByFix(new _QuickFix[]{fix});
 			ValidationAdapter.valEngine.fix(editors, new _QuickFix[]{fix}, this.svrlReport);
 		} catch (Exception e) {
+			e.printStackTrace();
 			ema.getPluginWorkspace().showErrorMessage(e.getMessage().equals("") ? e.toString() : e.getMessage());
 			return;
 		}
