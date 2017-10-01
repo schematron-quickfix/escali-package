@@ -99,18 +99,15 @@ public class AssociationRule {
 	void setSchema(Object obj) {
 		if (obj instanceof SchemaCell) {
 			setSchema((SchemaCell) obj);
-		} else if (obj instanceof File) {
-			setSchema((File) obj);
+		} else if (obj instanceof URL) {
+			setSchema((URL) obj);
 		}
 	}
 
 	void setSchema(SchemaCell schemaCell) {
 		setSchema(schemaCell.getSchema());
 	}
-	
-	void setSchema(File schema) {
-		setSchema(schema.toURI());
-	}
+
 	
 	void setSchema(URL schema) {
 		if (schema == null)
@@ -356,19 +353,17 @@ public class AssociationRule {
 
 	public static AssociationRule getSchematronValidationRule(
 			EscaliMessanger ema) {
-
-		File sqfSch = new File(EscaliPlugin.getInstance().getDescriptor()
-				.getBaseDir(), "lib/xml/schema/SQF/sqf.sch");
+		URL sqfSch = null;
 		try {
-			sqfSch = new File(
+			sqfSch = new URL(
+					"http://www.schematron-quickfix.com/escali/schema/SQF/sqf.sch");
+			sqfSch = 
 					ema.getPluginWorkspace()
 							.getXMLUtilAccess()
 							.resolvePathThroughCatalogs(
-									new URL(
-											"http://www.schematron-quickfix.com/escali/schema/SQF/sqf.sch"),
-									"", true, true).toURI());
+									sqfSch,
+									"", true, true);
 		} catch (MalformedURLException e) {
-		} catch (URISyntaxException e) {
 		} catch (Exception e) {
 		}
 
@@ -388,8 +383,8 @@ public class AssociationRule {
 	}
 
 	public static AssociationRule createRule() {
-		File nullFile = null;
-		return new AssociationRule(nullFile, new String[] {}, new String[] {});
+		URL nullUrl = null;
+		return new AssociationRule(nullUrl, new String[] {}, new String[] {});
 	}
 
 	public static AssociationRule createRule(Node item) {
@@ -397,9 +392,8 @@ public class AssociationRule {
 		XPathReader xpr = new XPathReader();
 		try {
 			String path = xpr.getAttributValue(item, "schema");
-			URI uri = new URI(path);
-			File schemaF = new File(uri);
-			rule.setSchema(schemaF);
+			URL url = new URL(path);
+			rule.setSchema(url);
 
 			rule.setMatchMode(Integer.parseInt(xpr.getAttributValue(item,
 					"matchMode")));
@@ -408,7 +402,8 @@ public class AssociationRule {
 			rule.setLangueageSelection(xpr.getAttributValue(item, "lang"));
 			rule.setPhaseSelection(xpr.getAttributValue(item, "phase"));
 
-		} catch (URISyntaxException e) {
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
 		}
 		return rule;
 

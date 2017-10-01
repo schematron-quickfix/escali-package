@@ -22,6 +22,9 @@ import org.apache.batik.ext.swing.GridBagConstants;
 
 import com.github.oxygenPlugins.common.gui.images.IconMap;
 import com.github.oxygenPlugins.common.gui.swing.SwingUtil;
+import com.schematronQuickfix.escaliOxygen.EscaliPlugin;
+
+import ro.sync.exml.workspace.api.standalone.StandalonePluginWorkspace;
 
 
 public class SchemaCell extends JPanel {
@@ -71,24 +74,11 @@ public class SchemaCell extends JPanel {
 		this.setOpaque(!enabled);
 		super.setEnabled(enabled);
 	}
-	
-	private void setSchema(File schema){
-		if(schema != null){
-			try {
-				this.schemaFile = schema.toURI().toURL();
-			} catch (MalformedURLException e) {
-				e.printStackTrace();
-			}
-			this.updateUI();
-		}
+	private void setSchema(URL schema){
+		this.schemaFile = schema;
 	}
-	public File getSchema(){
-		try {
-			return new File(this.schemaFile.toURI());
-		} catch (URISyntaxException e) {
-			e.printStackTrace();
-			return null;
-		}
+	public URL getSchema(){
+		return this.schemaFile;
 	}
 	
 	TableCellEditor getCellEditor(){
@@ -130,7 +120,10 @@ public class SchemaCell extends JPanel {
 		}
 
 		public void mouseClicked(MouseEvent e) {
-			setSchema(AssociationTable.askForFile(getSchema()));
+			StandalonePluginWorkspace workspace = EscaliPlugin.getInstance().getWorkspace();
+			URL url = workspace.chooseURL("Select the schema", new String[]{"sch"}, "Schematron files");
+			
+			setSchema(url);
 			fireEditingStopped();
 		}
 		
