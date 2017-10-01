@@ -48,7 +48,9 @@ public class EscaliPluginExtension implements WorkspaceAccessPluginExtension {
 			// This is the implementation of the
 			// WorkspaceAccessPluginExtension plugin interface.
 			Thread.currentThread().setContextClassLoader(EscaliPluginExtension.this.getClass().getClassLoader());
-
+			
+			EscaliPlugin.getInstance().setWorkspace(pluginWorkspaceAccess);
+			
 			// XSLTStep.transfac = new T
 			EscaliPluginConfig.implementConfig(pluginWorkspaceAccess);
 
