@@ -80,6 +80,7 @@ public class UserEntryListItem extends AbstractListItem<_UserEntry> implements C
 				
 				int kecode = ke.getKeyCode();
 				switch (kecode) {
+				case KeyEvent.VK_RIGHT:
 				case KeyEvent.VK_F2:
 					textField.requestFocus();
 					break;
