@@ -113,7 +113,7 @@ public class OptionPage extends JPanel {
 				GridBagConstants.NORTHWEST, GridBagConstants.NONE);
 
 		SwingUtil.addComponent(this, gbl, ruleTableView, 0, 6, 2, 1, 1.0, 0.0,
-				GridBagConstants.NORTHWEST, GridBagConstants.NONE);
+				GridBagConstants.NORTHWEST, GridBagConstants.BOTH);
 
 		SwingUtil.addComponent(this, gbl, new JPanel(), 0, 10, 1, 1, 1.0, 1.0,
 				GridBagConstants.NORTHWEST, GridBagConstants.BOTH);
