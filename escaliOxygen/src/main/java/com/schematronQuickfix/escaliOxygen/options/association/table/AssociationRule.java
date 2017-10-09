@@ -38,9 +38,10 @@ public class AssociationRule {
 	public static final int ROOTNS_MATCH_MODE = 1;
 	public static final int ROOTEL_MATCH_MODE = 2;
 	public static final int ATTR_MATCH_MODE = 3;
+	public static final int FRAMEWORK_MATCH_MODE = 4;
 
 	public static final String[] MATCH_MODE_LABELS = { "File Name",
-			"Namespace", "Local Root Name", "Attribute" };
+			"Namespace", "Local Root Name", "Attribute", "Framework" };
 
 	private static final Escali ESCALI;
 
@@ -169,12 +170,13 @@ public class AssociationRule {
 		this.matchMode = matchMode;
 	}
 
-	public boolean match(URL url, Document docNode) {
+	public boolean match(URL url, Document docNode, String frameworkUrl) {
 		
 		if(docNode == null)
 			return false;
 		
-		Pattern wildcardMatcher = RegexUtil.wildcardToRegex(getPattern());
+		String pattern = getPattern();
+		Pattern wildcardMatcher = RegexUtil.wildcardToRegex(pattern);
 
 		XPathReader xpr = new XPathReader();
 		NodeList rootAttr = null;
@@ -219,6 +221,13 @@ public class AssociationRule {
 			}
 			
 			return true;
+		case FRAMEWORK_MATCH_MODE:
+			if(frameworkUrl == null)
+				return false;
+			if(pattern == null)
+				return false;
+			boolean isMatch =pattern.equals(frameworkUrl); 
+			return isMatch;
 
 		default:
 			return false;

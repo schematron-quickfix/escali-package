@@ -13,11 +13,13 @@ import com.schematronQuickfix.escaliOxygen.options.EscaliPluginConfig;
 import com.schematronQuickfix.escaliOxygen.options.association.ValidationInfoSet.ValidationInfo;
 import com.schematronQuickfix.escaliOxygen.options.association.table.AssociationRule;
 import com.schematronQuickfix.escaliOxygen.options.association.table.AssociationRuleTable;
+import com.schematronQuickfix.escaliOxygen.options.association.table.AssociationTable;
 import com.schematronQuickfix.escaliOxygen.options.association.xmlModel.XmlModel;
 import com.schematronQuickfix.escaliOxygen.options.association.xmlModel.XmlModelSet;
 import com.schematronQuickfix.escaliOxygen.tools.WSPageAdapter;
 
 import ro.sync.exml.workspace.api.editor.WSEditor;
+import ro.sync.exml.workspace.api.editor.documenttype.DocumentTypeInformation;
 
 public class ValidationInfoSet extends ArrayList<ValidationInfo> {
 	private final URL editorLoc;
@@ -100,7 +102,9 @@ public class ValidationInfoSet extends ArrayList<ValidationInfo> {
 			Document docNode = pageAdapter.getDocument();
 			
 			AssociationRule schematronValidationRule = AssociationRule.getSchematronValidationRule(ema);
-			if(schematronValidationRule.match(editor.getEditorLocation(), docNode)){
+			DocumentTypeInformation docType = editor.getDocumentTypeInformation();
+			String fwName = docType != null ? docType.getFrameworkStoreLocation() : AssociationTable.NULL_FRAMEWORK_LABEL;
+			if(schematronValidationRule.match(editor.getEditorLocation(), docNode, fwName)){
 				validationSet.add(schematronValidationRule);
 			}
 			
@@ -114,7 +118,7 @@ public class ValidationInfoSet extends ArrayList<ValidationInfo> {
 			}
 			if (ruleTable.isActive()) {
 				for (AssociationRule rule : ruleTable) {
-					if (rule.match(editor.getEditorLocation(), docNode)) {
+					if (rule.match(editor.getEditorLocation(), docNode, fwName)) {
 						validationSet.add(rule);
 					}
 				}

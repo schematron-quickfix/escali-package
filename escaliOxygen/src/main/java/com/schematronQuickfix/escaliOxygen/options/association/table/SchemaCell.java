@@ -45,7 +45,10 @@ public class SchemaCell extends JPanel {
 		
 		label = new JLabel("...");
 		if(schemaURL != null){
-			label.setText(schemaURL.getPath());
+			String path = schemaURL.getPath();
+			this.setToolTipText(path);
+			path = path.replaceAll(".*/", "");
+			label.setText(path);
 		}
 		Icon openIc = null;
 		try {

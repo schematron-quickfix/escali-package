@@ -7,17 +7,25 @@ import java.awt.Dimension;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultCellEditor;
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListSelectionModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -25,41 +33,59 @@ import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.JViewport;
+import javax.swing.ListCellRenderer;
 import javax.swing.ListSelectionModel;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.plaf.basic.BasicComboBoxRenderer.UIResource;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.xpath.XPathExpressionException;
 
 import org.apache.batik.ext.swing.GridBagConstants;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.filefilter.IOFileFilter;
+import org.apache.commons.io.filefilter.TrueFileFilter;
+import org.apache.commons.io.filefilter.WildcardFileFilter;
+import org.xml.sax.SAXException;
 
 import com.github.oxygenPlugins.common.gui.images.IconMap;
 import com.github.oxygenPlugins.common.gui.swing.SwingUtil;
+import com.github.oxygenPlugins.common.text.TextSource;
+import com.github.oxygenPlugins.common.xml.staxParser.StringNode;
+import com.schematronQuickfix.escaliOxygen.EscaliPlugin;
 import com.schematronQuickfix.escaliOxygen.toolbar.main.OxygenToolbarButton;
 
+import ro.sync.exml.workspace.api.editor.WSEditor;
+import ro.sync.exml.workspace.api.editor.documenttype.DocumentTypeInformation;
+import ro.sync.exml.workspace.api.standalone.StandalonePluginWorkspace;
+import ro.sync.util.editorvars.EditorVariables;
 
 public class AssociationTable extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 
+	public static final String NULL_FRAMEWORK_LABEL = "";
+
 	// private ArrayList<AssociationRule> rows = new
 	// ArrayList<AssociationRule>();
 	private AssociationRuleTable ruleTable = new AssociationRuleTable();
 
-	String[] columnNames = { "", "Schema", "Match type", "Match Pattern",
-			"Phase", "Language" };
+	String[] columnNames = { "", "Schema", "Match type", "Match Pattern", "Phase", "Language" };
 
 	private JTable table;
 
@@ -85,8 +111,7 @@ public class AssociationTable extends JPanel {
 	// String[] getLanguages(){return this.langs;}
 	// }
 
-	protected class TableModel extends AbstractTableModel implements
-			TableCellRenderer {
+	protected class TableModel extends AbstractTableModel implements TableCellRenderer {
 		protected final static int MIN_SIZE = 10;
 
 		private final DefaultTableCellRenderer transRender = new DefaultTableCellRenderer();
@@ -118,7 +143,7 @@ public class AssociationTable extends JPanel {
 		}
 
 		@Override
-		public Object getValueAt(int rowIndex, int columnIndex) {
+		public Object getValueAt(final int rowIndex, int columnIndex) {
 			if (isOutOfBound(rowIndex)) {
 				return null;
 			}
@@ -129,20 +154,28 @@ public class AssociationTable extends JPanel {
 			case 1:
 				return new SchemaCell(row.getSchema(), rowIndex);
 			case 2:
-				JComboBox<String> boxM = new JComboBox<String>(
-						AssociationRule.MATCH_MODE_LABELS);
+				final JComboBox<String> boxM = new JComboBox<String>(AssociationRule.MATCH_MODE_LABELS);
 				boxM.setSelectedIndex(row.getMatchMode());
+				boxM.addItemListener(new ItemListener() {
+					@Override
+					public void itemStateChanged(ItemEvent e) {
+						tableModel.fireTableCellUpdated(rowIndex, 3);
+					}
+				});
 				return boxM;
 			case 3:
-				return row.getPattern();
-				// return new JCheckBox();
+				if (row.getMatchMode() == AssociationRule.FRAMEWORK_MATCH_MODE) {
+					JComboBox<Framework> boxP = createFrameworkBox(row.getPattern());
+					return boxP;
+				} else {
+					return row.getPattern();
+				}
 			case 4:
 				JComboBox<String> boxP = new JComboBox<String>(row.getPhases());
 				boxP.setSelectedIndex(row.getPhaseSelection());
 				return boxP;
 			case 5:
-				JComboBox<String> boxL = new JComboBox<String>(
-						row.getLanguages());
+				JComboBox<String> boxL = new JComboBox<String>(row.getLanguages());
 				boxL.setSelectedIndex(row.getLangSelection());
 				return boxL;
 			}
@@ -189,12 +222,11 @@ public class AssociationTable extends JPanel {
 		}
 
 		@Override
-		public Component getTableCellRendererComponent(JTable table,
-				Object value, boolean isSelected, boolean hasFocus, int row,
-				int column) {
+		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
+				int row, int column) {
 			Component comp = null;
 			final boolean setSelectionColor = isSelected && column != 0 && ruleTable.isActive();
-			
+
 			if (value == null) {
 				// JLabel l = new JLabel("..");
 				// comp = l;
@@ -218,17 +250,17 @@ public class AssociationTable extends JPanel {
 				Boolean selected = (Boolean) value;
 				jCheckBox.setSelected(selected);
 				comp = jCheckBox;
-				
+
 			} else {
 				JLabel jl = new JLabel(value.toString());
 				jl.setOpaque(!ruleTable.isActive() || setSelectionColor);
 				comp = jl;
 			}
 			comp.setEnabled(ruleTable.isActive());
-			if(setSelectionColor){
+			if (setSelectionColor) {
 				comp.setBackground(table.getSelectionBackground());
 				comp.setForeground(table.getSelectionForeground());
-				if(comp instanceof SchemaCell)
+				if (comp instanceof SchemaCell)
 					((SchemaCell) comp).setOpaque(true);
 			}
 			setToolTipText(getColumnName(column));
@@ -240,7 +272,7 @@ public class AssociationTable extends JPanel {
 			if (value instanceof Boolean) {
 				JCheckBox jcb = new JCheckBox(selListener.createAction(row));
 				jcb.setSelected((Boolean) value);
-				
+
 				return new DefaultCellEditor(jcb);
 			}
 			if (value instanceof JComboBox)
@@ -255,40 +287,176 @@ public class AssociationTable extends JPanel {
 	}
 
 	private class SelectionListener implements ListSelectionListener {
-		
+
 		@Override
 		public void valueChanged(ListSelectionEvent e) {
 			if (e.getValueIsAdjusting())
 				return;
-			if(!ruleTable.isActive())
+			if (!ruleTable.isActive())
 				return;
 
-			final DefaultListSelectionModel target = (DefaultListSelectionModel) e
-					.getSource();
+			final DefaultListSelectionModel target = (DefaultListSelectionModel) e.getSource();
 			for (int i = 0; i < ruleTable.size(); i++) {
 				ruleTable.get(i).setSelected(target.isSelectedIndex(i));
 				tableModel.fireTableCellUpdated(i, 0);
 			}
 		}
-		
-		public AbstractAction createAction(final int row){
+
+		public AbstractAction createAction(final int row) {
 			return new AbstractAction() {
 				private static final long serialVersionUID = 1L;
+
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					JCheckBox jbc = (JCheckBox) e.getSource();
-					if(!jbc.isSelected()){
+					if (!jbc.isSelected()) {
 						table.getSelectionModel().removeSelectionInterval(row, row);
 					}
 				}
 			};
 		}
 
-
 	}
-
+	
+	
 	private void removeRow(ArrayList<AssociationRule> removeRows) {
 		ruleTable.removeAll(removeRows);
+	}
+
+	private static HashMap<String, String> frameworksByUrl = new HashMap<String, String>();
+
+	public static void updateFrameworks(){
+		updateFrameworks(false);
+	}
+	@SuppressWarnings("unchecked")
+	public static void updateFrameworks(boolean checkFileSystem){
+		EscaliPlugin instance = EscaliPlugin.getInstance();
+		if(instance == null)
+			return;
+		
+		StandalonePluginWorkspace workspace = instance.getWorkspace();
+		URL[] urls = workspace.getAllEditorLocations(StandalonePluginWorkspace.MAIN_EDITING_AREA);
+		
+		
+
+		for (URL url : urls) {
+			WSEditor editor = workspace.getEditorAccess(url, StandalonePluginWorkspace.MAIN_EDITING_AREA);
+			if(editor != null){
+				DocumentTypeInformation docType = editor.getDocumentTypeInformation();
+				if(docType != null){
+					String fwLocation = docType.getFrameworkStoreLocation();
+					if(frameworksByUrl.containsKey(fwLocation)){
+						frameworksByUrl.put(fwLocation, docType.getName());
+					}
+				}
+			}
+		}
+		
+		if(!checkFileSystem)
+			return;
+		
+		
+		File[] frameworkUrls = EditorVariables.getAllFrameworksDirs();
+		Collection<File> allFrameworks = new ArrayList<File>();
+		
+		for (File file : frameworkUrls) {
+			try {
+				allFrameworks.addAll(FileUtils.listFiles(file.getAbsoluteFile(), new WildcardFileFilter("*.framework"), TrueFileFilter.TRUE));
+			} catch (IllegalArgumentException e){
+				System.err.println(e.getMessage());
+				e.printStackTrace();
+			}
+		}
+		
+		for (File fw : allFrameworks) {
+			if(!frameworksByUrl.containsKey(fw.getAbsolutePath())){
+				try {
+					StringNode fwSN = new StringNode(fw);
+					String fwName = fwSN.getNodeValue("/serialized/serializableOrderedMap/entry"
+							+ "/documentTypeDescriptor-array/documentTypeDescriptor/field[@name = 'name']/String");
+					frameworksByUrl.put(fw.getAbsolutePath(), fwName);
+							
+				} catch (IOException e) {
+				} catch (SAXException e) {
+				} catch (XMLStreamException e) {
+				} catch (XPathExpressionException e) {
+				}
+			}
+		}
+		
+	}
+	
+	private class Framework {
+		
+		String name;
+		String url;
+		Framework(String name, String url){
+			this.name = name;
+			this.url = url;
+		}
+		@Override
+		public String toString() {
+			return url;
+		}
+		@Override
+		public int hashCode() {
+			return url.hashCode();
+		}
+	}
+	
+	public JComboBox<Framework> createFrameworkBox(String selectedFwUrl) {
+		StandalonePluginWorkspace workspace = EscaliPlugin.getInstance().getWorkspace();
+//		URL[] urls = workspace.getAllEditorLocations(StandalonePluginWorkspace.MAIN_EDITING_AREA);
+
+		JComboBox<Framework> fwBox = new JComboBox<Framework>();
+		final ListCellRenderer<? super Framework> defaultRenderer = fwBox.getRenderer();
+
+		fwBox.setRenderer(new ListCellRenderer<Framework>() {
+			public Component getListCellRendererComponent(JList<? extends Framework> list, Framework value, int index,
+					boolean isSelected, boolean cellHasFocus) {
+				Component comp = defaultRenderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+				if(comp instanceof UIResource){
+					UIResource uiRes = (UIResource) comp;
+					uiRes.setText(value.name);
+					uiRes.setToolTipText(value.url);
+				}
+				return comp;
+			}
+		});
+		
+		ArrayList<String> urlList = new ArrayList<String>(frameworksByUrl.keySet());
+		
+		Collections.sort(urlList);
+		
+		for (String url : urlList) {
+			String name = frameworksByUrl.get(url);
+			Framework fw = new Framework(name, url);
+			fwBox.addItem(fw);
+			if(fw.url.equals(selectedFwUrl)){
+				fwBox.setSelectedItem(fw);
+			}
+		}
+		
+//		String fwDir = workspace.getUtilAccess().expandEditorVariables(EditorVariables.FRAMEWORKS_DIRECTORY, null);
+//		Collection<File> allFrameworks = FileUtils.listFiles(new File(fwDir), new WildcardFileFilter("*.framework"),
+//				TrueFileFilter.TRUE);
+//
+//		for (File fw : allFrameworks) {
+//			System.out.println(fw.toString());
+//		}
+//		// workspace.getCurrentEditorAccess(StandalonePluginWorkspace.MAIN_EDITING_AREA).getEditorLocation()
+//
+//		HashSet<String> fwNames = new HashSet<String>();
+//		for (URL url : urls) {
+//			DocumentTypeInformation docType = workspace
+//					.getEditorAccess(url, StandalonePluginWorkspace.MAIN_EDITING_AREA).getDocumentTypeInformation();
+//			String fwName = docType != null ? docType.getName() : NULL_FRAMEWORK_LABEL;
+//			fwNames.add(fwName);
+//		}
+//		for (String fwName : fwNames) {
+//			fwBox.addItem(new JLabel(fwName));
+//		}
+		return fwBox;
 	}
 
 	private void removeSelectedRows() {
@@ -298,15 +466,13 @@ public class AssociationTable extends JPanel {
 	private boolean rowJump(AssociationRule row, boolean down) {
 		int idx = ruleTable.indexOf(row);
 		if (idx >= 0) {
-			AssociationRule[] rowArray = ruleTable
-					.toArray(new AssociationRule[ruleTable.size()]);
+			AssociationRule[] rowArray = ruleTable.toArray(new AssociationRule[ruleTable.size()]);
 			int switchRowIdx = down ? idx + 1 : idx - 1;
 			if (switchRowIdx >= 0 && switchRowIdx < rowArray.length) {
 				rowArray[idx] = rowArray[switchRowIdx];
 				rowArray[switchRowIdx] = row;
 
-				Collections.sort(ruleTable,
-						new RowComparator(Arrays.asList(rowArray)));
+				Collections.sort(ruleTable, new RowComparator(Arrays.asList(rowArray)));
 				updateSelection();
 				table.updateUI();
 				return true;
@@ -316,13 +482,13 @@ public class AssociationTable extends JPanel {
 			return false;
 		}
 	}
-	
-	private void updateSelection(){
+
+	private void updateSelection() {
 		ListSelectionModel sm = table.getSelectionModel();
 		ArrayList<AssociationRule> selections = new ArrayList<AssociationRule>();
-		
+
 		for (AssociationRule row : ruleTable) {
-			if(row.isSelected())
+			if (row.isSelected())
 				selections.add(row);
 		}
 		sm.clearSelection();
@@ -336,7 +502,7 @@ public class AssociationTable extends JPanel {
 		private final List order;
 		private final boolean reverse;
 
-		public RowComparator(List order) {
+		public RowComparator(List<AssociationRule> order) {
 			this(order, false);
 		}
 
@@ -354,8 +520,7 @@ public class AssociationTable extends JPanel {
 	}
 
 	private void rowJump(ArrayList<AssociationRule> rows, final boolean down) {
-		Collections.sort(rows, new RowComparator(
-				AssociationTable.this.ruleTable, down));
+		Collections.sort(rows, new RowComparator(AssociationTable.this.ruleTable, down));
 
 		for (AssociationRule row : rows) {
 			boolean valid = rowJump(row, down);
@@ -373,7 +538,9 @@ public class AssociationTable extends JPanel {
 		this.ruleTable = ruleTable;
 
 		this.setLayout(gbl);
-
+		
+		updateFrameworks();
+		
 		tableModel = new TableModel();
 		table = new JTable(tableModel) {
 
@@ -388,10 +555,8 @@ public class AssociationTable extends JPanel {
 			}
 
 			@Override
-			public Component prepareRenderer(TableCellRenderer renderer,
-					int row, int column) {
-				Border rightBottom = BorderFactory.createMatteBorder(0, 0, 1,
-						1, Color.GRAY);
+			public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
+				Border rightBottom = BorderFactory.createMatteBorder(0, 0, 1, 1, Color.GRAY);
 				Component c = super.prepareRenderer(renderer, row, column);
 				JComponent jc = (JComponent) c;
 				if (column != 0)
@@ -412,7 +577,7 @@ public class AssociationTable extends JPanel {
 		table.setRowSelectionAllowed(true);
 
 		table.getSelectionModel().addListSelectionListener(selListener);
-		
+
 		JPanel northPanel = new JPanel();
 		JPanel centerPanel = new JPanel();
 		JPanel leftPanel = new JPanel();
@@ -420,25 +585,23 @@ public class AssociationTable extends JPanel {
 		final JPanel rightPanel = new JPanel(rightGBL);
 		JPanel southPanel = new JPanel();
 
-
 		// northPanel.add(table.getTableHeader());
 		// this.add(table.getTableHeader(), BorderLayout.PAGE_START);
-		SwingUtil.addComponent(this, gbl, northPanel, 1, 0, 1, 1, 1.0, 0.0,
-				GridBagConstants.NORTH, GridBagConstants.HORIZONTAL);
-		SwingUtil.addComponent(this, gbl, leftPanel, 0, 0, 1, 3, 0.0, 1.0,
-				GridBagConstants.WEST, GridBagConstants.VERTICAL);
-		SwingUtil.addComponent(this, gbl, centerPanel, 1, 1, 1, 1, 1.0, 1.0,
-				GridBagConstants.CENTER, GridBagConstants.BOTH);
-		SwingUtil.addComponent(this, gbl, rightPanel, 2, 0, 1, 3, 0.0, 1.0,
-				GridBagConstants.EAST, GridBagConstants.VERTICAL);
-		SwingUtil.addComponent(this, gbl, southPanel, 1, 2, 1, 1, 1.0, 0.0,
-				GridBagConstants.SOUTH, GridBagConstants.HORIZONTAL);
+		SwingUtil.addComponent(this, gbl, northPanel, 1, 0, 1, 1, 1.0, 0.0, GridBagConstants.NORTH,
+				GridBagConstants.HORIZONTAL);
+		SwingUtil.addComponent(this, gbl, leftPanel, 0, 0, 1, 3, 0.0, 1.0, GridBagConstants.WEST,
+				GridBagConstants.VERTICAL);
+		SwingUtil.addComponent(this, gbl, centerPanel, 1, 1, 1, 1, 1.0, 1.0, GridBagConstants.CENTER,
+				GridBagConstants.BOTH);
+		SwingUtil.addComponent(this, gbl, rightPanel, 2, 0, 1, 3, 0.0, 1.0, GridBagConstants.EAST,
+				GridBagConstants.VERTICAL);
+		SwingUtil.addComponent(this, gbl, southPanel, 1, 2, 1, 1, 1.0, 0.0, GridBagConstants.SOUTH,
+				GridBagConstants.HORIZONTAL);
 
 		JViewport jvp = new JViewport();
 		jvp.add(table);
-		table.setPreferredScrollableViewportSize(new Dimension(table
-				.getPreferredSize().width, table.getRowHeight()
-				* TableModel.MIN_SIZE));
+		table.setPreferredScrollableViewportSize(
+				new Dimension(table.getPreferredSize().width, table.getRowHeight() * TableModel.MIN_SIZE));
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setViewport(jvp);
 
@@ -452,8 +615,7 @@ public class AssociationTable extends JPanel {
 		centerPanel.add(scrollPane, BorderLayout.CENTER);
 		// this.add(scrollPane, BorderLayout.CENTER);
 
-		final JButton addRow = new OxygenToolbarButton(
-				IconMap.getIcon("/images/Add16.png"), "Add a rule") {
+		final JButton addRow = new OxygenToolbarButton(IconMap.getIcon("/images/Add16.png"), "Add a rule") {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -464,19 +626,15 @@ public class AssociationTable extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent ev) {
 				AssociationRule preset = null;
-				ArrayList<AssociationRule> selection = AssociationTable.this.ruleTable
-						.getSelectedRows();
+				ArrayList<AssociationRule> selection = AssociationTable.this.ruleTable.getSelectedRows();
 				if (selection.size() > 0) {
 					preset = selection.get(0);
 				}
-				AssociationTable.this.ruleTable.add(AssociationRule
-						.createRule(preset));
+				AssociationTable.this.ruleTable.add(AssociationRule.createRule(preset));
 				table.updateUI();
 			}
 		};
-		JButton delRow = new OxygenToolbarButton(
-				IconMap.getIcon("/images/Remove16.png"),
-				"Remove the selected rules") {
+		JButton delRow = new OxygenToolbarButton(IconMap.getIcon("/images/Remove16.png"), "Remove the selected rules") {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -490,9 +648,7 @@ public class AssociationTable extends JPanel {
 				table.updateUI();
 			}
 		};
-		JButton upRow = new OxygenToolbarButton(
-				IconMap.getIcon("/images/UpGray16.png"),
-				"Move the selected rows up") {
+		JButton upRow = new OxygenToolbarButton(IconMap.getIcon("/images/UpGray16.png"), "Move the selected rows up") {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -502,12 +658,10 @@ public class AssociationTable extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent ev) {
-				rowJump(AssociationTable.this.ruleTable.getSelectedRows(),
-						false);
+				rowJump(AssociationTable.this.ruleTable.getSelectedRows(), false);
 			}
 		};
-		JButton downRow = new OxygenToolbarButton(
-				IconMap.getIcon("/images/DownGray16.png"),
+		JButton downRow = new OxygenToolbarButton(IconMap.getIcon("/images/DownGray16.png"),
 				"Move the selected rows down") {
 			private static final long serialVersionUID = 1L;
 
@@ -529,19 +683,18 @@ public class AssociationTable extends JPanel {
 
 		// this.add(rightPanel, BorderLayout.EAST);
 
-		SwingUtil.addComponent(rightPanel, rightGBL, addRow, 0, 0, 1, 1, 1.0,
-				0.0, GridBagConstants.NORTH, GridBagConstants.NONE);
-		SwingUtil.addComponent(rightPanel, rightGBL, delRow, 0, 1, 1, 1, 1.0,
-				0.0, GridBagConstants.NORTH, GridBagConstants.NONE);
-		SwingUtil.addComponent(rightPanel, rightGBL, upRow, 0, 2, 1, 1, 1.0,
-				0.0, GridBagConstants.NORTH, GridBagConstants.NONE);
-		SwingUtil.addComponent(rightPanel, rightGBL, downRow, 0, 3, 1, 1, 1.0,
-				0.0, GridBagConstants.NORTH, GridBagConstants.NONE);
-		SwingUtil.addComponent(rightPanel, rightGBL, new JPanel(), 0, 4, 1, 1,
-				1.0, 1.0, GridBagConstants.NORTH, GridBagConstants.VERTICAL);
+		SwingUtil.addComponent(rightPanel, rightGBL, addRow, 0, 0, 1, 1, 1.0, 0.0, GridBagConstants.NORTH,
+				GridBagConstants.NONE);
+		SwingUtil.addComponent(rightPanel, rightGBL, delRow, 0, 1, 1, 1, 1.0, 0.0, GridBagConstants.NORTH,
+				GridBagConstants.NONE);
+		SwingUtil.addComponent(rightPanel, rightGBL, upRow, 0, 2, 1, 1, 1.0, 0.0, GridBagConstants.NORTH,
+				GridBagConstants.NONE);
+		SwingUtil.addComponent(rightPanel, rightGBL, downRow, 0, 3, 1, 1, 1.0, 0.0, GridBagConstants.NORTH,
+				GridBagConstants.NONE);
+		SwingUtil.addComponent(rightPanel, rightGBL, new JPanel(), 0, 4, 1, 1, 1.0, 1.0, GridBagConstants.NORTH,
+				GridBagConstants.VERTICAL);
 
-		for (JPanel panel : new JPanel[] { northPanel, centerPanel, leftPanel,
-				rightPanel, southPanel }) {
+		for (JPanel panel : new JPanel[] { northPanel, centerPanel, leftPanel, rightPanel, southPanel }) {
 			// panel.setMinimumSize(new Dimension(0, 0));
 			if (panel.getComponentCount() == 0) {
 				panel.setPreferredSize(new Dimension(0, 0));
@@ -564,19 +717,17 @@ public class AssociationTable extends JPanel {
 
 			col.setHeaderRenderer(new TableCellRenderer() {
 				@Override
-				public Component getTableCellRendererComponent(JTable table,
-						Object value, boolean isSelected, boolean hasFocus,
-						int row, int column) {
+				public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
+						boolean hasFocus, int row, int column) {
 					// if(column == 0)
 					// return new JPanel();
 
 					JTableHeader header = table.getTableHeader();
-					Component comp = transRender.getTableCellRendererComponent(
-							table, value, isSelected, hasFocus, row, column);
+					Component comp = transRender.getTableCellRendererComponent(table, value, isSelected, hasFocus, row,
+							column);
 					if (comp instanceof JComponent) {
 						JComponent jc = (JComponent) comp;
-						jc.setBorder(UIManager
-								.getBorder("TableHeader.cellBorder"));
+						jc.setBorder(UIManager.getBorder("TableHeader.cellBorder"));
 						jc.setBackground(header.getBackground());
 						jc.setEnabled(ruleTable.isActive());
 					}

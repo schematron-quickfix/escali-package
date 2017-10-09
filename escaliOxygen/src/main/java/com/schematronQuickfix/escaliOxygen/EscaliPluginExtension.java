@@ -20,6 +20,7 @@ import com.github.oxygenPlugins.common.xml.xslt.MyTransformerFactory;
 import com.github.oxygenPlugins.common.xml.xslt.XSLTStep;
 import com.schematronQuickfix.escaliOxygen.editors.EscaliViewer;
 import com.schematronQuickfix.escaliOxygen.options.EscaliPluginConfig;
+import com.schematronQuickfix.escaliOxygen.options.association.table.AssociationTable;
 import com.schematronQuickfix.escaliOxygen.tools.OxygenResolver;
 import com.schematronQuickfix.xsm.operations.PositionalReplace;
 
@@ -56,7 +57,7 @@ public class EscaliPluginExtension implements WorkspaceAccessPluginExtension {
 
 			try {
 				TextSource.implementResolver(new OxygenResolver(pluginWorkspaceAccess));
-
+				
 				XSLTStep.transfac = new MyTransformerFactory() {
 
 					private OutputURIResolver outputResolver;
@@ -140,7 +141,9 @@ public class EscaliPluginExtension implements WorkspaceAccessPluginExtension {
 				// pluginWorkspaceAccess.getOptionsStorage();
 
 				PositionalReplace.fastMode = false;
-
+				
+				AssociationTable.updateFrameworks(true);
+				
 				ToolbarMenuAdapter tma = new ToolbarMenuAdapter();
 				viewer = new EscaliViewer(tma, pluginWorkspaceAccess);
 				pluginWorkspaceAccess.addViewComponentCustomizer(viewer);
