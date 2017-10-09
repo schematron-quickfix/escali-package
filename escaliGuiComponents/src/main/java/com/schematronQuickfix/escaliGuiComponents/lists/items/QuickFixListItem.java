@@ -2,6 +2,7 @@ package com.schematronQuickfix.escaliGuiComponents.lists.items;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.KeyEvent;
 
 import javax.swing.ButtonGroup;
 import javax.swing.Icon;
@@ -9,6 +10,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import com.github.oxygenPlugins.common.gui.images.IconMap;
+import com.github.oxygenPlugins.common.gui.key.KeyAdapter;
 import com.github.oxygenPlugins.common.gui.lists.DefaultTheme;
 import com.github.oxygenPlugins.common.gui.lists.items.AbstractListItem;
 import com.github.oxygenPlugins.common.gui.swing.SwingUtil;
@@ -26,6 +28,21 @@ public class QuickFixListItem extends AbstractListItem<_QuickFix> implements Com
 		this.radio = new QFRadioButton(qfList, node);
 		buttonGroup.add(radio);
 		radio.setSelected(isSelected);
+		radio.setFocusable(false);
+		new KeyAdapter(this){
+			@Override
+			public void spaceTyped(KeyEvent ke) {
+				setAsChoosen();
+			}
+			@Override
+			public void downRelease(KeyEvent ke) {
+				transferFocus();
+			}
+			@Override
+			public void upRelease(KeyEvent ke) {
+				transferFocusBackward();
+			}
+		};
 		
 		JPanel leftPanel = new JPanel();
 		GridBagLayout gblLeftPanel = new GridBagLayout();

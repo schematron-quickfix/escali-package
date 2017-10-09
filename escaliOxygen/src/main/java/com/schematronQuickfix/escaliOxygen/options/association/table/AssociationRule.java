@@ -170,6 +170,10 @@ public class AssociationRule {
 	}
 
 	public boolean match(URL url, Document docNode) {
+		
+		if(docNode == null)
+			return false;
+		
 		Pattern wildcardMatcher = RegexUtil.wildcardToRegex(getPattern());
 
 		XPathReader xpr = new XPathReader();

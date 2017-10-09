@@ -1,10 +1,12 @@
 package com.schematronQuickfix.escaliGuiComponents.lists;
 
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 
+import com.github.oxygenPlugins.common.gui.key.KeyAdapter;
 import com.github.oxygenPlugins.common.gui.lists.AbstractList;
 import com.schematronQuickfix.escali.control.report._QuickFix;
 import com.schematronQuickfix.escali.control.report._UserEntry;
@@ -88,6 +90,20 @@ public class UserEntryList extends AbstractList<_UserEntry, UserEntryListItem> {
 			}
 			if (asGroups) {
 				JComponent group = this.addListItemAsGroup(items, fix);
+				new KeyAdapter(group){
+					@Override
+					public void upRelease(KeyEvent ke) {
+						component.transferFocusBackward();
+					}
+					@Override
+					public void downRelease(KeyEvent ke) {
+						component.transferFocus();
+					}
+					@Override
+					public void escapeRelease(KeyEvent ke) {
+						parentDialog.requestFocus();
+					}
+				};
 				lastItem.setNextComponent(group);
 			} else {
 				for (UserEntryListItem ueli : items) {

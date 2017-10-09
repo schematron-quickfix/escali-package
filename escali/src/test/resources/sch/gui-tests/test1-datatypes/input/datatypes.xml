@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="../input/test.sch" type="application/xml" schematypens="http://purl.oclc.org/dsdl/schematron"?>
+<root>
+    <supported>
+        <integer></integer>
+        <string></string>
+        <double></double>
+        <date></date>
+        <time></time>
+        <enum></enum>
+        <boolean></boolean>
+    </supported>
+    <not-supported>
+        <int></int>
+        <unsignedInt/>
+        <unsignedShort/>
+        <long></long>
+        <short></short>
+        <decimal></decimal>
+    </not-supported>
+    
+</root>
