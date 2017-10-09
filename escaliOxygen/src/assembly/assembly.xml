@@ -50,6 +50,7 @@
             <unpack>false</unpack>
             <scope>runtime</scope>
             <includes>
+                <include>joda-time</include>
                 <include>com.googlecode.juniversalchardet</include>
                 <include>org.codehaus.woodstox</include>
                 <include>com.github.nkutsche</include>
