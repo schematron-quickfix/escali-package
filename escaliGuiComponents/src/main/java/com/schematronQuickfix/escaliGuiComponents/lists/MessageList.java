@@ -2,6 +2,7 @@ package com.schematronQuickfix.escaliGuiComponents.lists;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
@@ -11,6 +12,7 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 
 import com.github.oxygenPlugins.common.gui.images.IconMap;
+import com.github.oxygenPlugins.common.gui.key.KeyAdapter;
 import com.github.oxygenPlugins.common.gui.lists.AbstractList;
 import com.github.oxygenPlugins.common.gui.lists.items.AbstractItemMouseListener;
 import com.github.oxygenPlugins.common.gui.swing.SwingUtil;
@@ -25,15 +27,13 @@ import com.schematronQuickfix.escaliGuiComponents.toolbar.ButtonFactory.PhaseBut
 import com.schematronQuickfix.escaliGuiComponents.toolbar.GlobalQuickFixToolbar;
 import com.schematronQuickfix.escaliGuiComponents.toolbar.ValidationToolbar;
 
-public class MessageList extends
-		AbstractList<_SVRLMessage, SVRLMessageListItem> {
+public class MessageList extends AbstractList<_SVRLMessage, SVRLMessageListItem> {
 
 	private final EscaliMessangerAdapter ema;
 	private PhaseButton phaseButton;
 	private GridBagLayout gblEEP;
 
-	private class MessageListener extends
-			AbstractItemMouseListener<_SVRLMessage, SVRLMessageListItem> {
+	private class MessageListener extends AbstractItemMouseListener<_SVRLMessage, SVRLMessageListItem> {
 
 		public MessageListener(SVRLMessageListItem item) {
 			super(item, MessageList.this);
@@ -41,12 +41,12 @@ public class MessageList extends
 
 		@Override
 		public void oneClick(MouseEvent e, boolean isSelected) {
-			if(!isSelected) {
+			if (!isSelected) {
 				ema.hideQuickFixAndUserEntryViewer();
 			} else {
 				ema.hideQuickFixAndUserEntryViewer();
-				ema.viewQuickFixes(item.getModelNode(), item.getSelectedFix());
 				ema.showMessage(this.item.getModelNode());
+				ema.viewQuickFixes(item.getModelNode(), item.getSelectedFix());
 			}
 		}
 
@@ -56,12 +56,12 @@ public class MessageList extends
 		}
 	}
 
-	public MessageList(EscaliMessangerAdapter ema) { //, boolean standalone
+	public MessageList(EscaliMessangerAdapter ema) { // , boolean standalone
 		super();
 
 		this.gblEEP = new GridBagLayout();
 		this.emptyEndPanel.setLayout(gblEEP);
-		
+
 		this.isMultiSelectable = false;
 		this.ema = ema;
 		if (ema.isStandalon()) {
@@ -71,15 +71,19 @@ public class MessageList extends
 		for (JButton btn : GlobalQuickFixToolbar.getToolbarButtons(ema, this)) {
 			this.addComponentToToolbar(btn, i++, 0, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE);
 		}
-		this.addComponentToToolbar(new JPanel(), i++, 0, 1, 1, 1.0, 1.0, GridBagConstraints.EAST, GridBagConstraints.BOTH);
+		this.addComponentToToolbar(new JPanel(), i++, 0, 1, 1, 1.0, 1.0, GridBagConstraints.EAST,
+				GridBagConstraints.BOTH);
 		this.phaseButton = ButtonFactory.getPhaseButton(ema, this);
-		this.addComponentToToolbar(phaseButton.getButton(), i++, 0, 1, 1, 0.0, 0.0, GridBagConstraints.EAST, GridBagConstraints.NONE);
+		this.addComponentToToolbar(phaseButton.getButton(), i++, 0, 1, 1, 0.0, 0.0, GridBagConstraints.EAST,
+				GridBagConstraints.NONE);
 		OptionButton showOptionBtn = ButtonFactory.getOptionButton(ema, this);
-		this.addComponentToToolbar(showOptionBtn.getButton(), i++, 0, 1, 1, 0.0, 0.0, GridBagConstraints.EAST, GridBagConstraints.NONE);
+		this.addComponentToToolbar(showOptionBtn.getButton(), i++, 0, 1, 1, 0.0, 0.0, GridBagConstraints.EAST,
+				GridBagConstraints.NONE);
 	}
-	
-	public void setEmptyLabel(JComponent label){
-		SwingUtil.addComponent(this.emptyEndPanel, gblEEP, label, 0, 0, 1, 1, 1.0, 1.0, GridBagConstraints.NORTH, GridBagConstraints.HORIZONTAL);
+
+	public void setEmptyLabel(JComponent label) {
+		SwingUtil.addComponent(this.emptyEndPanel, gblEEP, label, 0, 0, 1, 1, 1.0, 1.0, GridBagConstraints.NORTH,
+				GridBagConstraints.HORIZONTAL);
 	}
 
 	public void viewReport(ArrayList<_Report> reports) {
@@ -88,12 +92,36 @@ public class MessageList extends
 		for (_Report report : reports) {
 			ArrayList<SVRLMessageListItem> itemList = new ArrayList<SVRLMessageListItem>();
 			for (_SVRLMessage message : report.getMessages()) {
-				SVRLMessageListItem msgItem = new SVRLMessageListItem(ema,
-						message);
-				msgItem.addSelectionListener(new MessageListener(msgItem));
+				final SVRLMessageListItem msgItem = new SVRLMessageListItem(ema, message);
+				final MessageListener messageListener = new MessageListener(msgItem);
+				msgItem.addSelectionListener(messageListener);
+				new KeyAdapter(msgItem) {
+					public void downRelease(KeyEvent ke) {
+						component.transferFocus();
+					}
+
+					public void upPressed(KeyEvent ke) {
+						component.transferFocusBackward();
+					}
+					@Override
+					public void spaceRelease(KeyEvent ke) {
+						selectUnselectItem(ke, msgItem);
+						messageListener.oneClick(null, msgItem.isSelected());
+					}
+					@Override
+					public void enterTyped(KeyEvent ke) {
+						if (ke.isShiftDown()) {
+							messageListener.doubleClick(null);
+						} else if (ke.isControlDown()) {
+							messageListener.oneClick(null, !msgItem.isSelected());
+						} else {
+							messageListener.oneClick(null, !msgItem.isSelected());
+						}
+					}
+				};
 				itemList.add(msgItem);
 			}
-			if(!report.hasIcon()){
+			if (!report.hasIcon()) {
 				ImageIcon icon;
 				switch (report.getMaxErrorLevelInt()) {
 				case _SVRLMessage.LEVEL_FATAL_ERROR:
