@@ -69,6 +69,8 @@ public class ValidationAdapter extends ValidationProblemsFilter implements
 	private final EscaliMessanger ema;
 	
 	private String rememberPhase = null;
+	
+	private static ValidationProcessLogger oxygenLogger  = new ValidationProcessLogger();
 
 	// private boolean isValidating = false;
 
@@ -135,7 +137,6 @@ public class ValidationAdapter extends ValidationProblemsFilter implements
 		if(!config.isActive())
 			return;
 		
-		ValidationProcessLogger logger = new ValidationProcessLogger();
 
 		ArrayList<DocumentPositionedInfo> schProblems = new ArrayList<DocumentPositionedInfo>();
 		
@@ -180,11 +181,11 @@ public class ValidationAdapter extends ValidationProblemsFilter implements
 					if(this.rememberPhase != null){
 						vi.setPhase(rememberPhase);
 					}
-					addReport(valEngine.validate(vi, editor, logger));
+					addReport(valEngine.validate(vi, editor, oxygenLogger));
 				}
-				problemList.addAll(viewMessages(logger));
+				problemList.addAll(viewMessages(oxygenLogger));
 			} catch (CancelException e) {
-				problemList.addAll(viewErrorLog(logger));
+				problemList.addAll(viewErrorLog(oxygenLogger));
 			}
 			problems.setProblemsList(problemList);
 		}
