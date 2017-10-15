@@ -2,6 +2,8 @@ package com.schematronQuickfix.escaliOxygen;
 
 import javax.swing.JComponent;
 
+import com.github.oxygenPlugins.common.process.log.DefaultProcessLoger;
+import com.github.oxygenPlugins.common.process.log.MuteProcessLoger;
 import com.schematronQuickfix.escaliOxygen.options.EscaliPluginConfig;
 import com.schematronQuickfix.escaliOxygen.options.OptionPage;
 
@@ -9,6 +11,10 @@ import ro.sync.exml.plugin.option.OptionPagePluginExtension;
 import ro.sync.exml.workspace.api.PluginWorkspace;
 
 public class EscaliPluginOptions extends OptionPagePluginExtension {
+	
+	static {
+		DefaultProcessLoger.setDefaultProcessLogger(new MuteProcessLoger());
+	}
 	
 	private OptionPage page = new OptionPage();
 

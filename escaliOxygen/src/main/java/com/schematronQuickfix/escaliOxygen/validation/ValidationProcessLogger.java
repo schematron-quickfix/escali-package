@@ -3,12 +3,12 @@ package com.schematronQuickfix.escaliOxygen.validation;
 import java.util.ArrayList;
 
 import com.github.oxygenPlugins.common.process.exceptions.CancelException;
-import com.github.oxygenPlugins.common.process.log.DefaultProcessLoger;
+import com.github.oxygenPlugins.common.process.log.MuteProcessLoger;
 import com.github.oxygenPlugins.common.process.log.ProcessLoger;
 import com.github.oxygenPlugins.common.xml.exceptions.ValidationSummaryException;
 
 
-public class ValidationProcessLogger extends DefaultProcessLoger implements ProcessLoger {
+public class ValidationProcessLogger extends MuteProcessLoger implements ProcessLoger {
 	
 	ArrayList<ValidationSummaryException> validationExceptions = new ArrayList<ValidationSummaryException>();
 	ArrayList<Exception> allExceptions = new ArrayList<Exception>();

@@ -13,9 +13,12 @@ import javax.xml.transform.TransformerConfigurationException;
 
 import com.github.oxygenPlugins.common.gui.images.IconMap;
 import com.github.oxygenPlugins.common.oxygen.adapter.ToolbarMenuAdapter;
+import com.github.oxygenPlugins.common.process.log.DefaultProcessLoger;
+import com.github.oxygenPlugins.common.process.log.MuteProcessLoger;
 import com.github.oxygenPlugins.common.reflect.ReflectionUtil;
 import com.github.oxygenPlugins.common.text.TextSource;
 import com.github.oxygenPlugins.common.xml.exceptions.XSLTErrorListener;
+import com.github.oxygenPlugins.common.xml.staxParser.StringNode;
 import com.github.oxygenPlugins.common.xml.xslt.MyTransformerFactory;
 import com.github.oxygenPlugins.common.xml.xslt.XSLTStep;
 import com.schematronQuickfix.escaliOxygen.editors.EscaliViewer;
@@ -32,7 +35,11 @@ public class EscaliPluginExtension implements WorkspaceAccessPluginExtension {
 	public static IconMap ICONS;
 
 	private EscaliViewer viewer;
-
+	
+	static {
+		DefaultProcessLoger.setDefaultProcessLogger(new MuteProcessLoger());
+	}
+	
 	@Override
 	public boolean applicationClosing() {
 		// TODO Auto-generated method stub
@@ -44,6 +51,7 @@ public class EscaliPluginExtension implements WorkspaceAccessPluginExtension {
 	public void applicationStarted(final StandalonePluginWorkspace pluginWorkspaceAccess) {
 		// TODO Auto-generated method stub
 
+		
 		ClassLoader oldClassLoader = Thread.currentThread().getContextClassLoader();
 		try {
 			// This is the implementation of the
