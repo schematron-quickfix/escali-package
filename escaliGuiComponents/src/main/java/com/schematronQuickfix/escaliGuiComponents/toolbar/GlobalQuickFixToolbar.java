@@ -46,7 +46,12 @@ public class GlobalQuickFixToolbar extends JToolBar {
 			
 			@Override
 			public void actionPerformed(ActionEvent ev) {
-				
+				ArrayList<_QuickFix> fixList = getSelectedQuickFixes(messageList);
+				for (_QuickFix fix : fixList) {
+					for (_QuickFix relFix : fix.getMsgRelFixes()) {
+						ema.notifySelectedFix(relFix);
+					}
+				}
 			}
 
 			@Override
@@ -60,7 +65,12 @@ public class GlobalQuickFixToolbar extends JToolBar {
 			
 			@Override
 			public void actionPerformed(ActionEvent ev) {
-				
+				ArrayList<_QuickFix> fixList = getSelectedQuickFixes(messageList);
+				for (_QuickFix fix : fixList) {
+					for (_QuickFix relFix : fix.getFixRelFixes()) {
+						ema.notifySelectedFix(relFix);
+					}
+				}
 			}
 
 			@Override
@@ -128,6 +138,18 @@ public class GlobalQuickFixToolbar extends JToolBar {
 		for (JButton btn : getToolbarButtons(ema, messageList)) {
 			this.add(btn);
 		}
+	}
+	
+	private static ArrayList<_QuickFix> getSelectedQuickFixes(MessageList messageList){
+		ArrayList<_QuickFix> fixList = new ArrayList<_QuickFix>(); 
+		
+		for(SVRLMessageListItem item : messageList.getAllItems()){
+			_QuickFix fix = item.getSelectedFix();
+			if(fix != null){
+				fixList.add(fix);
+			}
+		}
+		return fixList;
 	}
 	
 	
