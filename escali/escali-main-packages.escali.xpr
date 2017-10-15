@@ -3416,6 +3416,7 @@
         </folder>
         <folder path="../../com.github.oxygen-plugins.common-xml/"/>
         <folder path="."/>
+        <folder path="../escaliOxygen/"/>
         <folder path="../xsm/"/>
     </projectTree>
 </project>
