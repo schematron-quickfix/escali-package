@@ -46,7 +46,7 @@ public class PhaseMenuItem extends JMenuItem {
 	
 	private void action(){
 		try {
-			ema.validate(phase, new DefaultProcessLoger()).execute();
+			ema.validate(phase, DefaultProcessLoger.getDefaultProccessLogger()).execute();
 		} catch (CancelException e) {
 		}
 	}

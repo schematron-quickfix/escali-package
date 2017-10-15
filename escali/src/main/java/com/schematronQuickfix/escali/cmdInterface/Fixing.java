@@ -39,7 +39,7 @@ public class Fixing {
 
 	public Fixing(File schema, TextSource source, Config config) throws XSLTErrorListener, XPathExpressionException,
 			IOException, SAXException, URISyntaxException, XMLStreamException, CancelException {
-		this(new Validation(schema, new DefaultProcessLoger()).validate(source), source, config);
+		this(new Validation(schema, DefaultProcessLoger.getDefaultProccessLogger()).validate(source), source, config);
 	}
 
 	public Fixing(SVRLReport report, TextSource source, Config config) throws FileNotFoundException, XSLTErrorListener {

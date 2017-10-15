@@ -39,7 +39,7 @@ public class Validation {
 	}
 	
 	public SVRLReport validate(TextSource source) throws XPathExpressionException, XSLTErrorListener, IOException, SAXException, URISyntaxException, XMLStreamException{
-		return this.escali.validate(source, new DefaultProcessLoger());
+		return this.escali.validate(source, DefaultProcessLoger.getDefaultProccessLogger());
 	}
 	
 	public void executeFix(String fixId) throws XSLTErrorListener, IOException {

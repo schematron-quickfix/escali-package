@@ -79,7 +79,7 @@ public class EscaliCmd {
 		if(EscaliOptions.hasOption(cmd, EscaliOptions.PHASE_OPTION)){
 			config.setPhase(EscaliOptions.getOptionValue(cmd, EscaliOptions.PHASE_OPTION));
 		}
-		Validation cmdValidation = new Validation(schema, config, new DefaultProcessLoger());
+		Validation cmdValidation = new Validation(schema, config, DefaultProcessLoger.getDefaultProccessLogger());
 		
 		
 		SVRLReport report = cmdValidation.validate(instance);

@@ -76,15 +76,15 @@ public class SVRLReport {
 	
 	
 	private TextSource getReportAsHTML(){
-		return htmlPrinter.pipeMain(this.svrl.getTextSource(), new DefaultProcessLoger());
+		return htmlPrinter.pipeMain(this.svrl.getTextSource(), DefaultProcessLoger.getDefaultProccessLogger());
 	}
 	
 	private TextSource getReportAsText(){
-		return textPrinter.pipeMain(this.svrl.getTextSource(), new DefaultProcessLoger());
+		return textPrinter.pipeMain(this.svrl.getTextSource(), DefaultProcessLoger.getDefaultProccessLogger());
 	}
 	
 	private TextSource getReportEscali(){
-		return escaliPrinter.pipeMain(this.svrl.getTextSource(), new DefaultProcessLoger());
+		return escaliPrinter.pipeMain(this.svrl.getTextSource(), DefaultProcessLoger.getDefaultProccessLogger());
 	}
 	
 	private TextSource getReportOxygen() throws IOException, SAXException, XMLStreamException, XPathExpressionException{

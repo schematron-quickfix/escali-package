@@ -47,7 +47,7 @@ public class Validator {
 			ProcessLoger loger) {
 		loger.log("Create validator");
 		return precompilerPipe.pipeMain(schema, config.createCompilerParams(),
-				new DefaultProcessLoger());
+				DefaultProcessLoger.getDefaultProccessLogger());
 	}
 
 	protected void compileSchema(TextSource schema,

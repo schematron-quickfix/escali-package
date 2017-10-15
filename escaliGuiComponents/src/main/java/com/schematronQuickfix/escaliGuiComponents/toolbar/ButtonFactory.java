@@ -30,7 +30,7 @@ public class ButtonFactory {
 						@Override
 						public void action(MouseEvent e) {
 							try {
-								ema.validate(new DefaultProcessLoger())
+								ema.validate(DefaultProcessLoger.getDefaultProccessLogger())
 										.execute();
 							} catch (CancelException e1) {
 							}

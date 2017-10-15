@@ -45,7 +45,7 @@ public class CommandlineTool {
 		this.input = input;
 		this.outFile = outFile;
 		this.escali = new Escali();
-		this.escali.compileSchema(TextSource.readTextFile(schema), new DefaultProcessLoger());
+		this.escali.compileSchema(TextSource.readTextFile(schema), DefaultProcessLoger.getDefaultProccessLogger());
 		validate();
 		
 		
@@ -53,7 +53,7 @@ public class CommandlineTool {
 	}
 	
 	private void validate() throws XPathExpressionException, FileNotFoundException, XSLTErrorListener, IOException, SAXException, URISyntaxException, XMLStreamException{
-		this.report = this.escali.validate(TextSource.readTextFile(this.input), new DefaultProcessLoger());
+		this.report = this.escali.validate(TextSource.readTextFile(this.input), DefaultProcessLoger.getDefaultProccessLogger());
 		System.out.println(printValidationReport());
 		System.out.println(Menus.firstMenu);
 		System.out.print("Type your selection: ");

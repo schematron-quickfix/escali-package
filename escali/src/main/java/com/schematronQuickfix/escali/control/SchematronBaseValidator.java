@@ -29,7 +29,7 @@ public class SchematronBaseValidator {
 		xerces = new Xerces(ProcessNamespaces.SCH_NS, resource.getSchematronSchema());
 		this.internEscali = new Escali(config, resource, false);
 		TextSource sqfSch = TextSource.readXmlFile(resource.getSchematronForSchematron());
-		internEscali.compileSchema(sqfSch, new DefaultProcessLoger());
+		internEscali.compileSchema(sqfSch, DefaultProcessLoger.getDefaultProccessLogger());
 
 	}
 
@@ -45,7 +45,7 @@ public class SchematronBaseValidator {
 		}
 		_Report report;
 		try {
-			report = internEscali.validate(schema, new DefaultProcessLoger()).getReport();
+			report = internEscali.validate(schema, DefaultProcessLoger.getDefaultProccessLogger()).getReport();
 			double mel = report.getMaxErrorLevel();
 			if (mel >= _SVRLMessage.LEVEL_ERROR) {
 				ArrayList<_SVRLMessage> errors = report.getMessages(_SVRLMessage.LEVEL_ERROR,

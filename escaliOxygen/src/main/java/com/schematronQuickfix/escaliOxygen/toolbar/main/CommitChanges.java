@@ -39,7 +39,7 @@ public class CommitChanges extends OxygenToolbarButton {
 		try {
 			PositionalReplace xsm = new PositionalReplace(editor.getInstance());
 			xsm.deleteNode(OXY_CHANGE_MARKER_XPATH);
-			editor.setInstance(xsm.getSource(), new DefaultProcessLoger()).execute();
+			editor.setInstance(xsm.getSource(), DefaultProcessLoger.getDefaultProccessLogger()).execute();
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (SAXException e) {
