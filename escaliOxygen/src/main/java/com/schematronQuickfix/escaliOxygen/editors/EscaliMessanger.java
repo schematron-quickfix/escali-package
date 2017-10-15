@@ -2,7 +2,6 @@ package com.schematronQuickfix.escaliOxygen.editors;
 
 import java.awt.Color;
 import java.awt.Point;
-import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -19,9 +18,9 @@ import javax.swing.text.StyledDocument;
 
 import com.github.oxygenPlugins.common.collections.MultiValueHashMap;
 import com.github.oxygenPlugins.common.gui.buttons.AbstractDropDownButton;
-import com.github.oxygenPlugins.common.gui.buttons.DropDownButton;
 import com.github.oxygenPlugins.common.gui.buttons._DropDownButtonAction;
 import com.github.oxygenPlugins.common.oxygen.adapter.ToolbarMenuAdapter;
+import com.github.oxygenPlugins.common.oxygen.buttons.DropDownButton;
 import com.github.oxygenPlugins.common.process.exceptions.CancelException;
 import com.github.oxygenPlugins.common.process.log.ProcessLoger;
 import com.github.oxygenPlugins.common.process.queues.VoidWorker;
@@ -31,9 +30,7 @@ import com.schematronQuickfix.escali.control.report._Phase;
 import com.schematronQuickfix.escali.control.report._QuickFix;
 import com.schematronQuickfix.escali.control.report._SVRLMessage;
 import com.schematronQuickfix.escali.resources.EscaliArchiveResources;
-import com.schematronQuickfix.escali.resources.EscaliFileResources;
 import com.schematronQuickfix.escaliGuiComponents.adapter.EscaliMessangerAdapter;
-import com.schematronQuickfix.escaliOxygen.EscaliPlugin;
 import com.schematronQuickfix.escaliOxygen.EscaliPluginExtension;
 import com.schematronQuickfix.escaliOxygen.EscaliPluginOptions;
 import com.schematronQuickfix.escaliOxygen.options.EscaliPluginConfig;
