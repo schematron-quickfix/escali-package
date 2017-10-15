@@ -30,18 +30,21 @@ import com.schematronQuickfix.escali.resources.EscaliResourcesInterface;
 import com.schematronQuickfix.xsm.operations.PositionalReplace;
 
 public class Executor {
-	
+
 	private XSLTPipe extractor = new XSLTPipe("Extractor");
-	private XSLTStep[] manipulatorGenSteps = null; 
-	public Executor(EscaliResourcesInterface resource) throws XSLTErrorListener, FileNotFoundException{
+	private XSLTStep[] manipulatorGenSteps = null;
+
+	public Executor(EscaliResourcesInterface resource) throws XSLTErrorListener, FileNotFoundException {
 		extractor.addStep(resource.getExtractor());
-		manipulatorGenSteps = new XSLTStep[]{new XSLTStep(resource.getManipulator()[0], new ArrayList<Parameter>())};
+		manipulatorGenSteps = new XSLTStep[] { new XSLTStep(resource.getManipulator()[0], new ArrayList<Parameter>()) };
 	}
 
-//	public TextSource execute(_QuickFix[] fixes, SVRLReport report, Config config) throws XSLTErrorListener{
-//		return execute(fixes, report.getInput(), report.getSVRL(), config);
-//	}
-	public ArrayList<TextSource> execute(_QuickFix[] fixes, TextSource input, TextSource svrl, final HashMap<String, TextSource> fixParts, Config config) throws XSLTErrorListener{
+	// public TextSource execute(_QuickFix[] fixes, SVRLReport report, Config
+	// config) throws XSLTErrorListener{
+	// return execute(fixes, report.getInput(), report.getSVRL(), config);
+	// }
+	public ArrayList<TextSource> execute(_QuickFix[] fixes, TextSource input, TextSource svrl,
+			final HashMap<String, TextSource> fixParts, Config config) throws XSLTErrorListener {
 		String[] ids = new String[fixes.length];
 		ArrayList<Parameter> ueParams = new ArrayList<Parameter>();
 		for (int i = 0; i < ids.length; i++) {
@@ -52,21 +55,20 @@ public class Executor {
 			}
 		}
 		XSLTPipe manipulator = new XSLTPipe("", new XSLTErrorListener());
-		
-		
+
 		ArrayList<Parameter> params = new ArrayList<Parameter>();
 		params.add(new Parameter("id", ids));
 		params.add(new Parameter("markChanges", !config.getChangePrefix().equals("")));
-		
+
 		extractor.setURIResolver(new URIResolver() {
-			
+
 			@Override
 			public Source resolve(String href, String base) throws TransformerException {
 				URI uri = URI.create(base);
 				uri = uri.resolve(href);
 				File absFile = new File(uri);
 				String systemId = absFile.toURI().toString();
-				if(fixParts.containsKey(systemId)){
+				if (fixParts.containsKey(systemId)) {
 					TextSource fixPart = fixParts.get(systemId);
 					StringReader reader = new StringReader(fixPart.toString());
 					StreamSource src = new StreamSource(reader);
@@ -77,13 +79,13 @@ public class Executor {
 				}
 			}
 		});
-		
-		TextSource extractorXSL = extractor.pipeMain(svrl, params); 
+
+		TextSource extractorXSL = extractor.pipeMain(svrl, params);
 		manipulator.addStep(extractorXSL, ueParams);
 		manipulator.addStep(manipulatorGenSteps[0]);
 		ArrayList<TextSource> extractorResult = manipulator.pipe(input, config.createManipulatorParams());
-		
-		if(config.isXmlSaveMode()){
+
+		if (config.isXmlSaveMode()) {
 			ArrayList<TextSource> xsmResults = new ArrayList<TextSource>();
 			for (TextSource result : extractorResult) {
 				try {
@@ -105,6 +107,6 @@ public class Executor {
 		} else {
 			return extractorResult;
 		}
-//		return extractorXSL;
+		// return extractorXSL;
 	}
 }
