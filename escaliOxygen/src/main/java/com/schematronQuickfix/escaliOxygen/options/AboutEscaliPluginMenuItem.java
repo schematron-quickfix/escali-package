@@ -17,7 +17,7 @@ public class AboutEscaliPluginMenuItem extends JMenuItem {
 	public AboutEscaliPluginMenuItem(JFrame parentFrame){
 		super("About Escali Plugin");
 		aop = new AboutEscaliPlugin(parentFrame);
-		this.setIcon(EscaliPluginExtension.ICONS.getIcon(13, 20));
+		this.setIcon(EscaliPluginExtension.ICONS.getIcon(13, 23));
 		this.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
