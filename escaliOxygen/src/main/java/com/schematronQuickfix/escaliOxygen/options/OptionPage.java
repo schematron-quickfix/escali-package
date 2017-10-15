@@ -1,16 +1,20 @@
 package com.schematronQuickfix.escaliOxygen.options;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import javax.swing.BorderFactory;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JSeparator;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -27,11 +31,11 @@ public class OptionPage extends JPanel {
 	private final GridBagLayout gbl = new GridBagLayout();
 
 	private final JCheckBox escaliPattern = new JCheckBox(
-			"Detect schema by processing-instruction <?xml-model?>");
+			"Detect schema by Escali Pattern");
 	private final JCheckBox active = new JCheckBox(
 			"Use Escali Schematron Plugin for Schematron validation");
 	private final JCheckBox xmlModel = new JCheckBox(
-			"Detect schema by Escali Pattern");
+			"Detect schema by processing-instruction <?xml-model?>");
 	private final JCheckBox useRuleTable = new JCheckBox(
 			"Detect schema by the following rule table");
 
@@ -46,7 +50,7 @@ public class OptionPage extends JPanel {
 		JLabel saxVersLbl = new JLabel(
 				"Select the Saxon version for Schematron validation: ");
 		components.add(xmlModel);
-		components.add(escaliPattern);
+//		components.add(escaliPattern);
 		components.add(saxVersLbl);
 		components.add(saxonVersion);
 		components.add(useRuleTable);
@@ -95,19 +99,25 @@ public class OptionPage extends JPanel {
 
 		SwingUtil.addComponent(this, gbl, label, 0, 0, 2, 1, 1.0, 0.0,
 				GridBagConstants.NORTHWEST, GridBagConstants.NONE);
-		SwingUtil.addComponent(this, gbl, active, 0, 1, 2, 1, 1.0, 0.0,
+
+		JSeparator separator = new JSeparator(JSeparator.HORIZONTAL);
+//		separator.setBorder(BorderFactory.createLineBorder(Color.GRAY));
+		SwingUtil.addComponent(this, gbl, separator, 0, 1, 2, 1, 1.0, 0.0,
+				GridBagConstants.NORTHWEST, GridBagConstants.HORIZONTAL, new Insets(1, 0, 2, 0));
+		
+		SwingUtil.addComponent(this, gbl, active, 0, 2, 2, 1, 1.0, 0.0,
 				GridBagConstants.NORTHWEST, GridBagConstants.NONE);
 
-		SwingUtil.addComponent(this, gbl, saxVersLbl, 0, 2, 1, 1, 1.0, 0.0,
+		SwingUtil.addComponent(this, gbl, saxVersLbl, 0, 3, 1, 1, 1.0, 0.0,
 				GridBagConstants.NORTHWEST, GridBagConstants.NONE);
 
-		SwingUtil.addComponent(this, gbl, saxonVersion, 1, 2, 1, 1, 1.0, 0.0,
-				GridBagConstants.NORTHEAST, GridBagConstants.NONE);
+		SwingUtil.addComponent(this, gbl, saxonVersion, 1, 3, 1, 1, 1.0, 0.0,
+				GridBagConstants.NORTHEAST, GridBagConstants.HORIZONTAL);
 
-		SwingUtil.addComponent(this, gbl, xmlModel, 0, 3, 2, 1, 1.0, 0.0,
+		SwingUtil.addComponent(this, gbl, xmlModel, 0, 4, 2, 1, 1.0, 0.0,
 				GridBagConstants.NORTHWEST, GridBagConstants.NONE);
-		SwingUtil.addComponent(this, gbl, escaliPattern, 0, 4, 2, 1, 1.0, 0.0,
-				GridBagConstants.NORTHWEST, GridBagConstants.NONE);
+//		SwingUtil.addComponent(this, gbl, escaliPattern, 0, 4, 2, 1, 1.0, 0.0,
+//				GridBagConstants.NORTHWEST, GridBagConstants.NONE);
 
 		SwingUtil.addComponent(this, gbl, useRuleTable, 0, 5, 2, 1, 1.0, 0.0,
 				GridBagConstants.NORTHWEST, GridBagConstants.NONE);

@@ -29,8 +29,8 @@ public class EscaliPluginConfig extends WSOptionListener {
 			+ "xmlns:es=\"http://www.escali.schematron-quickfix.com/\">"
 			+ "<es:detectSchema pi=\"true\" esPattern=\"true\"/>"
 			+ "<es:rules active=\"false\"/>" + "</es:escaliPluginConfig>";
-	public final static String[] SAXON_VERSIONS = new String[] { "HE", "PE",
-			"EE" };
+	public final static String[] SAXON_VERSIONS = new String[] { "Home Edition (HE)", "Professional Edition (PE)",
+			"Enterprise Edition (EE)" };
 	
 	public final static int[] SAXON_VERSIONS_OXYGEN = {
 		XMLUtilAccess.TRANSFORMER_SAXON_HOME_EDITION,
