@@ -24,6 +24,7 @@
             <excludes>
                 <exclude>plugin.dtd</exclude>
                 <exclude>**/*.gif</exclude>
+                <exclude>**/*.png</exclude>
             </excludes>
             <filtered>true</filtered>
         </fileSet>
@@ -33,6 +34,7 @@
             <outputDirectory>/</outputDirectory>
             <includes>
                 <include>**/*.gif</include>
+                <include>**/*.png</include>
             </includes>
             <filtered>false</filtered>
         </fileSet>
