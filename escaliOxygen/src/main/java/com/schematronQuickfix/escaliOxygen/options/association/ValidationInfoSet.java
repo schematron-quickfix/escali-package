@@ -32,8 +32,7 @@ public class ValidationInfoSet extends ArrayList<ValidationInfo> {
 		private String lang;
 		private final String title;
 
-		private ValidationInfo(URL baseURL, URL schemaLocation, String phase,
-				String lang, String title) {
+		private ValidationInfo(URL baseURL, URL schemaLocation, String phase, String lang, String title) {
 			this.baseURL = baseURL;
 			this.schemaLocation = schemaLocation;
 			this.phase = phase;
@@ -41,8 +40,7 @@ public class ValidationInfoSet extends ArrayList<ValidationInfo> {
 			this.title = title;
 		}
 
-		private ValidationInfo(URL baseURL, URL schemaLocation, String phase,
-				String lang) {
+		private ValidationInfo(URL baseURL, URL schemaLocation, String phase, String lang) {
 			this(baseURL, schemaLocation, phase, lang, "");
 		}
 
@@ -62,22 +60,19 @@ public class ValidationInfoSet extends ArrayList<ValidationInfo> {
 			return this.baseURL.toString();
 		}
 
+		public String getLang() {
+			return lang;
+		}
 	}
 
 	public void add(XmlModel model) {
 		ValidationInfo vi;
-		try {
-			vi = new ValidationInfo(this.editorLoc, model.getHref().toURI().toURL(),
-					model.getPhase(), "#ALL");
-			this.add(vi);
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		}
+		vi = new ValidationInfo(this.editorLoc, model.getHref(), model.getPhase(), "#ALL");
+		this.add(vi);
 	}
 
 	public void add(AssociationRule rule) {
-		ValidationInfo vi = new ValidationInfo(this.editorLoc,
-				rule.getSchema(), rule.getPhaseSelectionValue(),
+		ValidationInfo vi = new ValidationInfo(this.editorLoc, rule.getSchema(), rule.getPhaseSelectionValue(),
 				rule.getLangSelectionValue());
 		this.add(vi);
 	}
@@ -86,32 +81,28 @@ public class ValidationInfoSet extends ArrayList<ValidationInfo> {
 		this.editorLoc = editorLoc;
 	}
 
-	public static ValidationInfoSet createValidationInfo(WSEditor editor,
-			EscaliMessanger ema) {
+	public static ValidationInfoSet createValidationInfo(WSEditor editor, EscaliMessanger ema) {
 
-		ValidationInfoSet validationSet = new ValidationInfoSet(
-				editor.getEditorLocation());
+		ValidationInfoSet validationSet = new ValidationInfoSet(editor.getEditorLocation());
 
 		EscaliPluginConfig config = EscaliPluginConfig.config;
-		WSPageAdapter pageAdapter = WSPageAdapter.getWSEditorAdapter(editor
-				.getCurrentPage());
-		
-		
+		WSPageAdapter pageAdapter = WSPageAdapter.getWSEditorAdapter(editor.getCurrentPage());
+
 		if (config.isActive()) {
 			AssociationRuleTable ruleTable = config.getRuleTable();
 			Document docNode = pageAdapter.getDocument();
-			
+
 			AssociationRule schematronValidationRule = AssociationRule.getSchematronValidationRule(ema);
 			DocumentTypeInformation docType = editor.getDocumentTypeInformation();
-			String fwName = docType != null ? docType.getFrameworkStoreLocation() : AssociationTable.NULL_FRAMEWORK_LABEL;
-			if(schematronValidationRule.match(editor.getEditorLocation(), docNode, fwName)){
+			String fwName = docType != null ? docType.getFrameworkStoreLocation()
+					: AssociationTable.NULL_FRAMEWORK_LABEL;
+			if (schematronValidationRule.match(editor.getEditorLocation(), docNode, fwName)) {
 				validationSet.add(schematronValidationRule);
 			}
-			
+
 			if (config.useXmlModel()) {
 				XmlModelSet modelSet = XmlModelSet.getXmlModelSet(editor, ema);
-				ArrayList<XmlModel> models = modelSet
-						.getModels(ProcessNamespaces.SCH_NS);
+				ArrayList<XmlModel> models = modelSet.getModels(ProcessNamespaces.SCH_NS);
 				for (XmlModel model : models) {
 					validationSet.add(model);
 				}

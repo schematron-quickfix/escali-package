@@ -1,5 +1,6 @@
 package com.schematronQuickfix.escaliOxygen;
 
+import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 
 import com.schematronQuickfix.escaliOxygen.options.association.xmlModel.XmlModel;
@@ -10,9 +11,10 @@ public class Run {
 	/**
 	 * @param args
 	 * @throws URISyntaxException 
+	 * @throws MalformedURLException 
 	 * 
 	 */
-	public static void main(String[] args) throws URISyntaxException {
+	public static void main(String[] args) throws URISyntaxException, MalformedURLException {
 		// TODO Auto-generated method stub
 		String nodeValue = "href=\"quickFix1.sch\" type='application/xml' schematypens = \"http://www.schematron-quickfix.com/validator/process\"";
 		

@@ -1,5 +1,6 @@
 package com.schematronQuickfix.escaliOxygen.options.association.xmlModel;
 
+import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 
@@ -7,6 +8,7 @@ import org.apache.xerces.dom.ProcessingInstructionImpl;
 
 import com.github.oxygenPlugins.common.collections.MultiValueHashMap;
 import com.github.oxygenPlugins.common.process.exceptions.CancelException;
+import com.github.oxygenPlugins.common.process.log.DefaultProcessLoger;
 import com.github.oxygenPlugins.common.collections.ArrayUtil;
 import com.schematronQuickfix.escaliOxygen.editors.EscaliMessanger;
 import com.schematronQuickfix.escaliOxygen.tools.WSPageAdapter;
@@ -27,7 +29,14 @@ public class XmlModelSet {
 	public XmlModelSet(ProcessingInstructionImpl[] pis) throws URISyntaxException {
 		if(pis != null && pis.length > 0){
 			for (int i = 0; i < pis.length; i++) {
-				this.addModel(XmlModel.getModel(pis[i]));
+				try {
+					this.addModel(XmlModel.getModel(pis[i]));
+				} catch (MalformedURLException e) {
+					try {
+						DefaultProcessLoger.getDefaultProccessLogger().log(e);
+					} catch (CancelException e1) {
+					}
+				}
 			}
 		}
 	}
@@ -35,7 +44,14 @@ public class XmlModelSet {
 	public XmlModelSet(AuthorPIDomWrapper[] pis) throws URISyntaxException {
 		if(pis != null && pis.length > 0){
 			for (int i = 0; i < pis.length; i++) {
-				this.addModel(XmlModel.getModel(pis[i]));
+				try {
+					this.addModel(XmlModel.getModel(pis[i]));
+				} catch (MalformedURLException e) {
+					try {
+						DefaultProcessLoger.getDefaultProccessLogger().log(e);
+					} catch (CancelException e1) {
+					}
+				}
 			}
 		}
 	}
@@ -50,6 +66,7 @@ public class XmlModelSet {
 			this.addModel(XmlModel.getModel(piValue, baseURI));
 		} catch (URISyntaxException e) {
 			
+		} catch (MalformedURLException e) {
 		}
 	}
 	

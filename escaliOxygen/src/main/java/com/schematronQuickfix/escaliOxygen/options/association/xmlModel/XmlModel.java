@@ -30,7 +30,7 @@ public class XmlModel {
 	public final static Pattern attrPattern = Pattern
 			.compile("(^|\\s+)(\\S+?)(\\s+)?=(\\s+)?(\"([^\"]*)\"|'([^']*)')");
 	
-	private File href = null;
+	private URL schemaUrl = null;
 	private String type = null;
 	private String schematypens = null;
 	private String charset = null;
@@ -47,28 +47,32 @@ public class XmlModel {
 		
 		model.baseURI = baseURI;
 		model.phase = "#ALL";
+//		try {
 		try {
-			model.href = new File(ema.getPluginWorkspace().getXMLUtilAccess().resolvePathThroughCatalogs(new URL("http://www.schematron-quickfix.com/escali/schema/SQF/sqf.sch"), "", true, true).toURI());
+			model.schemaUrl = ema.getPluginWorkspace().getXMLUtilAccess().resolvePathThroughCatalogs(new URL("http://www.schematron-quickfix.com/escali/schema/SQF/sqf.sch"), "", true, true);
 		} catch (MalformedURLException e) {
-			model.href = new File("lib/xml/schema/SQF/sqf.sch");
-		} catch (URISyntaxException e) {
-			model.href = new File("lib/xml/schema/SQF/sqf.sch");
+			e.printStackTrace();
 		}
+//		} catch (MalformedURLException e) {
+//			model.schemaUrl = new File("lib/xml/schema/SQF/sqf.sch");
+//		} catch (URISyntaxException e) {
+//			model.schemaUrl = new File("lib/xml/schema/SQF/sqf.sch");
+//		}
 		model.type = "application/xml";
 		model.schematypens = "http://purl.oclc.org/dsdl/schematron";
 		
 		return model;
 	}
 	
-	public static XmlModel getModel(ProcessingInstructionImpl modelPi) throws URISyntaxException{
+	public static XmlModel getModel(ProcessingInstructionImpl modelPi) throws URISyntaxException, MalformedURLException{
 		return getModel(modelPi.getNodeValue(), modelPi.getBaseURI());
 	}
 	
-	public static XmlModel getModel(AuthorPIDomWrapper modelPiWrapper) throws URISyntaxException{
+	public static XmlModel getModel(AuthorPIDomWrapper modelPiWrapper) throws URISyntaxException, MalformedURLException{
 		return getModel(modelPiWrapper.getNodeValue(), modelPiWrapper.getWrappedAuthorNode().getXMLBaseURL().toString());
 	}
 	
-	public static XmlModel getModel(String piValue, String baseURI) throws URISyntaxException{
+	public static XmlModel getModel(String piValue, String baseURI) throws URISyntaxException, MalformedURLException{
 		XmlModel model = new XmlModel();
 		
 		model.baseURI = baseURI;
@@ -88,7 +92,7 @@ public class XmlModel {
 				URI hrefUri = base.resolve(value);
 
 				model.baseURI = base.toString();
-				model.href = new File(hrefUri);
+				model.schemaUrl = hrefUri.toURL();
 			} else if(name.equals(TYPE)){
 				model.type = value;
 			} else if(name.equals(SCHEMATYPE_NS)){
@@ -107,8 +111,8 @@ public class XmlModel {
 		return model;
 	}
 
-	public File getHref() {
-		return href;
+	public URL getHref() {
+		return schemaUrl;
 	}
 
 	public String getType() {
