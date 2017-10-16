@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="test.sch" phase="#ALL" type="application/xml" schematypens="http://purl.oclc.org/dsdl/schematron"?>
+<root>
+    <p>This is the content of the paragraph: z.B.</p>
+    <p>Text with <i>inline</i> and other <b>d.h.</b> stuff.</p>
+    <p>Text with splitted <b>u.</b><i>a.</i>.</p>
+    <?sqfc-start ?><!-- comment with REPLACE --><?sqfc-end ?>
+    <p style="phrases in attributes uvm."/>
+    <?pi pi value with e.g.?>
+</root>
