@@ -93,7 +93,9 @@
     <xsl:template match="@diagnostics" mode="step-2">
         <xsl:variable name="diagnRefs" select="tokenize(., '\s')"/>
         <xsl:variable name="diagnRefs" select="$diagnRefs[es:checkDiagnosticRef(.)]"/>
-        <xsl:attribute name="diagnostics" select="$diagnRefs" separator=" "/>
+        <xsl:if test="count($diagnRefs) gt 0">
+            <xsl:attribute name="diagnostics" select="$diagnRefs" separator=" "/>
+        </xsl:if>
     </xsl:template>
 
     <xsl:function name="es:checkDiagnosticRef" as="xs:boolean">

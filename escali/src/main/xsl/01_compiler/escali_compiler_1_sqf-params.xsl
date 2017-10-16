@@ -51,7 +51,7 @@
     <xsl:variable name="globalFixes" select="/sch:schema/sqf:fixes/(. | sqf:group)/sqf:fix"/>
 
 
-    <xsl:template match="sqf:p" priority="100">
+    <xsl:template match="sqf:description" priority="100">
         <xsl:choose>
             <xsl:when test="
                     (es:getLang(.),
