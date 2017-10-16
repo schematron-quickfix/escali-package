@@ -3,11 +3,13 @@ package com.schematronQuickfix.escaliOxygen.editors;
 import java.io.IOException;
 
 import javax.swing.AbstractButton;
+import javax.swing.Icon;
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 
 import com.github.oxygenPlugins.common.oxygen.adapter.ToolbarMenuAdapter;
 import com.github.oxygenPlugins.common.xml.exceptions.XSLTErrorListener;
+import com.schematronQuickfix.escaliOxygen.EscaliPluginExtension;
 import com.schematronQuickfix.escaliOxygen.options.AboutEscaliPluginMenuItem;
 import com.schematronQuickfix.escaliOxygen.toolbar.MainToolbar;
 
@@ -31,6 +33,7 @@ public class EscaliViewer implements ViewComponentCustomizer, ToolbarComponentsC
 	private MainToolbar mainToolBar;
 	private static AbstractButton validationBtn;
 	private final ToolbarMenuAdapter tma;
+	private Icon escaliIcon = EscaliPluginExtension.ICONS.getIcon(13, 23);
 	
 	public EscaliViewer(ToolbarMenuAdapter tma, final StandalonePluginWorkspace pwa) throws XSLTErrorListener, IOException{
 		this.tma = tma;
@@ -42,15 +45,18 @@ public class EscaliViewer implements ViewComponentCustomizer, ToolbarComponentsC
 
 	@Override
 	public void customizeView(ViewInfo viewInfo) {
-		// TODO Auto-generated method stub
+		
 		if(viewInfo.getViewID().equals(MESSANGER_ID)){
 			viewInfo.setTitle("Escali Schematron");
+			viewInfo.setIcon(escaliIcon);;
 			viewInfo.setComponent(oxygenMessanger.getMessageList());
 		} else if(viewInfo.getViewID().equals(QUICK_FIX_LIST_ID)){
 			viewInfo.setTitle("Escali QuickFixes");
+			viewInfo.setIcon(escaliIcon);;
 			viewInfo.setComponent(oxygenMessanger.getQuickFixList());
 		} else if(viewInfo.getViewID().equals(UELIST_ID)){
 			viewInfo.setTitle("Escali UserEntries");
+			viewInfo.setIcon(escaliIcon);;
 			viewInfo.setComponent(oxygenMessanger.getUeList());
 		}
 	}
