@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svrl:schematron-output xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+    xmlns:es="http://www.escali.schematron-quickfix.com/" xmlns:sqf="http://www.schematron-quickfix.com/validator/process"
+    title="localisation test"
+    phase="#ALL"
+    es:schema="file:/D:/nico/Work/Java2/escali-main-package/escali/src/test/resources/sch/schematron-tests/test18-language/input/test.sch"
+    es:instance="file:/D:/nico/Work/Java2/escali-main-package/escali/src/test/resources/sch/schematron-tests/test18-language/input/test.xml">
+    <svrl:active-pattern es:phases="#ALL"/>
+    <svrl:fired-rule context="error" />
+    <svrl:failed-assert location="/*:test5[namespace-uri()=''][1]/*:error[namespace-uri()=''][1]"
+        test="false()">
+        <svrl:text>Error 1</svrl:text>
+        <sqf:fix>
+            <sqf:description>
+                <sqf:title>Global fix</sqf:title>
+            </sqf:description>
+        </sqf:fix>
+        <sqf:fix>
+            <sqf:description>
+                <sqf:title>Local fix</sqf:title>
+            </sqf:description>
+        </sqf:fix>
+    </svrl:failed-assert>
+    <svrl:fired-rule context="error2" />
+    <svrl:failed-assert location="/*:test5[namespace-uri()=''][1]/*:error2[namespace-uri()=''][1]"
+        test="false()">
+        <svrl:text>Error 2</svrl:text>
+        <sqf:fix>
+            <sqf:description>
+                <sqf:title>Global fix</sqf:title>
+            </sqf:description>
+        </sqf:fix>
+    </svrl:failed-assert>
+</svrl:schematron-output>
