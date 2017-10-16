@@ -303,8 +303,8 @@
                     <xsl:if test="$es:regex">
                         <axsl:text>
                             <xsl:text>_</xsl:text>
-                            <axsl:value-of select="$es:pos"/>
                         </axsl:text>
+                        <axsl:value-of select="$es:pos"/>
                     </xsl:if>
                 </axsl:variable>
                 <sqf:fix fixId="{@id}" messageId="{$messageId}">
