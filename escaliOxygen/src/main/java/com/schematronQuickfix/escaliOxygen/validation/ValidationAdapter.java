@@ -135,8 +135,10 @@ public class ValidationAdapter extends ValidationProblemsFilter implements
 	@Override
 	public void filterValidationProblems(ValidationProblems problems) {
 		EscaliPluginConfig config = EscaliPluginConfig.config;
-		if(!config.isActive())
+		if(!config.isActive()){
+			super.filterValidationProblems(problems);
 			return;
+		}
 		
 		if(this.isValidating)
 			return;
@@ -446,6 +448,10 @@ public class ValidationAdapter extends ValidationProblemsFilter implements
 	}
 
 	public static boolean isSQFevailable(WSEditor editor) {
+		EscaliPluginConfig config = EscaliPluginConfig.config;
+		if(!config.isActive()){
+			return false;
+		}
 		if (editor == null) {
 			return false;
 		}

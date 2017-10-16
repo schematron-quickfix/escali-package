@@ -74,7 +74,7 @@ public class EscaliMessanger extends EscaliMessangerAdapter {
 		EscaliPluginConfig.config.addChangeListener(new ConfigChangeListener() {
 			
 			@Override
-			public boolean configChanged(EscaliPluginConfig newConfig,
+			public boolean configChanging(EscaliPluginConfig newConfig,
 					EscaliPluginConfig oldConfig) {
 				if(newConfig.isActive()){
 					emptyText.setText(activeText);
@@ -84,6 +84,15 @@ public class EscaliMessanger extends EscaliMessangerAdapter {
 					emptyText.repaint();
 				}
 				return true;
+			}
+
+			@Override
+			public void configChanged(EscaliPluginConfig newConfig) {
+				if(newConfig.isActive()){
+					editorListener.checkForSQFValidations();
+				} else {
+					editorListener.removeAllAdapter();
+				}
 			}
 		});
 	}

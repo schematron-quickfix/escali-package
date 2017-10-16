@@ -56,8 +56,9 @@ public class EscaliPluginConfig extends WSOptionListener {
 	}
 
 	public static interface ConfigChangeListener {
-		boolean configChanged(EscaliPluginConfig newConfig,
+		boolean configChanging(EscaliPluginConfig newConfig,
 				EscaliPluginConfig oldConfig);
+		void configChanged(EscaliPluginConfig newConfig);
 	}
 
 	//
@@ -111,7 +112,7 @@ public class EscaliPluginConfig extends WSOptionListener {
 		}
 		boolean takeOver = true;
 		for (ConfigChangeListener ccl : this.changeListeners) {
-			if (!ccl.configChanged(tempConf, this)) {
+			if (!ccl.configChanging(tempConf, this)) {
 				takeOver = false;
 			}
 		}
@@ -121,6 +122,9 @@ public class EscaliPluginConfig extends WSOptionListener {
 			this.useXmlModel = tempConf.useXmlModel;
 			this.useEscaliPattern = tempConf.useEscaliPattern;
 			this.ruleTable = tempConf.ruleTable;
+			for (ConfigChangeListener ccl : this.changeListeners) {
+				ccl.configChanged(this);
+			}
 		}
 		if (this.updateSpw) {
 			if (spw != null) {

@@ -51,15 +51,19 @@ public class EditorChangeListener extends WSEditorChangeListener {
 	public void editorPageChanged(URL url) {
 		super.editorPageChanged(url);
 	}
-
 	private void openEditor(URL url) {
+		openEditor(url, true);
+	}
+	private void openEditor(URL url, boolean notify) {
 		WSEditor editor = ema.getPluginWorkspace().getEditorAccess(url, main_area);
 		
 		if(ValidationAdapter.isSQFevailable(editor)){
 			
 			ValidationAdapter valAdap = ValidationAdapter.checkForSQFValidation(editor, ema);
 			this.valAdapterByURL.put(url, valAdap);
-			notifySelection(url);
+			if(notify){
+				notifySelection(url);
+			}
 		}
 	}
 	
@@ -78,6 +82,30 @@ public class EditorChangeListener extends WSEditorChangeListener {
 			this.ema.getPluginWorkspace().open(fixURL);
 		}
 		return valAdapterByURL.get(fixURL);
+	}
+	
+	public void removeAllAdapter(){
+		for (URL url : valAdapterByURL.keySet()) {
+			removeAdapter(url);
+		}
+		notifySelection(null);
+	}
+	
+	private void removeAdapter(URL url){
+		ValidationAdapter adapter = valAdapterByURL.get(url);
+		if(adapter != null){
+			adapter.getEditor().removeValidationProblemsFilter(adapter);
+			valAdapterByURL.remove(url);
+		}
+	}
+	
+	public void checkForSQFValidations(){
+		URL[] urls = this.ema.getPluginWorkspace().getAllEditorLocations(main_area);
+		for (URL url : urls) {
+			openEditor(url, false);
+		}
+		notifySelection(this.ema.getPluginWorkspace().getCurrentEditorAccess(main_area).getEditorLocation());
+		
 	}
 	
 	
