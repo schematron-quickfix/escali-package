@@ -19,6 +19,7 @@ import org.junit.runners.Parameterized.Parameters;
 import org.xml.sax.SAXException;
 
 import com.github.oxygenPlugins.common.process.exceptions.CancelException;
+import com.github.oxygenPlugins.common.process.log.DefaultProcessLoger;
 import com.github.oxygenPlugins.common.process.log.MuteProcessLoger;
 import com.github.oxygenPlugins.common.text.TextSource;
 import com.github.oxygenPlugins.common.xml.exceptions.XSLTErrorListener;
@@ -42,6 +43,8 @@ public class SchematronTest {
 	
 	@Parameters(name = "{index}: {0} - {1} - {2}")
     public static Collection<Object[]> getLabels() {
+    	DefaultProcessLoger.setDefaultProcessLogger(new MuteProcessLoger());
+    	
         List<Object[]> labels = new ArrayList<Object[]>();
         labels.add(new Object[] {"test01-es-import", "#ALL", null});
         labels.add(new Object[] {"test01-es-import", null, null});
@@ -88,6 +91,10 @@ public class SchematronTest {
         labels.add(new Object[] {"test15-es-ignorable", "phase3", null});
         
         labels.add(new Object[] {"test16-document-uri-funct", null, null});
+        
+
+        labels.add(new Object[] {"test18-language", null, "de"});
+        labels.add(new Object[] {"test18-language", null, "en"});
         
 //        labels.add(new Object[] {"test17-arche-example", null, null});
         
