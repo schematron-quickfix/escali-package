@@ -17,8 +17,8 @@ public class MainToolbar {
 	
 	public MainToolbar(EscaliMessanger ema){
 		this.components = new JComponent[]{
-				new CommitChanges(ema), 
-				new OpenSchemaAssociation(ema, this),
+//				new CommitChanges(ema), 
+//				new OpenSchemaAssociation(ema, this),
 				new ShowViewButtons(ema)
 		};
 	}
