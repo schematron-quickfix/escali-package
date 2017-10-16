@@ -31,7 +31,13 @@ public class ValidationInfoSet extends ArrayList<ValidationInfo> {
 		private String phase;
 		private String lang;
 		private final String title;
-
+		private Exception error = null;
+		
+		private ValidationInfo(Exception e){
+			this(null, null, null, null, e.getLocalizedMessage());
+			this.error = e;
+		}
+		
 		private ValidationInfo(URL baseURL, URL schemaLocation, String phase, String lang, String title) {
 			this.baseURL = baseURL;
 			this.schemaLocation = schemaLocation;
@@ -63,11 +69,22 @@ public class ValidationInfoSet extends ArrayList<ValidationInfo> {
 		public String getLang() {
 			return lang;
 		}
+
+		public boolean isValid() {
+			return error == null;
+		}
+		public Exception getError(){
+			return this.error;
+		}
 	}
 
 	public void add(XmlModel model) {
 		ValidationInfo vi;
-		vi = new ValidationInfo(this.editorLoc, model.getHref(), model.getPhase(), "#ALL");
+		if(model.isValid()){
+			vi = new ValidationInfo(this.editorLoc, model.getHref(), model.getPhase(), "#ALL");
+		} else {
+			vi = new ValidationInfo(model.getError());
+		}
 		this.add(vi);
 	}
 

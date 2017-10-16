@@ -46,6 +46,10 @@ public class ValidationProcessLogger extends MuteProcessLoger implements Process
 	public ArrayList<Exception> getAllExceptions(){
 		return new ArrayList<Exception>(this.allExceptions);
 	}
+
+	public void clear() {
+		this.allExceptions = new ArrayList<Exception>();
+	}
 	
 	
 //	@Override

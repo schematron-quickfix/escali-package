@@ -72,7 +72,6 @@ public class ValidationAdapter extends ValidationProblemsFilter implements
 
 	private boolean isValidating;
 	
-	private static ValidationProcessLogger oxygenLogger  = new ValidationProcessLogger();
 
 	// private boolean isValidating = false;
 
@@ -143,6 +142,7 @@ public class ValidationAdapter extends ValidationProblemsFilter implements
 			return;
 		
 		this.isValidating = true;
+		ValidationProcessLogger oxygenLogger  = new ValidationProcessLogger();
 		
 
 		ArrayList<DocumentPositionedInfo> schProblems = new ArrayList<DocumentPositionedInfo>();
@@ -185,6 +185,10 @@ public class ValidationAdapter extends ValidationProblemsFilter implements
 
 			try {
 				for (ValidationInfo vi : validationInfo) {
+					if(!vi.isValid()){
+						oxygenLogger.log(vi.getError());
+						continue;
+					}
 					if(this.rememberPhase != null){
 						vi.setPhase(rememberPhase);
 					}

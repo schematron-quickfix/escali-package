@@ -14,9 +14,6 @@ import com.schematronQuickfix.escaliOxygen.editors.EscaliMessanger;
 
 import ro.sync.ecss.dom.wrappers.AuthorPIDomWrapper;
 
-
-
-
 public class XmlModel {
 	private static final String HREF = "href";
 	private static final String TYPE = "type";
@@ -25,11 +22,9 @@ public class XmlModel {
 	private static final String TITLE = "title";
 	private static final String GROUP = "group";
 	private static final String PHASE = "phase";
-	
-	
-	public final static Pattern attrPattern = Pattern
-			.compile("(^|\\s+)(\\S+?)(\\s+)?=(\\s+)?(\"([^\"]*)\"|'([^']*)')");
-	
+
+	public final static Pattern attrPattern = Pattern.compile("(^|\\s+)(\\S+?)(\\s+)?=(\\s+)?(\"([^\"]*)\"|'([^']*)')");
+
 	private URL schemaUrl = null;
 	private String type = null;
 	private String schematypens = null;
@@ -39,75 +34,81 @@ public class XmlModel {
 	private String phase = "#ALL";
 	private String baseURI = null;
 	private String value = "";
-	
-	private XmlModel(){}
-	
-	private static XmlModel getSchematronModel(String baseURI, EscaliMessanger ema){
+
+	private Exception error = null;
+
+	private XmlModel() {
+	}
+
+	private static XmlModel getSchematronModel(String baseURI, EscaliMessanger ema) {
 		XmlModel model = new XmlModel();
-		
+
 		model.baseURI = baseURI;
 		model.phase = "#ALL";
-//		try {
+		// try {
 		try {
-			model.schemaUrl = ema.getPluginWorkspace().getXMLUtilAccess().resolvePathThroughCatalogs(new URL("http://www.schematron-quickfix.com/escali/schema/SQF/sqf.sch"), "", true, true);
+			model.schemaUrl = ema.getPluginWorkspace().getXMLUtilAccess().resolvePathThroughCatalogs(
+					new URL("http://www.schematron-quickfix.com/escali/schema/SQF/sqf.sch"), "", true, true);
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		}
-//		} catch (MalformedURLException e) {
-//			model.schemaUrl = new File("lib/xml/schema/SQF/sqf.sch");
-//		} catch (URISyntaxException e) {
-//			model.schemaUrl = new File("lib/xml/schema/SQF/sqf.sch");
-//		}
+		// } catch (MalformedURLException e) {
+		// model.schemaUrl = new File("lib/xml/schema/SQF/sqf.sch");
+		// } catch (URISyntaxException e) {
+		// model.schemaUrl = new File("lib/xml/schema/SQF/sqf.sch");
+		// }
 		model.type = "application/xml";
 		model.schematypens = "http://purl.oclc.org/dsdl/schematron";
-		
+
 		return model;
 	}
-	
-	public static XmlModel getModel(ProcessingInstructionImpl modelPi) throws URISyntaxException, MalformedURLException{
+
+	public static XmlModel getModel(ProcessingInstructionImpl modelPi) {
 		return getModel(modelPi.getNodeValue(), modelPi.getBaseURI());
 	}
-	
-	public static XmlModel getModel(AuthorPIDomWrapper modelPiWrapper) throws URISyntaxException, MalformedURLException{
-		return getModel(modelPiWrapper.getNodeValue(), modelPiWrapper.getWrappedAuthorNode().getXMLBaseURL().toString());
+
+	public static XmlModel getModel(AuthorPIDomWrapper modelPiWrapper) {
+		return getModel(modelPiWrapper.getNodeValue(),
+				modelPiWrapper.getWrappedAuthorNode().getXMLBaseURL().toString());
 	}
-	
-	public static XmlModel getModel(String piValue, String baseURI) throws URISyntaxException, MalformedURLException{
+
+	public static XmlModel getModel(String piValue, String baseURI) {
 		XmlModel model = new XmlModel();
-		
+
 		model.baseURI = baseURI;
 		model.value = piValue;
-		
+
 		Matcher matcher = attrPattern.matcher(piValue);
-		
-		
-		
-		
-//		debug-error! can not be debugged...
+
+		// debug-error! can not be debugged...
 		while (matcher.find()) {
 			String name = matcher.group(2);
 			String value = matcher.group(6) != null ? matcher.group(6) : matcher.group(7);
 			if (name.equals(HREF)) {
-				URI base = URI.create(baseURI);
-				URI hrefUri = base.resolve(value);
+				try {
+					URI base = URI.create(baseURI);
+					URI hrefUri = base.resolve(value);
 
-				model.baseURI = base.toString();
-				model.schemaUrl = hrefUri.toURL();
-			} else if(name.equals(TYPE)){
+					model.baseURI = base.toString();
+					model.schemaUrl = hrefUri.toURL();
+				} catch (Exception e) {
+					model.error = e;
+				}
+			} else if (name.equals(TYPE)) {
 				model.type = value;
-			} else if(name.equals(SCHEMATYPE_NS)){
+			} else if (name.equals(SCHEMATYPE_NS)) {
 				model.schematypens = value;
-			} else if(name.equals(CHARSET)){
+			} else if (name.equals(CHARSET)) {
 				model.charset = value;
-			} else if(name.equals(TITLE)){
+			} else if (name.equals(TITLE)) {
 				model.title = value;
-			} else if(name.equals(GROUP)){
+			} else if (name.equals(GROUP)) {
 				model.group = value;
-			} else if(name.equals(PHASE)){
+			} else if (name.equals(PHASE)) {
 				model.phase = value;
 			}
 		}
-		
+
 		return model;
 	}
 
@@ -142,14 +143,22 @@ public class XmlModel {
 	public String getBaseURI() {
 		return baseURI;
 	}
-	
+
 	@Override
 	public String toString() {
 		return this.value;
 	}
-	
-	public void overwritePhase(String phase){
+
+	public void overwritePhase(String phase) {
 		this.phase = phase;
 	}
-	
+
+	public boolean isValid() {
+		return this.error == null;
+	}
+
+	public Exception getError() {
+		return this.error;
+	}
+
 }
