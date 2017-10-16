@@ -70,6 +70,7 @@ public class ValidationEngine {
 			schemaSrc = TextSource.readTextFile(validationInfo.getSchema());
 			Config config = escali.getConfig();
 			config.setPhase(validationInfo.getPhase());
+			config.setLanguage(validationInfo.getLang());
 			
 			String saxonVers = EscaliPluginConfig.config.getSaxonVersion();
 //			// workaround for bug Saxon EE in oXygen plugin with external documents
