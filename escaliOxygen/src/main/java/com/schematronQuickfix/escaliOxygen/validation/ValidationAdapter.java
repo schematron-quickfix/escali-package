@@ -69,6 +69,8 @@ public class ValidationAdapter extends ValidationProblemsFilter implements
 	private final EscaliMessanger ema;
 	
 	private String rememberPhase = null;
+
+	private boolean isValidating;
 	
 	private static ValidationProcessLogger oxygenLogger  = new ValidationProcessLogger();
 
@@ -137,6 +139,11 @@ public class ValidationAdapter extends ValidationProblemsFilter implements
 		if(!config.isActive())
 			return;
 		
+		if(this.isValidating)
+			return;
+		
+		this.isValidating = true;
+		
 
 		ArrayList<DocumentPositionedInfo> schProblems = new ArrayList<DocumentPositionedInfo>();
 		
@@ -193,7 +200,7 @@ public class ValidationAdapter extends ValidationProblemsFilter implements
 
 		super.filterValidationProblems(problems);
 
-		// this.isValidating = false;
+		this.isValidating = false;
 		this.rememberPhase = null;
 		this.notifySelection();
 	}
