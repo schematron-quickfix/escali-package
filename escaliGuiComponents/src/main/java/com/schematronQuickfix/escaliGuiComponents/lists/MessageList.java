@@ -15,6 +15,7 @@ import com.github.oxygenPlugins.common.gui.images.IconMap;
 import com.github.oxygenPlugins.common.gui.key.KeyAdapter;
 import com.github.oxygenPlugins.common.gui.lists.AbstractList;
 import com.github.oxygenPlugins.common.gui.lists.items.AbstractItemMouseListener;
+import com.github.oxygenPlugins.common.gui.lists.items.ItemGroup;
 import com.github.oxygenPlugins.common.gui.swing.SwingUtil;
 import com.schematronQuickfix.escali.control.report._QuickFix;
 import com.schematronQuickfix.escali.control.report._Report;
@@ -145,7 +146,18 @@ public class MessageList extends AbstractList<_SVRLMessage, SVRLMessageListItem>
 				}
 				report.setIcon(icon);
 			}
-			this.addListItemAsGroup(itemList, report);
+			ItemGroup<_SVRLMessage, SVRLMessageListItem> group = this.addListItemAsGroup(itemList, report);
+			
+			new KeyAdapter(group){
+				@Override
+				public void downRelease(KeyEvent ke) {
+					this.component.transferFocus();
+				}
+				@Override
+				public void upPressed(KeyEvent ke) {
+					this.component.transferFocusBackward();
+				}
+			};
 		}
 		updateUI();
 	}
