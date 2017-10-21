@@ -128,7 +128,7 @@ public class ValidationEngine {
 		
 		posInfo.setSeverity(msg.getErrorLevelInt());
 		
-		posInfo.setSystemID(msg.getInstanceFile().toURI().toString());
+		posInfo.setSystemID(loc.getNode().getBaseURI());
 		
 		posInfo.setLine(loc.getStart().getLineNumber());
 		posInfo.setColumn(loc.getStart().getColumnNumber());

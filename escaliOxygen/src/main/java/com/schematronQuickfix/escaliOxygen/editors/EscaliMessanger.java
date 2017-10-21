@@ -25,19 +25,23 @@ import com.github.oxygenPlugins.common.process.exceptions.CancelException;
 import com.github.oxygenPlugins.common.process.log.ProcessLoger;
 import com.github.oxygenPlugins.common.process.queues.VoidWorker;
 import com.github.oxygenPlugins.common.xml.exceptions.XSLTErrorListener;
+import com.github.oxygenPlugins.common.xml.staxParser.NodeInfo;
 import com.schematronQuickfix.escali.control.report._ModelNode;
 import com.schematronQuickfix.escali.control.report._Phase;
 import com.schematronQuickfix.escali.control.report._QuickFix;
 import com.schematronQuickfix.escali.control.report._SVRLMessage;
 import com.schematronQuickfix.escali.resources.EscaliArchiveResources;
 import com.schematronQuickfix.escaliGuiComponents.adapter.EscaliMessangerAdapter;
+import com.schematronQuickfix.escaliOxygen.EscaliPlugin;
 import com.schematronQuickfix.escaliOxygen.EscaliPluginExtension;
 import com.schematronQuickfix.escaliOxygen.EscaliPluginOptions;
 import com.schematronQuickfix.escaliOxygen.options.EscaliPluginConfig;
 import com.schematronQuickfix.escaliOxygen.options.EscaliPluginConfig.ConfigChangeListener;
+import com.schematronQuickfix.escaliOxygen.tools.WSPageAdapter;
 import com.schematronQuickfix.escaliOxygen.options.OxygenOptionDialog;
 import com.schematronQuickfix.escaliOxygen.validation.ValidationAdapter;
 
+import ro.sync.exml.workspace.api.PluginWorkspace;
 import ro.sync.exml.workspace.api.editor.WSEditor;
 import ro.sync.exml.workspace.api.standalone.StandalonePluginWorkspace;
 import ro.sync.exml.workspace.api.standalone.ui.ToolbarButton;
@@ -219,9 +223,28 @@ public class EscaliMessanger extends EscaliMessangerAdapter {
 	@Override
 	public void showMessage(_SVRLMessage msg, boolean forceFocus) {
 		try {
-			ValidationAdapter editor = getEditor(msg);
-			editor.selectMessage(msg, forceFocus);
-		} catch (CancelException e) {
+			
+			URL url = new URL(msg.getBaseUri());
+			StandalonePluginWorkspace workspace = EscaliPlugin.getInstance().getWorkspace();
+			
+			if(forceFocus){
+				workspace.open(url);
+			} 
+			WSEditor wsEditor = workspace.getEditorAccess(url, PluginWorkspace.MAIN_EDITING_AREA);
+			
+			if(wsEditor == null){
+				return;
+			}
+			
+			
+			WSPageAdapter page = WSPageAdapter.getWSEditorAdapter(wsEditor.getCurrentPage());
+			NodeInfo loc = msg.getLocationInIstance();
+			int start = loc.getMarkStartLocation().getCharacterOffset();
+			int end = loc.getMarkEndLocation().getCharacterOffset();
+			
+			page.select(start, end);
+			
+			
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		}

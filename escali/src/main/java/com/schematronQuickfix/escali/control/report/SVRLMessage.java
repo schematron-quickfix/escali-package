@@ -81,7 +81,7 @@ public class SVRLMessage extends ModelNode implements _SVRLMessage {
 		}
 
 		this.locationInfo = locInfo;
-				
+		
 				
 		// E R R O R L E V E L (@role)
 		String levelValue = SVRLReport.XPR
@@ -186,7 +186,15 @@ public class SVRLMessage extends ModelNode implements _SVRLMessage {
 	public NodeInfo getLocationInIstance() {
 		return this.locationInfo;
 	}
-
+	@Override
+	public String getBaseUri() {
+		
+		String baseURI = this.locationInfo.getNode().getBaseURI();
+		if(baseURI != null)
+			return baseURI;
+		
+		return super.getBaseUri();
+	}
 	@Override
 	public File getInstanceFile() {
 		return this.instanceFile;
