@@ -54,6 +54,7 @@ import ro.sync.exml.workspace.api.listeners.WSEditorListener;
 public class ValidationAdapter extends ValidationProblemsFilter implements
 		KeyListener, EscaliEditorAdapter {
 	private final static String OXYGEN_SCH_ENGINE_NAME = "ISO Schematron";
+	public final static String ESCALI_SCH_ENGINE_NAME = "Escali Schematron";
 
 	private ValidationInfoSet validationInfo = null;
 
@@ -158,7 +159,8 @@ public class ValidationAdapter extends ValidationProblemsFilter implements
 		
 		for (DocumentPositionedInfo posInfo : problemList) {
 			
-			if (posInfo.getEngineName().equals(OXYGEN_SCH_ENGINE_NAME)) {
+			String engineName = posInfo.getEngineName();
+			if (engineName.equals(OXYGEN_SCH_ENGINE_NAME) || engineName.equals(ESCALI_SCH_ENGINE_NAME)) {
 				schProblems.add(posInfo);
 				if(schemaIdUrl.equals(posInfo.getAdditionalInfo())){
 					oxySchema = posInfo.getMessage();
