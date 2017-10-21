@@ -70,6 +70,9 @@ public class EditorChangeListener extends WSEditorChangeListener {
 	private void notifySelection(URL url){
 		if(valAdapterByURL.containsKey(url)){
 			ValidationAdapter valAdap = valAdapterByURL.get(url);
+			if(this.ema.getEditor() == valAdap){
+				return;
+			}
 			this.ema.setEditor(valAdap);
 			valAdap.notifySelection();
 		} else if(url == null){
