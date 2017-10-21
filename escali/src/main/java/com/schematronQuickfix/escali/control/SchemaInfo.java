@@ -1,6 +1,10 @@
 package com.schematronQuickfix.escali.control;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.xpath.XPathExpressionException;
@@ -8,6 +12,7 @@ import javax.xml.xpath.XPathExpressionException;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import com.github.oxygenPlugins.common.text.StringUtil;
 import com.github.oxygenPlugins.common.text.TextSource;
 import com.github.oxygenPlugins.common.xml.exceptions.XSLTErrorListener;
 import com.github.oxygenPlugins.common.xml.staxParser.StringNode;
@@ -18,49 +23,76 @@ import com.schematronQuickfix.escali.resources.EscaliResourcesInterface;
 public class SchemaInfo {
 	private XSLTPipe infoGenerator = new XSLTPipe("Schema anlayzer");
 	private static XPathReader xpr = new XPathReader();
-	
-	
+
 	private String[] phases;
 	private String defaultPhase;
 	private String[] languages;
 	private String defaultLang;
 	private final TextSource schema;
-	
-	protected SchemaInfo(TextSource source, EscaliResourcesInterface resource) throws XSLTErrorListener, IOException, SAXException, XMLStreamException, XPathExpressionException{
+
+	protected SchemaInfo(TextSource source, EscaliResourcesInterface resource)
+			throws XSLTErrorListener, IOException, SAXException, XMLStreamException, XPathExpressionException {
 		this.schema = source;
 		infoGenerator.addStep(resource.getSchemaInfo());
 		StringNode schemaInfoDoc = new StringNode(infoGenerator.pipeMain(source));
-		
+
 		NodeList phaseNodes = xpr.getNodeSet("/es:schemaInfo/es:phases/es:phase", schemaInfoDoc.getDocument());
 		phases = new String[phaseNodes.getLength()];
 		for (int i = 0; i < phases.length; i++) {
 			phases[i] = xpr.getString("@id", phaseNodes.item(i));
 		}
 		this.defaultPhase = xpr.getString("/es:schemaInfo/es:phases/@default", schemaInfoDoc.getDocument());
-		
+
 		NodeList langNodes = xpr.getNodeSet("/es:schemaInfo/es:languages/es:lang", schemaInfoDoc.getDocument());
 		languages = new String[langNodes.getLength()];
 		for (int i = 0; i < languages.length; i++) {
 			languages[i] = xpr.getString("@code", langNodes.item(i));
 		}
-		
+
 		this.defaultLang = xpr.getString("/es:schemaInfo/es:languages/@default", schemaInfoDoc.getDocument());
 	}
-	
+
 	public TextSource getSchema() {
 		return schema;
 	}
 
-	public String[] getPhases(){
+	public String[] getPhases() {
 		return this.phases;
 	}
-	public String getDefaultPhase(){
+
+	public String getDefaultPhase() {
 		return this.defaultPhase;
 	}
-	public String[] getLanguages(){
+
+	public String[] getLanguages() {
 		return this.languages;
 	}
-	public String getDefaultLanguage(){
+
+	public String getDefaultLanguage() {
 		return this.defaultLang;
+	}
+	
+	public boolean hasLang(String prefLang){
+		return getLang(prefLang) != null;
+	}
+	
+	public String getLang(String prefLang) {
+
+		prefLang = normalizeLang(prefLang);
+		
+		for (String lang : languages) {
+			if(normalizeLang(lang).equals(prefLang)){
+				return lang;
+			}
+		}
+		if (prefLang.contains("-")) {
+			return getLang(prefLang.replaceAll("-.*", ""));
+		} else {
+			return null;
+		}
+	}
+	
+	private static String normalizeLang(String lang){
+		return lang.toLowerCase().replaceAll("_", "-");
 	}
 }
