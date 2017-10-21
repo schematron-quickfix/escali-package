@@ -21,12 +21,14 @@ import com.github.oxygenPlugins.common.xml.staxParser.NodeInfo;
 import com.schematronQuickfix.escali.control.Config;
 import com.schematronQuickfix.escali.control.Escali;
 import com.schematronQuickfix.escali.control.SVRLReport;
+import com.schematronQuickfix.escali.control.SchemaInfo;
 import com.schematronQuickfix.escali.control.report._QuickFix;
 import com.schematronQuickfix.escali.control.report._SVRLMessage;
 import com.schematronQuickfix.escali.resources.EscaliArchiveResources;
 import com.schematronQuickfix.escali.resources.EscaliFileResources;
 import com.schematronQuickfix.escaliOxygen.EscaliPlugin;
 import com.schematronQuickfix.escaliOxygen.options.EscaliPluginConfig;
+import com.schematronQuickfix.escaliOxygen.options.OptionPage;
 import com.schematronQuickfix.escaliOxygen.options.association.ValidationInfoSet.ValidationInfo;
 import com.schematronQuickfix.escaliOxygen.toolbar.main.CommitChanges;
 import com.schematronQuickfix.escaliOxygen.tools.ReadWrite;
@@ -68,13 +70,39 @@ public class ValidationEngine {
 		
 		try {
 			schemaSrc = TextSource.readTextFile(validationInfo.getSchema());
-			Config config = escali.getConfig();
-			config.setPhase(validationInfo.getPhase());
-			config.setLanguage(validationInfo.getLang());
+			
+			String[] prefLangs = EscaliPluginConfig.config.getPreferedLanguage();
+			boolean useDefault = prefLangs[0].equals(OptionPage.USE_DEFAULT_LANGUAGE); 
+			
+			String selectLang = "#ALL";
+			
+			if(validationInfo.getLang() != null) {
+				selectLang = validationInfo.getLang();
+			} else if(!useDefault) {
+				SchemaInfo schemaInfo = escali.getSchemaInfo(schemaSrc);
+				
+				selectLang = schemaInfo.getDefaultLanguage();
+				for (String prefLang : prefLangs) {
+					if(prefLang.equals(OptionPage.USE_OXYGEN_LANGUAGE)){
+						prefLang = EscaliPlugin.getInstance().getWorkspace().getUserInterfaceLanguage();
+					}
+					String l = schemaInfo.getLang(prefLang);
+					if(l != null){
+						selectLang = l;
+						break;
+					}
+				}
+				
+			}
+			
+			
+			Config esConfig = escali.getConfig();
+			esConfig.setPhase(validationInfo.getPhase());
+			esConfig.setLanguage(selectLang);
 			
 			String saxonVers = EscaliPluginConfig.config.getSaxonVersion();
 //			// workaround for bug Saxon EE in oXygen plugin with external documents
-			config.setCompactSVRL(!saxonVers.equals("EE"));
+			esConfig.setCompactSVRL(!saxonVers.equals("EE"));
 			escali.compileSchema(schemaSrc, logger);
 			TextSource instanceSrc;
 //			instanceSrc = ReadWrite.createTextSource(editor, new URI(model.getBaseURI()));
@@ -105,7 +133,7 @@ public class ValidationEngine {
 		posInfo.setLine(loc.getStart().getLineNumber());
 		posInfo.setColumn(loc.getStart().getColumnNumber());
 		
-		posInfo.setEngineName("Escali Schematron");
+		posInfo.setEngineName(ValidationAdapter.ESCALI_SCH_ENGINE_NAME);
 		
 		return posInfo;
 	}

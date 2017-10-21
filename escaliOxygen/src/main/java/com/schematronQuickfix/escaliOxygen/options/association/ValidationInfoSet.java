@@ -1,7 +1,5 @@
 package com.schematronQuickfix.escaliOxygen.options.association;
 
-import java.io.File;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -81,7 +79,7 @@ public class ValidationInfoSet extends ArrayList<ValidationInfo> {
 	public void add(XmlModel model) {
 		ValidationInfo vi;
 		if(model.isValid()){
-			vi = new ValidationInfo(this.editorLoc, model.getHref(), model.getPhase(), "#ALL");
+			vi = new ValidationInfo(this.editorLoc, model.getHref(), model.getPhase(), null);
 		} else {
 			vi = new ValidationInfo(model.getError());
 		}
