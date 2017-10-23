@@ -24,6 +24,8 @@ import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
 import com.github.oxygenPlugins.common.process.exceptions.CancelException;
+import com.github.oxygenPlugins.common.process.log.DefaultProcessLoger;
+import com.github.oxygenPlugins.common.process.log.MuteProcessLoger;
 import com.github.oxygenPlugins.common.text.TextSource;
 import com.github.oxygenPlugins.common.xml.exceptions.XSLTErrorListener;
 import com.schematronQuickfix.escali.cmdInterface.Fixing;
@@ -219,6 +221,7 @@ public class QuickFixTest {
 	@Parameters(name = "{index}: {0}")
 	public static Collection<Object[]> getLabels() {
 		List<Object[]> labels = new ArrayList<Object[]>();
+		DefaultProcessLoger.setDefaultProcessLogger(new MuteProcessLoger());
 
 		// test01
 		QuickFixTestGroup test01 = new QuickFixTestGroup("test01-basic-localisation-html");
@@ -580,6 +583,32 @@ public class QuickFixTest {
 
 		test35.addToList(labels);
 		
+
+		// test36
+
+		QuickFixTestGroup test36a = new QuickFixTestGroup("test36-namespace-conflict", "input/test-a.sch", "input/test.xml");
+
+		test36a.createTest(1, "replaceDefault");
+		test36a.createTest(1, "replaceOther");
+		test36a.createTest(1, "replaceNull");
+		
+		QuickFixTestGroup test36b = new QuickFixTestGroup("test36-namespace-conflict", "input/test-b.sch", "input/test.xml");
+
+		test36b.createTest(1, "replaceDefault");
+		test36b.createTest(1, "replaceOther");
+		test36b.createTest(1, "replaceNull");
+		test36b.createTest(1, "replaceNone");
+
+		QuickFixTestGroup test36c = new QuickFixTestGroup("test36-namespace-conflict", "input/test-c.sch", "input/test.xml");
+
+		test36c.createTest(1, "replaceDefault");
+		test36c.createTest(1, "replaceOther");
+		test36c.createTest(1, "replaceNull");
+		
+		test36a.addToList(labels);
+		test36b.addToList(labels);
+		test36c.addToList(labels);
+		
 		return labels;
 
 	}
@@ -604,11 +633,12 @@ public class QuickFixTest {
 		int i = 0;
 		for (String suffix : this.testParams.suffixes) {
 			String expected = "";
+			expected += testParams.schema.getName().replaceAll("\\.sch$", "");
 			expected += "_" + testParams.msgPos;
 			expected += testParams.fixName != null ? "_" + testParams.fixName : "";
 			expected += suffix != null ? "_" + suffix : "";
 			
-			this.expectedResult[i++] = new File(testParams.schema, "../../expected/test" + expected + ".xml");
+			this.expectedResult[i++] = new File(testParams.schema, "../../expected/" + expected + ".xml");
 			
 		}
 
