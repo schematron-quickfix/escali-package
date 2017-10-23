@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root xmlns="www.some.default.namespace.com">
+    <?sqfc-start ?><replaced xmlns="www.some.other.namespace.com"/><?sqfc-end ?>
+</root>
