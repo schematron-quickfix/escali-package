@@ -107,7 +107,10 @@ public class EditorChangeListener extends WSEditorChangeListener {
 		for (URL url : urls) {
 			openEditor(url, false);
 		}
-		notifySelection(this.ema.getPluginWorkspace().getCurrentEditorAccess(main_area).getEditorLocation());
+		WSEditor currentEditorAccess = this.ema.getPluginWorkspace().getCurrentEditorAccess(main_area);
+		if(currentEditorAccess != null){
+			notifySelection(currentEditorAccess.getEditorLocation());
+		}
 		
 	}
 	
