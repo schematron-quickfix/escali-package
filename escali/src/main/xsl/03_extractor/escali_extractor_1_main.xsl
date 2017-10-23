@@ -96,7 +96,10 @@
         <xsl:copy>
             <xsl:variable name="namespaces" select="./namespace::*"/>
             <xsl:copy-of select="$namespaces"/>
-            <xsl:attribute name="exclude-result-prefixes" select="concat(string-join($namespaces/(name())[. != ''][1], ' '), ' xsl')"/>
+            <xsl:variable name="excludePrefixes" select="
+                    ($namespaces/(name())[. != ''],
+                    '#default'[$namespaces[name() = ''][. != '']])"/>
+            <xsl:attribute name="exclude-result-prefixes" select="concat(string-join($excludePrefixes, ' '), ' xsl')"/>
             <xsl:variable name="selectedFix">
                 <xsl:apply-templates select="$selectedFix"/>
             </xsl:variable>
@@ -110,16 +113,16 @@
     <xsl:template match="svrl:successful-report/sqf:fix | svrl:failed-assert/sqf:fix">
         <xsl:apply-templates select=".//sqf:sheet"/>
     </xsl:template>
-    
+
     <xsl:template match="sqf:sheet[@href]">
         <xsl:variable name="href" select="resolve-uri(@href, base-uri(.))"/>
         <xsl:apply-templates select="doc($href)"/>
     </xsl:template>
-    
+
     <xsl:template match="sqf:sheet">
         <xsl:apply-templates/>
     </xsl:template>
-    
+
     <xsl:template match="xsl:param[@as = $additionalTypes]">
         <xsl:next-match/>
         <xsl:if test="starts-with(@as, 'xs:')">
