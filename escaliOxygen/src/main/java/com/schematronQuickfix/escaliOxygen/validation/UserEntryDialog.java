@@ -18,6 +18,7 @@ import javax.swing.JPanel;
 
 import com.github.oxygenPlugins.common.gui.key.KeyAdapter;
 import com.github.oxygenPlugins.common.gui.swing.SwingUtil;
+import com.github.oxygenPlugins.common.oxygen.Misc;
 import com.schematronQuickfix.escali.control.report._QuickFix;
 import com.schematronQuickfix.escaliGuiComponents.buttons.ToolbarButton;
 import com.schematronQuickfix.escaliGuiComponents.lists.UserEntryList;
@@ -29,6 +30,7 @@ public abstract class UserEntryDialog extends JDialog {
 	private UserEntryList userEntryList;
 
 	public UserEntryDialog(final _QuickFix[] fixes, EscaliMessanger ema) {
+		super(Misc.getParentFrame(ema.getPluginWorkspace()));
 		this.ema = ema;
 		this.setModal(true);
 
@@ -117,7 +119,6 @@ public abstract class UserEntryDialog extends JDialog {
 		new KeyAdapter(userEntryList){
 			@Override
 			public void log(KeyEvent ke, int status) {
-				System.out.println("userEntryList is in focus!");
 			}
 			@Override
 			public void escapeRelease(KeyEvent ke) {
@@ -127,7 +128,6 @@ public abstract class UserEntryDialog extends JDialog {
 		new KeyAdapter(this){
 			@Override
 			public void log(KeyEvent ke, int status) {
-				System.out.println("UserEntryDialog is in focus!");
 			}
 			@Override
 			public void escapeRelease(KeyEvent ke) {
