@@ -12,6 +12,10 @@ buildNumber.properties
 .classpath
 mvninst.bat
 
+# Oxygen project files
+
+*.xpr
+
 
 # =========================
 # Operating System Files
