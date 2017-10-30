@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="test.sch" phase="phase6" type="application/xml" schematypens="http://purl.oclc.org/dsdl/schematron"?>
+<!DOCTYPE p [
+<!ENTITY x "long entity u.a. replacement text">
+<!ENTITY y "long entity replacement text">
+<!ENTITY u "u.">
+<!ENTITY a "a.">
+]>
+<p style="phrases in &x; attributes uvm./> &x;end">
+    noch llänggerer text schreibe, &x; dann wird der ausgewählt, bis ich einen
+    umbruch mache? nein <amp attr="bla &x; bla">auch</amp> dann wird er noch <enter attr="&#x000A;">markiert</enter>... <enter attr="&#10;">warum</enter> nur
+</p>
