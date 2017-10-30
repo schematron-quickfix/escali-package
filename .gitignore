@@ -11,6 +11,7 @@ buildNumber.properties
 .project
 .classpath
 mvninst.bat
+*.bak
 
 # Oxygen project files
 
