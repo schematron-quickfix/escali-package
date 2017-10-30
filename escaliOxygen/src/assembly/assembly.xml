@@ -10,14 +10,6 @@
     </formats>
     
     <fileSets>
-        <!--<fileSet>
-            <directory>${project.build.directory}/lib</directory>
-            <outputDirectory>/lib</outputDirectory>
-            <includes>
-                <include>*.jar</include>
-            </includes>
-            <filtered>true</filtered>
-        </fileSet>-->
         <fileSet>
             <directory>${project.basedir}/src/non-packaged-resources</directory>
             <outputDirectory>/</outputDirectory>
@@ -28,7 +20,6 @@
             </excludes>
             <filtered>true</filtered>
         </fileSet>
-        
         <fileSet>
             <directory>${project.basedir}/src/non-packaged-resources</directory>
             <outputDirectory>/</outputDirectory>
