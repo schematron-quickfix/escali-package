@@ -13,7 +13,7 @@
                     <p><img src="http://nkutsche.com/wp-content/uploads/2017/10/escali-small.png" alt="Escali logo" id="logo"/></p>
                 </td>
                 <td>
-                    <p>Version: <span class="version">${project.version}, build ${buildNumber}</span><br/>© ${current.year} Nico Kutscherauer. All Rights Reserved.<br/><a href="http://www.schematron-quickfix.com">Plugin Website</a></p>
+                    <p><strong>${project.name}</strong> Version: <span class="version">${project.version}, build ${buildNumber}</span><br/>© ${current.year} Nico Kutscherauer. All Rights Reserved.<br/><a href="http://www.schematron-quickfix.com">Plugin Website</a></p>
                 </td>
             </tr>
         </table>
