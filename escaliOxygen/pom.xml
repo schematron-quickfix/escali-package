@@ -10,9 +10,12 @@
 	<name>Escali Oxygen Plugin</name>
 	<description>The Escali Oxygen Plugin is a plugin for the Oxygen XML Editor of Syncro Soft. With the plugin you should be able to use the Escali Schematron Processor inside of Oxygen, hence it is an alternative SQF implementation for the Oxygen editor.</description>
 
-	<properties>
-    	<debug.oxygen.version>18.0</debug.oxygen.version>
+    <properties>
+        <maven.build.timestamp.format>yyyyMMdd</maven.build.timestamp.format>
+        <buildNumber>${maven.build.timestamp}</buildNumber>
+        <project.build.addon>${project.basedir}/build</project.build.addon>
     </properties>
+    
     
 	<dependencies>
 		<dependency>
@@ -23,7 +26,6 @@
 		<dependency>
 			<groupId>com.github.oxygen-plugins</groupId>
 			<artifactId>common-gui</artifactId>
-			<version>0.0.2-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>com.schematron-quickfix</groupId>
@@ -46,11 +48,12 @@
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>com.schematron-quickfix</groupId>
+		    <groupId>com.github.oxygen-plugins</groupId>
 			<artifactId>common-oxygen</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
+    
+    
 	<build>
 		<plugins>
 			<plugin>
@@ -69,28 +72,126 @@
                     </execution>
                 </executions>
             </plugin>
-			<plugin>
-				<artifactId>maven-resources-plugin</artifactId>
-				<version>3.0.2</version>
-				<executions>
-					<execution>
-						<id>debug-install</id>
-						<phase>package</phase>
-						<goals>
-							<goal>copy-resources</goal>
-						</goals>
-						<configuration>
-							<outputDirectory>${user.home}/AppData/Roaming/com.oxygenxml/extensions/v${debug.oxygen.version}/plugins/debug/</outputDirectory>
-							<resources>
-								<resource>
-									<directory>${project.build.directory}/${project.artifactId}-${project.version}-plugin/</directory>
-								</resource>
-							</resources>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
+		    <plugin>
+		        <artifactId>maven-resources-plugin</artifactId>
+		        <version>3.0.2</version>
+		        <executions>
+		            <execution>
+		                <id>copy-resources</id><!-- here the phase you need--> 
+		                <phase>package</phase>
+		                <goals>
+		                    <goal>copy-resources</goal>
+		                </goals>
+		                <configuration>
+		                    <outputDirectory>${project.build.addon}/</outputDirectory>
+		                    <resources>
+		                        <resource>
+		                            <directory>src/non-packaged-resources</directory>
+		                            <include>extension.xml</include>
+		                            <filtering>true</filtering>
+		                        </resource>
+		                    </resources>
+		                    <!-- skip when version is SNAPSHOT -->
+		                    <skip>${project.version.is.snapshot}</skip>
+		                </configuration>
+		            </execution>
+		            <execution>
+		                <id>create-addon</id>
+		                <phase>package</phase>
+		                <goals>
+		                    <goal>copy-resources</goal>
+		                </goals>
+		                <configuration>
+		                    <outputDirectory>${project.build.addon}/</outputDirectory>
+		                    <resources>
+		                        <resource>
+		                            <directory>${project.build.directory}</directory>
+		                            <include>${project.artifactId}-${project.version}-plugin.zip</include>
+		                        </resource>
+		                    </resources>
+		                    <!-- skip when version is SNAPSHOT -->
+		                    <skip>${project.version.is.snapshot}</skip>
+		                </configuration>
+		            </execution>
+		        </executions>
+		    </plugin>
+			
+<!--		    
+		    Helper plugin to create two Maven properties:
+		    - current.year: contains only the current year in the format YYYY
+		    - project.version.is.snapshot: true or false whether the current project.version is a snapshot version.
+		    -->
+		    <plugin>
+		        <groupId>org.codehaus.mojo</groupId>
+		        <artifactId>build-helper-maven-plugin</artifactId>
+		        <version>1.12</version>
+		        <executions>
+		            <execution>
+		                <id>timestamp-property</id>
+		                <goals>
+		                    <goal>timestamp-property</goal>
+		                </goals>
+		                <phase>validate</phase>
+		                <configuration>
+		                    <name>current.year</name>
+		                    <pattern>yyyy</pattern>
+		                </configuration>
+		            </execution>
+		            <execution>
+		                <!-- sets the project.version.is.snapshot property to true if SNAPSHOT was used, 
+                to the project version otherwise -->
+		                <id>build-helper-regex-is-snapshot-used</id>
+		                <phase>validate</phase>
+		                <goals>
+		                    <goal>regex-property</goal>
+		                </goals>
+		                <configuration>
+		                    <name>project.version.is.snapshot</name>
+		                    <value>${project.version}</value>
+		                    <regex>.*-SNAPSHOT</regex>
+		                    <replacement>true</replacement>
+		                    <failIfNoMatch>false</failIfNoMatch>
+		                </configuration>
+		            </execution>
+		        </executions>
+		    </plugin>
 		</plugins>
 	</build>
-
+    
+    <profiles>
+        <profile>
+            <id>debug</id>
+            <activation>
+                <property>
+                    <name>debug.oxygen.version</name>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-resources-plugin</artifactId>
+                        <version>3.0.2</version>
+                        <executions>
+                            <execution>
+                                <id>debug-install</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>copy-resources</goal>
+                                </goals>
+                                <configuration>
+                                    <outputDirectory>${user.home}/AppData/Roaming/com.oxygenxml/extensions/v${debug.oxygen.version}/plugins/debug/</outputDirectory>
+                                    <resources>
+                                        <resource>
+                                            <directory>${project.build.directory}/${project.artifactId}-${project.version}-plugin/</directory>
+                                        </resource>
+                                    </resources>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+    
 </project>
