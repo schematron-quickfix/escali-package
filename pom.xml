@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.schematron-quickfix</groupId>
 	<artifactId>escali-main-package</artifactId>
-	<version>0.1.0</version>
+	<version>0.1.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>Escali Main Package Project</name>
 	<description>This project is a parant project for all sub projects in the Escali package.</description>
