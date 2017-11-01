@@ -90,6 +90,7 @@
             <xsl:choose>
                 <xsl:when test=". instance of element()">
                     <xsl:element name="{local-name()}" namespace="">
+                        <xsl:copy-of select="@*"/>
                         <xsl:copy-of select="node()"/>
                     </xsl:element>
                 </xsl:when>
