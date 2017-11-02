@@ -1,7 +1,9 @@
 package com.schematronQuickfix.escaliOxygen.editors;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Set;
 
 import com.schematronQuickfix.escaliOxygen.validation.ValidationAdapter;
 
@@ -88,7 +90,9 @@ public class EditorChangeListener extends WSEditorChangeListener {
 	}
 	
 	public void removeAllAdapter(){
-		for (URL url : valAdapterByURL.keySet()) {
+		Set<URL> urlSet = valAdapterByURL.keySet();
+		ArrayList<URL> urlList = new ArrayList<URL>(urlSet);
+		for (URL url : urlList) {
 			removeAdapter(url);
 		}
 		notifySelection(null);
