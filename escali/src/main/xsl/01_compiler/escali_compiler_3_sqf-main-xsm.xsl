@@ -118,6 +118,12 @@
 
         <bxsl:variable name="sqf:source-node" select="."/>
         <bxsl:variable name="sqf:source-node-type" select="es:getNodeType($sqf:source-node)"/>
+        
+        <bxsl:variable name="es:match">
+            <xsl:if test="$es:regex != ''">
+                <xsl:attribute name="select">'{$es:match}'</xsl:attribute>
+            </xsl:if>
+        </bxsl:variable>
 
         <bxsl:variable name="sqf:nodeFac" as="node()*">
             <xsl:call-template name="nodeFac"/>
@@ -244,6 +250,7 @@
         Implementation of sqf:STRINGREPLACE
     -->
     <xsl:template match="sqf:stringReplace" mode="xsm:save-mode">
+        <xsl:param name="es:regex" tunnel="yes"/>
         <bxsl:variable name="sqf:node" select="."/>
         <bxsl:variable name="sqf:stringReplace">
             <bxsl:analyze-string select="." regex="{@regex}">
@@ -251,6 +258,11 @@
                 <bxsl:matching-substring>
                     <xsm:step>
                         <bxsl:attribute name="length" select="string-length(.)"/>
+                        <bxsl:variable name="es:match">
+                            <xsl:if test="$es:regex != ''">
+                                <xsl:attribute name="select">'{$es:match}'</xsl:attribute>
+                            </xsl:if>
+                        </bxsl:variable>
                         <bxsl:variable name="sqf:nodeFac" as="node()*">
                             <xsl:apply-templates select="@select | node()" mode="template"/>
                         </bxsl:variable>
@@ -305,7 +317,13 @@
                     else
                         ($sqf:node-type)"/>
         <bxsl:variable name="sqf:position" select="'{@position}'"/>
-
+        
+        <bxsl:variable name="es:match">
+            <xsl:if test="$es:regex != ''">
+                <xsl:attribute name="select">'{$es:match}'</xsl:attribute>
+            </xsl:if>
+        </bxsl:variable>
+        
         <bxsl:variable name="sqf:nodeFac" as="node()*">
             <xsl:call-template name="nodeFac"/>
         </bxsl:variable>

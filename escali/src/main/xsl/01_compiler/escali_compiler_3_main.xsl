@@ -303,6 +303,7 @@
                                 </xsl:if>
                                 <axsl:matching-substring>
                                     <axsl:variable name="es:pos" select="position()"/>
+                                    <axsl:variable name="es:match" select="."/>
                                     <axsl:copy-of select="$es:fired-rule"/>
                                     <xsl:apply-templates select="node() except $varsWithoutDesc"/>
                                 </axsl:matching-substring>
