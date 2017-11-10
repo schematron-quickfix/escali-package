@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xt:extensions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xt="http://www.oxygenxml.com/ns/extension" xsi:schemaLocation="http://www.oxygenxml.com/ns/extension http://www.oxygenxml.com/ns/extension/extensions.xsd">
+    <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="extension.xml">
+        <xi:fallback><!--Warning - missing extension.xml--></xi:fallback>
+    </xi:include>
+</xt:extensions>
