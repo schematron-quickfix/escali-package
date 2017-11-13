@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE root [
+<!ENTITY x "long entity u.a. replacement text">
+<!ENTITY y "long entity replacement text">
+<!ENTITY u "u.">
+<!ENTITY a "a.">
+]>
+<?xml-model href="../input/test.sch" phase="#ALL" type="application/xml" schematypens="http://purl.oclc.org/dsdl/schematron"?>
+<root>
+    <p>This is the content &x; of the paragraph: <?sqfc-start ?>ADD<?sqfc-end ?>z.B.</p>
+    <p>Text with <i>inline</i> &x; and other <b>d.h.</b> stuff.</p>
+    <p>Text &x; with slpitted <b>&y;u.</b><i>a.&y;</i>.</p>
+    <p>text &u;&a; text u.&a; text &u;<b>a.&y;</b> text</p>
+    <!-- comment &x; with etc. -->
+    <p style="phrases in &x; attributes uvm. &x;">
+        noch llänggerer text schreibe, dann wird der ausgewählt, bis ich einen
+        umbruch mache? nein auch dann wird er noch markiert... warum nur
+    </p>
+    <?pi pi value &x; with e.g. &x;?>
+</root>
