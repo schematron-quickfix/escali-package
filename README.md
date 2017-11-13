@@ -51,6 +51,7 @@ Base of this project are some helper JAVA classes. They are maintained in the Gi
 - Bug fixes:
     - BaseUri was null in some cases. The error position could not be found.
     - concurrent exception occured, when plugin was switched of in options
+    - Wrong report was displayed, if switching the editor during the validation.
     
 #### Dependencies Update
 - Usage of common-xml version 0.1.1: Character entities should not hurt anymore.
