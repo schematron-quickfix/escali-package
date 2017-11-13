@@ -115,7 +115,8 @@ public class AssociationRule {
 			return;
 		try {
 			TextSource txtSrc = TextSource.readTextFile(schema);
-
+			
+			
 			SchemaInfo schemaInfo = ESCALI.getSchemaInfo(txtSrc);
 
 			setPhases(schemaInfo.getPhases());
@@ -125,16 +126,9 @@ public class AssociationRule {
 			setLangueageSelection(schemaInfo.getDefaultLanguage());
 
 			this.schema = schema;
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (XPathExpressionException e) {
-			e.printStackTrace();
-		} catch (XSLTErrorListener e) {
-			e.printStackTrace();
-		} catch (SAXException e) {
-			e.printStackTrace();
-		} catch (XMLStreamException e) {
-			e.printStackTrace();
+		} catch (Exception e) {
+			this.schema = null;
+			return;
 		}
 
 	}
@@ -417,6 +411,7 @@ public class AssociationRule {
 
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
+			return null;
 		}
 		return rule;
 
