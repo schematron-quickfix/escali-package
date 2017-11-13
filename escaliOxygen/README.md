@@ -9,7 +9,7 @@ The Escali Oxygen Plugin is an alternative Schematron QuickFix implementation fo
 
 Please use the addon function of the Oxygen XML Editor (Help > Install new add-ons... ). 
 Use the following URL as "update site": 
- [https://raw.githubusercontent.com/schematron-quickfix/escali-package/escaliOxygen/build/extensions.xml](https://raw.githubusercontent.com/schematron-quickfix/escali-package/escaliOxygen/build/extensions.xml)
+ [https://raw.githubusercontent.com/schematron-quickfix/escali-package/master/escaliOxygen/build/extensions.xml](https://raw.githubusercontent.com/schematron-quickfix/escali-package/master/escaliOxygen/build/extensions.xml)
  
 Install the Escali Oxygen Plugin and follow the installation guide.
 
