@@ -328,6 +328,58 @@ public class EscaliExtTest {
 		test01g.createTest(1, "replaceSpec", null, phase);
 
 		test01g.addToList(labels);
+		
+		// test02 with phase1
+		QuickFixTestGroup test02a = new QuickFixTestGroup("test02-es-regex-withEnt");
+		phase = "phase1";
+		test02a.title += " - " + phase;
+		test02a.getConfig().setPhase(phase);
+
+		test02a.createTest(1, "replace", null, phase);
+		test02a.createTest(1, "addBefore", null, phase);
+		test02a.createTest(1, "addAfter", null, phase);
+		test02a.createTest(1, "addBeforeSpec", null, phase);
+		test02a.createTest(1, "addAfterSpec", null, phase);
+		test02a.createTest(1, "delete", null, phase);
+		test02a.createTest(1, "replaceSpec", null, phase);
+
+		test02a.addToList(labels);
+		
+
+		// test02 with phase2
+		QuickFixTestGroup test02b = new QuickFixTestGroup("test02-es-regex-withEnt");
+		phase = "phase2";
+		test02b.title += " - " + phase;
+		test02b.getConfig().setPhase(phase);
+
+		test02b.createTest(1, "replace", null, phase);
+		test02b.createTest(1, "addBefore", null, phase);
+		test02b.createTest(1, "addAfter", null, phase);
+		test02b.createTest(1, "addBeforeSpec", null, phase);
+		test02b.createTest(1, "addAfterSpec", null, phase);
+		test02b.createTest(1, "delete", null, phase);
+		test02b.createTest(1, "replaceSpec", null, phase);
+
+		test02b.addToList(labels);
+		
+
+		// test02 with phase3
+		QuickFixTestGroup test02c = new QuickFixTestGroup("test02-es-regex-withEnt");
+		phase = "phase3";
+		test02c.title += " - " + phase;
+		test02c.getConfig().setPhase(phase);
+
+		test02c.createTest(1, "replace", null, phase);
+		test02c.createTest(1, "addBefore", null, phase);
+		test02c.createTest(1, "addAfter", null, phase);
+		test02c.createTest(1, "addBeforeSpec", null, phase);
+		test02c.createTest(1, "addAfterSpec", null, phase);
+		test02c.createTest(1, "delete", null, phase);
+		test02c.createTest(1, "replaceSpec", null, phase);
+
+		test02c.addToList(labels);
+		
+		
 		return labels;
 
 	}
