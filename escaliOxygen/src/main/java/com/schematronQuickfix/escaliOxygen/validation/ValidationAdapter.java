@@ -43,6 +43,7 @@ import com.schematronQuickfix.escaliOxygen.tools.WSPageAdapter;
 
 import ro.sync.document.DocumentPositionedInfo;
 import ro.sync.exml.editor.EditorPageConstants;
+import ro.sync.exml.workspace.api.PluginWorkspace;
 import ro.sync.exml.workspace.api.editor.WSEditor;
 import ro.sync.exml.workspace.api.editor.page.WSEditorPage;
 import ro.sync.exml.workspace.api.editor.page.WSTextBasedEditorPage;
@@ -512,7 +513,10 @@ public class ValidationAdapter extends ValidationProblemsFilter implements
 		for (SVRLReport svrlRep : this.reports) {
 			reports.add(svrlRep.getReport());
 		}
-		this.ema.viewReport(reports);
+		WSEditor curEditor = this.ema.getPluginWorkspace().getCurrentEditorAccess(PluginWorkspace.MAIN_EDITING_AREA);
+		if(this.editor == curEditor){
+			this.ema.viewReport(reports);
+		}
 	}
 
 	@Override
