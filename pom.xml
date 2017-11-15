@@ -83,17 +83,17 @@
             <dependency>
                 <groupId>com.github.oxygen-plugins</groupId>
                 <artifactId>common-xml</artifactId>
-                <version>0.1.1</version>
+                <version>0.1.2</version>
             </dependency>
             <dependency>
                 <groupId>com.github.oxygen-plugins</groupId>
                 <artifactId>common-gui</artifactId>
-                <version>0.1.1</version>
+                <version>0.1.2</version>
             </dependency>
             <dependency>
                 <groupId>com.github.oxygen-plugins</groupId>
                 <artifactId>common-oxygen</artifactId>
-                <version>0.1.1</version>
+                <version>0.1.2</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
