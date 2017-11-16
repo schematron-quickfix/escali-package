@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xt:extension id="net.sqf.oxygen" xmlns:xt="http://www.oxygenxml.com/ns/extension" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.oxygenxml.com/ns/extension http://www.oxygenxml.com/ns/extension/extensions.xsd">
-    <xt:location href="escaliOxygen-0.1.1-plugin.zip"/>
-    <xt:version>0.1.1</xt:version>
+    <xt:location href="escaliOxygen-0.1.2-plugin.zip"/>
+    <xt:version>0.1.2</xt:version>
     <xt:oxy_version>16.0+</xt:oxy_version>
     <xt:type>plugin</xt:type>
     <xt:author>Nico Kutscherauer</xt:author>
@@ -13,7 +13,7 @@
                     <p><img src="http://nkutsche.com/wp-content/uploads/2017/10/escali-small.png" alt="Escali logo" id="logo"/></p>
                 </td>
                 <td>
-                    <p><strong>Escali Oxygen Plugin</strong> Version: <span class="version">0.1.1, build 20171113</span><br/>© 2017 Nico Kutscherauer. All Rights Reserved.<br/><a href="http://www.schematron-quickfix.com">Plugin Website</a></p>
+                    <p><strong>Escali Oxygen Plugin</strong> Version: <span class="version">0.1.2, build 20171115</span><br/>© 2017 Nico Kutscherauer. All Rights Reserved.<br/><a href="http://www.schematron-quickfix.com">Plugin Website</a></p>
                 </td>
             </tr>
         </table>
