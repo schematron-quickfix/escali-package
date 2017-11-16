@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>com.schematron-quickfix</groupId>
 		<artifactId>escali-main-package</artifactId>
-	    <version>0.1.2-SNAPSHOT</version>
+	    <version>0.1.2</version>
 	</parent>
 	<artifactId>xsm</artifactId>
 	<name>XPath based String Manipulation</name>
