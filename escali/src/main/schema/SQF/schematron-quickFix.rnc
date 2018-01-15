@@ -21,20 +21,31 @@ namespace local = ""
 namespace ns1 = "http://purl.oclc.org/dsdl/schematron"
 default namespace sqf =
   "http://www.schematron-quickfix.com/validator/process"
-
+#sqfAttributesForFE | attribute * - (sqf:*) { text }
 include "iso-schematron.rnc" {
   foreign-element =
     element * - (ns1:* | sqf:*) {
-      (attribute * { text }
-       | foreign-element
+      (sqf_any-attributes) 
+       
+       |( foreign-element
        | schema
        | text)*
     }*
     & fix*
     & fixes*
     & group*
+    
+   
+   foreign-attributes = 
+   attribute * - (local:* | xml:* | sqf:*) { text }* | sqf_foreign-attributes
 }
 xml_lang = attribute xml:lang { xsd:language }?
+sqf_any-attributes = 
+  attribute * - (sqf:*) { text }* | sqf_foreign-attributes
+sqf_foreign-attributes = 
+  attribute sqf:ref {xsd:NMTOKENS}?,
+  attribute sqf:fix { xsd:string }?,
+  attribute sqf:default-fix { xsd:string }?
 messageAttributes =
   attribute sqf:fix { xsd:string }?,
   attribute sqf:default-fix { xsd:string }?
@@ -77,7 +88,7 @@ fix =
     sqf_param*,
     foreign-element*,
     let*,
-    description*,
+    description,
     foreign-element*,
     let*,
     user-entry*,
