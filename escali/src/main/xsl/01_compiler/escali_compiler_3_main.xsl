@@ -287,6 +287,7 @@
                             <xsl:copy-of select="@flag | @es:icon | @es:link | @es:regex"/>
                             <xsl:if test="@id">
                                 <xsl:attribute name="id" select="@id, '{generate-id()}'" separator=""/>
+                                <xsl:attribute name="es:base-id" select="@id"/>
                             </xsl:if>
                             <xsl:call-template name="getRoleFlag"/>
 
@@ -366,6 +367,9 @@
     <xsl:template name="reportAssertBody">
         <xsl:variable name="messageId" select="@es:id"/>
         <xsl:copy-of select="@es:icon | @es:link"/>
+        <xsl:if test="@id">
+            <xsl:attribute name="es:base-id" select="@id"/>
+        </xsl:if>
         <xsl:variable name="subject" select="
                 (@subject,
                 ../@subject)[1]"/>
