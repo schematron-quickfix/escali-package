@@ -83,6 +83,7 @@ public class OxygenOptionDialog extends JDialog {
 //		});
 
 		SwingUtil.centerFrame(this, this.getOwner());
+		this.setModal(true);
 		this.setVisible(true);
 	}
 
