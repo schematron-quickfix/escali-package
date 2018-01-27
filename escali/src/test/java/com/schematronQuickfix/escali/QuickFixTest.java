@@ -609,6 +609,13 @@ public class QuickFixTest {
 		test36b.addToList(labels);
 		test36c.addToList(labels);
 		
+
+		QuickFixTestGroup test37 = new QuickFixTestGroup("test37-lets-in-patterns", FOCUS);
+
+		test37.createTest(1, "replace");
+		
+		test37.addToList(labels);
+		
 		return labels;
 
 	}
