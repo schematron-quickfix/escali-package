@@ -35,11 +35,11 @@ public class QuickFixList extends AbstractList<_QuickFix, QuickFixListItem> {
 		
 		@Override
 		public void oneClick(MouseEvent e, boolean isSelected) {
-//			if(isSelected){
-//				ema.viewUserEntries(item.getModelNode());
-//			} else {
+			if(isSelected){
+				ema.getUeList().showUserEntries(item.getModelNode());
+			} else {
 //				ema.hideUserEntryViewer();
-//			}
+			}
 		}
 		@Override
 		public void doubleClick(MouseEvent e) {
