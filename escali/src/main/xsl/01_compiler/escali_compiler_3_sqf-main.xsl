@@ -190,7 +190,13 @@
                             </xsl:otherwise>
                         </xsl:choose>
                     </bxsl:template>
-                    <xsl:apply-templates select="sch:let | *[namespace-uri() = 'http://www.w3.org/1999/XSL/Transform']" mode="topLevelResult"/>
+                    <xsl:apply-templates select="
+                        (: top level and each active pattern :)
+                        (. | sch:pattern[es:isActive(., $phase)])
+                        /
+                        (: variables and each xslt element :)
+                        (sch:let | *[namespace-uri() = 'http://www.w3.org/1999/XSL/Transform'] )
+                        " mode="topLevelResult"/>
                     <bxsl:output method="xml"/>
                     <bxsl:key name="sqf:nodesById" match="node()" use="generate-id()"/>
                     <sqf:createExternals type="template">
