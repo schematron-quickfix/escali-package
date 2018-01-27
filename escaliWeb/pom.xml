@@ -3,7 +3,7 @@
   <parent>
     <groupId>com.schematron-quickfix</groupId>
     <artifactId>escali-main-package</artifactId>
-      <version>0.1.3-SNAPSHOT</version>
+      <version>0.1.3</version>
   </parent>
   <artifactId>escaliWeb</artifactId>
   <name>Escali Web Editor</name>
