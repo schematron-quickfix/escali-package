@@ -39,6 +39,27 @@ Base of this project are some helper JAVA classes. They are maintained in the Gi
 
 ## Release Notes
 
+### Version 0.1.3
+
+#### Escali Schematron Compiler
+
+- Bug fixes:
+    - [#5 Support of let variables in patterns for SQF](https://github.com/schematron-quickfix/escali-package/issues/5)
+
+#### Escali Oxygen Plugin
+
+- Bug fixes:
+    - [#1 Options menu seems not to be modal](https://github.com/schematron-quickfix/escali-package/issues/1)
+    - [#6 UserEntry is not available, after switching to another Message](https://github.com/schematron-quickfix/escali-package/issues/6)
+
+### Version 0.1.2
+
+#### Component update
+
+- com.github.oxygen-plugins/common-xml: version 0.1.2
+- com.github.oxygen-plugins/common-gui: version 0.1.2
+- com.github.oxygen-plugins/common-oxygen: version 0.1.2
+
 ### Version 0.1.1
 
 #### Escali Schematron Compiler
@@ -52,7 +73,7 @@ Base of this project are some helper JAVA classes. They are maintained in the Gi
     - BaseUri was null in some cases. The error position could not be found.
     - concurrent exception occured, when plugin was switched of in options
     - Wrong report was displayed, if switching the editor during the validation.
-    
+
 #### Dependencies Update
 - Usage of common-xml version 0.1.1: Character entities should not hurt anymore.
 
