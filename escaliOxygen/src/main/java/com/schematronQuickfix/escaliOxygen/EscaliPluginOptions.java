@@ -20,20 +20,41 @@ public class EscaliPluginOptions extends OptionPagePluginExtension {
 
 	@Override
 	public void apply(PluginWorkspace pw) {
-		pw.getOptionsStorage().setOption(EscaliPluginConfig.ESCALI_PLUGIN_OPTION_KEY, page.toString());
+
+		ClassLoader oldClassLoader = Thread.currentThread().getContextClassLoader();
+		try {
+			// This is the implementation of the
+			// WorkspaceAccessPluginExtension plugin interface.
+			Thread.currentThread().setContextClassLoader(EscaliPluginOptions.this.getClass().getClassLoader());
+			pw.getOptionsStorage().setOption(EscaliPluginConfig.ESCALI_PLUGIN_OPTION_KEY, page.toString());
+
+		} finally {
+			Thread.currentThread().setContextClassLoader(oldClassLoader);
+		}
 	}
 
 	@Override
 	public String getTitle() {
 		// TODO Auto-generated method stub
-		return "Escali Plugin Options";
+		return "Escali Plugin Options ";
 	}
 
 	@Override
 	public JComponent init(PluginWorkspace pw) {
-		String config = pw.getOptionsStorage().getOption(EscaliPluginConfig.ESCALI_PLUGIN_OPTION_KEY, EscaliPluginConfig.DEFAULT_CONFIG);
-		page = new OptionPage(config);
-		return page;
+
+		ClassLoader oldClassLoader = Thread.currentThread().getContextClassLoader();
+		try {
+			// This is the implementation of the
+			// WorkspaceAccessPluginExtension plugin interface.
+			Thread.currentThread().setContextClassLoader(EscaliPluginOptions.this.getClass().getClassLoader());
+			
+			String config = pw.getOptionsStorage().getOption(EscaliPluginConfig.ESCALI_PLUGIN_OPTION_KEY, EscaliPluginConfig.DEFAULT_CONFIG);
+			page = new OptionPage(config);
+			return page;
+
+		} finally {
+			Thread.currentThread().setContextClassLoader(oldClassLoader);
+		}
 	}
 
 	@Override

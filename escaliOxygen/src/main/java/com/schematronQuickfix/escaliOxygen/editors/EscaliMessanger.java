@@ -326,6 +326,8 @@ public class EscaliMessanger extends EscaliMessangerAdapter {
 	
 	@Override
 	public void showOptions() {
-		new OxygenOptionDialog(new EscaliPluginOptions(), this.spw);
+		
+		this.spw.showPreferencesPages(new String[]{"Escali Plugin Options _PLUGIN_KEY"}, "Escali Plugin Options _PLUGIN_KEY", false);
+		
 	}
 }
