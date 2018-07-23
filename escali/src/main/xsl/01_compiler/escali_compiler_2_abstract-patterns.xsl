@@ -196,7 +196,7 @@
         if they refer to exactly one diagnostic
         the message of the diagnostic will be used as the message of the assert / report
     -->
-    <xsl:template match="sch:assert[not(node())] | sch:report[not(node())]" mode="#all">
+    <xsl:template match="sch:assert[normalize-space(.) = '' and not(*)] | sch:report[normalize-space(.) = '' and not(*)]" mode="#all">
         <xsl:variable name="diagnostics" select="tokenize(@diagnostics,'\s')"/>
         <xsl:variable name="refDiagnostic" select="/sch:schema/sch:diagnostics/sch:diagnostic[@id = $diagnostics]"/>
         <xsl:copy>

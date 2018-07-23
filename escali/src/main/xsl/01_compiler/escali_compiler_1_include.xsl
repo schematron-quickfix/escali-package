@@ -107,13 +107,16 @@
     if there lang value (es:getLang()) is not equal to the $lang
     -->
     <xsl:template match="*[self::sch:assert | self::sch:report]/node()" priority="100">
+        <xsl:variable name="msgLang" select="es:getLang(.)"/>
         <xsl:choose>
             <xsl:when test="
-                    (es:getLang(.),
+                ($msgLang,
                     '#ALL') = $es:lang">
                 <xsl:next-match/>
             </xsl:when>
-            <xsl:otherwise/>
+            <xsl:otherwise>
+                <xsl:comment>Deleted because selected language <xsl:value-of select="$es:lang"/> != <xsl:value-of select="$msgLang"/>.</xsl:comment>
+            </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
 
@@ -122,14 +125,15 @@
     if there lang value (es:getLang()) is not equal to the $lang
     -->
     <xsl:template match="sch:diagnostic | sch:p" priority="100">
+        <xsl:variable name="elLang" select="es:getLang(.)"/>
         <xsl:choose>
             <xsl:when test="
-                    (es:getLang(.),
+                ($elLang,
                     '#ALL') = $es:lang">
                 <xsl:next-match/>
             </xsl:when>
             <xsl:otherwise>
-                <xsl:comment>Deleted because selected language <xsl:value-of select="$es:lang"/> != <xsl:value-of select="es:getLang(.)"/>.</xsl:comment>
+                <xsl:comment>Deleted because selected language <xsl:value-of select="$es:lang"/> != <xsl:value-of select="$elLang"/>.</xsl:comment>
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>

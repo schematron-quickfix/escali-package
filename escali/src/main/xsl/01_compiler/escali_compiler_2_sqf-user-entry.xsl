@@ -116,7 +116,21 @@
     
     <xsl:template match="sqf:param[@abstract = 'true']" mode="resolvePattern" priority="100"/>
         
-    
+    <!--    
+        es extension:
+        concern asserts / reports which contains no message (after the es:lang filter):
+        if they refer to exactly one diagnostic
+        the message of the diagnostic will be used as the message of the assert / report
+    -->
+    <xsl:template match="sqf:p[normalize-space(.) = ''] | sqf:title[normalize-space(.) = '']" mode="#all">
+        <xsl:variable name="diagnostics" select="tokenize(@ref,'\s')"/>
+        <xsl:variable name="refDiagnostic" select="/sch:schema/sch:diagnostics/sch:diagnostic[@id = $diagnostics]"/>
+        <xsl:copy>
+            <xsl:apply-templates select="if (count($refDiagnostic) = 1) 
+                then (@* except @ref, $refDiagnostic/@* except $refDiagnostic/@id, $refDiagnostic/node()) 
+                else (@*, node())" mode="#current"/>
+        </xsl:copy>
+    </xsl:template>
     
 
 </xsl:stylesheet>
