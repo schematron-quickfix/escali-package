@@ -620,6 +620,17 @@ public class QuickFixTest {
 		
 		test37a.addToList(labels);
 		test37b.addToList(labels);
+
+
+
+		QuickFixTestGroup test40 = new QuickFixTestGroup("test40-user-for-each2");
+
+		test40.createTest(1, "use_for_each_1");
+		test40.createTest(1, "use_for_each_2");
+		test40.createTest(1, "use_for_each_3");
+
+
+		test40.addToList(labels);
 		
 		return labels;
 
