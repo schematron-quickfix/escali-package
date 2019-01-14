@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="../input/test.sch" type="application/xml" schematypens="http://purl.oclc.org/dsdl/schematron"?>
+<root>
+    <?sqfc-start ?><foo group="bar" ref="bar1_3"><?sqfc-end ?></foo>
+    <bar id="baz1"></bar>
+    <bar id="baz2"></bar>
+    <bar id="baz3"></bar>
+    <bar id="bar1"></bar>
+    <bar id="bar2"></bar>
+    <bar id="bar3"></bar>
+</root>

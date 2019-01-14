@@ -623,7 +623,7 @@ public class QuickFixTest {
 
 
 
-		QuickFixTestGroup test40 = new QuickFixTestGroup("test40-user-for-each2");
+		QuickFixTestGroup test40 = new QuickFixTestGroup("test40-use-for-each2");
 
 		test40.createTest(1, "use_for_each_1");
 		test40.createTest(1, "use_for_each_2");
@@ -631,6 +631,26 @@ public class QuickFixTest {
 
 
 		test40.addToList(labels);
+
+
+		QuickFixTestGroup test41 = new QuickFixTestGroup("test41-use-for-each3");
+
+		test41.createTest(1, "use_for_each_1");
+		test41.createTest(1, "use_for_each_2");
+		test41.createTest(1, "use_for_each_3");
+
+
+		test41.addToList(labels);
+
+
+		QuickFixTestGroup test42 = new QuickFixTestGroup("test42-use-for-each4-current");
+
+		test42.createTest(1, "use_for_each_1");
+		test42.createTest(1, "use_for_each_2");
+		test42.createTest(1, "use_for_each_3");
+
+
+		test42.addToList(labels);
 		
 		return labels;
 
