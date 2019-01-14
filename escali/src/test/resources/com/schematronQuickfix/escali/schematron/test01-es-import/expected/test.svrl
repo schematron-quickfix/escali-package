@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svrl:schematron-output xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+    xmlns:es="http://www.escali.schematron-quickfix.com/"
+    title="Schematron unit test"
+    phase="phase1"
+    es:schema="file:/D:/nico/Work/Java/net.sqf.tester/data/schematron/sch-tests/test1/in/test1.sch"
+    es:instance="file:/D:/nico/Work/Java/net.sqf.tester/data/schematron/sch-tests/test1/in/test1.xml">
+    <svrl:active-pattern id="pattern1" es:phases="phase1 #ALL" />
+    <svrl:fired-rule context="pattern1" />
+    <svrl:failed-assert location="/*:root[namespace-uri()=''][1]/*:pattern1[namespace-uri()=''][1]"
+        test="false()">
+        <svrl:text>Test 1</svrl:text>
+    </svrl:failed-assert>
+</svrl:schematron-output>

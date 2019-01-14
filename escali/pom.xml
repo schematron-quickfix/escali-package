@@ -9,7 +9,12 @@
 	<artifactId>escali</artifactId>
 	<name>Escali Schematron Processor</name>
 	<description>The Escali Schematron Processor is able to validate Schematron Schema using the Escali Stylesheets. Based on the resulting report the processor is possible to execute QuickFixes, which was defind in SQF.</description>
-
+    
+    <properties>
+        <xmlunit.version>2.5.0</xmlunit.version>
+        <junit.version>4.11</junit.version>
+        <hamcrest.version>1.3</hamcrest.version>
+    </properties>
 
 	<dependencies>
 		<dependency>
@@ -26,6 +31,48 @@
 			<artifactId>xsm</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.xmlunit</groupId>
+			<artifactId>xmlunit-core</artifactId>
+		    <version>${xmlunit.version}</version>
+			<scope>test</scope>
+		</dependency>
+	    <dependency>
+	        <groupId>org.xmlunit</groupId>
+	        <artifactId>xmlunit-matchers</artifactId>
+	        <version>${xmlunit.version}</version>
+	        <scope>test</scope>
+	    </dependency>
+	    <dependency>
+	        <groupId>junit</groupId>
+	        <artifactId>junit</artifactId>
+	        <version>${junit.version}</version>
+	        <scope>test</scope>
+	    </dependency>
+	    <dependency>
+	        <groupId>org.hamcrest</groupId>
+	        <artifactId>hamcrest-library</artifactId>
+	        <version>${hamcrest.version}</version>
+	        <scope>test</scope>
+	    </dependency>
+	    <!--<dependency>
+	        <groupId>org.easymock</groupId>
+	        <artifactId>easymock</artifactId>
+	        <version>3.1</version>
+	        <scope>test</scope>
+	    </dependency>
+	    <dependency>
+	        <groupId>org.powermock</groupId>
+	        <artifactId>powermock-api-easymock</artifactId>
+	        <version>1.7.3</version>
+	        <scope>test</scope>
+	    </dependency>
+	    <dependency>
+	        <groupId>org.powermock</groupId>
+	        <artifactId>powermock-module-junit4</artifactId>
+	        <version>1.7.3</version>
+	        <scope>test</scope>
+	    </dependency>-->
 	</dependencies>
 	<build>
 		<resources>

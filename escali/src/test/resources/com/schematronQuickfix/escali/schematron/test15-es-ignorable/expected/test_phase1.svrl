@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svrl:schematron-output xmlns:svrl="http://purl.oclc.org/dsdl/svrl" xmlns:es="http://www.escali.schematron-quickfix.com/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:sqf="http://www.schematron-quickfix.com/validator/process" phase="phase1" es:schema="file:/D:/nico/Work/Java/net.sqf.tester/data/schematron/sch-tests/test15/in/schema.sch" es:instance="file:/D:/nico/Work/Java/net.sqf.tester/data/schematron/sch-tests/test15/in/instance.xml">
+    <svrl:active-pattern es:id="d3e3" id="pattern1" name="ignore element assert" es:phases="phase1 #ALL"/>
+    <svrl:fired-rule context="element" es:id="d3e8"/>
+    <svrl:successful-report location="/*:root[namespace-uri()=''][1]/*:element[namespace-uri()=''][1]" es:id="d2e4_d3e14" role="0.375" test="@attribute='value'">
+        <svrl:text>Bad value</svrl:text>
+        <sqf:fix>
+            <sqf:description>
+                <sqf:title>Ignore this warning.</sqf:title>
+            </sqf:description>
+        </sqf:fix>
+    </svrl:successful-report>
+    <svrl:fired-rule context="element" es:id="d3e8"/>
+    <svrl:fired-rule context="element" es:id="d3e8"/>
+    <svrl:fired-rule context="element" es:id="d3e8"/>
+    <svrl:fired-rule context="element" es:id="d3e8"/>
+    <svrl:fired-rule context="element" es:id="d3e8"/>
+</svrl:schematron-output>

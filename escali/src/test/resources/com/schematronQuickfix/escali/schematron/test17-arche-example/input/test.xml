@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="test.sch" type="application/xml" schematypens="http://purl.oclc.org/dsdl/schematron"?>
+<arche xmlns="http://www.schematron.info/arche">
+	<ladung>
+		<zimmer>
+			<tier geschlecht="männlich" fleischfresser="nein">
+				<art>Zebra</art>
+				<gewicht>280</gewicht>
+				<alter>40</alter>
+			</tier>
+			<tier geschlecht="weiblich" fleischfresser="ja">
+				<art>Löwe</art>
+				<gewicht>200</gewicht>
+				<alter>10</alter>
+			</tier>
+		</zimmer>
+		<zimmer>
+			<tier geschlecht="weiblich" fleischfresser="ja">
+				<art>Marder</art>
+				<gewicht>25</gewicht>
+				<alter>6</alter>
+			</tier>
+			<tier geschlecht="männlich" fleischfresser="ja">
+				<art>Marder</art>
+				<gewicht>30</gewicht>
+				<alter>7</alter>
+			</tier>
+			<tier geschlecht="weiblich" fleischfresser="ja">
+				<art>Löwe</art>
+				<gewicht>200</gewicht>
+				<alter>30</alter>
+			</tier>
+		</zimmer>
+		<zimmer>
+			<tier geschlecht="männlich" fleischfresser="nein">
+				<art>Zebra</art>
+				<gewicht>280</gewicht>
+				<alter>4</alter>
+			</tier>
+			<tier geschlecht="männlich" fleischfresser="nein">
+				<art>Zebra</art>
+				<gewicht>200</gewicht>
+				<alter>7</alter>
+			</tier>
+			<tier geschlecht="weiblich" fleischfresser="nein">
+				<art>Elefant</art>
+				<gewicht>10000</gewicht>
+				<alter>20</alter>
+			</tier>
+		</zimmer>
+		<zimmer>
+			<tier geschlecht="männlich" fleischfresser="nein">
+				<art>Feldhase</art>
+				<gewicht>3</gewicht>
+				<alter>4</alter>
+			</tier>
+			<tier geschlecht="weiblich" fleischfresser="nein">
+				<art>Feldhase</art>
+				<gewicht>3</gewicht>
+				<alter>2</alter>
+			</tier>
+			<tier geschlecht="männlich" fleischfresser="nein">
+				<art>Kaninchen</art>
+				<gewicht>3</gewicht>
+				<alter>3</alter>
+			</tier>
+			<tier geschlecht="weiblich" fleischfresser="nein">
+				<art>Kaninchen</art>
+				<gewicht>3</gewicht>
+				<alter>1</alter>
+			</tier>
+			<tier geschlecht="männlich" fleischfresser="nein">
+				<art>Meerschweinchen</art>
+				<gewicht>2</gewicht>
+				<alter>1</alter>
+			</tier>
+			<tier geschlecht="weiblich" fleischfresser="nein">
+				<art>Meerschweinchen</art>
+				<gewicht>2</gewicht>
+				<alter>1</alter>
+			</tier>
+			<tier geschlecht="männlich" fleischfresser="nein">
+				<art>Hauskatze</art>
+				<gewicht>4</gewicht>
+				<alter>6</alter>
+			</tier>
+			<tier geschlecht="weiblich" fleischfresser="nein">
+				<art>Hauskatze</art>
+				<gewicht>5</gewicht>
+				<alter>7</alter>
+			</tier>
+		</zimmer>
+	</ladung>
+	<maxReproduktionsalter>
+		<tier_art >
+			<name>Elefant</name>
+			<männlich>80</männlich>
+			<weiblich>30</weiblich>
+		</tier_art>
+		<tier_art>
+			<name>Löwe</name>
+			<männlich>30</männlich>
+			<weiblich>15</weiblich>
+		</tier_art>
+		<tier_art>
+			<name>Zebra</name>
+			<männlich>30</männlich>
+			<weiblich>20</weiblich>
+		</tier_art>
+		<tier_art>
+			<name>Marder</name>
+			<männlich>15</männlich>
+			<weiblich>10</weiblich>
+		</tier_art>
+		<tier_art>
+			<name>Feldhase</name>
+			<männlich>7</männlich>
+			<weiblich>4</weiblich>
+		</tier_art>
+		<tier_art>
+			<name>Kaninchen</name>
+			<männlich>4</männlich>
+			<weiblich>3</weiblich>
+		</tier_art>
+		<tier_art>
+			<name>Hauskatze</name>
+			<männlich>5</männlich>
+			<weiblich>3</weiblich>
+		</tier_art>
+	</maxReproduktionsalter>
+	<nutzlast>10000</nutzlast>
+</arche>
