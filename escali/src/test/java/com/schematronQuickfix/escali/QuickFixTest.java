@@ -312,7 +312,7 @@ public class QuickFixTest {
 		test06.createTest(1, "deleteRowspan");
 		test06.createTest(4, "addLost");
 		test06.createTest(6, "addLost");
-		test06.createTest(9, "deleteÜberschuss");
+		test06.createTest(9, "deleteUeberschuss");
 
 		test06.addToList(labels);
 

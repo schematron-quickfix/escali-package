@@ -120,8 +120,8 @@
                 else ($maxCol)"/>
 			<let name="rowMaxCol" value="max(for $cell in $row return number($cell/@html:colNumber + $cell/@colspan - 1))"/>
 			<assert test="count($row) &gt;= $forcedColCount" sqf:fix="addLost">Cells are missing. (Counting of missing cells: <value-of select="$forcedColCount - count($row)"/> of <value-of select="$forcedColCount"/>)</assert>
-			<report test="$rowMaxCol &gt; $forcedColCount" sqf:fix="deleteÜberschuss">Too many cells in this row. (Counting of excessive cells:  <value-of select="count($row) - $forcedColCount"/>)</report>
-			<sqf:fix id="deleteÜberschuss">
+		    <report test="$rowMaxCol &gt; $forcedColCount" sqf:fix="deleteUeberschuss">Too many cells in this row. (Counting of excessive cells:  <value-of select="count($row) - $forcedColCount"/>)</report>
+		    <sqf:fix id="deleteUeberschuss">
 				<sqf:description>
 				    <sqf:title>Delete the excessive cells.</sqf:title>
 				</sqf:description>
