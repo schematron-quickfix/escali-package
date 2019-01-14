@@ -419,7 +419,7 @@
                         <bxsl:param name="xsm:xml-save-mode" select="false()" as="xs:boolean" tunnel="yes"/>
 
                         <xsl:call-template name="setVarContext">
-                            <xsl:with-param name="messageId" select="$messageId"/>
+                            <xsl:with-param name="messageId" select="$messageId" tunnel="yes"/>
                             <xsl:with-param name="templateBody">
                                 <xsl:choose>
                                     <xsl:when test="$xsm:xml-save-mode">
@@ -482,7 +482,7 @@
                             <xsl:when test="@position = ('after')">
                                 <bxsl:next-match/>
                                 <xsl:call-template name="setVarContext">
-                                    <xsl:with-param name="messageId" select="$messageId"/>
+                                    <xsl:with-param name="messageId" select="$messageId" tunnel="yes"/>
                                     <xsl:with-param name="templateBody">
                                         <xsl:choose>
                                             <xsl:when test="$xsm:xml-save-mode">
@@ -497,7 +497,7 @@
                             </xsl:when>
                             <xsl:otherwise>
                                 <xsl:call-template name="setVarContext">
-                                    <xsl:with-param name="messageId" select="$messageId"/>
+                                    <xsl:with-param name="messageId" select="$messageId" tunnel="yes"/>
                                     <xsl:with-param name="templateBody">
                                         <xsl:choose>
                                             <xsl:when test="$xsm:xml-save-mode">
@@ -779,7 +779,7 @@
 -->
     <xsl:template name="setVarContext">
         <xsl:param name="use-for-each" as="xs:string?" tunnel="yes"/>
-        <xsl:param name="messageId" as="xs:string"/>
+        <xsl:param name="messageId" as="xs:string" tunnel="yes"/>
         <xsl:param name="templateBody" as="node()*"/>
         <xsl:variable name="activityElement" select="."/>
         <xsl:variable name="fix" select="parent::sqf:fix"/>
@@ -813,78 +813,78 @@
                 </xsl:attribute>
             </bxsl:variable>
         </xsl:for-each>
-        <xsl:variable name="loops">
-            <bxsl:for-each select="$sqf:ruleContext">
-                <xsl:variable name="ruleLevelVars" select="
-                        $fixOrGroup/preceding-sibling::* intersect ($rule/sch:let,
-                        $rule/xsl:variable)"/>
-                <xsl:variable name="fixLevelVars" select="
-                        $activityElement/preceding-sibling::* intersect ($fix/sqf:param,
-                        $fix/sqf:user-entry,
-                        $fix/sch:let,
-                        $fix/xsl:variable)"/>
-                <xsl:for-each select="
-                        $ruleLevelVars,
-                        $fixLevelVars">
-                    <xsl:choose>
-                        <xsl:when test="self::sqf:user-entry">
-                            <bxsl:variable name="{@name}">
-                                <xsl:attribute name="select">
-                                    <xsl:text>$sqf:</xsl:text>
-                                    <xsl:value-of select="generate-id()"/>
-                                    <xsl:text>_</xsl:text>
-                                    <xsl:value-of select="$messageId"/>
-                                    <xsl:text>_{generate-id()}</xsl:text>
-                                </xsl:attribute>
-                            </bxsl:variable>
-                        </xsl:when>
-                        <xsl:when test="self::sqf:param">
-                            <bxsl:variable name="{@name}">
-                                <xsl:apply-templates select="@* | node()"/>
-                            </bxsl:variable>
-                        </xsl:when>
-                        <xsl:otherwise>
-                            <bxsl:variable name="{@name}">
-                                <xsl:if test="@value | @select">
-                                    <axsl:attribute name="select">
-                                        <xsl:value-of select="replace(@value | @select, 'current\(\)', '\$sqf:ruleContext')"/>
-                                    </axsl:attribute>
-                                </xsl:if>
-                                <xsl:copy-of select="node()"/>
-                            </bxsl:variable>
-                        </xsl:otherwise>
-                    </xsl:choose>
-                </xsl:for-each>
-
-                <bxsl:for-each select="$sqf:activityContext">
-                    <xsl:for-each select="sch:let">
-                        <bxsl:variable name="{@name}" select="{@value}"/>
-                    </xsl:for-each>
-                    <xsl:copy-of select="$templateBody"/>
-                </bxsl:for-each>
-            </bxsl:for-each>
-        </xsl:variable>
-
-        <xsl:choose>
-            <xsl:when test="$use-for-each">
-                <bxsl:for-each>
+        
+        
+        <bxsl:for-each select="$sqf:ruleContext">
+            <xsl:variable name="ruleLevelVars" select="
+                    $fixOrGroup/preceding-sibling::* intersect ($rule/sch:let,
+                    $rule/xsl:variable)"/>
+            <xsl:variable name="fixLevelVars" select="
+                    $activityElement/preceding-sibling::* intersect ($fix/sqf:param,
+                    $fix/sqf:user-entry,
+                    $fix/sch:let,
+                    $fix/xsl:variable)"/>
+            
+            <xsl:apply-templates select="$ruleLevelVars" mode="sqf:manipulator-variables"/>
+            
+            <xsl:if test="$use-for-each">
+                <bxsl:variable name="sqf:pos">
+                    <axsl:attribute name="select" select="$sqf:pos"/>
+                </bxsl:variable>
+                <bxsl:variable name="sqf:current">
                     <xsl:attribute name="select">
                         <xsl:text>(</xsl:text>
                         <xsl:value-of select="$use-for-each"/>
                         <xsl:text>)[{$sqf:pos}]</xsl:text>
                     </xsl:attribute>
-                    <bxsl:variable name="sqf:pos">
-                        <axsl:attribute name="select" select="$sqf:pos"/>
-                    </bxsl:variable>
-                    <bxsl:variable name="sqf:current" select="."/>
-                    <xsl:copy-of select="$loops"/>
-                </bxsl:for-each>
-            </xsl:when>
-            <xsl:otherwise>
-                <xsl:copy-of select="$loops"/>
-            </xsl:otherwise>
-        </xsl:choose>
+                </bxsl:variable>
+            </xsl:if>
+            
+            <xsl:apply-templates select="$fixLevelVars" mode="sqf:manipulator-variables"/>
+            
+
+            <bxsl:for-each select="$sqf:activityContext">
+                <xsl:for-each select="sch:let">
+                    <bxsl:variable name="{@name}" select="{@value}"/>
+                </xsl:for-each>
+                <xsl:copy-of select="$templateBody"/>
+            </bxsl:for-each>
+        </bxsl:for-each>
+
     </xsl:template>
+    
+    
+    <xsl:template match="sqf:user-entry" mode="sqf:manipulator-variables">
+        <xsl:param name="messageId" as="xs:string" tunnel="yes"/>
+        <bxsl:variable name="{@name}">
+            <xsl:attribute name="select">
+                <xsl:text>$sqf:</xsl:text>
+                <xsl:value-of select="generate-id()"/>
+                <xsl:text>_</xsl:text>
+                <xsl:value-of select="$messageId"/>
+                <xsl:text>_{generate-id()}</xsl:text>
+            </xsl:attribute>
+        </bxsl:variable>
+    </xsl:template>
+    
+    <xsl:template match="sqf:param" mode="sqf:manipulator-variables">
+        <bxsl:variable name="{@name}">
+            <xsl:apply-templates select="@* | node()"/>
+        </bxsl:variable>
+    </xsl:template>
+    
+    <xsl:template match="sch:let | xsl:variable" mode="sqf:manipulator-variables">
+        <bxsl:variable name="{@name}">
+            <xsl:copy-of select="self::xsl:variable/@*"/>
+            <xsl:if test="@value | @select">
+                <axsl:attribute name="select">
+                    <xsl:value-of select="@value | @select"/>
+                </axsl:attribute>
+            </xsl:if>
+            <xsl:copy-of select="node()"/>
+        </bxsl:variable>
+    </xsl:template>
+    
     <!--
 	M A T C H - G E N E R A T O R
 -->
