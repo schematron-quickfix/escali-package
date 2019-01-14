@@ -39,6 +39,14 @@ Base of this project are some helper JAVA classes. They are maintained in the Gi
 
 ## Release Notes
 
+### Version 0.1.4
+
+#### Escali Schematron Compiler
+
+- Bug fixes:
+    - Fixes undeclared $sqf:current variable error if it was used in variables of generic QuickFixes.  
+
+
 ### Version 0.1.3
 
 #### Escali Schematron Compiler
