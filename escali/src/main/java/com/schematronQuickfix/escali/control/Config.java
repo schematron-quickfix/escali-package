@@ -31,6 +31,8 @@ public class Config {
 	private boolean supressSQF = false;
 	private boolean xinclude = true;
 	
+	private ArrayList<Parameter> validationParams = new ArrayList<Parameter>();
+	
 	
 	protected Config(){
 	}
@@ -139,5 +141,13 @@ public class Config {
 		ArrayList<Parameter> manipulatorParams = new ArrayList<Parameter>();
 		manipulatorParams.add(new Parameter("xml-save-mode", ProcessNamespaces.XSM_NS, this.xmlSaveMode));
 		return manipulatorParams;
+	}
+	
+	public void addValidationParam(String name, Object value) {
+		validationParams.add(new Parameter(name, value));
+	}
+	
+	public ArrayList<Parameter> createValidationParams() {
+		return validationParams;
 	}
 }

@@ -122,7 +122,7 @@ public class Escali {
 
 	public SVRLReport validate(TextSource input, ProcessLoger logger) throws XSLTErrorListener,
 			XPathExpressionException, IOException, SAXException, URISyntaxException, XMLStreamException {
-		return validate(input, new ArrayList<Parameter>(), logger);
+		return validate(input, config.createValidationParams(), logger);
 	}
 
 	// public TextSource validateHTML() throws
