@@ -867,25 +867,18 @@
 
         <xsl:choose>
             <xsl:when test="$use-for-each">
-                <xsl:call-template name="setVarContext">
-                    <xsl:with-param name="messageId" select="$messageId"/>
-                    <xsl:with-param name="use-for-each" select="()" tunnel="yes"/>
-                    <xsl:with-param name="templateBody">
-                        <bxsl:for-each>
-                            <xsl:attribute name="select">
-                                <xsl:text>(</xsl:text>
-                                <xsl:value-of select="$use-for-each"/>
-                                <xsl:text>)[{$sqf:pos}]</xsl:text>
-                            </xsl:attribute>
-                            <bxsl:variable name="sqf:pos">
-                                <axsl:attribute name="select" select="$sqf:pos"/>
-                            </bxsl:variable>
-                            <bxsl:variable name="sqf:current" select="."/>
-                            <xsl:copy-of select="$loops"/>
-                        </bxsl:for-each>
-                    </xsl:with-param>
-                </xsl:call-template>
-
+                <bxsl:for-each>
+                    <xsl:attribute name="select">
+                        <xsl:text>(</xsl:text>
+                        <xsl:value-of select="$use-for-each"/>
+                        <xsl:text>)[{$sqf:pos}]</xsl:text>
+                    </xsl:attribute>
+                    <bxsl:variable name="sqf:pos">
+                        <axsl:attribute name="select" select="$sqf:pos"/>
+                    </bxsl:variable>
+                    <bxsl:variable name="sqf:current" select="."/>
+                    <xsl:copy-of select="$loops"/>
+                </bxsl:for-each>
             </xsl:when>
             <xsl:otherwise>
                 <xsl:copy-of select="$loops"/>
