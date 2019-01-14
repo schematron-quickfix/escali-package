@@ -29,8 +29,12 @@ public class Validation {
 	}
 	
 	public Validation(File schema, Config config, ProcessLoger logger) throws XSLTErrorListener, IOException, CancelException{
+		this(TextSource.readTextFile(schema), config, logger);
+	}
+	
+	public Validation(TextSource schema, Config config, ProcessLoger logger) throws XSLTErrorListener, IOException, CancelException{
 		this.escali = new Escali(config, new EscaliArchiveResources());
-		this.escali.compileSchema(TextSource.readTextFile(schema), logger);
+		this.escali.compileSchema(schema, logger);
 	}
 	
 	public SVRLReport validate(File instance) throws IOException, XPathExpressionException, XSLTErrorListener, SAXException, URISyntaxException, XMLStreamException{

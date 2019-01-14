@@ -34,10 +34,10 @@ public class Fixing {
 
 	public Fixing(File schema, File sourceFile, Config config) throws XSLTErrorListener, XPathExpressionException,
 			IOException, SAXException, URISyntaxException, XMLStreamException, CancelException {
-		this(schema, TextSource.readTextFile(sourceFile), config);
+		this(TextSource.readTextFile(schema), TextSource.readTextFile(sourceFile), config);
 	}
 
-	public Fixing(File schema, TextSource source, Config config) throws XSLTErrorListener, XPathExpressionException,
+	public Fixing(TextSource schema, TextSource source, Config config) throws XSLTErrorListener, XPathExpressionException,
 			IOException, SAXException, URISyntaxException, XMLStreamException, CancelException {
 		this(new Validation(schema, config, DefaultProcessLoger.getDefaultProccessLogger()).validate(source), source, config);
 	}
