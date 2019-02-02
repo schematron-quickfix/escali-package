@@ -658,13 +658,21 @@ public class QuickFixTest {
 		test43.createTest(1, "vb.elementType.allComplex");
 
 		test43.addToList(labels);
+
+//		Strange test case:
+//      This works with the Escali Oxygen Plugin, but not here
+//      Reason can not be found yet, so it is PENDING
+
+		QuickFixTestGroup test44 = new QuickFixTestGroup("test44-embeded-xslt", PENDING);
+
+		test44.createTest(1, "vb.elementType.allComplex");
+
+		test44.addToList(labels);
 		
 		return labels;
 
 	}
 
-	// public QuickFixTest(String folder, String msgPosStr, String fixName,
-	// String[] parameter, String suffix){
 
 	public QuickFixTest(QuickFixParameter qfParam) {
 		this.testParams = qfParam;
@@ -694,16 +702,6 @@ public class QuickFixTest {
 
 		testQuickFix(testParams.escaliConfig);
 
-		// }
-
-		// Config config = ConfigFactory.createDefaultConfig();
-		// if(this.msgPosStr != null){
-		// config.setPhase(msgPosStr);
-		// }
-		// if(this.fixName != null){
-		// config.setLanguage(fixName);
-		// }
-		// config.setCompactSVRL(false);
 
 	}
 
@@ -750,65 +748,5 @@ public class QuickFixTest {
 			}
 		}
 	}
-
-	// private static void testValidation(File schema, File instance, File
-	// expectedSVRL, String phase){
-	// Config config = ConfigFactory.createDefaultConfig();
-	// config.setPhase(phase);
-	// testValidation(schema, instance, expectedSVRL, config);
-	// }
-	// private static void testValidation(File schema, File instance, int
-	// msgPos, String fixName, File expectedSVRL, Config config){
-	// try {
-	// Fixing fix = new Fixing(schema, instance, config);
-	// ArrayList<TextSource> result = fix.executeFix(msgPos, fixName);
-	//
-	//
-	// Validation val = new Validation(schema, config, new MuteProcessLoger());
-	// SVRLReport svrl = val.validate(instance);
-	// TextSource svrlTxt = svrl.getFormatetReport(SVRLReport.SVRL_FORMAT);
-	//
-	// TextSource expectedSvrlTxt = TextSource.readTextFile(expectedSVRL);
-	//
-	//
-	// StringNode expectedSN = ignore(expectedSvrlTxt);
-	// StringNode actualSN = ignore(svrlTxt);
-	//
-	// compareStringNodes(actualSN, expectedSN);
-	//
-	// } catch (XPathExpressionException | IOException | XSLTErrorListener |
-	// SAXException | URISyntaxException
-	// | XMLStreamException | CancelException e) {
-	// fail(e.getMessage());
-	// }
-	// }
-	//
-	//
-	// private static void compareStringNodes(StringNode result, StringNode
-	// expected){
-	//
-	// String actualStr = StringNodeComparer.getCompareString(result, new
-	// StringNodeComparer.CompareConfig());
-	// String expectedStr = StringNodeComparer.getCompareString(expected, new
-	// StringNodeComparer.CompareConfig());
-	//
-	// assertEquals(expectedStr, actualStr);
-	// }
-	//
-	//
-	//
-	// private static StringNode ignore(TextSource xml){
-	// try {
-	// PositionalReplace pr = new PositionalReplace(xml, false);
-	// pr.deleteNode("//@es:ref|//@es:id | /svrl:schematron-output/@es:schema |
-	// /svrl:schematron-output/@es:instance | //@es:roleLabel|//@role");
-	// pr.deleteNode("/*/sqf:topLevel | //sqf:sheet | //sqf:fix/@*");
-	// return pr.getSourceAsStringNode();
-	// } catch (XPathExpressionException | IOException | SAXException |
-	// XMLStreamException | CancelException e) {
-	// e.printStackTrace();
-	// return null;
-	// }
-	// }
 
 }
