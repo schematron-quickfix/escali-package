@@ -168,6 +168,7 @@ public class QuickFixTest {
 			this(folderName, schema, source, AUTO);
 		}
 
+
 		public void createTest(int msgPos, String fixName) {
 			this.add(new QuickFixParameter(title, this.schema, this.source, msgPos, fixName, status));
 		}
@@ -651,6 +652,12 @@ public class QuickFixTest {
 
 
 		test42.addToList(labels);
+
+		QuickFixTestGroup test43 = new QuickFixTestGroup("test43-ns-context-add-after");
+
+		test43.createTest(1, "vb.elementType.allComplex");
+
+		test43.addToList(labels);
 		
 		return labels;
 
