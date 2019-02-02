@@ -383,8 +383,10 @@
                             <axsl:attribute name="start-position" select="$es:substrings[1] - 1"/>
                             <axsl:attribute name="end-position" select="$es:substrings[2] - 1"/>
                         </xsl:if>
+                        
+                        <xsl:variable name="sqf:namespaceContext" select=" if (@position = ('after', 'before')) then ('/..') else ('')"/>
 
-                        <bxsl:copy-of select="$sqf:activityContext/namespace::*"/>
+                        <bxsl:copy-of select="$sqf:activityContext{$sqf:namespaceContext}/namespace::*"/>
 
                         <bxsl:variable name="sqf:position" select="
                                 if ($sqf:position = '') then
