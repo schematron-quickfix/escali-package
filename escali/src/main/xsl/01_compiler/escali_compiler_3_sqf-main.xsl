@@ -229,18 +229,22 @@
     <xsl:template match="*[namespace-uri() = 'http://www.w3.org/1999/XSL/Transform']" mode="topLevelResult">
         <xsl:element name="axsl:{local-name()}">
             <xsl:call-template name="namespace"/>
-            <xsl:copy-of select="@*"/>
+            <xsl:apply-templates select="@*" mode="#current"/>
             <xsl:apply-templates mode="#current"/>
         </xsl:element>
     </xsl:template>
     <xsl:template match="*" mode="topLevelResult">
         <xsl:copy copy-namespaces="no">
             <xsl:call-template name="namespace"/>
-            <xsl:copy-of select="@*"/>
+            <xsl:apply-templates select="@*" mode="#current"/>
             <xsl:apply-templates mode="#current"/>
         </xsl:copy>
     </xsl:template>
-
+    
+    <xsl:template match="*[namespace-uri() = 'http://www.w3.org/1999/XSL/Transform']//@*" mode="topLevelResult">
+        <xsl:attribute name="{name()}" select="replace(., '(\{|\})', '$1$1')"/>
+    </xsl:template>
+    
     <!--    
     F I X   E L E M E N T S
     -->
