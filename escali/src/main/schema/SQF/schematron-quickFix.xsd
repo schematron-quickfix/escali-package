@@ -5,18 +5,25 @@
         
     This file is part of Escali Schematron.
     
-    Escali Schematron is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
+    MIT License
+
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
     
-    Escali Schematron is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
+    The above copyright notice and this permission notice shall be included in all
+    copies or substantial portions of the Software.
     
-    You should have received a copy of the GNU General Public License
-    along with Escali Schematron.  If not, see http://www.gnu.org/licenses/gpl-3.0.
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+    SOFTWARE.
     
     -->
 
@@ -96,6 +103,15 @@
         </xs:attribute>
     </xs:attributeGroup>
 
+    <xs:attributeGroup name="refAttribute">
+        <xs:attribute name="ref" type="xs:NMTOKENS">
+            <xs:annotation>
+                <xs:documentation>References to alternative text phrases (e.g. for localisation).</xs:documentation>
+                <xs:documentation>A minimum implementation for this attribute should support a reference to an ID of a <icode type="attribute">sch:diagnostic</icode> element. Alternativly an implementation is free to support references to other localisation files (e.g. Java properties files). A reference token which does not reference to a known target should not occure an error but should be ignored.</xs:documentation>
+                <xs:documentation source="Value">A whitespace separated list of tokens which represents a reference.</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:attributeGroup>
 
     <xs:group name="templateElements">
         <xs:annotation>
@@ -240,7 +256,7 @@
         </xs:annotation>
         <xs:complexType>
             <xs:sequence>
-                <xs:element ref="sqf:description" maxOccurs="unbounded"/>
+                <xs:element ref="sqf:description"/>
             </xs:sequence>
             <xs:attributeGroup ref="sqf:parameterAttributes"/>
             <xs:attribute ref="xml:lang"/>
@@ -336,11 +352,8 @@
                     <xs:element ref="sch:value-of"/>
                 </xs:choice>
             </xs:choice>
-            <xs:attribute ref="xml:lang">
-                <xs:annotation>
-                    <xs:documentation>This is deprecated. The language should be specified on description level.</xs:documentation>
-                </xs:annotation>
-            </xs:attribute>
+            <xs:attribute ref="xml:lang"/>
+            <xs:attributeGroup ref="sqf:refAttribute"/>
             <xs:attributeGroup ref="sch:foreign"/>
         </xs:complexType>
     </xs:element>
@@ -359,11 +372,8 @@
                     <xs:element ref="sch:span"/>
                 </xs:choice>
             </xs:choice>
-            <xs:attribute ref="xml:lang">
-                <xs:annotation>
-                    <xs:documentation>This is deprecated. The language should be specified on description level.</xs:documentation>
-                </xs:annotation>
-            </xs:attribute>
+            <xs:attribute ref="xml:lang"/>
+            <xs:attributeGroup ref="sqf:refAttribute"/>
             <xs:attributeGroup ref="sch:foreign"/>
         </xs:complexType>
     </xs:element>
@@ -434,7 +444,7 @@
                     <xs:documentation source="Default">There is no default value. If the <icode type="attribute">select</icode> attribute is not set, the content of the activity element defines the nodes to be inserted.</xs:documentation>
                 </xs:annotation>
             </xs:attribute>
-        <xs:attribute name="flags" type="xs:string">
+            <xs:attribute name="flags" type="xs:string">
                 <xs:annotation>
                     <xs:documentation source="Value">Flags to control the interpretation of the regular expression (given in the <icode type="attribute">regex</icode> attribute). The flags can be specified by XPath expressions which are marked by curly brackets. After processing, the flags must meet the requirements of the <icode type="attribute">flags</icode> attribute of the <icode type="element">xsl:analyze-string</icode> element.</xs:documentation>
                 </xs:annotation>
