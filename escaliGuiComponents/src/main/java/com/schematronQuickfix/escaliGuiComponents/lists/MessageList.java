@@ -83,6 +83,7 @@ public class MessageList extends AbstractList<_SVRLMessage, SVRLMessageListItem>
 	}
 
 	public void setEmptyLabel(JComponent label) {
+		this.removeAllItems();
 		SwingUtil.addComponent(this.emptyEndPanel, gblEEP, label, 0, 0, 1, 1, 1.0, 1.0, GridBagConstraints.NORTH,
 				GridBagConstraints.HORIZONTAL);
 	}

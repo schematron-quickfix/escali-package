@@ -44,6 +44,7 @@ public class UserEntryListItem extends AbstractListItem<_UserEntry> implements C
 		this.userEntry = userEntry;
 		textField = VerifierFactory.createEntryLabel(null, null, userEntry.getTypeConverter(),
 				parentDialog == null ? this.controlPanel : parentDialog);
+		textField.setTitle(userEntry.toString());
 		textField.setText(userEntry.getValueAsString());
 		textField.addValueListener(new _ValueListener() {
 			@Override

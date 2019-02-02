@@ -67,6 +67,7 @@ public class UserEntry extends MessageGroup implements _UserEntry {
 		}
 
 		this.defaultValue = this.converter.getDefault();
+		this.useDefaultIfAvailable();
 
 		// S E T N A M E
 		Node nameNode = xpathreader.getNode("sqf:description/sqf:title", node);
