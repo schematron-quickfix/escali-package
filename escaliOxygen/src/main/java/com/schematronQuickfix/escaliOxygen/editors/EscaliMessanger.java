@@ -74,6 +74,7 @@ public class EscaliMessanger extends EscaliMessangerAdapter {
 		doc.setParagraphAttributes(0, doc.getLength(), center, false);
 		
 		this.getMessageList().setEmptyLabel(emptyText);
+		clearList();
 		
 		EscaliPluginConfig.config.addChangeListener(new ConfigChangeListener() {
 			
@@ -99,6 +100,10 @@ public class EscaliMessanger extends EscaliMessangerAdapter {
 				}
 			}
 		});
+	}
+
+	public void clearList(){
+		this.getMessageList().removeAllItems();
 	}
 
 	@Override

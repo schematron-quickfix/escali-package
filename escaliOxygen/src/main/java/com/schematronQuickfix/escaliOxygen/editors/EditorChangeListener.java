@@ -33,13 +33,13 @@ public class EditorChangeListener extends WSEditorChangeListener {
 
 	@Override
 	public void editorActivated(URL url) {
-		notifySelection(url);
+		openEditor(url);
 		super.editorActivated(url);
 	}
 
 	@Override
 	public void editorSelected(URL url) {
-		notifySelection(url);
+		openEditor(url);
 		super.editorSelected(url);
 	}
 
@@ -60,12 +60,15 @@ public class EditorChangeListener extends WSEditorChangeListener {
 		WSEditor editor = ema.getPluginWorkspace().getEditorAccess(url, main_area);
 		
 		if(ValidationAdapter.isSQFevailable(editor)){
-			
-			ValidationAdapter valAdap = ValidationAdapter.checkForSQFValidation(editor, ema);
-			this.valAdapterByURL.put(url, valAdap);
-			if(notify){
-				notifySelection(url);
+
+			if(!this.valAdapterByURL.containsKey(url)){
+				ValidationAdapter valAdap = ValidationAdapter.checkForSQFValidation(editor, ema);
+				this.valAdapterByURL.put(url, valAdap);
 			}
+		}
+
+		if(notify){
+			notifySelection(url);
 		}
 	}
 	

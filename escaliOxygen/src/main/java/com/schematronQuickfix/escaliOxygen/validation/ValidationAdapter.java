@@ -204,6 +204,9 @@ public class ValidationAdapter extends ValidationProblemsFilter implements
 				problemList.addAll(viewErrorLog(oxygenLogger));
 			}
 			problems.setProblemsList(problemList);
+		} else {
+			ema.clearList();
+
 		}
 		
 
