@@ -14,6 +14,7 @@
         <maven.build.timestamp.format>yyyyMMdd</maven.build.timestamp.format>
         <buildNumber>${maven.build.timestamp}</buildNumber>
         <project.build.addon>${project.basedir}/build</project.build.addon>
+        <release.note.link>https://github.com/schematron-quickfix/escali-package/releases/tag/${project.version}</release.note.link>
     </properties>
     
     
