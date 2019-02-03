@@ -668,7 +668,15 @@ public class QuickFixTest {
 		test44.createTest(1, "vb.elementType.allComplex");
 
 		test44.addToList(labels);
-		
+
+
+		QuickFixTestGroup test45 = new QuickFixTestGroup("test45-mutlipleAttributes", FOCUS);
+
+		test45.createTest(1, "addMultipleAttributes");
+
+		test45.addToList(labels);
+
+
 		return labels;
 
 	}
