@@ -15,7 +15,7 @@ The Escali GUI Components provides Java Swing components, which can be used to i
 
 ### Escali Oxygen Plugin
 
-The Escali Oxygen Plugin is a integration of the Escali Schematron Compiler and the Escali GUI Components into the Oxygen XML Editor via its plugin API.
+The Escali Oxygen Plugin is a integration of the Escali Schematron Compiler and the Escali GUI Components into the Oxygen XML Editor via its plugin API. [more](./escaliOxygen/README.md)
 
 ### Escali Web
 
@@ -38,6 +38,30 @@ Base of this project are some helper JAVA classes. They are maintained in the Gi
 - [com.github.oxygen-plugins/common-oxygen](https://github.com/oxygen-plugins/common-oxygen)
 
 ## Release Notes
+
+### Version 0.2.0
+
+#### Component update
+
+- com.github.oxygen-plugins/common-gui: version 0.2.0
+
+#### Escali Schematron Compiler
+
+- Take over changes of the Second Draft of the SQF specification:
+    - Updated schema / sqf.sch
+    - Implementation of the localisation concept of the Second Draft
+- Added test suite for sqf.sch
+- Bug fixes:
+    - Switch of namespace context with XSM did not worked for sqf:add/@position=before|after
+    - Unescaping of attribute value templates (`{XPATH}`) did not worked correctly
+
+#### Escali Oxygen Plugin
+
+- UserEntries:
+    - Better handling for larger values
+    - Support for multi-line values
+- Bug fixes:
+    - Validation for new files did not worked.
 
 ### Version 0.1.4
 
