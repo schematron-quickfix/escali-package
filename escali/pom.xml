@@ -31,18 +31,18 @@
 		<resources>
 			<resource>
 				<directory>src/main/xsl</directory>
-				<targetPath>/xsl</targetPath>
+				<targetPath>xsl</targetPath>
 			</resource>
 		    <resource>
 		        <directory>src/main/resources</directory>
 		    </resource>
 			<resource>
 				<directory>src/main/xproc</directory>
-				<targetPath>/xproc</targetPath>
+				<targetPath>xproc</targetPath>
 			</resource>
 			<resource>
 				<directory>src/main/schema</directory>
-				<targetPath>/schema</targetPath>
+				<targetPath>schema</targetPath>
 			</resource>
 		</resources>
 		<plugins>
