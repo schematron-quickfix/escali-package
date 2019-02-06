@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="../medications.rnc" type="application/relax-ng-compact-syntax"?>
+<medications>
+    <medication id="protoa83">
+        <name>ProTo A 38</name>
+        <patent>
+            <created>12.01.2000</created>
+            <valid-to>12.01.2020</valid-to>
+        </patent>
+    </medication>
+    <medication id="protogentechnik">
+        <name>ProTo Gen Tec</name>
+        <patent>
+            <created>12.01.1999</created>
+            <valid-to>11.01.2024</valid-to>
+        </patent>
+    </medication>
+    <medication id="prototyp0815">
+        <name>ProTo Typ 0815</name>
+        <patent>
+            <created>23.05.2013</created>
+            <valid-to>22.05.2033</valid-to>
+        </patent>
+    </medication>
+</medications>

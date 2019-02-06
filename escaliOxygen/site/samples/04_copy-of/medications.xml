@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="../medications.rnc" type="application/relax-ng-compact-syntax"?>
+<medications>
+    <medication id="prototyp0815">
+        <name>ProTo Typ 0815</name>
+        
+        <side-effects>
+            <side-effect level="innocuous">ProTo&#xA0;Typ&#xA0;0815 may cause mild headaches.</side-effect>
+            <side-effect level="life-threatening">Do not take ProTo&#xA0;Type&#xA0;0815 at the same time as antibiotics! May cause life-threatening nausea.</side-effect>
+        </side-effects>
+        
+        
+    </medication>
+</medications>
