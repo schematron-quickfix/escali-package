@@ -13,6 +13,11 @@ Use the following URL as "update site":
  
 Install the Escali Oxygen Plugin and follow the installation guide.
 
+## Documentation and examples
+
+Further documentation and a sample file suite can be found here:
+
+[Escali Oxygen Plugin Help](site/README.md) 
 
 ## Icons
 
