@@ -21,7 +21,7 @@ public class T46Order extends FixingTestBase {
 	@Test
 	public void test_1_addAfter(){
 //    	PENDING! Not clear specified in SQF spec!
-    	assumeTrue(false);
+    	assumeTrue("PENDING: Not clear specified in SQF spec!", false);
 		doTest(new ExecutionSetup(1, "addAfter"));
 	}
 

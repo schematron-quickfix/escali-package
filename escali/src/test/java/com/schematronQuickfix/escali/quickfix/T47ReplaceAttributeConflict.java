@@ -15,7 +15,7 @@ public class T47ReplaceAttributeConflict extends FixingTestBase {
 	@Before
 	public void before(){
 //    	PENDING: Conflict of two replaces. Needs to be fixed.
-    	assumeTrue(false);
+    	assumeTrue("PENDING: Conflict of two replaces. Needs to be fixed.", false);
 	}
 
 
