@@ -61,6 +61,14 @@ public class ResourceHelper {
         return TextSource.readTextFile(resource);
     }
 
+    public TextSource[] textSource(String[] relativePath) throws IOException{
+        TextSource[] textSources = new TextSource[relativePath.length];
+        for (int i = 0; i < relativePath.length; i++) {
+            textSources[i] = textSource(relativePath[i]);
+        }
+        return textSources;
+    }
+
 
     public URL url(String relativePath) throws IOException {
 

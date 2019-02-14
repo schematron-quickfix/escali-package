@@ -10,7 +10,7 @@ import com.github.oxygenPlugins.common.process.log.MuteProcessLoger;
 import com.schematronQuickfix.escali.control.Config;
 import com.schematronQuickfix.escali.control.ConfigFactory;
 import com.schematronQuickfix.escali.helpers.ResourceHelper;
-import com.schematronQuickfix.escali.helpers.ValidationTestPair;
+import com.schematronQuickfix.escali.helpers.EscaliTestPair;
 import com.schematronQuickfix.escali.helpers.ValidationTestStrategy;
 
 public abstract class ValidationTestBase {
@@ -52,7 +52,7 @@ public abstract class ValidationTestBase {
 	
 	public void doTest(Config config, String expectedSvrl){
 		try {
-			tester.testStandardValidation(new ValidationTestPair(resource, expectedSvrl, config));
+			tester.testStandardValidation(new EscaliTestPair(resource, expectedSvrl, config));
 		} catch (IOException e) {
 			fail(e.getMessage());
 		}

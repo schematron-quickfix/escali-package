@@ -10,7 +10,6 @@ import java.net.URISyntaxException;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.xpath.XPathExpressionException;
 
-import org.junit.internal.runners.statements.Fail;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -35,7 +34,7 @@ public class ValidationTestStrategy {
 		this.logger = logger;
 	}
 
-	public void testStandardValidation(ValidationTestPair testPair){
+	public void testStandardValidation(EscaliTestPair testPair){
 		SchematronInstancePair inputPair = testPair.getInputPair();
 		Validation val;
 		try {
@@ -43,7 +42,7 @@ public class ValidationTestStrategy {
 			SVRLReport report = val.validate(inputPair.getInstanceDocument());
 			TextSource svrlTxt = report.getFormatetReport(SVRLReport.SVRL_FORMAT);
 			
-			StringNode expectedSN = ignore(testPair.getExpectedSvrl());
+			StringNode expectedSN = ignore(testPair.getExpected().get(0));
 			StringNode actualSN = ignore(svrlTxt);
 			
 			assertThat(
