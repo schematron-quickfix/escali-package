@@ -1,6 +1,7 @@
 package com.schematronQuickfix.escali;
 
 import static org.junit.Assert.*;
+import static org.junit.Assume.assumeTrue;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,6 +13,7 @@ import java.util.List;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.xpath.XPathExpressionException;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -107,7 +109,13 @@ public class SchematronTest {
 		this.phase = phase;
 		this.lang = lang;
 	}
-	
+
+
+	@Before
+	public void before() {
+//		PENDING ALL
+		assumeTrue("PENDING: replaced by test cases in package com.schematronQuickfix.escali.schematron", false);
+	}
 	
 	@Test
 	public void test(){

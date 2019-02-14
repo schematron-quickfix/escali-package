@@ -688,9 +688,14 @@ public class QuickFixTest {
 
 	@Before
 	public void before() {
+
+//		PENDING ALL
+        assumeTrue("PENDING: replaced by test cases in package com.schematronQuickfix.escali.quickfix",false);
+
 		assumeTrue(testParams.status != PENDING);
 		assumeTrue(testParams.status == FOCUS || focused.size() == 0);
 	}
+
 
 	@Test
 	public void test() {
