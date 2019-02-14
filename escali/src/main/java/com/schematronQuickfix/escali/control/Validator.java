@@ -70,7 +70,7 @@ public class Validator {
 	}
 
 	protected void validateInstance(TextSource xml,
-			ArrayList<Parameter> params, ProcessLoger logger) {
+			ArrayList<Parameter> params, ProcessLoger logger) throws XSLTErrorListener {
 		ArrayList<TextSource> pipeMain = validatorPipe.pipeAll(xml, params, logger);
 		this.svrl = pipeMain.get(0);
 		pipeMain.remove(0);
