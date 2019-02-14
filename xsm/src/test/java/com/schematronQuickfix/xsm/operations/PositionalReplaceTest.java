@@ -5,7 +5,9 @@ import static org.junit.Assert.*;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.net.MalformedURLException;
 
+import javax.xml.stream.XMLResolver;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.xpath.XPathExpressionException;
 
@@ -247,6 +249,37 @@ public class PositionalReplaceTest {
 	public void test21CopyAdd(){
 //		String folder = "resources/test21/";
 		testFolder(STRING_MAIN_FOLDER + "test21/");
+	}
+
+
+	@Test
+	public void test23XmlResolver(){
+//		String folder = "resources/test21/";
+		final String dtd = STRING_MAIN_FOLDER + "test23/test.dtd";
+
+		TextSource.implementEntityResolver(new XMLResolver() {
+			@Override
+			public Object resolveEntity(String publicID, String systemID, String baseURI, String namespace) throws XMLStreamException {
+
+				if(systemID.equals("http://www.schematron-quickfix.com/test.dtd")){
+
+					try {
+						return new File(dtd).toURI().toURL().openStream();
+					} catch (MalformedURLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+						return null;
+					} catch (IOException e) {
+						e.printStackTrace();
+						return null;
+					}
+				}
+				return null;
+			}
+		});
+		testFolder(STRING_MAIN_FOLDER + "test23/");
+
+		TextSource.implementEntityResolver(null);
 	}
 	
 	private static FilenameFilter fnf = new FilenameFilter() {
