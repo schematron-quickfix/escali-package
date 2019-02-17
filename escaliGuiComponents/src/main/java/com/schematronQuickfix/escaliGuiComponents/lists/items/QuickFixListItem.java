@@ -48,11 +48,14 @@ public class QuickFixListItem extends AbstractListItem<_QuickFix> implements Com
 		GridBagLayout gblLeftPanel = new GridBagLayout();
 		leftPanel.setLayout(gblLeftPanel);
 		
-		JLabel ueIconLabel = new JLabel(node.hasParameter() ? ema.getIcon(IconMap.USER_ENTRY) : ema.getIcon(IconMap.NOICON)); 
+		JLabel ueIconLabel = new JLabel(node.hasParameter() ? ema.getIcon(IconMap.USER_ENTRY) : ema.getIcon(IconMap.NOICON));
+		JLabel infoIconLabel = new JLabel(node.hasDescription() ? ema.getIcon(IconMap.DOCUMENTATION) : ema.getIcon(IconMap.NOICON));
+		infoIconLabel.setToolTipText(node.getDescription());
 		
-		SwingUtil.addComponent(leftPanel, gblLeftPanel, radio, 1, 0, 1, 1, 0.0, 0.0, GridBagConstraints.EAST, GridBagConstraints.BOTH);
+		SwingUtil.addComponent(leftPanel, gblLeftPanel, radio, 2, 0, 1, 1, 0.0, 0.0, GridBagConstraints.EAST, GridBagConstraints.BOTH);
 
-		SwingUtil.addComponent(leftPanel, gblLeftPanel, ueIconLabel, 0, 0, 1, 1, 0.0, 0.0, GridBagConstraints.EAST, GridBagConstraints.BOTH);
+		SwingUtil.addComponent(leftPanel, gblLeftPanel, ueIconLabel, 1, 0, 1, 1, 0.0, 0.0, GridBagConstraints.EAST, GridBagConstraints.BOTH);
+		SwingUtil.addComponent(leftPanel, gblLeftPanel, infoIconLabel, 0, 0, 1, 1, 0.0, 0.0, GridBagConstraints.EAST, GridBagConstraints.BOTH);
 		
 		this.controlPanel.add(leftPanel);
 		

@@ -17,6 +17,8 @@ import com.schematronQuickfix.escali.control.SVRLReport;
 
 public class UserEntry extends MessageGroup implements _UserEntry {
 
+	private String description = "";
+
 	public static ArrayList<_UserEntry> getSubsequence(ArrayList<_ModelNode> nodes) {
 		ArrayList<_UserEntry> subsequence = new ArrayList<_UserEntry>();
 		for (Iterator<_ModelNode> iterator = nodes.iterator(); iterator.hasNext();) {
@@ -71,15 +73,22 @@ public class UserEntry extends MessageGroup implements _UserEntry {
 
 		// S E T N A M E
 		Node nameNode = xpathreader.getNode("sqf:description/sqf:title", node);
-		// NodeList texte = xpathreader.getNodeSet("sqf:description/es:text",
-		// node);
-		// String description = "";
-		// for (int i = 0; i < texte.getLength(); i++) {
-		// description += texte.item(i).getTextContent();
-		// if (i + 1 < texte.getLength())
-		// description += " ";
-		// }
+
+		NodeList texte = xpathreader.getNodeSet("sqf:description/es:text",
+				node);
+
 		this.setName(nameNode.getTextContent());
+
+		if(texte.getLength() > 0){
+			this.description += "<html>";
+			this.description += "<b>" + this.getTitle() + "</b><br/>";
+			for (int i = 0; i < texte.getLength(); i++) {
+				description += texte.item(i).getTextContent();
+				if (i + 1 < texte.getLength())
+					description += "<br/>";
+			}
+			this.description += "</html>";
+		}
 	}
 
 	private void setParemterName(String parameterName) {
@@ -152,6 +161,18 @@ public class UserEntry extends MessageGroup implements _UserEntry {
 	@Override
 	public String getParameterName() {
 		return this.parameterName;
+	}
+
+	@Override
+	public String getDescription(){
+		return this.description;
+	}
+
+	@Override
+	public boolean hasDescription(){
+		return !(
+				"".equals(getDescription()) || null == getDescription()
+		);
 	}
 
 }

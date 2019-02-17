@@ -1,7 +1,9 @@
 package com.schematronQuickfix.escaliOxygen.validation;
 
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
 import java.util.HashMap;
 
 import javax.swing.ImageIcon;
@@ -53,11 +55,17 @@ public class QuickFixMenuItem extends JMenuItem implements ActionListener{
 		}
 		
 		this.setIcon(icon);
+		this.setToolTipText(fix.getDescription());
 		if(!key.equals("")){
 			this.setAccelerator(KeyStroke.getKeyStroke(key));
 		}
 //		this.add(new JLabel("test"));
 		this.addActionListener(this);
+	}
+
+	@Override
+	public Point getToolTipLocation(MouseEvent event) {
+		return new Point(this.getWidth() + 10, 0);
 	}
 
 	@Override

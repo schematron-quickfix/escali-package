@@ -39,4 +39,6 @@ public interface _QuickFix extends _ModelNode, _ListGroupNode {
 	void addMsgRelFix(_QuickFix relFix);
 	
 	String[] getBaseUris(); 
+	String getDescription();
+	boolean hasDescription();
 }

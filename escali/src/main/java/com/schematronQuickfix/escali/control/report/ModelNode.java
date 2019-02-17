@@ -206,7 +206,18 @@ abstract class ModelNode implements _ModelNode {
 	public String toString() {
 		return getName();
 	}
-	
+
+	@Override
+	public String getTitle() {
+		return getName();
+	}
+
+	@Override
+	public String getDescription(){return "";}
+
+	@Override
+	public boolean hasDescription(){return false;}
+
 	@Override
 	public String getBaseUri() {
 		// TODO Auto-generated method stub

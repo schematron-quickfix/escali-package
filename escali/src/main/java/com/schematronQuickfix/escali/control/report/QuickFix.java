@@ -20,6 +20,7 @@ public class QuickFix extends MessageGroup implements _QuickFix {
 	private ArrayList<_QuickFix> fixRelFixes = new ArrayList<_QuickFix>();
 	private ArrayList<_QuickFix> msgRelFixes = new ArrayList<_QuickFix>();
 	private final String[] baseUris;
+	private String description = "";
 
 	
 	
@@ -53,15 +54,22 @@ public class QuickFix extends MessageGroup implements _QuickFix {
 		
 //		S E T   N A M E
 		Node nameNode = xpathreader.getNode("sqf:description/sqf:title", node);
-//		NodeList texte = xpathreader.getNodeSet("sqf:description/es:text",
-//				node);
-//		String description = "";
-//		for (int i = 0; i < texte.getLength(); i++) {
-//			description += texte.item(i).getTextContent();
-//			if (i + 1 < texte.getLength())
-//				description += " ";
-//		}
+		NodeList texte = xpathreader.getNodeSet("sqf:description/es:text",
+				node);
+
 		this.setName(nameNode.getTextContent());
+
+		if(texte.getLength() > 0){
+			this.description += "<html>";
+			this.description += "<b>" + this.getTitle() + "</b><br/>";
+			for (int i = 0; i < texte.getLength(); i++) {
+				description += texte.item(i).getTextContent();
+				if (i + 1 < texte.getLength())
+					description += "<br/>";
+			}
+			this.description += "</html>";
+		}
+
 		
 //		S E T   T Y P E
 		String type = SVRLReport.XPR.getAttributValue(node, "role");
@@ -181,6 +189,20 @@ public class QuickFix extends MessageGroup implements _QuickFix {
 	@Override
 	public String[] getBaseUris() {
 		return this.baseUris;
+	}
+
+
+
+	@Override
+	public String getDescription(){
+		return this.description;
+	}
+
+	@Override
+	public boolean hasDescription(){
+		return !(
+				"".equals(getDescription()) || null == getDescription()
+		);
 	}
 	
 }

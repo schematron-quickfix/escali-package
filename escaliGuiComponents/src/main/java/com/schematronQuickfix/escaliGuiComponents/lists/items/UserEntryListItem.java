@@ -1,16 +1,12 @@
 package com.schematronQuickfix.escaliGuiComponents.lists.items;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Insets;
+import java.awt.*;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-import javax.swing.BorderFactory;
-import javax.swing.JComponent;
-import javax.swing.JDialog;
+import javax.swing.*;
 
 import com.github.oxygenPlugins.common.gui.images.IconMap;
 import com.github.oxygenPlugins.common.gui.lists.DefaultTheme;
@@ -62,7 +58,13 @@ public class UserEntryListItem extends AbstractListItem<_UserEntry> implements C
 
 		textField.setFocusable(false);
 
-		this.controlPanel.add(textField, new Insets(0, 0, 0, 10));
+		JLabel infoIconLabel = new JLabel(node.hasDescription() ? ema.getIcon(IconMap.DOCUMENTATION) : ema.getIcon(IconMap.NOICON));
+		infoIconLabel.setToolTipText(node.getDescription());
+
+		JPanel rightPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		rightPanel.add(infoIconLabel);
+		rightPanel.add(textField);
+		this.controlPanel.add(rightPanel, new Insets(0, 0, 0, 10));
 
 		this.addKeyListener(new KeyListener() {
 
