@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE root SYSTEM "http://escali.schematron-quickfix.com/foo/test.dtd">
+<?xml-model href="test.sch" type="application/xml" schematypens="http://purl.oclc.org/dsdl/schematron"?>
+<root>
+    <foo>&bar;</foo>
+</root>
