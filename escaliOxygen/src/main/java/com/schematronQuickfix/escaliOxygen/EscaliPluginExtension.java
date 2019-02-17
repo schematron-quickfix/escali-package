@@ -28,6 +28,7 @@ import com.schematronQuickfix.escaliOxygen.tools.OxygenResolver;
 import com.schematronQuickfix.xsm.operations.PositionalReplace;
 
 import net.sf.saxon.lib.OutputURIResolver;
+import ro.sync.exml.editor.re;
 import ro.sync.exml.plugin.workspace.WorkspaceAccessPluginExtension;
 import ro.sync.exml.workspace.api.standalone.StandalonePluginWorkspace;
 
@@ -64,7 +65,9 @@ public class EscaliPluginExtension implements WorkspaceAccessPluginExtension {
 			EscaliPluginConfig.implementConfig(pluginWorkspaceAccess);
 
 			try {
-				TextSource.implementResolver(new OxygenResolver(pluginWorkspaceAccess));
+				OxygenResolver resovler = new OxygenResolver(pluginWorkspaceAccess);
+				TextSource.implementResolver(resovler);
+				TextSource.implementEntityResolver(resovler);
 				
 				XSLTStep.transfac = new MyTransformerFactory() {
 

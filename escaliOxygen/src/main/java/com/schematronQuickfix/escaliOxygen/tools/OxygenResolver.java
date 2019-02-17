@@ -8,16 +8,21 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 
+import javax.xml.stream.XMLResolver;
+import javax.xml.stream.XMLStreamException;
 import javax.xml.transform.Source;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.stream.StreamSource;
 
 import com.github.oxygenPlugins.common.text.uri.DefaultURIResolver;
 
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import ro.sync.exml.o;
 import ro.sync.exml.workspace.api.editor.WSEditor;
 import ro.sync.exml.workspace.api.standalone.StandalonePluginWorkspace;
 
-public class OxygenResolver extends DefaultURIResolver {
+public class OxygenResolver extends DefaultURIResolver implements XMLResolver {
 	private StandalonePluginWorkspace spw;
 	
 	public OxygenResolver(StandalonePluginWorkspace spw){
@@ -65,5 +70,20 @@ public class OxygenResolver extends DefaultURIResolver {
 //			throw new TransformerException(e.getMessage());
 //		}
 	}
-	
+
+	@Override
+	public Object resolveEntity(String publicID, String systemID, String baseURI, String namespace) throws XMLStreamException {
+		try {
+
+			InputSource oxygenResolved = spw.getXMLUtilAccess().getEntityResolver().resolveEntity(publicID, systemID);
+			return oxygenResolved.getCharacterStream();
+		} catch (MalformedURLException e1) {
+		} catch (SAXException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
 }
