@@ -7,6 +7,7 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -62,8 +63,10 @@ public class AssociationRule {
 	private String pattern = "*.*";
 	private String[] phases = new String[] {};
 	private int phaseSel = -1;
-	private String[] langs = new String[] {};
+	private ArrayList<String> langs = new ArrayList<>();
 	private int langSel = -1;
+
+	private static final String USE_ESCALI_CONFIG_LABEL = "#Use Escali config";
 	
 	private static URL getURL(File file){
 		try {
@@ -301,12 +304,18 @@ public class AssociationRule {
 	}
 
 	// Column 6: Lang
-	String[] getLanguages() {
+	ArrayList<String> getLanguages() {
 		return this.langs;
 	}
 
 	private void setLanguages(String[] langs) {
-		this.langs = langs;
+
+		ArrayList<String> langsList = new ArrayList<>(Arrays.asList(langs));
+
+		if(langsList.size() > 1 && !langsList.contains(USE_ESCALI_CONFIG_LABEL)){
+			langsList.add(USE_ESCALI_CONFIG_LABEL);
+		}
+		this.langs = langsList;
 		this.langSel = langs.length > 0 ? 0 : -1;
 	}
 
@@ -315,9 +324,16 @@ public class AssociationRule {
 	}
 
 	public String getLangSelectionValue() {
-		if (langs.length > 0 && langSel <= langs.length)
-			return this.langs[langSel];
-		return "";
+
+		String value;
+		if (langs.size() > 0 && langSel <= langs.size()){
+			value = this.langs.get(langSel);
+			if(USE_ESCALI_CONFIG_LABEL.equals(value))
+				return null;
+			return value;
+		}
+
+		return null;
 	}
 
 	void setLangueageSelection(Object selection) {
@@ -325,10 +341,11 @@ public class AssociationRule {
 	}
 
 	void setLangueageSelection(String selection) {
-		int idx = Arrays.asList(this.getLanguages()).indexOf(selection);
+		selection = selection == null ? USE_ESCALI_CONFIG_LABEL : selection;
+		int idx = this.getLanguages().indexOf(selection);
 		if (idx > 0) {
 			this.langSel = idx;
-		} else if (this.getLanguages().length > 0) {
+		} else if (this.getLanguages().size() > 0) {
 			this.langSel = 0;
 		} else {
 			this.langSel = -1;
@@ -350,7 +367,9 @@ public class AssociationRule {
 		rule += " matchMode=\"" + this.matchMode + "\"";
 		rule += " pattern=\"" + this.getPattern().replace("\"", "&quot;") + "\"";
 		rule += " phase=\"" + this.getPhaseSelectionValue() + "\"";
-		rule += " lang=\"" + this.getLangSelectionValue() + "\"";
+		if(this.getLangSelectionValue() != null){
+			rule += " lang=\"" + this.getLangSelectionValue() + "\"";
+		}
 
 		rule += "/>";
 
@@ -386,7 +405,7 @@ public class AssociationRule {
 	public static AssociationRule createRule(AssociationRule preset) {
 		if (preset == null)
 			return createRule();
-		return new AssociationRule(preset.schema, preset.phases, preset.langs);
+		return new AssociationRule(preset.schema, preset.phases, preset.langs.toArray(new String[preset.langs.size()]));
 	}
 
 	public static AssociationRule createRule() {
@@ -406,7 +425,7 @@ public class AssociationRule {
 					"matchMode")));
 			rule.setPattern(xpr.getAttributValue(item, "pattern"));
 
-			rule.setLangueageSelection(xpr.getAttributValue(item, "lang"));
+			rule.setLangueageSelection(xpr.getAttributValue(item, "lang", "", null));
 			rule.setPhaseSelection(xpr.getAttributValue(item, "phase"));
 
 		} catch (MalformedURLException e) {

@@ -1,6 +1,5 @@
 package com.schematronQuickfix.escaliOxygen.options;
 
-import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -10,8 +9,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import javax.swing.AbstractButton;
-import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -30,6 +27,8 @@ import com.github.oxygenPlugins.common.gui.swing.SwingUtil;
 import com.github.oxygenPlugins.common.text.StringUtil;
 import com.schematronQuickfix.escaliOxygen.options.association.table.AssociationRuleTable;
 import com.schematronQuickfix.escaliOxygen.options.association.table.AssociationTable;
+
+import static com.schematronQuickfix.escaliOxygen.options.EscaliPluginConfig.Language_Option.*;
 
 
 public class OptionPage extends JPanel {
@@ -55,9 +54,7 @@ public class OptionPage extends JPanel {
 	private final ButtonGroup selectLangGroup = new ButtonGroup();
 	private final JFormattedTextField languageField = new JFormattedTextField();
 	
-	public static final String USE_DEFAULT_LANGUAGE = "#ALL";
 
-	public static final String USE_OXYGEN_LANGUAGE = "#OXYGEN";
 
 	private AssociationTable ruleTableView;
 
@@ -126,7 +123,7 @@ public class OptionPage extends JPanel {
 		
 
 		try {
-			ruleTableView = new AssociationTable(new AssociationRuleTable());
+			ruleTableView = new AssociationTable(AssociationRuleTable.getEmptyRuleTable());
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
@@ -200,19 +197,25 @@ public class OptionPage extends JPanel {
 		this.active.setSelected(tempConf.isActive());
 		int index = Arrays.asList(EscaliPluginConfig.SAXON_VERSIONS).indexOf(tempConf.getSaxonVersion());
 		this.saxonVersion.setSelectedIndex(index);
-		
-		String[] preferedLanguage = tempConf.getPreferedLanguage();
+
+
+		this.languageField.setText(StringUtil.stringJoin(tempConf.getSpecLanguage(), " "));
 		this.languageField.setEnabled(false);
-		if(preferedLanguage == null || preferedLanguage.length <= 0 || USE_DEFAULT_LANGUAGE.equals(preferedLanguage[0])){
-			this.useDefLanguage.setSelected(true);
-		} else if(USE_OXYGEN_LANGUAGE.equals(preferedLanguage[0])){
-			this.useOxyLanguage.setSelected(true);
-		} else {
-			this.useSpecLanguage.setSelected(true);
-			this.languageField.setText(StringUtil.stringJoin(tempConf.getPreferedLanguage(), " "));
-			this.languageField.setEnabled(true);
+		this.useDefLanguage.setSelected(true);
+
+		switch (tempConf.getPreferedLanguageOption()){
+			case USE_OXYGEN_LANGUAGE:
+				this.useOxyLanguage.setSelected(true);
+				break;
+			case USE_DEFAULT_LANGUAGE:
+				this.useDefLanguage.setSelected(true);
+				break;
+			case USE_SPEC_LANGUAGE:
+				this.useSpecLanguage.setSelected(true);
+				this.languageField.setEnabled(true);
+				break;
 		}
-		
+
 		this.xmlModel.setSelected(tempConf.useXmlModel());
 		this.escaliPattern.setSelected(tempConf.useEscaliPattern());
 
@@ -231,17 +234,22 @@ public class OptionPage extends JPanel {
 		return EscaliPluginConfig.SAXON_VERSIONS[idx];
 	}
 	
-	private String getPreferedLang(){
+	private String getSpecLang(){
+		return this.languageField.getText();
+	}
+
+	private EscaliPluginConfig.Language_Option getLanguageOption(){
 		if(useDefLanguage.isSelected()){
 			return USE_DEFAULT_LANGUAGE;
 		} else if(useOxyLanguage.isSelected()){
 			return USE_OXYGEN_LANGUAGE;
 		} else if(useSpecLanguage.isSelected()){
-			return this.languageField.getText();
+			return USE_SPEC_LANGUAGE;
 		}
 		return USE_DEFAULT_LANGUAGE;
-		
 	}
+
+
 
 	@Override
 	public String toString() {
@@ -252,7 +260,10 @@ public class OptionPage extends JPanel {
 				+ getSaxonVersion()
 				+ "\" "
 				+ "preferedLang=\""
-				+ getPreferedLang()
+				+ getLanguageOption()
+				+ "\" "
+				+ "specLang=\""
+				+ getSpecLang()
 				+ "\" "
 				+ " xmlns:es=\"http://www.escali.schematron-quickfix.com/\">"
 				+ "<es:detectSchema " + "pi=\"" + this.xmlModel.isSelected()

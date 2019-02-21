@@ -76,6 +76,16 @@ public class SchemaInfo {
 		return getLang(prefLang) != null;
 	}
 	
+	public String getLang(String[] prefLangs) {
+		for (String prefLang:
+			 prefLangs) {
+			String l = getLang(prefLang);
+			if(l != null)
+				return l;
+		}
+		return null;
+	}
+
 	public String getLang(String prefLang) {
 
 		prefLang = normalizeLang(prefLang);

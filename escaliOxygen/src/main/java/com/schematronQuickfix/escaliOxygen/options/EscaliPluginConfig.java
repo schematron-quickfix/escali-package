@@ -13,7 +13,6 @@ import org.xml.sax.SAXException;
 import com.github.oxygenPlugins.common.text.StringUtil;
 import com.github.oxygenPlugins.common.text.TextSource;
 import com.github.oxygenPlugins.common.xml.staxParser.StringNode;
-import com.ibm.icu.util.StringTrieBuilder.Option;
 import com.schematronQuickfix.escaliOxygen.EscaliPlugin;
 import com.schematronQuickfix.escaliOxygen.options.association.table.AssociationRuleTable;
 
@@ -69,19 +68,34 @@ public class EscaliPluginConfig extends WSOptionListener {
 	//
 	private boolean isActive = true;
 	private String saxonVersion = "PE";
-	private String[] preferedLang = new String[]{};
+
+	private Language_Option languageOption = Language_Option.USE_DEFAULT_LANGUAGE;
+	private String[] specLang = new String[]{};
 	private boolean useXmlModel = true;
 	private boolean useEscaliPattern = true;
 	private StandalonePluginWorkspace spw = null;
 
 	private final ArrayList<ConfigChangeListener> changeListeners = new ArrayList<EscaliPluginConfig.ConfigChangeListener>();
 	private boolean updateSpw = true;
-	private AssociationRuleTable ruleTable = new AssociationRuleTable();
+	private AssociationRuleTable ruleTable = AssociationRuleTable.getEmptyRuleTable();
+
+	public enum Language_Option{
+		USE_DEFAULT_LANGUAGE, USE_OXYGEN_LANGUAGE, USE_SPEC_LANGUAGE
+	}
+
+	public static Language_Option valueOfLanguageOption(String value){
+		try {
+			return Language_Option.valueOf(value);
+		} catch (Exception e){
+			e.printStackTrace();
+			return Language_Option.USE_DEFAULT_LANGUAGE;
+		}
+	}
 
 	private EscaliPluginConfig() {
 		super(ESCALI_PLUGIN_OPTION_KEY);
 		if(EscaliPlugin.getInstance() != null){
-			this.preferedLang = new String[]{OptionPage.USE_DEFAULT_LANGUAGE};
+			this.specLang = new String[]{};
 		}
 	}
 
@@ -101,20 +115,23 @@ public class EscaliPluginConfig extends WSOptionListener {
 			TextSource ts = TextSource.createVirtualTextSource(File
 					.createTempFile("escaliPlugin", ".xml"));
 			ts.setData(xml);
-			StringNode sn = new StringNode(ts);
-			tempConf.saxonVersion = sn
+			StringNode configDom = new StringNode(ts);
+			tempConf.saxonVersion = configDom
 					.getNodeValue("/es:escaliPluginConfig/@saxonVersion");
+
+			String langOptionString = configDom.getNodeValue("/es:escaliPluginConfig/@preferedLang");
+			tempConf.languageOption = "".equals(langOptionString) ? Language_Option.USE_DEFAULT_LANGUAGE : valueOfLanguageOption(langOptionString);
 			
-			String preferedLangString = sn.getNodeValue("/es:escaliPluginConfig/@preferedLang");
-			tempConf.preferedLang = preferedLangString.split("\\s");
+			String specLangString = configDom.getNodeValue("/es:escaliPluginConfig/@specLang");
+			tempConf.specLang = specLangString.split("\\s");
 			
-			tempConf.isActive = sn
+			tempConf.isActive = configDom
 					.getXPathBoolean("not(/es:escaliPluginConfig/@isActive = 'false')");
-			tempConf.useXmlModel = sn
+			tempConf.useXmlModel = configDom
 					.getXPathBoolean("not(/es:escaliPluginConfig/es:detectSchema/@pi = 'false')");
-			tempConf.useEscaliPattern = sn
+			tempConf.useEscaliPattern = configDom
 					.getXPathBoolean("not(/es:escaliPluginConfig/es:detectSchema/@esPattern = 'false')");
-			tempConf.ruleTable = new AssociationRuleTable(xml);
+			tempConf.ruleTable = new AssociationRuleTable(configDom);
 
 		} catch (IOException e) {
 		} catch (SAXException e) {
@@ -133,7 +150,8 @@ public class EscaliPluginConfig extends WSOptionListener {
 			this.useXmlModel = tempConf.useXmlModel;
 			this.useEscaliPattern = tempConf.useEscaliPattern;
 			this.ruleTable = tempConf.ruleTable;
-			this.preferedLang = tempConf.preferedLang;
+			this.specLang = tempConf.specLang;
+			this.languageOption = tempConf.languageOption;
 			for (ConfigChangeListener ccl : this.changeListeners) {
 				ccl.configChanged(this);
 			}
@@ -191,7 +209,8 @@ public class EscaliPluginConfig extends WSOptionListener {
 	public String toString() {
 		String xml = "<es:escaliPluginConfig isActive=\"" + this.isActive
 				+ "\" saxonVersion=\"" + this.saxonVersion
-				+ "\" preferedLang=\"" + StringUtil.stringJoin(this.preferedLang, " ")
+				+ "\" preferedLang=\"" + this.languageOption
+				+ "\" specLang=\"" + StringUtil.stringJoin(this.specLang, " ")
 				+ "\" xmlns:es=\"http://www.escali.schematron-quickfix.com/\">"
 				+ "<es:detectSchema " + "pi=\"" + this.useXmlModel + "\" "
 				+ "esPattern=\"" + this.useEscaliPattern + "\"/>"
@@ -199,13 +218,12 @@ public class EscaliPluginConfig extends WSOptionListener {
 		return xml;
 	}
 
-	public String[] getPreferedLanguage() {
-		if(this.preferedLang == null)
-			return new String[]{OptionPage.USE_DEFAULT_LANGUAGE};
-		if(this.preferedLang.length < 1)
-			return new String[]{OptionPage.USE_DEFAULT_LANGUAGE};
-		return this.preferedLang;
-		
+	public Language_Option getPreferedLanguageOption(){
+		return this.languageOption;
+	}
+
+	public String[] getSpecLanguage() {
+		return this.specLang;
 	}
 
 }

@@ -18,9 +18,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
@@ -58,14 +56,12 @@ import javax.xml.xpath.XPathExpressionException;
 
 import org.apache.batik.ext.swing.GridBagConstants;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.filefilter.IOFileFilter;
 import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.apache.commons.io.filefilter.WildcardFileFilter;
 import org.xml.sax.SAXException;
 
 import com.github.oxygenPlugins.common.gui.images.IconMap;
 import com.github.oxygenPlugins.common.gui.swing.SwingUtil;
-import com.github.oxygenPlugins.common.text.TextSource;
 import com.github.oxygenPlugins.common.xml.staxParser.StringNode;
 import com.schematronQuickfix.escaliOxygen.EscaliPlugin;
 import com.schematronQuickfix.escaliOxygen.toolbar.main.OxygenToolbarButton;
@@ -83,7 +79,7 @@ public class AssociationTable extends JPanel {
 
 	// private ArrayList<AssociationRule> rows = new
 	// ArrayList<AssociationRule>();
-	private AssociationRuleTable ruleTable = new AssociationRuleTable();
+	private AssociationRuleTable ruleTable;
 
 	String[] columnNames = { "", "Schema", "Match type", "Match Pattern", "Phase", "Language" };
 
@@ -154,7 +150,7 @@ public class AssociationTable extends JPanel {
 			case 1:
 				return new SchemaCell(row.getSchema(), rowIndex);
 			case 2:
-				final JComboBox<String> boxM = new JComboBox<String>(AssociationRule.MATCH_MODE_LABELS);
+				final JComboBox<String> boxM = new WideComboBox<>(AssociationRule.MATCH_MODE_LABELS);
 				boxM.setSelectedIndex(row.getMatchMode());
 				boxM.addItemListener(new ItemListener() {
 					@Override
@@ -171,12 +167,18 @@ public class AssociationTable extends JPanel {
 					return row.getPattern();
 				}
 			case 4:
-				JComboBox<String> boxP = new JComboBox<String>(row.getPhases());
+				JComboBox<String> boxP = new WideComboBox<String>(row.getPhases());
 				boxP.setSelectedIndex(row.getPhaseSelection());
+				boxP.setEnabled(row.getPhases().length > 1);
 				return boxP;
 			case 5:
-				JComboBox<String> boxL = new JComboBox<String>(row.getLanguages());
+				ArrayList<String> langs = row.getLanguages();
+				String[] langsArr = langs.toArray(new String[langs.size()]);
+				JComboBox<String> boxL = new WideComboBox<String>(langsArr);
 				boxL.setSelectedIndex(row.getLangSelection());
+				if(!(langsArr.length > 1)){
+					boxL.setEnabled(false);
+				}
 				return boxL;
 			}
 			return null;
@@ -222,7 +224,7 @@ public class AssociationTable extends JPanel {
 		}
 
 		@Override
-		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
+		public Component getTableCellRendererComponent(final JTable table, Object value, boolean isSelected, boolean hasFocus,
 				int row, int column) {
 			Component comp = null;
 			final boolean setSelectionColor = isSelected && column != 0 && ruleTable.isActive();
@@ -256,12 +258,58 @@ public class AssociationTable extends JPanel {
 				jl.setOpaque(!ruleTable.isActive() || setSelectionColor);
 				comp = jl;
 			}
-			comp.setEnabled(ruleTable.isActive());
+			if(comp instanceof JComboBox){
+				JComboBox box = (JComboBox) comp;
+				comp.setEnabled(ruleTable.isActive() && box.getItemCount() > 1);
+			} else {
+				comp.setEnabled(ruleTable.isActive());
+			}
+
 			if (setSelectionColor) {
 				comp.setBackground(table.getSelectionBackground());
 				comp.setForeground(table.getSelectionForeground());
 				if (comp instanceof SchemaCell)
 					((SchemaCell) comp).setOpaque(true);
+				if(comp instanceof JComboBox){
+					final JComboBox box = (JComboBox) comp;
+
+					box.setBackground(Color.RED);
+					box.setOpaque(true);
+
+					if(column == 3){
+						box.setBackground(table.getSelectionBackground());
+						JComboBox<Framework> boxFw = ((JComboBox<Framework>) box);
+						final ListCellRenderer<Framework> defaultRenderer = (ListCellRenderer<Framework>) boxFw.getRenderer();
+						boxFw.setRenderer(new ListCellRenderer<Framework>() {
+							@Override
+							public Component getListCellRendererComponent(JList<? extends Framework> list, Framework value, int index, boolean isSelected, boolean cellHasFocus) {
+								UIResource comp = (UIResource) defaultRenderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+								comp.setOpaque(true);
+								return comp;
+							}
+						});
+
+					} else {
+
+						box.setRenderer(new DefaultListCellRenderer(){
+
+							@Override
+							public Color getBackground() {
+								return table.getSelectionBackground();
+							}
+
+							@Override
+							public Color getForeground() {
+								return box.isEnabled() ? table.getSelectionForeground() : super.getForeground();
+							}
+						});
+
+					}
+
+
+
+
+				}
 			}
 			setToolTipText(getColumnName(column));
 			return comp;
@@ -325,6 +373,12 @@ public class AssociationTable extends JPanel {
 
 	private static HashMap<String, String> frameworksByUrl = new HashMap<String, String>();
 
+	public static void addFramework(String frameworkLocation, String name){
+		if(!frameworksByUrl.containsKey(frameworkLocation)){
+			frameworksByUrl.put(frameworkLocation, name);
+		}
+	}
+
 	public static void updateFrameworks(){
 		updateFrameworks(false);
 	}
@@ -345,9 +399,7 @@ public class AssociationTable extends JPanel {
 				DocumentTypeInformation docType = editor.getDocumentTypeInformation();
 				if(docType != null){
 					String fwLocation = docType.getFrameworkStoreLocation();
-					if(frameworksByUrl.containsKey(fwLocation)){
-						frameworksByUrl.put(fwLocation, docType.getName());
-					}
+					addFramework(fwLocation, docType.getName());
 				}
 			}
 		}
@@ -360,11 +412,13 @@ public class AssociationTable extends JPanel {
 		Collection<File> allFrameworks = new ArrayList<File>();
 		
 		for (File file : frameworkUrls) {
-			try {
-				allFrameworks.addAll(FileUtils.listFiles(file.getAbsoluteFile(), new WildcardFileFilter("*.framework"), TrueFileFilter.TRUE));
-			} catch (IllegalArgumentException e){
-				System.err.println(e.getMessage());
-				e.printStackTrace();
+			if(file.exists()){
+				try {
+					allFrameworks.addAll(FileUtils.listFiles(file.getAbsoluteFile(), new WildcardFileFilter("*.framework"), TrueFileFilter.TRUE));
+				} catch (IllegalArgumentException e){
+					System.err.println(e.getMessage());
+					e.printStackTrace();
+				}
 			}
 		}
 		
@@ -374,8 +428,8 @@ public class AssociationTable extends JPanel {
 					StringNode fwSN = new StringNode(fw);
 					String fwName = fwSN.getNodeValue("/serialized/serializableOrderedMap/entry"
 							+ "/documentTypeDescriptor-array/documentTypeDescriptor/field[@name = 'name']/String");
-					frameworksByUrl.put(fw.getAbsolutePath(), fwName);
-							
+					addFramework(fw.getAbsolutePath(), fwName);
+
 				} catch (IOException e) {
 				} catch (SAXException e) {
 				} catch (XMLStreamException e) {
@@ -403,12 +457,13 @@ public class AssociationTable extends JPanel {
 			return url.hashCode();
 		}
 	}
-	
+
+
 	public JComboBox<Framework> createFrameworkBox(String selectedFwUrl) {
 		StandalonePluginWorkspace workspace = EscaliPlugin.getInstance().getWorkspace();
 //		URL[] urls = workspace.getAllEditorLocations(StandalonePluginWorkspace.MAIN_EDITING_AREA);
 
-		JComboBox<Framework> fwBox = new JComboBox<Framework>();
+		JComboBox<Framework> fwBox = new WideComboBox<>();
 		final ListCellRenderer<? super Framework> defaultRenderer = fwBox.getRenderer();
 
 		fwBox.setRenderer(new ListCellRenderer<Framework>() {
@@ -530,7 +585,7 @@ public class AssociationTable extends JPanel {
 	}
 
 	public AssociationTable() throws IOException {
-		this(new AssociationRuleTable());
+		this(AssociationRuleTable.getEmptyRuleTable());
 	}
 
 	public AssociationTable(AssociationRuleTable ruleTable) throws IOException {
@@ -577,6 +632,9 @@ public class AssociationTable extends JPanel {
 		table.setRowSelectionAllowed(true);
 
 		table.getSelectionModel().addListSelectionListener(selListener);
+
+		int defaultFontSize = new JLabel().getFont().getSize();
+		table.setRowHeight((int) (defaultFontSize * 1.5));
 
 		JPanel northPanel = new JPanel();
 		JPanel centerPanel = new JPanel();

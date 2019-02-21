@@ -25,10 +25,8 @@ import com.schematronQuickfix.escali.control.SchemaInfo;
 import com.schematronQuickfix.escali.control.report._QuickFix;
 import com.schematronQuickfix.escali.control.report._SVRLMessage;
 import com.schematronQuickfix.escali.resources.EscaliArchiveResources;
-import com.schematronQuickfix.escali.resources.EscaliFileResources;
 import com.schematronQuickfix.escaliOxygen.EscaliPlugin;
 import com.schematronQuickfix.escaliOxygen.options.EscaliPluginConfig;
-import com.schematronQuickfix.escaliOxygen.options.OptionPage;
 import com.schematronQuickfix.escaliOxygen.options.association.ValidationInfoSet.ValidationInfo;
 import com.schematronQuickfix.escaliOxygen.toolbar.main.CommitChanges;
 import com.schematronQuickfix.escaliOxygen.tools.ReadWrite;
@@ -71,28 +69,31 @@ public class ValidationEngine {
 		try {
 			schemaSrc = TextSource.readTextFile(validationInfo.getSchema());
 			
-			String[] prefLangs = EscaliPluginConfig.config.getPreferedLanguage();
-			boolean useDefault = prefLangs[0].equals(OptionPage.USE_DEFAULT_LANGUAGE); 
-			
-			String selectLang = "#ALL";
+			String[] prefLangs = EscaliPluginConfig.config.getSpecLanguage();
+			EscaliPluginConfig.Language_Option langOption = EscaliPluginConfig.config.getPreferedLanguageOption();
+
+
+			String selectLang = "";
 			
 			if(validationInfo.getLang() != null) {
 				selectLang = validationInfo.getLang();
-			} else if(!useDefault) {
+			} else {
 				SchemaInfo schemaInfo = escali.getSchemaInfo(schemaSrc);
-				
-				selectLang = schemaInfo.getDefaultLanguage();
-				for (String prefLang : prefLangs) {
-					if(prefLang.equals(OptionPage.USE_OXYGEN_LANGUAGE)){
-						prefLang = EscaliPlugin.getInstance().getWorkspace().getUserInterfaceLanguage();
-					}
-					String l = schemaInfo.getLang(prefLang);
-					if(l != null){
-						selectLang = l;
+
+				switch (langOption){
+					case USE_DEFAULT_LANGUAGE:
+						selectLang = schemaInfo.getDefaultLanguage();
 						break;
-					}
+					case USE_OXYGEN_LANGUAGE:
+						prefLangs = new String[]{EscaliPlugin.getInstance().getWorkspace().getUserInterfaceLanguage()};
+					case USE_SPEC_LANGUAGE:
+						selectLang = schemaInfo.getLang(prefLangs);
+						break;
 				}
-				
+
+				if(selectLang == null){
+					selectLang = schemaInfo.getDefaultLanguage();
+				}
 			}
 			
 			

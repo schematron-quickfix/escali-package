@@ -19,25 +19,41 @@ public class AssociationRuleTable extends ArrayList<AssociationRule> {
 
 	private boolean isActive;
 
-	public AssociationRuleTable() {
+	private AssociationRuleTable() throws XMLStreamException, IOException, SAXException {
 		this(EscaliPluginConfig.DEFAULT_CONFIG);
 	}
 
-	public AssociationRuleTable(String configXml) {
-
+	public static AssociationRuleTable getEmptyRuleTable(){
 		try {
-			TextSource ts = TextSource.createVirtualTextSource(File
-					.createTempFile("escaliPlugin", ".xml"));
-			ts.setData(configXml);
-			StringNode sn = new StringNode(ts);
-			this.isActive = sn
-					.getXPathBoolean("/es:escaliPluginConfig/es:rules/@active = 'true'");
-			addRules(sn.getNodeSet("/es:escaliPluginConfig/es:rules/es:rule"));
-		} catch (IOException e) {
-		} catch (SAXException e) {
+			return new AssociationRuleTable();
 		} catch (XMLStreamException e) {
-		} catch (XPathExpressionException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (SAXException e) {
+			e.printStackTrace();
 		}
+		return null;
+	}
+
+	public AssociationRuleTable(StringNode configDom) {
+		try {
+			this.isActive = configDom
+					.getXPathBoolean("/es:escaliPluginConfig/es:rules/@active = 'true'");
+			addRules(configDom.getNodeSet("/es:escaliPluginConfig/es:rules/es:rule"));
+		} catch (XPathExpressionException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public AssociationRuleTable(String configXml) throws IOException, XMLStreamException, SAXException {
+		this(
+				new StringNode(
+						TextSource.createVirtualTextSource(File
+								.createTempFile("escaliPlugin", ".xml")).setData(configXml)
+				)
+
+		);
 
 	}
 

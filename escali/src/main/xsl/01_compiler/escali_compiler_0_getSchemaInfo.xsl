@@ -151,9 +151,8 @@
                             then
                                 (/sch:schema/@xml:lang)
                             else
-                                ('#ALL')"/>
+                                ('#NULL')"/>
                 <xsl:attribute name="default" select="$defaultValue"/>
-                <es:lang code="#ALL"/>
                 <xsl:copy-of select="$langs"/>
             </es:languages>
         </es:schemaInfo>
