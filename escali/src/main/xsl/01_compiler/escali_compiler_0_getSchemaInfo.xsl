@@ -59,7 +59,7 @@
                     ('#NULL')"/>
     </xsl:function>
 
-    <xsl:key name="xmlLangNodes" match="sch:diagnostic | sch:assert/node() | sch:report/node() | sch:p | sqf:p" use="'xml-lang'"/>
+    <xsl:key name="xmlLangNodes" match="sch:diagnostic | sch:assert/node() | sch:report/node() | sch:title | sch:p | sqf:p | sqf:title" use="'xml-lang'"/>
 
 
     <xsl:template match="/" mode="#default schemaInfo">

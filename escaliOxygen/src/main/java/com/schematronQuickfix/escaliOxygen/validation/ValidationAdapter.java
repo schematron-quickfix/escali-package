@@ -161,7 +161,7 @@ public class ValidationAdapter extends ValidationProblemsFilter implements
 		for (DocumentPositionedInfo posInfo : problemList) {
 			
 			String engineName = posInfo.getEngineName();
-			if (engineName.equals(OXYGEN_SCH_ENGINE_NAME) || engineName.equals(ESCALI_SCH_ENGINE_NAME)) {
+			if (OXYGEN_SCH_ENGINE_NAME.equals(engineName) || ESCALI_SCH_ENGINE_NAME.equals(engineName)) {
 				schProblems.add(posInfo);
 				if(schemaIdUrl.equals(posInfo.getAdditionalInfo())){
 					oxySchema = posInfo.getMessage();
