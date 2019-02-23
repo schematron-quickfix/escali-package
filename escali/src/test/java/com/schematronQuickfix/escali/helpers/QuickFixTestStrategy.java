@@ -73,7 +73,10 @@ public class QuickFixTestStrategy {
 
             act = new PositionalReplace(ignorePIsSheet, act).getSource();
 
-            assertEquals(exp.toString(), act.toString());
+            assertEquals(
+                    exp.toString().replaceAll("\r\n", "\n"),
+                    act.toString().replaceAll("\r\n", "\n")
+            );
         }
 
 
