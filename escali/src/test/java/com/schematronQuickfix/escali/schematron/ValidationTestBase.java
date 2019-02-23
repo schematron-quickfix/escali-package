@@ -1,5 +1,6 @@
 package com.schematronQuickfix.escali.schematron;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 import java.io.IOException;
@@ -52,9 +53,28 @@ public abstract class ValidationTestBase {
 	
 	public void doTest(Config config, String expectedSvrl){
 		try {
-			tester.testStandardValidation(new EscaliTestPair(resource, expectedSvrl, config));
+			tester.testStandardValidation(new EscaliTestPair(resource, getInstance(), getSchema(), new String[]{expectedSvrl}, config));
 		} catch (IOException e) {
 			fail(e.getMessage());
 		}
+	}
+
+	public String getSchema(){
+		return "input/test.sch";
+	}
+
+	public String getInstance(){
+		return "input/test.xml";
+	}
+
+
+	public void expectError(Config config, Class<?> errorClass){
+		try {
+			tester.executeStandardValidation(new EscaliTestPair(resource, getInstance(), getSchema(), new String[]{}, config));
+			fail("Test execution did not failed though error with class " + errorClass.getName() + " expected.");
+		} catch (Exception e){
+			assertEquals(e.getClass().getName(), errorClass.getName());
+		}
+
 	}
 }

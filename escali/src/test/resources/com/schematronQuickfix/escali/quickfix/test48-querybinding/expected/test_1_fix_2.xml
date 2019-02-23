@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--<?xml-model href="../input/test.sch" type="application/xml" schematypens="http://purl.oclc.org/dsdl/schematron"?>-->
+<test19>
+    <?sqfc-start ?><error value="foo" value2="bar" value3="foo_bar"><?sqfc-end ?></error>
+</test19>

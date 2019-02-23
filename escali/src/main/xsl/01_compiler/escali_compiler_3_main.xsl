@@ -101,6 +101,9 @@
     <xsl:template match="sch:schema">
 
         <axsl:stylesheet version="2.0">
+
+            <xsl:apply-templates select="@queryBinding"/>
+
             <xsl:variable name="defaultNS" select="/sch:schema/es:default-namespace"/>
             <xsl:variable name="imports" select="/sch:schema/xsl:import"/>
             <xsl:variable name="firsts" select="
@@ -189,6 +192,21 @@
             </axsl:template>
             <axsl:template match="text()"/>
         </axsl:stylesheet>
+    </xsl:template>
+
+    <xsl:template match="sch:schema/@queryBinding">
+        <xsl:variable name="lowerCase" select="lower-case(.)"/>
+        <xsl:choose>
+            <xsl:when test="$lowerCase = ('xslt3', 'xpath3')">
+                <xsl:attribute name="version">3.0</xsl:attribute>
+            </xsl:when>
+            <xsl:when test="$lowerCase = ('xslt2', 'xpath2')">
+                <xsl:attribute name="version">2.0</xsl:attribute>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:message terminate="yes">Not supported Query Binding "<xsl:value-of select="."/>"</xsl:message>
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:template>
 
 

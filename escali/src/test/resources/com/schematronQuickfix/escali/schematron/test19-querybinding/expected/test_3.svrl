@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svrl:schematron-output xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+    xmlns:es="http://www.escali.schematron-quickfix.com/" xmlns:sqf="http://www.schematron-quickfix.com/validator/process"
+    title="XPath 3"
+    phase="#ALL">
+    <svrl:active-pattern es:phases="#ALL"/>
+    <svrl:fired-rule context="error" />
+    <svrl:successful-report location="/*:test19[namespace-uri()=''][1]/*:error[namespace-uri()=''][1]"
+        test="string-join((@value, @value2)) = 'foobar'">
+        <svrl:text>Test with XPath 3</svrl:text>
+        <sqf:fix>
+            <sqf:description>
+                <sqf:title>Fix with XPath 3</sqf:title>
+            </sqf:description>
+        </sqf:fix>
+    </svrl:successful-report>
+</svrl:schematron-output>

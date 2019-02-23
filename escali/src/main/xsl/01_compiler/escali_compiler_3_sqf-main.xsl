@@ -161,6 +161,7 @@
                 <axsl:attribute name="instance" select="document-uri(/)"/>
                 <bxsl:stylesheet version="2.0">
                     <xsl:attribute name="xml:base" select="es:base-uri(.)"/>
+                    <xsl:apply-templates select="/sch:schema/@queryBinding"/>
                     <xsl:variable name="namespaceAliase" select="
                             for $na in /sch:schema/xsl:namespace-alias
                             return

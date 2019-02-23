@@ -34,12 +34,21 @@ public class ValidationTestStrategy {
 		this.logger = logger;
 	}
 
-	public void testStandardValidation(EscaliTestPair testPair){
+
+
+	public SVRLReport executeStandardValidation(EscaliTestPair testPair) throws XSLTErrorListener, IOException, CancelException, SAXException, XMLStreamException, XPathExpressionException, URISyntaxException {
 		SchematronInstancePair inputPair = testPair.getInputPair();
-		Validation val;
+		Validation val = new Validation(inputPair.getSchemaDocument(), testPair.getEscaliConfig(), logger);
+		SVRLReport report = val.validate(inputPair.getInstanceDocument());
+		return report;
+	}
+
+	public void testStandardValidation(EscaliTestPair testPair){
+
 		try {
-			val = new Validation(inputPair.getSchemaDocument(), testPair.getEscaliConfig(), logger);
-			SVRLReport report = val.validate(inputPair.getInstanceDocument());
+
+			SVRLReport report = executeStandardValidation(testPair);
+
 			TextSource svrlTxt = report.getFormatetReport(SVRLReport.SVRL_FORMAT);
 			
 			StringNode expectedSN = ignore(testPair.getExpected().get(0));

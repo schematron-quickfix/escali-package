@@ -177,7 +177,8 @@ public abstract class FixingTestBase {
 			TextSource expectedResult = TextSource.createVirtualTextSource(new File("dummy.xml"));
 			expectedResult.setData("<error>Test failed! Expected was an error from class " + errorClass.getName() + "</error>");
 
-			tester.testQuickFixExecution(new EscaliFixingTestPair(new SchematronInstancePair(resource), new TextSource[]{expectedResult}, config)
+			tester.testQuickFixExecution(new EscaliFixingTestPair(new SchematronInstancePair(resource, getInstancePath(), getSchemaPath()),
+					new TextSource[]{expectedResult}, config)
 					.addExecutionSetup(executionSetup)
 			);
 		} catch (Exception e){
