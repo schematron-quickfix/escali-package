@@ -43,6 +43,30 @@
             </xd:ul>
         </xd:desc>
     </xd:doc>
+    
+    <xsl:include href="escali_compiler_1_sqf-standalone.xsl"/>
+    
+    <xsl:template match="/*" priority="1000000">
+        <xsl:variable name="rootEl" select="/*"/>
+        <xsl:choose>
+            <xsl:when test="/sch:schema">
+                <xsl:next-match/>
+            </xsl:when>
+            <xsl:when test="/sqf:fixes">
+                <xsl:variable name="tempSchema" as="document-node()">
+                    <xsl:document>
+                        <xsl:call-template name="sqf:transformStandalone">
+                            <xsl:with-param name="sqf:fixes" select="$rootEl"/>
+                        </xsl:call-template>
+                    </xsl:document>
+                </xsl:variable>
+                <xsl:apply-templates select="$tempSchema/sch:schema"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:message terminate="yes">Input file does not seems to be a schema!</xsl:message>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
 
     <!--
 	S Q F - E X T E N S I O N S

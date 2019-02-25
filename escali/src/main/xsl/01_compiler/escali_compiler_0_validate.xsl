@@ -50,7 +50,7 @@
 
     <xsl:variable name="included" as="document-node()">
         <xsl:document>
-            <xsl:apply-templates select="/sch:schema"/>
+            <xsl:apply-templates select="/*"/>
         </xsl:document>
     </xsl:variable>
 

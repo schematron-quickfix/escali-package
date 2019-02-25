@@ -74,7 +74,8 @@
         synonyms values can be seperated by pipes (warn|warningLevel1)
     -->
     <xsl:param name="roles" select="
-            ('info|information',
+            ('sqf-standalone',
+            'info|information',
             'warn|warning',
             'error|#default',
             'fatal')" as="xs:string*"/>
@@ -145,7 +146,7 @@
     -->
     <xsl:template match="sch:schema">
         <xsl:param name="es:xml-base" tunnel="yes" select="es:base-uri(.)"/>
-        <xsl:variable name="nodes" select="//(sch:diagnostic | sch:assert/node() | sch:report/node() | sch:p)"/>
+        <xsl:variable name="nodes" select=".//(sch:diagnostic | sch:assert/node() | sch:report/node() | sch:p)"/>
         <xsl:if test="
                 not($nodes[(es:getLang(.),
                 '#ALL') = $es:lang]) and $nodes">
@@ -157,7 +158,7 @@
                 <xsl:with-param name="es:xml-base" select="$es:xml-base"/>
                 <xsl:with-param name="supress-check" select="true()"/>
             </xsl:call-template>
-            <xsl:attribute name="es:uri" select="document-uri(/)"/>
+            <xsl:attribute name="es:uri" select="document-uri(.)"/>
             <xsl:attribute name="es:lang" select="$es:lang" separator=","/>
             <xsl:attribute name="es:type-available" select="$es:type-available"/>
             <xsl:attribute name="es:defaultRole" select="es:calcRole('#default')"/>
