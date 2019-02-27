@@ -250,7 +250,8 @@ public class ValidationAdapter extends ValidationProblemsFilter implements
 			try {
 				posInfo = valEngine.convertForOxygen(msg);
 				posInfoByMessage.put(msg, posInfo);
-				posInfos.add(posInfo);
+				if(!msg.isHidden())
+					posInfos.add(posInfo);
 			} catch (XPathExpressionException e) {
 				logger.log(e);
 			}

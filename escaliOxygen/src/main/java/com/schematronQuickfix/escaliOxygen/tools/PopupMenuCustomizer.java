@@ -42,8 +42,9 @@ public class PopupMenuCustomizer extends TextPopupMenuCustomizer implements
 				menu.removeAll();
 				int i = 0;
 				for (_SVRLMessage msg : messages) {
-
-					menu.add(new MessageMenuItem(msg, ema));
+					if(msg.hasQuickFixes() && !(msg.isHidden())){
+						menu.add(new MessageMenuItem(msg, ema));
+					}
 					for (_QuickFix fix : msg.getQuickFixes()) {
 						String key = i >= shortcuts.length ? "" : shortcuts[i];
 						menu.add(new QuickFixMenuItem(fix, va.getEditor(),
