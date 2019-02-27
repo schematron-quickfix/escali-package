@@ -211,6 +211,11 @@ public class SVRLMessage extends ModelNode implements _SVRLMessage {
 	}
 
 	@Override
+	public boolean isHidden() {
+		return this.getErrorLevelInt() == _SVRLMessage.LEVEL_STANDALONE;
+	}
+
+	@Override
 	public double getErrorWeight() {
 		return this.errorLevel;
 	}

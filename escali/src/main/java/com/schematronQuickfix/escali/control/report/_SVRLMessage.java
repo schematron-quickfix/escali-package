@@ -11,11 +11,12 @@ import com.github.oxygenPlugins.common.xml.staxParser.NodeInfo;
 public interface _SVRLMessage extends _ModelNode {
 	public static final int TYPE_REPORT = 0;
 	public static final int TYPE_ASSERT = 1;
-	public static final int LEVEL_FATAL_ERROR = 3;
-	public static final int LEVEL_ERROR = 2;
-	public static final int LEVEL_WARNING = 1;
-	public static final int LEVEL_INFO = 0;
-	public static final String[] LEVEL_NAMES = new String[]{"information", "warning", "error", "fatal error"};
+	public static final int LEVEL_FATAL_ERROR = 4;
+	public static final int LEVEL_ERROR = 3;
+	public static final int LEVEL_WARNING = 2;
+	public static final int LEVEL_INFO = 1;
+	public static final int LEVEL_STANDALONE = 0;
+	public static final String[] LEVEL_NAMES = new String[]{"sqf-standalone", "information", "warning", "error", "fatal error"};
 	public static final int LEVEL_COUNT = LEVEL_NAMES.length;
 	public static final double LEVEL_DEFAULT = 0.625;
 	String toString();
@@ -25,6 +26,7 @@ public interface _SVRLMessage extends _ModelNode {
     _QuickFix getDefaultFix();
     double getErrorLevel();
     int getErrorLevelInt();
+    boolean isHidden();
     _Flag getFlag();
 	ArrayList<Diagnostic> getDiagnostics();
 	double getErrorWeight();
