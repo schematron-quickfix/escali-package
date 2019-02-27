@@ -118,6 +118,7 @@ public class ValidationInfoSet extends ArrayList<ValidationInfo> {
 			if (config.useXmlModel()) {
 				XmlModelSet modelSet = XmlModelSet.getXmlModelSet(editor, ema);
 				ArrayList<XmlModel> models = modelSet.getModels(ProcessNamespaces.SCH_NS);
+				models.addAll(modelSet.getModels(ProcessNamespaces.SQF_NS));
 				for (XmlModel model : models) {
 					validationSet.add(model);
 				}

@@ -124,7 +124,7 @@ public class SchemaCell extends JPanel {
 
 		public void mouseClicked(MouseEvent e) {
 			StandalonePluginWorkspace workspace = EscaliPlugin.getInstance().getWorkspace();
-			URL url = workspace.chooseURL("Select the schema", new String[]{"sch"}, "Schematron files");
+			URL url = workspace.chooseURL("Select the schema", new String[]{"sch", "sqf"}, "Schematron files");
 			
 			setSchema(url);
 			fireEditingStopped();
