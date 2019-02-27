@@ -1,8 +1,7 @@
 package com.schematronQuickfix.escaliOxygen.validation;
 
-import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import java.awt.*;
+import java.awt.event.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -13,12 +12,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import javax.swing.JComponent;
-import javax.swing.KeyStroke;
+import javax.swing.*;
 import javax.swing.text.BadLocationException;
 import javax.xml.xpath.XPathExpressionException;
 
 import com.github.oxygenPlugins.common.collections.MultiValueHashMap;
+import com.github.oxygenPlugins.common.gui.images.IconMap;
 import com.github.oxygenPlugins.common.process.exceptions.CancelException;
 import com.github.oxygenPlugins.common.process.log.ProcessLoger;
 import com.github.oxygenPlugins.common.process.queues.VoidWorker;
@@ -32,6 +31,8 @@ import com.schematronQuickfix.escali.control.report._QuickFix;
 import com.schematronQuickfix.escali.control.report._Report;
 import com.schematronQuickfix.escali.control.report._SVRLMessage;
 import com.schematronQuickfix.escaliGuiComponents.adapter.EscaliEditorAdapter;
+import com.schematronQuickfix.escaliGuiComponents.buttons.ToolbarToggleButton;
+import com.schematronQuickfix.escaliOxygen.EscaliPlugin;
 import com.schematronQuickfix.escaliOxygen.editors.EscaliMessanger;
 import com.schematronQuickfix.escaliOxygen.options.EscaliPluginConfig;
 import com.schematronQuickfix.escaliOxygen.options.association.ValidationInfoSet;
@@ -43,6 +44,7 @@ import com.schematronQuickfix.escaliOxygen.tools.WSPageAdapter;
 
 import ro.sync.document.DocumentPositionedInfo;
 import ro.sync.exml.editor.EditorPageConstants;
+import ro.sync.exml.view.graphics.Rectangle;
 import ro.sync.exml.workspace.api.PluginWorkspace;
 import ro.sync.exml.workspace.api.editor.WSEditor;
 import ro.sync.exml.workspace.api.editor.page.WSEditorPage;
@@ -50,7 +52,9 @@ import ro.sync.exml.workspace.api.editor.page.WSTextBasedEditorPage;
 import ro.sync.exml.workspace.api.editor.page.text.xml.WSXMLTextEditorPage;
 import ro.sync.exml.workspace.api.editor.validation.ValidationProblems;
 import ro.sync.exml.workspace.api.editor.validation.ValidationProblemsFilter;
+import ro.sync.exml.workspace.api.listeners.WSEditorChangeListener;
 import ro.sync.exml.workspace.api.listeners.WSEditorListener;
+import ro.sync.exml.workspace.api.standalone.StandalonePluginWorkspace;
 
 public class ValidationAdapter extends ValidationProblemsFilter implements
 		KeyListener, EscaliEditorAdapter {
@@ -73,6 +77,8 @@ public class ValidationAdapter extends ValidationProblemsFilter implements
 	private String rememberPhase = null;
 
 	private boolean isValidating;
+
+	private StandaloneButton sqfStarFrame;
 	
 
 	// private boolean isValidating = false;
@@ -87,6 +93,164 @@ public class ValidationAdapter extends ValidationProblemsFilter implements
 		}
 	}
 
+	public class StandaloneButton extends JDialog implements ComponentListener {
+
+		ToolbarToggleButton btn;
+
+		public StandaloneButton(JFrame parent){
+			super(parent);
+
+			btn = new ToolbarToggleButton(IconMap.ICONS.getIcon(5, 4), "", "") {
+				@Override
+				public void switchToOn(ActionEvent ev) throws CancelException {
+					Point pos = page.getComponent().getLocationOnScreen();
+					pos.x = this.getLocationOnScreen().x - pos.x;
+					pos.y = this.getLocationOnScreen().y - pos.y + this.getHeight();
+
+					popupCustomizer.actionPerformed(ev, pos);
+				}
+
+				@Override
+				public void switchToOff(ActionEvent ev) throws CancelException {
+
+				}
+
+				@Override
+				public boolean isEnable() {
+					return true;
+				}
+			};
+
+			parent.addWindowListener(windowAdapter);
+			parent.addWindowStateListener(windowAdapter);
+			parent.addWindowFocusListener(windowAdapter);
+
+			editor.addEditorListener(this.editorListener);
+
+			EscaliPlugin.getInstance().getWorkspace().addEditorChangeListener(this.editorChangeListener, PluginWorkspace.MAIN_EDITING_AREA);
+
+			page.getComponent().addComponentListener(this);
+
+			setUndecorated(true);
+			setFocusable(false);
+			getContentPane().add(this.btn);
+		}
+
+		protected WindowAdapter windowAdapter = new WindowAdapter(){
+			@Override
+			public void windowClosing(WindowEvent e) {
+				hideStar();
+				super.windowClosing(e);
+			}
+
+			@Override
+			public void windowLostFocus(WindowEvent e) {
+				hideStar();
+				super.windowLostFocus(e);
+			}
+
+			@Override
+			public void windowDeactivated(WindowEvent e) {
+				hideStar();
+				super.windowDeactivated(e);
+			}
+
+			@Override
+			public void windowStateChanged(WindowEvent e) {
+				hideStar();
+				super.windowStateChanged(e);
+			}
+
+			@Override
+			public void windowDeiconified(WindowEvent e) {
+				hideStar();
+				super.windowDeiconified(e);
+			}
+		};
+
+		protected WSEditorListener editorListener = new WSEditorListener(){
+			@Override
+			public void editorPageChanged() {
+				super.editorPageChanged();
+				hideStar();
+			}
+		};
+		protected WSEditorChangeListener editorChangeListener = new WSEditorChangeListener(){
+			@Override
+			public boolean editorAboutToBeClosed(URL editorLocation) {
+				hideStar();
+				return true;
+			}
+
+			@Override
+			public void editorClosed(URL editorLocation) {
+				hideStar();
+			}
+
+			@Override
+			public void editorDeactivated(URL editorLocation) {
+				hideStar();
+			}
+
+			@Override
+			public void editorPageChanged(URL editorLocation) {
+				hideStar();
+			}
+
+			@Override
+			public void editorRelocated(URL previousEditorLocation, URL newEditorLocation) {
+				hideStar();
+			}
+		};
+
+		@Override
+		public void componentResized(ComponentEvent e) {
+			hideStar();
+		}
+
+		@Override
+		public void componentMoved(ComponentEvent e) {
+			hideStar();
+		}
+
+		@Override
+		public void componentShown(ComponentEvent e) {}
+
+		@Override
+		public void componentHidden(ComponentEvent e) {
+			hideStar();
+		}
+
+
+		private void hideStar(){
+			setVisible(false);
+		}
+
+		private void showStar(){
+			setVisible(false);
+			ArrayList<_SVRLMessage> msgs = getMessageByCaret(page);
+			Rectangle rect = page.modelToViewRectangle(page.getCaretOffset());
+			Point compOnScreen = page.getComponent().getLocationOnScreen();
+
+
+			rect.x = compOnScreen.x;
+			rect.y = compOnScreen.y + rect.y;
+//		rect.y = onScreen.y;
+
+			if(msgs.size() > 0){
+				setAlwaysOnTop(true);
+				pack();
+				setLocation(rect.x - this.getWidth(), rect.y);
+
+				setFocusableWindowState(false);
+				setAutoRequestFocus(false);
+				setVisible(true);
+
+			}
+		}
+	}
+
+
 	private ValidationAdapter(WSEditor editor, EscaliMessanger ea) {
 		this.editor = editor;
 		this.validationInfo = ValidationInfoSet.createValidationInfo(editor.getEditorLocation());
@@ -95,6 +259,8 @@ public class ValidationAdapter extends ValidationProblemsFilter implements
 		this.popupCustomizer = new PopupMenuCustomizer(this, ea);
 		customizePopup();
 		checkForValidation();
+		StandalonePluginWorkspace spw = EscaliPlugin.getInstance().getWorkspace();
+
 
 		this.editor.addEditorListener(new WSEditorListener() {
 			@Override
@@ -106,6 +272,13 @@ public class ValidationAdapter extends ValidationProblemsFilter implements
 				customizePopup();
 			}
 		});
+
+
+		JFrame frame = (JFrame) spw.getParentFrame();
+
+
+		this.sqfStarFrame  = new StandaloneButton(frame);
+
 
 	}
 
@@ -246,6 +419,7 @@ public class ValidationAdapter extends ValidationProblemsFilter implements
 		posInfoByMessage = new HashMap<_SVRLMessage, DocumentPositionedInfo>();
 
 		for (_SVRLMessage msg : getMessages()) {
+
 			DocumentPositionedInfo posInfo;
 			try {
 				posInfo = valEngine.convertForOxygen(msg);
@@ -277,10 +451,18 @@ public class ValidationAdapter extends ValidationProblemsFilter implements
 
 	private void customizePopup() {
 		if (page != null) {
+			ema.getGui().asJFrame().removeKeyListener(this);
 			ema.getGui().asJFrame().addKeyListener(this);
 
 			page.removeKeyListener(this);
 			page.addKeyListener(this);
+			page.getComponent().addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					super.mouseClicked(e);
+					sqfStarFrame.showStar();
+				}
+			});
 
 			addShortCut(page.getComponent());
 
@@ -503,6 +685,7 @@ public class ValidationAdapter extends ValidationProblemsFilter implements
 		if (KeyEvent.VK_CONTROL == ke.getExtendedKeyCode()) {
 			customizePopup = false;
 		}
+		sqfStarFrame.showStar();
 	}
 
 	@Override

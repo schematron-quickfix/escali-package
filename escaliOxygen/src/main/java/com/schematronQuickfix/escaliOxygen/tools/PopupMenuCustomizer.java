@@ -1,5 +1,6 @@
 package com.schematronQuickfix.escaliOxygen.tools;
 
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
@@ -71,20 +72,33 @@ public class PopupMenuCustomizer extends TextPopupMenuCustomizer implements
 		}
 	}
 
-	@Override
-	public void actionPerformed(ActionEvent arg0) {
+	private void actionPerformed(ActionEvent arg0, WSPageAdapter pageAdap, Point position) {
 		JPopupMenu menu = new JPopupMenu();
-		WSEditorPage page = va.getEditor().getCurrentPage();
-		WSPageAdapter pageAdap = WSPageAdapter.getWSEditorAdapter(page);
-		
+
+
 		customizePopUpMenu(menu, pageAdap, true);
-		
-		Rectangle rect = pageAdap.modelToViewRectangle(pageAdap.getCaretOffset());
-		
 		JComponent comp = pageAdap.getComponent();
 		if (comp != null && menu.getComponentCount() > 0) {
-			menu.show(comp, rect.x + rect.width, rect.y + rect.height);
+			menu.show(comp, position.x, position.y);
 		}
+	}
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+		WSEditorPage page = va.getEditor().getCurrentPage();
+		WSPageAdapter pageAdap = WSPageAdapter.getWSEditorAdapter(page);
+
+		Rectangle rect = pageAdap.modelToViewRectangle(pageAdap.getCaretOffset());
+
+		actionPerformed(arg0, pageAdap, new Point(rect.x + rect.width, rect.y + rect.height));
+
+	}
+
+	public void actionPerformed(ActionEvent arg0, Point position) {
+		WSEditorPage page = va.getEditor().getCurrentPage();
+		WSPageAdapter pageAdap = WSPageAdapter.getWSEditorAdapter(page);
+
+		actionPerformed(arg0, pageAdap, position);
+
 	}
 
 	@Override
