@@ -275,7 +275,9 @@
                         else
                             ($doc/*)" as="node()"/>
 
-                <xsl:apply-templates select="$includeElement"/>
+                <xsl:apply-templates select="$includeElement">
+                    <xsl:with-param name="included" select="true()" tunnel="yes"/>
+                </xsl:apply-templates>
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>

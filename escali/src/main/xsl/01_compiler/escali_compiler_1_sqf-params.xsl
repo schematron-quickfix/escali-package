@@ -46,26 +46,32 @@
     
     <xsl:include href="escali_compiler_1_sqf-standalone.xsl"/>
     
-    <xsl:template match="/*" priority="1000000">
-        <xsl:variable name="rootEl" select="/*"/>
+    <xsl:template match="sqf:fixes" priority="1000000">
+        <xsl:param name="included" tunnel="yes" select="false()" as="xs:boolean"/>
+        <xsl:variable name="self" select="."/>
+        
+        <xsl:variable name="standalones" select=".//(sqf:group|sqf:fix)[@es:context]"/>
+        <xsl:variable name="tempSchema" as="document-node()">
+            <xsl:document>
+                <xsl:call-template name="sqf:transformStandalone">
+                    <xsl:with-param name="sqf:fixes" select="$self"/>
+                </xsl:call-template>
+            </xsl:document>
+        </xsl:variable>
+        
         <xsl:choose>
-            <xsl:when test="/sch:schema">
-                <xsl:next-match/>
+            <xsl:when test="$standalones and not($included) and not(parent::sch:schema)">
+                <!--<xsl:apply-templates select="$tempSchema/sch:schema"/>-->
+                <xsl:apply-templates select="$tempSchema/*"/>
             </xsl:when>
-            <xsl:when test="/sqf:fixes">
-                <xsl:variable name="tempSchema" as="document-node()">
-                    <xsl:document>
-                        <xsl:call-template name="sqf:transformStandalone">
-                            <xsl:with-param name="sqf:fixes" select="$rootEl"/>
-                        </xsl:call-template>
-                    </xsl:document>
-                </xsl:variable>
-                <xsl:apply-templates select="$tempSchema/sch:schema"/>
+            <xsl:when test="$standalones">
+                <xsl:apply-templates select="$tempSchema/sch:schema/*"/>
             </xsl:when>
             <xsl:otherwise>
-                <xsl:message terminate="yes">Input file does not seems to be a schema!</xsl:message>
+                <xsl:next-match/>
             </xsl:otherwise>
         </xsl:choose>
+        
     </xsl:template>
 
     <!--

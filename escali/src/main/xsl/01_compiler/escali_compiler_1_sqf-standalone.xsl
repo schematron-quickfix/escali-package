@@ -21,8 +21,9 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:sch="http://purl.oclc.org/dsdl/schematron" xmlns:es="http://www.escali.schematron-quickfix.com/" xmlns:xd="http://www.oxygenxml.com/ns/doc/xsl" xmlns:sqf="http://www.schematron-quickfix.com/validator/process" exclude-result-prefixes="es xs xd" version="2.0">
 
     <xsl:template name="sqf:transformStandalone">
-        <xsl:param name="sqf:fixes" required="yes"/>
+        <xsl:param name="sqf:fixes" required="yes" as="node()?"/>
         <sch:schema>
+            <xsl:attribute name="xml:base" select="$sqf:fixes/base-uri(.)"/>
             <xsl:attribute name="queryBinding" select="
                 if ($sqf:fixes/@es:queryBinding) then
                 ($sqf:fixes/@es:queryBinding)
@@ -39,9 +40,13 @@
             </sch:pattern>
             
             <sqf:fixes>
-                <xsl:sequence select="$sqf:fixes/(sqf:fix | sqf:group)[@id]"/>
+                <xsl:apply-templates select="$sqf:fixes/(sqf:fix | sqf:group)[@id]" mode="es:resolveStandalone"/>
             </sqf:fixes>
         </sch:schema>
     </xsl:template>
-
+    
+    <xsl:template match="sqf:*[@es:context]" mode="es:resolveStandalone"/>
+        
+    
+    
 </xsl:stylesheet>
