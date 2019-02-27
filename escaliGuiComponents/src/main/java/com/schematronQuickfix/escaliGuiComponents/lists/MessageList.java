@@ -93,7 +93,7 @@ public class MessageList extends AbstractList<_SVRLMessage, SVRLMessageListItem>
 		this.phaseButton.implementReport(reports);
 		for (_Report report : reports) {
 			ArrayList<SVRLMessageListItem> itemList = new ArrayList<SVRLMessageListItem>();
-			for (_SVRLMessage message : report.getMessages()) {
+			for (_SVRLMessage message : report.getMessages(_SVRLMessage.LEVEL_INFO, _SVRLMessage.LEVEL_FATAL_ERROR)) {
 				final SVRLMessageListItem msgItem = new SVRLMessageListItem(ema, message);
 				final MessageListener messageListener = new MessageListener(msgItem);
 				msgItem.addSelectionListener(messageListener);

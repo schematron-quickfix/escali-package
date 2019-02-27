@@ -127,7 +127,7 @@ public class ValidationEngine {
 		posInfo.setOffset(loc.getMarkStart());
 		posInfo.setLength(loc.getMarkEnd() - loc.getMarkStart());
 		
-		posInfo.setSeverity(msg.getErrorLevelInt());
+		posInfo.setSeverity(msg.getErrorLevelInt() - 1); // -1 because of role sqf-standalone
 		
 		posInfo.setSystemID(loc.getBaseURI());
 		

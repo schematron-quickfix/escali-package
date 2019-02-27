@@ -228,7 +228,11 @@ public class EscaliMessanger extends EscaliMessangerAdapter {
 	@Override
 	public void showMessage(_SVRLMessage msg, boolean forceFocus) {
 		try {
-			
+
+			if(msg.isHidden()){
+				return;
+			}
+
 			URL url = new URL(msg.getBaseUri());
 			StandalonePluginWorkspace workspace = EscaliPlugin.getInstance().getWorkspace();
 			
