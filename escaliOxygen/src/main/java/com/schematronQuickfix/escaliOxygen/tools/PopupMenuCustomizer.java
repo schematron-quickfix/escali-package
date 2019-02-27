@@ -14,6 +14,7 @@ import com.schematronQuickfix.escali.control.report._SVRLMessage;
 import com.schematronQuickfix.escaliOxygen.editors.EscaliMessanger;
 import com.schematronQuickfix.escaliOxygen.validation.MessageMenuItem;
 import com.schematronQuickfix.escaliOxygen.validation.QuickFixMenuItem;
+import com.schematronQuickfix.escaliOxygen.validation.StandaloneHeaderMenuItem;
 import com.schematronQuickfix.escaliOxygen.validation.ValidationAdapter;
 
 import ro.sync.ecss.extensions.api.AuthorAccess;
@@ -38,23 +39,57 @@ public class PopupMenuCustomizer extends TextPopupMenuCustomizer implements
 	private void customizePopUpMenu(JPopupMenu menu, WSTextBasedEditorPage page,
 			boolean forcePopup) {
 		if (va.isPopupCustomizing() || forcePopup) {
+
 			ArrayList<_SVRLMessage> messages = va.getMessageByCaret(page);
-			if (messages.size() > 0) {
+
+
+			ArrayList<_SVRLMessage> hiddenMsgs = new ArrayList<>();
+
+			for (_SVRLMessage msg:
+				 messages) {
+				if(msg.isHidden())
+					hiddenMsgs.add(msg);
+			}
+			if(messages.size() > 0){
 				menu.removeAll();
 				int i = 0;
-				for (_SVRLMessage msg : messages) {
-					if(msg.hasQuickFixes() && !(msg.isHidden())){
-						menu.add(new MessageMenuItem(msg, ema));
+
+				if(messages.size() > hiddenMsgs.size()) {
+					for (_SVRLMessage msg : messages) {
+						if (msg.hasQuickFixes() && !(msg.isHidden())) {
+							menu.add(new MessageMenuItem(msg, ema));
+
+							for (_QuickFix fix : msg.getQuickFixes()) {
+								String key = i >= shortcuts.length ? "" : shortcuts[i];
+								menu.add(new QuickFixMenuItem(fix, va.getEditor(),
+										va.getReportByMessage(msg), ema, key));
+								i++;
+							}
+
+						}
 					}
+				}
+				boolean showStandaloneHeader = messages.size() > hiddenMsgs.size();
+				boolean hasStandalones = hiddenMsgs.size() > 0;
+
+				if(showStandaloneHeader && hasStandalones){
+					menu.add(new StandaloneHeaderMenuItem());
+				}
+				for (_SVRLMessage msg : hiddenMsgs) {
+
 					for (_QuickFix fix : msg.getQuickFixes()) {
 						String key = i >= shortcuts.length ? "" : shortcuts[i];
 						menu.add(new QuickFixMenuItem(fix, va.getEditor(),
 								va.getReportByMessage(msg), ema, key));
 						i++;
 					}
+
 				}
+
 				va.setPupupCustomizing(false);
+
 			}
+
 		}
 	}
 
