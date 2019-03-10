@@ -102,7 +102,7 @@
 
 
     <xsl:template match="sch:assert[@sqf:fix] | sch:report[@sqf:fix]" mode="#all" priority="1000">
-        <xsl:variable name="local-fix" select="../sqf:fix"/>
+        <xsl:variable name="local-fix" select="../(sqf:fix|sqf:group)"/>
         <xsl:variable name="prec-called-fixes" select="preceding-sibling::*/@sqf:fix/tokenize(., '\s')" as="xs:string*"/>
         <xsl:variable name="global-fix-ids" select="
                 tokenize(@sqf:fix, '\s')[not(. = ($local-fix/@id,
