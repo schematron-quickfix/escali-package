@@ -18,7 +18,6 @@ import com.github.oxygenPlugins.common.text.uri.DefaultURIResolver;
 
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-import ro.sync.exml.o;
 import ro.sync.exml.workspace.api.editor.WSEditor;
 import ro.sync.exml.workspace.api.standalone.StandalonePluginWorkspace;
 

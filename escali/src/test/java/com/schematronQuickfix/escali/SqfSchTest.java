@@ -48,6 +48,7 @@ public class SqfSchTest {
 			 val = new Validation(sqfSch, config, new MuteProcessLoger());
 			 baseValidator = val;
 		} catch (XSLTErrorListener | IOException | CancelException e) {
+		    e.printStackTrace();
 			val = null;
 		}
 		
