@@ -30,6 +30,8 @@
                 else
                 ('xslt2')"/>
             
+            <xsl:sequence select="$sqf:fixes/(* except sqf:*)"/>
+            
             <sch:pattern id="generated" es:matchType="all">
                 <xsl:for-each select="$sqf:fixes/(sqf:fix | sqf:group)[@es:context]">
                     <sch:rule context="{@es:context}">
