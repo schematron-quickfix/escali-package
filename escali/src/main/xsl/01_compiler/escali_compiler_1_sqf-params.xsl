@@ -43,14 +43,14 @@
             </xd:ul>
         </xd:desc>
     </xd:doc>
-    
+
     <xsl:include href="escali_compiler_1_sqf-standalone.xsl"/>
-    
+
     <xsl:template match="sqf:fixes" priority="1000000">
         <xsl:param name="included" tunnel="yes" select="false()" as="xs:boolean"/>
         <xsl:variable name="self" select="."/>
-        
-        <xsl:variable name="standalones" select=".//(sqf:group|sqf:fix)[@es:context]"/>
+
+        <xsl:variable name="standalones" select=".//(sqf:group | sqf:fix)[@es:context]"/>
         <xsl:variable name="tempSchema" as="document-node()">
             <xsl:document>
                 <xsl:call-template name="sqf:transformStandalone">
@@ -58,7 +58,7 @@
                 </xsl:call-template>
             </xsl:document>
         </xsl:variable>
-        
+
         <xsl:choose>
             <xsl:when test="$standalones and not($included) and not(parent::sch:schema)">
                 <!--<xsl:apply-templates select="$tempSchema/sch:schema"/>-->
@@ -71,7 +71,7 @@
                 <xsl:next-match/>
             </xsl:otherwise>
         </xsl:choose>
-        
+
     </xsl:template>
 
     <!--
@@ -116,7 +116,7 @@
             </xsl:variable>
 
             <xsl:variable name="selfDescriptions" select="sqf:description"/>
-            
+
             <xsl:apply-templates select="sqf:param, $selfDescriptions" mode="callFix"/>
 
             <xsl:copy-of select="
