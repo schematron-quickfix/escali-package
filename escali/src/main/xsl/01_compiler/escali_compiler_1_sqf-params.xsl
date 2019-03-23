@@ -78,8 +78,6 @@
 	S Q F - E X T E N S I O N S
 -->
     <xsl:key name="fixById" match="sqf:fix" use="@id"/>
-    <xsl:variable name="globalFixes" select="/sch:schema/sqf:fixes/(. | sqf:group)/sqf:fix"/>
-
 
     <xsl:template match="sqf:description/sqf:title/node() | sqf:description/sqf:p/node()" priority="100">
         <xsl:choose>
@@ -136,7 +134,7 @@
         <xsl:variable name="idref" select="@ref"/>
         <xsl:variable name="calledFix" select="key('fixById', $idref)"/>
         <xsl:variable name="localFix" select="$calledFix intersect ancestor::sch:rule/(. | sqf:group)/sqf:fix"/>
-        <xsl:variable name="globalFix" select="$calledFix intersect $globalFixes"/>
+        <xsl:variable name="globalFix" select="$calledFix except $localFix"/>
         <xsl:variable name="calledFix" select="
                 ($localFix,
                 $globalFix)[1]"/>
@@ -151,7 +149,7 @@
 
         <xsl:variable name="calledFix" select="key('fixById', $idref)"/>
         <xsl:variable name="localFix" select="$calledFix intersect ancestor::sch:rule/(. | sqf:group)/sqf:fix"/>
-        <xsl:variable name="globalFix" select="$calledFix intersect $globalFixes"/>
+        <xsl:variable name="globalFix" select="$calledFix except $localFix"/>
         <xsl:variable name="calledFix" select="
                 ($localFix,
                 $globalFix)[1]"/>
