@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svrl:schematron-output xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+    xmlns:es="http://www.escali.schematron-quickfix.com/" xmlns:sqf="http://www.schematron-quickfix.com/validator/process"
+    title="Schematron unit test - trivial replace"
+    phase="#ALL"
+    es:schema="file:/C:/Users/Nico/Work/Java2/escali-main-package/escali/src/test/resources/sch/optimization/test01-trivial-delete/input/trivial-delete.sch"
+    es:instance="file:/C:/Users/Nico/Work/Java2/escali-main-package/escali/src/test/resources/sch/optimization/test01-trivial-delete/input/trivial-delete.xml">
+    <svrl:active-pattern id="pattern1" es:phases="#ALL" />
+    <svrl:fired-rule context="foo" >
+        <sqf:fix id="replaceFoo">
+            <sqf:replace node-type="element" target="bar"/>
+        </sqf:fix>
+    </svrl:fired-rule>
+    <svrl:failed-assert location="/*:root[namespace-uri()=''][1]/*:foo[namespace-uri()=''][1]"
+        test=". != ''">
+        <svrl:text>Foo should not be empty.</svrl:text>
+        <sqf:fix id="replaceFoo" title="Replace foo by bar">
+            <sqf:call-fix ref="replaceFoo"/>
+        </sqf:fix>
+    </svrl:failed-assert>
+</svrl:schematron-output>
