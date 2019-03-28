@@ -120,7 +120,6 @@
 
 
             <axsl:include href="{resolve-uri('escali_compiler_0_functions.xsl')}"/>
-            <xsl:call-template name="topLevelValidatorExtension"/>
 
             <axsl:variable name="es:base-uri-root" select="es:base-uri(/)"/>
 
@@ -134,7 +133,6 @@
                     <xsl:copy-of select="@schemaVersion | @es:link | @es:icon"/>
                     <xsl:attribute name="es:schema" select="@es:uri"/>
                     <axsl:attribute name="es:instance" select="document-uri(/)"/>
-                    <xsl:call-template name="topLevelManipulatorExtension"/>
                     <xsl:for-each-group select="/sch:schema/sch:ns" group-by="concat(@uri, @prefix)">
                         <svrl:ns-prefix-in-attribute-values uri="{@uri}" prefix="{@prefix}">
                             <!--                            <xsl:attribute name="prefix" select="distinct-values(current-group()/@prefix)" separator=" "/>-->
@@ -308,6 +306,8 @@
                                 <xsl:attribute name="es:base-id" select="@id"/>
                             </xsl:if>
                             <xsl:call-template name="getRoleFlag"/>
+                            
+                            <xsl:sequence select="es:fix-for-fired-rule(.)"/>
 
                         </svrl:fired-rule>
                     </axsl:variable>
@@ -440,10 +440,7 @@
         <svrl:text>
             <xsl:apply-templates/>
         </svrl:text>
-        <xsl:call-template name="extension">
-            <xsl:with-param name="es:regex" select="$regex" tunnel="yes"/>
-            <xsl:with-param name="messageId" select="$messageId"/>
-        </xsl:call-template>
+        <xsl:sequence select="es:fix-for-tests(.)"/>
     </xsl:template>
 
     <xsl:template name="getRoleFlag">

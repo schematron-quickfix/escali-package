@@ -135,7 +135,7 @@
                                 <xsl:for-each-group select="current-group() except ." group-starting-with="svrl:fired-rule">
                                     <es:rule>
                                         <xsl:copy-of select="@*"/>
-                                        <xsl:apply-templates select="current-group() except ."/>
+                                        <xsl:apply-templates select="(current-group(), ./node()) except ."/>
                                     </es:rule>
                                 </xsl:for-each-group>
                             </xsl:variable>

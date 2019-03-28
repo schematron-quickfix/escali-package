@@ -53,7 +53,7 @@ public class QuickFix extends MessageGroup implements _QuickFix {
 		
 		
 //		S E T   N A M E
-		Node nameNode = xpathreader.getNode("sqf:description/sqf:title", node);
+		Node nameNode = xpathreader.getNode("sqf:description/sqf:title | @title", node);
 		NodeList texte = xpathreader.getNodeSet("sqf:description/es:text",
 				node);
 

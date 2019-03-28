@@ -19,7 +19,6 @@
 
 -->
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:svrl="http://purl.oclc.org/dsdl/svrl" xmlns:es="http://www.escali.schematron-quickfix.com/" xmlns:xd="http://www.oxygenxml.com/ns/doc/xsl" exclude-result-prefixes="xs xd" version="2.0">
-    <xsl:include href="escali_validator_2_sqf-postprocess.xsl"/>
 
     <xsl:param name="es:compact-svrl" select="/processing-instruction(es_compact-svrl) = 'true'" as="xs:boolean"/>
 

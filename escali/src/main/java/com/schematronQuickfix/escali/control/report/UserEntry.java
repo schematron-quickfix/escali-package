@@ -46,13 +46,13 @@ public class UserEntry extends MessageGroup implements _UserEntry {
 		this.setIndex(index);
 		XPathReader xpathreader = new XPathReader();
 		Node param = xpathreader.getNode("sqf:param", node);
-		this.setId(SVRLReport.XPR.getAttributValue(param, "param-id"));
+		this.setId(SVRLReport.XPR.getAttributValue(node, "name"));
 		this.dataType = SVRLReport.XPR.getAttributValue(param, "type", "", "xs:string");
-		this.setParemterName(SVRLReport.XPR.getAttributValue(param, "name"));
+		this.setParemterName(SVRLReport.XPR.getAttributValue(node, "ueName"));
 
 		NodeList enums = xpathreader.getNodeSet("es:enumeration/es:enum", node);
 
-		NodeList paramChilds = xpathreader.getNodeSet("./node()", param);
+		NodeList paramChilds = xpathreader.getNodeSet("./node()", node);
 		String defaultAsString = null;
 		if (paramChilds.getLength() > 0) {
 			defaultAsString = "";
@@ -72,7 +72,7 @@ public class UserEntry extends MessageGroup implements _UserEntry {
 		this.useDefaultIfAvailable();
 
 		// S E T N A M E
-		Node nameNode = xpathreader.getNode("sqf:description/sqf:title", node);
+		Node nameNode = xpathreader.getNode("sqf:description/sqf:title | @title", node);
 
 		NodeList texte = xpathreader.getNodeSet("sqf:description/es:text",
 				node);
