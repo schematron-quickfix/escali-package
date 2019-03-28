@@ -56,7 +56,7 @@ public class Escali {
 
 		this.val = new Validator(this.resource, config);
 		this.exec = new Executor(this.resource);
-		if (needsBaseValidation) {
+		if (needsBaseValidation && config.isInternalValidation()) {
 			try {
 				this.baseVal = new SchematronBaseValidator(this.resource, this.config);
 			} catch (SAXNotRecognizedException e) {
@@ -141,7 +141,7 @@ public class Escali {
 
 	public ArrayList<TextSource> executeFix(_QuickFix[] fixIds, SVRLReport report, TextSource input)
 			throws XSLTErrorListener {
-		return executeFix(fixIds, report.getSVRL(), report.getFixParts(), input);
+		return executeFix(fixIds, report.getFormatetReport(SVRLReport.ESCALI_FORMAT), report.getFixParts(), input);
 	}
 	// public TextSource executeFix(_QuickFix[] fixIds, SVRLReport report)
 	// throws XSLTErrorListener {

@@ -30,6 +30,7 @@ public class Config {
 	private String changePrefix = "sqfc";
 	private boolean supressSQF = false;
 	private boolean xinclude = true;
+	private boolean internalValidation = true;
 	
 	private ArrayList<Parameter> validationParams = new ArrayList<Parameter>();
 	
@@ -150,4 +151,9 @@ public class Config {
 	public ArrayList<Parameter> createValidationParams() {
 		return validationParams;
 	}
+
+    public void setInternalValidation(boolean internalValidation) {
+		this.internalValidation = internalValidation;
+    }
+    public boolean isInternalValidation(){return this.internalValidation;}
 }

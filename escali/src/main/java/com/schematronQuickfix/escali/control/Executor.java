@@ -51,7 +51,7 @@ public class Executor {
 			ids[i] = fixes[i].getId();
 			_UserEntry[] settedUEs = fixes[i].getSettedParameter();
 			for (_UserEntry entry : settedUEs) {
-				ueParams.add(new Parameter(entry.getId(), ProcessNamespaces.SQF_NS, entry.getValue()));
+				ueParams.add(new Parameter(entry.getId(), entry.getValue()));
 			}
 		}
 		XSLTPipe manipulator = new XSLTPipe("", new XSLTErrorListener());
