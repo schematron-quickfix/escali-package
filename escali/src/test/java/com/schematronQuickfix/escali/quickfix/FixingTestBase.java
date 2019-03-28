@@ -113,9 +113,14 @@ public abstract class FixingTestBase {
 	}
 
 
-	public void doTest(ExecutionSetup execSetup){
+	public Config getConfig(){
 		Config config = ConfigFactory.createDefaultConfig();
 		config.setCompactSVRL(false);
+		return config;
+	}
+
+	public void doTest(ExecutionSetup execSetup){
+		Config config = getConfig();
 		if(phase != null){
 			config.setPhase(phase);
 		}
@@ -125,7 +130,9 @@ public abstract class FixingTestBase {
 		doTest(config, execSetup);
 	}
 
-
+	public String getExpectedPrefix(){
+		return "test";
+	}
 
 	protected void doTest(Config config, ExecutionSetup execSetup) {
 		String suffix = execSetup.getExecPropertyValue("SUFFIX");
@@ -134,7 +141,7 @@ public abstract class FixingTestBase {
 
 		String[] expPaths = new String[suffixes.length];
 
-		String name = "test";
+		String name = getExpectedPrefix();
 		name += "_" + execSetup.getMsgPos();
 		name += "_" + execSetup.getFixId();
 

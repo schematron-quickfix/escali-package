@@ -42,14 +42,16 @@ public class ValidationTestStrategy {
 		SVRLReport report = val.validate(inputPair.getInstanceDocument());
 		return report;
 	}
-
 	public void testStandardValidation(EscaliTestPair testPair){
+		testStandardValidation(testPair, SVRLReport.SVRL_FORMAT);
+	}
+	public void testStandardValidation(EscaliTestPair testPair, String format){
 
 		try {
 
 			SVRLReport report = executeStandardValidation(testPair);
 
-			TextSource svrlTxt = report.getFormatetReport(SVRLReport.SVRL_FORMAT);
+			TextSource svrlTxt = report.getFormatetReport(format);
 			
 			StringNode expectedSN = ignore(testPair.getExpected().get(0));
 			StringNode actualSN = ignore(svrlTxt);
@@ -101,10 +103,21 @@ public class ValidationTestStrategy {
 					+ "| /svrl:schematron-output/@es:schema "
 					+ "| /svrl:schematron-output/@es:instance "
 					+ "| //@es:roleLabel|//@role "
+					+ "| /es:escali-reports/es:meta/@instance "
+					+ "| /es:escali-reports/es:meta/es:schema "
+					+ "| /es:escali-reports/es:meta/es:instance "
+					+ "| //es:meta/@id "
+					+ "| //es:assert/@id "
+					+ "| //es:report/@id "
 					);
+
 			pr.deleteNode("/*/sqf:topLevel "
 					+ "| //sqf:sheet "
-					+ "| //sqf:fix/@* "
+					+ "| //sqf:fix/@contextId "
+					+ "| //sqf:fix/@id "
+					+ "| //sqf:user-entry/@name "
+					+ "| //sqf:with-param/@select "
+					+ "| //sqf:fix/@messageId "
 					+ "| //svrl:*/@sqf:default-fix "
 					+ "| //sqf:param/@param-id");
 			return pr.getSourceAsStringNode();

@@ -5,6 +5,7 @@ import static org.junit.Assert.fail;
 
 import java.io.IOException;
 
+import com.schematronQuickfix.escali.control.SVRLReport;
 import org.junit.Before;
 
 import com.github.oxygenPlugins.common.process.log.MuteProcessLoger;
@@ -29,8 +30,8 @@ public abstract class ValidationTestBase {
 		tester  = new ValidationTestStrategy(new MuteProcessLoger());
 		resource = new ResourceHelper(getClass(), getFolder());
 	}
-	
-	public void doTest(){
+
+	public Config getConfig(){
 		Config config = ConfigFactory.createDefaultConfig();
 		config.setCompactSVRL(false);
 		if(phase != null){
@@ -39,7 +40,16 @@ public abstract class ValidationTestBase {
 		if(lang != null){
 			config.setLanguage(lang);
 		}
-		doTest(config);
+		return config;
+	}
+
+	public String getFormat(){
+		return SVRLReport.SVRL_FORMAT;
+	}
+	
+	public void doTest(){
+
+		doTest(getConfig());
 	}
 	
 	public void doTest(Config config){
@@ -47,13 +57,15 @@ public abstract class ValidationTestBase {
 		String[] phase = config.getPhase();
 		String suffix = phase == null ? "" : "_" + phase[0];
 		suffix = suffix + (lang == null ? "" : "_" + lang[0]);
-		String svrlPath = "expected/test" + suffix + ".svrl";
+
+		String ext = SVRLReport.ESCALI_FORMAT.equals(getFormat()) ? "es" : "svrl";
+		String svrlPath = "expected/test" + suffix + "." + ext;
 		doTest(config, svrlPath);
 	}
 	
 	public void doTest(Config config, String expectedSvrl){
 		try {
-			tester.testStandardValidation(new EscaliTestPair(resource, getInstance(), getSchema(), new String[]{expectedSvrl}, config));
+			tester.testStandardValidation(new EscaliTestPair(resource, getInstance(), getSchema(), new String[]{expectedSvrl}, config), getFormat());
 		} catch (IOException e) {
 			fail(e.getMessage());
 		}
