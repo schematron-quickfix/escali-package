@@ -45,5 +45,9 @@
 - XInclude
 - sch:include
 
+## Edge cases
+- Multiple action elements order sensitive
+- Global / local quick fixes name conflicts
+
 
 
