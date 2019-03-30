@@ -140,13 +140,15 @@
                                 </xsl:for-each-group>
                             </xsl:variable>
                             <xsl:for-each-group select="$rules" group-by="@es:id">
+                                <xsl:variable name="fixes" select="current-group()[1]/sqf:fix"/>
                                 <es:rule>
                                     <xsl:apply-templates select="@xml:base"/>
                                     <es:meta>
                                         <xsl:apply-templates select="@* except @xml:base"/>
                                         <xsl:apply-templates select="key('paraByRefid', current-grouping-key(), $root)"/>
                                     </es:meta>
-                                    <xsl:copy-of select="current-group()/node()"/>
+                                    <xsl:sequence select="$fixes"/>
+                                    <xsl:sequence select="current-group()/(node() except sqf:fix)"/>
                                 </es:rule>
                             </xsl:for-each-group>
                         </es:pattern>
