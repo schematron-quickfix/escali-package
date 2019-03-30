@@ -48,6 +48,8 @@
             <xsl:variable name="availableGroups" select="
                     $localGroups | $globalGroups[not(@id = ($localGroups/@id,
                     $localFixes/@id))]"/>
+            
+            <axsl:variable name="sqf:rule-context" select="."/>
 
 
             <xsl:apply-templates select="
@@ -66,21 +68,48 @@
             <xsl:copy-of select="@name | @type"/>
         </sqf:param>
     </xsl:template>
+    
+    <xsl:template match="sqf:fix/@use-when | sqf:fix/@use-for-each" mode="sqf:fix-for-fired-rule"/>
+        
+    <xsl:template match="sqf:fix[@use-for-each]" mode="sqf:fix-for-fired-rule-add-first-child">
+        <sqf:param name="sqf:current"/>
+    </xsl:template>
+    
+    <xsl:template match="node() | @*" mode="sqf:fix-for-fired-rule-add-first-child sqf:fix-for-fired-rule-add-last-child"/>
+    
+    
     <!-- 
         copies all nodes:
     -->
     <xsl:template match="node() | @*" mode="sqf:fix-for-fired-rule">
         <xsl:copy>
             <xsl:apply-templates select="@*" mode="#current"/>
+            <xsl:apply-templates select="." mode="sqf:fix-for-fired-rule-add-first-child"/>
             <xsl:apply-templates select="node()" mode="#current"/>
+            <xsl:apply-templates select="." mode="sqf:fix-for-fired-rule-add-last-child"/>
         </xsl:copy>
     </xsl:template>
 
 
+    <xsl:template match="sqf:fix[@use-for-each]" mode="sqf:fix-for-tests">
+        <axsl:for-each select="{@use-for-each}">
+            <axsl:variable name="sqf:current" select="."/>
+            <axsl:variable name="sqf:current-position" select="position()"/>
+            <axsl:for-each select="$sqf:rule-context">
 
-
+                <xsl:next-match>
+                    <xsl:with-param name="id-suffix" tunnel="yes">
+                        <axsl:text>#</axsl:text>
+                        <axsl:value-of select="$sqf:current-position"/>
+                    </xsl:with-param>
+                </xsl:next-match>
+                
+            </axsl:for-each>
+        </axsl:for-each>
+    </xsl:template>
+    
     <xsl:template match="sqf:fix" mode="sqf:fix-for-tests">
-
+        <xsl:param name="id-suffix" tunnel="yes"/>
         <xsl:param name="test" as="element()" tunnel="yes"/>
         <xsl:variable name="messageId" select="$test/@es:id"/>
 
@@ -96,25 +125,33 @@
                         <xsl:text>-</xsl:text>
                     </axsl:text>
                     <axsl:value-of select="generate-id($es:context)"/>
+                    <xsl:sequence select="$id-suffix"/>
                 </axsl:variable>
                 <xsl:variable name="description" select="sqf:description"/>
                 <xsl:variable name="preDescription" select="$description/preceding-sibling::*"/>
 
                 <xsl:apply-templates select="$preDescription"/>
 
-                <sqf:fix fixId="{@id}" messageId="{$messageId}">
+                <sqf:fix messageId="{$messageId}">
                     <xsl:call-template name="namespace"/>
                     <xsl:attribute name="contextId">
                         <xsl:text>{generate-id($es:context)}</xsl:text>
                     </xsl:attribute>
                     <xsl:attribute name="id">{$sqf:id}</xsl:attribute>
                     <xsl:attribute name="role" select="es:getRole(.)"/>
+                    <axsl:attribute name="fixId">
+                        <axsl:text><xsl:value-of select="@id"/></axsl:text>
+                        <xsl:sequence select="$id-suffix"/>
+                    </axsl:attribute>
                     <xsl:apply-templates select="$description[1]" mode="#current"/>
                     <xsl:apply-templates select="sqf:user-entry" mode="#current"/>
                     <sqf:call-fix ref="{@id}">
                         <xsl:for-each select="sqf:user-entry">
                             <sqf:with-param name="{@name}" select="${@name}_{{$sqf:id}}"/>
                         </xsl:for-each>
+                        <xsl:if test="@use-for-each">
+                            <sqf:with-param name="sqf:current" select="({@use-for-each})[{{$sqf:current-position}}]"/>
+                        </xsl:if>
                     </sqf:call-fix>
                 </sqf:fix>
             </axsl:if>
