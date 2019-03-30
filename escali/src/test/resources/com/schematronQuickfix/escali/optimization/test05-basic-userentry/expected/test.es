@@ -5,8 +5,8 @@
         instance="#IGNORED#"
         phase="#ALL"
         schema=""
-        title="Schematron unit test - trivial stringReplace">
-        <es:title>Schematron unit test - trivial stringReplace</es:title>
+        title="Schematron unit test - basic userentry">
+        <es:title>Schematron unit test - basic userentry</es:title>
         <es:schema>#IGNORED#</es:schema>
         <es:instance>#IGNORED#</es:instance>
         <es:phase id="#ALL" isActive="yes" isDefault="true"/>
