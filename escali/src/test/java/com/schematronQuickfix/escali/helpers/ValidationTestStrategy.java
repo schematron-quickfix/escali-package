@@ -114,9 +114,10 @@ public class ValidationTestStrategy {
 			pr.deleteNode("/*/sqf:topLevel "
 					+ "| //sqf:sheet "
 					+ "| //sqf:fix/@contextId "
-					+ "| //sqf:fix/@id "
+					+ "| //es:assert/sqf:fix/@id "
+					+ "| //es:report/sqf:fix/@id "
 					+ "| //sqf:user-entry/@name "
-					+ "| //sqf:with-param/@select "
+					+ "| //sqf:with-param[@name != 'sqf:current']/@select "
 					+ "| //sqf:fix/@messageId "
 					+ "| //svrl:*/@sqf:default-fix "
 					+ "| //sqf:param/@param-id");
