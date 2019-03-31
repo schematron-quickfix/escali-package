@@ -16,11 +16,11 @@ public class T06BasicUseWhen extends ValidationTestBase {
 
 
 	@Override
-	public String getSchema() {
+	public String getSchemaPath() {
 		return "input/basic-use-when.sch";
 	}
 	@Override
-	public String getInstance() {
+	public String getInstancePath() {
 		return "input/basic-use-when.xml";
 	}
 

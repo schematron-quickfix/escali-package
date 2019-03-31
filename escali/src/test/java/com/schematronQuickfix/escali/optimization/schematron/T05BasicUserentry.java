@@ -16,11 +16,11 @@ public class T05BasicUserentry extends ValidationTestBase {
 
 
 	@Override
-	public String getSchema() {
+	public String getSchemaPath() {
 		return "input/basic-userentry.sch";
 	}
 	@Override
-	public String getInstance() {
+	public String getInstancePath() {
 		return "input/basic-userentry.xml";
 	}
 

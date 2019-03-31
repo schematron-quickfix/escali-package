@@ -16,11 +16,11 @@ public class T03BasicAdd extends ValidationTestBase {
 
 
 	@Override
-	public String getSchema() {
+	public String getSchemaPath() {
 		return "input/basic-add.sch";
 	}
 	@Override
-	public String getInstance() {
+	public String getInstancePath() {
 		return "input/basic-add.xml";
 	}
 

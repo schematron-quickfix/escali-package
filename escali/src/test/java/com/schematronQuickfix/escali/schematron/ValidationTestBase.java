@@ -65,24 +65,24 @@ public abstract class ValidationTestBase {
 	
 	public void doTest(Config config, String expectedSvrl){
 		try {
-			tester.testStandardValidation(new EscaliTestPair(resource, getInstance(), getSchema(), new String[]{expectedSvrl}, config), getFormat());
+			tester.testStandardValidation(new EscaliTestPair(resource, getInstancePath(), getSchemaPath(), new String[]{expectedSvrl}, config), getFormat());
 		} catch (IOException e) {
 			fail(e.getMessage());
 		}
 	}
 
-	public String getSchema(){
+	public String getSchemaPath(){
 		return "input/test.sch";
 	}
 
-	public String getInstance(){
+	public String getInstancePath(){
 		return "input/test.xml";
 	}
 
 
 	public void expectError(Config config, Class<?> errorClass){
 		try {
-			tester.executeStandardValidation(new EscaliTestPair(resource, getInstance(), getSchema(), new String[]{}, config));
+			tester.executeStandardValidation(new EscaliTestPair(resource, getInstancePath(), getSchemaPath(), new String[]{}, config));
 			fail("Test execution did not failed though error with class " + errorClass.getName() + " expected.");
 		} catch (Exception e){
 			assertEquals(e.getClass().getName(), errorClass.getName());

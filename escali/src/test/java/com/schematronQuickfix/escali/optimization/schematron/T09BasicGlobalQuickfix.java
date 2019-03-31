@@ -16,11 +16,11 @@ public class T09BasicGlobalQuickfix extends ValidationTestBase {
 
 
 	@Override
-	public String getSchema() {
+	public String getSchemaPath() {
 		return "input/basic-global-quickfix.sch";
 	}
 	@Override
-	public String getInstance() {
+	public String getInstancePath() {
 		return "input/basic-global-quickfix.xml";
 	}
 

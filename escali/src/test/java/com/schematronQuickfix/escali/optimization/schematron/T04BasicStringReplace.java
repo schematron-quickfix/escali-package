@@ -16,11 +16,11 @@ public class T04BasicStringReplace extends ValidationTestBase {
 
 
 	@Override
-	public String getSchema() {
+	public String getSchemaPath() {
 		return "input/basic-stringReplace.sch";
 	}
 	@Override
-	public String getInstance() {
+	public String getInstancePath() {
 		return "input/basic-stringReplace.xml";
 	}
 

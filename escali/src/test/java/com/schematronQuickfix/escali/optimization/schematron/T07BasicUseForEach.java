@@ -16,11 +16,11 @@ public class T07BasicUseForEach extends ValidationTestBase {
 
 
 	@Override
-	public String getSchema() {
+	public String getSchemaPath() {
 		return "input/basic-use-for-each.sch";
 	}
 	@Override
-	public String getInstance() {
+	public String getInstancePath() {
 		return "input/basic-use-for-each.xml";
 	}
 

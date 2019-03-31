@@ -60,7 +60,7 @@ public class T19QueryBinding extends ValidationTestBase {
 	}
 
 	@Override
-	public String getSchema() {
+	public String getSchemaPath() {
 		return schema;
 	}
 

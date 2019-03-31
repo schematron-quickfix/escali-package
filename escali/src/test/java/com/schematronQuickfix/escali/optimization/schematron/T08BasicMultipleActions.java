@@ -15,12 +15,12 @@ public class T08BasicMultipleActions extends ValidationTestBase {
 	}
 
 	@Override
-	public String getSchema() {
+	public String getSchemaPath() {
 		return "input/basic-multiple-actions.sch";
 	}
 
 	@Override
-	public String getInstance() {
+	public String getInstancePath() {
 		return "input/basic-multiple-actions.xml";
 	}
 
