@@ -78,6 +78,19 @@
     <xsl:template match="node() | @*" mode="sqf:fix-for-fired-rule-add-first-child sqf:fix-for-fired-rule-add-last-child"/>
     
     
+    <xsl:template match="@*[matches(., '[{}]')]" mode="sqf:fix-for-fired-rule">
+        <xsl:attribute name="{name()}">
+            <xsl:analyze-string select="." regex="[{{}}]">
+                <xsl:matching-substring>
+                    <xsl:sequence select="concat(.,.)"/>
+                </xsl:matching-substring>
+                <xsl:non-matching-substring>
+                    <xsl:sequence select="."/>
+                </xsl:non-matching-substring>
+            </xsl:analyze-string>
+        </xsl:attribute>
+    </xsl:template>
+    
     <!-- 
         copies all nodes:
     -->
