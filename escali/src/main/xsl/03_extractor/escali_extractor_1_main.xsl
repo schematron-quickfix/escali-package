@@ -187,8 +187,13 @@
         </axsl:for-each>
     </xsl:template>
 
-
-
+    <xsl:template match="node()|@*" mode="sqf:xsm">
+        <xsl:copy copy-namespaces="no">
+            <xsl:apply-templates select="@*" mode="#current"/>
+            <xsl:apply-templates select="node()" mode="#current"/>
+        </xsl:copy>
+    </xsl:template>
+    
     <xsl:template match="xsl:*" mode="sqf:xsm">
         <xsl:copy>
             <xsl:apply-templates select="@*"/>
