@@ -10,6 +10,7 @@
 - use-for-each
 - Multiple action elements
 - global quickfix
+- match attribute
 
 ## Basic node creation
 - template body
@@ -21,10 +22,11 @@
     - pi
 - position
     - first-child
-    - default
     - last-child
     - before
     - after
+- xslt3 features:
+    - text value templates
     
 ## Userentry
 - used in @match
@@ -48,6 +50,9 @@
 ## Edge cases
 - Multiple action elements order sensitive
 - Global / local quick fixes name conflicts
+
+## Namespaces
+- Namespace edge cases
 
 
 
