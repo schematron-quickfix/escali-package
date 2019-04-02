@@ -47,12 +47,12 @@ public abstract class ValidationTestBase {
 		return SVRLReport.SVRL_FORMAT;
 	}
 	
-	public void doTest(){
+	public SVRLReport doTest(){
 
-		doTest(getConfig());
+		return doTest(getConfig());
 	}
 	
-	public void doTest(Config config){
+	public SVRLReport doTest(Config config){
 		String[] lang = config.getLanguage();
 		String[] phase = config.getPhase();
 		String suffix = phase == null ? "" : "_" + phase[0];
@@ -60,14 +60,15 @@ public abstract class ValidationTestBase {
 
 		String ext = SVRLReport.ESCALI_FORMAT.equals(getFormat()) ? "es" : "svrl";
 		String svrlPath = "expected/test" + suffix + "." + ext;
-		doTest(config, svrlPath);
+		return doTest(config, svrlPath);
 	}
 	
-	public void doTest(Config config, String expectedSvrl){
+	public SVRLReport doTest(Config config, String expectedSvrl){
 		try {
-			tester.testStandardValidation(new EscaliTestPair(resource, getInstancePath(), getSchemaPath(), new String[]{expectedSvrl}, config), getFormat());
+			return tester.testStandardValidation(new EscaliTestPair(resource, getInstancePath(), getSchemaPath(), new String[]{expectedSvrl}, config), getFormat());
 		} catch (IOException e) {
 			fail(e.getMessage());
+			return null;
 		}
 	}
 

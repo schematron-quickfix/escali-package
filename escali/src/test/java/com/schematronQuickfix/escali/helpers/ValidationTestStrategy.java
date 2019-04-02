@@ -42,10 +42,10 @@ public class ValidationTestStrategy {
 		SVRLReport report = val.validate(inputPair.getInstanceDocument());
 		return report;
 	}
-	public void testStandardValidation(EscaliTestPair testPair){
-		testStandardValidation(testPair, SVRLReport.SVRL_FORMAT);
+	public SVRLReport testStandardValidation(EscaliTestPair testPair){
+		return testStandardValidation(testPair, SVRLReport.SVRL_FORMAT);
 	}
-	public void testStandardValidation(EscaliTestPair testPair, String format){
+	public SVRLReport testStandardValidation(EscaliTestPair testPair, String format){
 
 		try {
 
@@ -55,7 +55,7 @@ public class ValidationTestStrategy {
 			
 			StringNode expectedSN = ignore(testPair.getExpected().get(0));
 			StringNode actualSN = ignore(svrlTxt);
-			
+
 			assertThat(
                     actualSN.getDocument(),
                     isIdenticalTo(expectedSN.getDocument())
@@ -64,9 +64,10 @@ public class ValidationTestStrategy {
                             .withAttributeFilter(noBaseAttribute())
                             .throwComparisonFailure()
             );
-			
-			
-		} catch (XSLTErrorListener 
+
+			return report;
+
+		} catch (XSLTErrorListener
 				| IOException 
 				| CancelException 
 				| XPathExpressionException 
@@ -74,9 +75,10 @@ public class ValidationTestStrategy {
 				| URISyntaxException 
 				| XMLStreamException e) {
 			fail(e.getMessage());
+			return null;
 		}
-		
-		
+
+
 	}
 	
 	public static Predicate<Attr> noBaseAttribute() {
