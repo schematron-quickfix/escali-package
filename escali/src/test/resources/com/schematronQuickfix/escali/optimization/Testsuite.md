@@ -25,15 +25,20 @@
     - last-child
     - before
     - after
-- xslt3 features:
-    - text value templates
     
 ## Userentry
 - used in @match
 - types
-- namespace type
 - default
 - default sequence
+- namespace type
+
+## Call-fix
+- basic example
+- with parameter
+- mix with action elements
+- with abstract description
+- with abstract parameter
 
 ## Foreign elements
 - xsl:varibale
@@ -50,6 +55,8 @@
 ## Edge cases
 - Multiple action elements order sensitive
 - Global / local quick fixes name conflicts
+- xslt3 features:
+    - text value templates
 
 ## Namespaces
 - Namespace edge cases

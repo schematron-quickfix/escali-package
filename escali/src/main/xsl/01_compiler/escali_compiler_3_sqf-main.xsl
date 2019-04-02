@@ -48,7 +48,7 @@
             <xsl:variable name="availableGroups" select="
                     $localGroups | $globalGroups[not(@id = ($localGroups/@id,
                     $localFixes/@id))]"/>
-            
+
             <axsl:variable name="sqf:rule-context" select="."/>
 
 
@@ -68,21 +68,21 @@
             <xsl:copy-of select="@name | @type"/>
         </sqf:param>
     </xsl:template>
-    
+
     <xsl:template match="sqf:fix/@use-when | sqf:fix/@use-for-each" mode="sqf:fix-for-fired-rule"/>
-        
+
     <xsl:template match="sqf:fix[@use-for-each]" mode="sqf:fix-for-fired-rule-add-first-child">
         <sqf:param name="sqf:current"/>
     </xsl:template>
-    
+
     <xsl:template match="node() | @*" mode="sqf:fix-for-fired-rule-add-first-child sqf:fix-for-fired-rule-add-last-child"/>
-    
-    
+
+
     <xsl:template match="@*[matches(., '[{}]')]" mode="sqf:fix-for-fired-rule">
         <xsl:attribute name="{name()}">
             <xsl:analyze-string select="." regex="[{{}}]">
                 <xsl:matching-substring>
-                    <xsl:sequence select="concat(.,.)"/>
+                    <xsl:sequence select="concat(., .)"/>
                 </xsl:matching-substring>
                 <xsl:non-matching-substring>
                     <xsl:sequence select="."/>
@@ -90,7 +90,7 @@
             </xsl:analyze-string>
         </xsl:attribute>
     </xsl:template>
-    
+
     <!-- 
         copies all nodes:
     -->
@@ -116,11 +116,11 @@
                         <axsl:value-of select="$sqf:current-position"/>
                     </xsl:with-param>
                 </xsl:next-match>
-                
+
             </axsl:for-each>
         </axsl:for-each>
     </xsl:template>
-    
+
     <xsl:template match="sqf:fix" mode="sqf:fix-for-tests">
         <xsl:param name="id-suffix" tunnel="yes"/>
         <xsl:param name="test" as="element()" tunnel="yes"/>
@@ -153,7 +153,9 @@
                     <xsl:attribute name="id">{$sqf:id}</xsl:attribute>
                     <xsl:attribute name="role" select="es:getRole(.)"/>
                     <axsl:attribute name="fixId">
-                        <axsl:text><xsl:value-of select="@id"/></axsl:text>
+                        <axsl:text>
+                            <xsl:value-of select="@id"/>
+                        </axsl:text>
                         <xsl:sequence select="$id-suffix"/>
                     </axsl:attribute>
                     <xsl:apply-templates select="$description[1]" mode="#current"/>
