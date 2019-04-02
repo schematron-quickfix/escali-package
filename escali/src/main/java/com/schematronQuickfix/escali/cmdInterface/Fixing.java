@@ -50,9 +50,20 @@ public class Fixing {
 
 	public ArrayList<TextSource> executeFix(int messageIdx, String fixName)
 			throws XSLTErrorListener, IOException {
-		return executeFix(messageIdx, fixName, null);
+		return executeFix(messageIdx, fixName, new HashMap<String, Object>());
 	}
 	public ArrayList<TextSource> executeFix(int messageIdx, String fixName, String[] parameters)
+			throws XSLTErrorListener, IOException {
+		HashMap<String, Object> parameterMap = new HashMap<>();
+		for (String param:
+			 parameters) {
+			String name = param.split("=")[0];
+			String value = param.split("=")[1];
+			parameterMap.put(name, value);
+		}
+		return this.executeFix(messageIdx, fixName, parameterMap);
+	}
+	public ArrayList<TextSource> executeFix(int messageIdx, String fixName, HashMap<String, Object> parameters)
 			throws XSLTErrorListener, IOException {
 		ArrayList<_SVRLMessage> messages = report.getReport().getSortedMessages(_MessageGroup.SVRL_SORTING);
 		if(messages.size() > messageIdx){
@@ -71,13 +82,10 @@ public class Fixing {
 					for (_UserEntry ue : selFix.getParameter()) {
 						userEntries.put(ue.getParameterName(), ue);
 					}
-					for (String param : parameters) {
-						String name = param.split("=")[0];
-						String value = param.split("=")[1];
-						if(userEntries.containsKey(name)){
-							userEntries.get(name).setValue(value);
+					for (String name : userEntries.keySet()) {
+						if(parameters.containsKey(name)){
+							userEntries.get(name).setValue(parameters.get(name));
 						}
-						
 					}
 					
 				}

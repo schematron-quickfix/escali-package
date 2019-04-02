@@ -51,17 +51,8 @@ public class QuickFixTestStrategy {
         int msgPos = exec.getMsgPos();
         String fixId = exec.getFixId();
 
-        Properties ues = exec.getUE();
-        Enumeration<?> ueNames = ues.propertyNames();
-        String[] params = new String[ues.size()];
-        int i = 0;
-        while (ueNames.hasMoreElements()){
-            String ueName = (String) ueNames.nextElement();
-            String value =  ues.getProperty(ueName);
-            params[i++] = ueName + "=" + value;
-        }
 
-        ArrayList<TextSource> results = fixing.executeFix(msgPos - 1, fixId, params);
+        ArrayList<TextSource> results = fixing.executeFix(msgPos - 1, fixId, exec.getUE());
 
         assertEquals(testPair.getExpected().size(), results.size());
 

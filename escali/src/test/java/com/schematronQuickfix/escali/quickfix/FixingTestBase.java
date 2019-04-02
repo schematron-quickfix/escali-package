@@ -20,6 +20,7 @@ import javax.xml.xpath.XPathExpressionException;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.HashMap;
 import java.util.Properties;
 
 import static org.junit.Assert.assertEquals;
@@ -51,7 +52,7 @@ public abstract class FixingTestBase {
 
 	public static class ExecutionSetup{
 
-		private final Properties userEntries = new Properties();
+		private final HashMap<String, Object> userEntries = new HashMap<>();
 		private final Properties execProperties = new Properties();
 
 		private final  Tuple2<Integer, String> tuple;
@@ -60,8 +61,8 @@ public abstract class FixingTestBase {
 			this.tuple = new Tuple2<>(msgPos, fixId);
 		}
 
-		public ExecutionSetup addUE(String name, String value){
-			userEntries.setProperty(name, value);
+		public ExecutionSetup addUE(String name, Object value){
+			userEntries.put(name, value);
 			return this;
 		}
 		public ExecutionSetup addExecProp(String name, String value){
@@ -76,7 +77,7 @@ public abstract class FixingTestBase {
 			return this.tuple._2;
 		}
 
-		public Properties getUE() {
+		public HashMap<String, Object> getUE() {
 			return this.userEntries;
 		}
 		public String getExecPropertyValue(String propertyName){
