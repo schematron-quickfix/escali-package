@@ -90,7 +90,14 @@
             </xsl:analyze-string>
         </xsl:attribute>
     </xsl:template>
-
+    
+    <xsl:template match="sch:*" mode="sqf:fix-for-fired-rule" priority="100">
+        <xsl:copy>
+            <xsl:apply-templates select="@*" mode="#current"/>
+            <xsl:apply-templates select="node()" mode="#current"/>
+        </xsl:copy>
+    </xsl:template>
+    
     <!-- 
         copies all nodes:
     -->
