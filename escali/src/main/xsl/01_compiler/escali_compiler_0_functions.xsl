@@ -393,5 +393,24 @@
         <xsl:variable name="name" select="(name($ns), '#null')[. != ''][1]"/>
         <xsl:sequence select="concat($name, ':', $ns)"/>
     </xsl:function>
+    
+    <xsl:function name="es:valueToXPath" as="xs:string">
+        <xsl:param name="values" as="item()*"/>
+        <xsl:choose>
+            <xsl:when test="count($values) gt 1">
+                <xsl:sequence select="string-join( for $v in  $values return es:valueToXPath($v), ', ')"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:variable name="value" select="$values[1]"/>
+                <xsl:sequence select="
+                    concat(
+                    '''',
+                    replace($value, '('')', '$1$1'), 
+                    ''''
+                    )
+                    "/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:function>
 
 </xsl:stylesheet>

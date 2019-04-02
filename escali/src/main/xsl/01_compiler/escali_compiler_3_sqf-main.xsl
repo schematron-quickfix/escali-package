@@ -174,8 +174,30 @@
     <xsl:template match="sqf:user-entry" mode="sqf:fix-for-tests">
         <sqf:user-entry name="{@name}_{{$sqf:id}}" ueName="{@name}">
             <xsl:sequence select="@type"/>
-            <xsl:apply-templates select="sqf:description" mode="#current"/>
+            <xsl:perform-sort>
+                <xsl:sort select="(index-of(('attribute'), local-name()), 99)[1]"/>
+                <xsl:apply-templates select="@default" mode="#current"/>
+                <xsl:apply-templates select="sqf:description" mode="#current"/>
+            </xsl:perform-sort>
         </sqf:user-entry>
+    </xsl:template>
+
+    <xsl:template match="sqf:user-entry/@default" mode="sqf:fix-for-tests">
+        <axsl:variable name="sqf:values" select="{.}"/>
+        <axsl:choose>
+            <axsl:when test="count($sqf:values) eq 1">
+                <axsl:attribute name="default" select="es:valueToXPath($sqf:values)"/>
+            </axsl:when>
+            <axsl:otherwise>
+                <es:enumeration>
+                    <axsl:for-each select="$sqf:values">
+                        <es:enum>
+                            <axsl:value-of select="."/>
+                        </es:enum>
+                    </axsl:for-each>
+                </es:enumeration>
+            </axsl:otherwise>
+        </axsl:choose>
     </xsl:template>
 
     <xsl:template match="sqf:description" mode="sqf:fix-for-tests">

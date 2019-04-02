@@ -131,5 +131,32 @@
             <x:expect label="All elements and attributes" select="'mixed'"/>
         </x:scenario>
 
+    <x:scenario label="Scenarion for testing function valueToXPath">
+        <x:call function="es:valueToXPath"/>
+        <x:scenario label="Trivial value">
+            <x:call>
+                <x:param select="'value'"/>
+            </x:call>
+            <x:expect label="result value" select="string(.)">'value'</x:expect>
+        </x:scenario>
+        <x:scenario label="With quote">
+            <x:call>
+                <x:param select="'''value'''"/>
+            </x:call>
+            <x:expect label="result value" select="string(.)">'''value'''</x:expect>
+        </x:scenario>
+        <x:scenario label="With double-quote">
+            <x:call>
+                <x:param select="string(.)">"value"</x:param>
+            </x:call>
+            <x:expect label="result value" select="string(.)">'"value"'</x:expect>
+        </x:scenario>
+        
+        <x:scenario label="More than one values">
+            <x:call>
+                <x:param select="'one','two','three'"/>
+            </x:call>
+            <x:expect label="result value" select="string(.)">'one', 'two', 'three'</x:expect>
+        </x:scenario>
     </x:scenario>
 </x:description>

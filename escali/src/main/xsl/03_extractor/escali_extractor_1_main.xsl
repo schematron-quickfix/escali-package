@@ -75,11 +75,18 @@
 
     <xsl:template match="key('fix-id', $id)">
         <xsl:for-each select="sqf:user-entry">
-            <axsl:param name="{@name}"/>
+            <axsl:param>
+                <xsl:apply-templates select="@name | @type | @default" mode="sqf:xsm"/>
+                <xsl:sequence select="namespace::*"/>
+            </axsl:param>
         </xsl:for-each>
         <xsl:apply-templates/>
     </xsl:template>
-
+    
+    <xsl:template match="sqf:user-entry/*"/>
+        
+    
+    
     <xsl:template match="key('fix-id', $id)/sqf:call-fix">
         <xsl:apply-templates select="es:getRefFix(@ref)" mode="sqf:xsm">
             <xsl:with-param name="params" select="sqf:with-param" tunnel="yes"/>
@@ -107,8 +114,18 @@
         <xsl:variable name="name" select="@name"/>
         <xsl:variable name="withParam" select="$params[@name = $name]"/>
         <axsl:param name="{@name}">
+            <xsl:apply-templates select="@*" mode="#current"/>
+            <xsl:sequence select="namespace::*"/>
             <xsl:sequence select="$withParam/@select"/>
         </axsl:param>
+    </xsl:template>
+    
+    <xsl:template match="@type" mode="sqf:xsm">
+        <xsl:attribute name="as" select="."/>
+    </xsl:template>
+    
+    <xsl:template match="@default" mode="sqf:xsm">
+        <xsl:attribute name="select" select="."/>
     </xsl:template>
     
     <xsl:template match="sqf:replace | sqf:add | sqf:delete" mode="sqf:xsm" priority="50">
