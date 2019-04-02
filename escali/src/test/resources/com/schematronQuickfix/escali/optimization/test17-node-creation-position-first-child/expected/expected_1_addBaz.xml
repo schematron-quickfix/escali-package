@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+    <foo><baz>baz-content</baz>
+        <bar/>
+    </foo>
+</root>
