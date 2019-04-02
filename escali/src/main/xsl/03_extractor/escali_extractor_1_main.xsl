@@ -130,10 +130,12 @@
     
     <xsl:template match="sqf:replace | sqf:add | sqf:delete" mode="sqf:xsm" priority="50">
         <xsl:variable name="match" select="(@match, '.')[1]"/>
-        <xsl:element name="xsm:{local-name(.)}">
-            <axsl:attribute name="node" select="es:getNodePath({$match})"/>
-            <xsl:next-match/>
-        </xsl:element>
+        <axsl:for-each select="{$match}">
+            <xsl:element name="xsm:{local-name(.)}">
+                <axsl:attribute name="node" select="es:getNodePath(.)"/>
+                <xsl:next-match/>
+            </xsl:element>
+        </axsl:for-each>
     </xsl:template>
 
     <xsl:template match="sqf:delete" mode="sqf:xsm"/>
