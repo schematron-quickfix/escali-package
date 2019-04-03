@@ -14,14 +14,15 @@
     <es:pattern>
         <es:meta id="pattern1" phases="#ALL"/>
         <es:rule>
-            <es:meta context="foo" id="w20aab3b1" roleLabel="error"/>
-            <sqf:fix id="replaceFoo">
-                <sqf:replace>
-                    <bar name="{@att}">
-                        <baz>new-content</baz>
-                    </bar>
-                </sqf:replace>
-            </sqf:fix>
+            <es:meta context="foo" id="w20aab3b1" roleLabel="error">
+                <sqf:fix id="replaceFoo">
+                    <sqf:replace>
+                        <bar name="{@att}">
+                            <baz>new-content</baz>
+                        </bar>
+                    </sqf:replace>
+                </sqf:fix>
+            </es:meta>
             <es:assert id="w41aab1_w20aab3b1b1"
                 location="/*:root[namespace-uri()=''][1]/*:foo[namespace-uri()=''][1]"
                 roleLabel="error"

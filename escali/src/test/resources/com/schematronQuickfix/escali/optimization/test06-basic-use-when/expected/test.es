@@ -14,10 +14,11 @@
     <es:pattern>
         <es:meta id="pattern1" phases="#ALL"/>
         <es:rule>
-            <es:meta context="foo" id="w20aab3b1" roleLabel="error"/>
-            <sqf:fix id="addBar">
-                <sqf:add node-type="element" target="bar" select="'staticContent'"/>
-            </sqf:fix>
+            <es:meta context="foo" id="w20aab3b1" roleLabel="error">
+                <sqf:fix id="addBar">
+                    <sqf:add node-type="element" target="bar" select="'staticContent'"/>
+                </sqf:fix>
+            </es:meta>
             <es:report id="w41aab1_w20aab3b1b1"
                 location="/*:root[namespace-uri()=''][1]/*:foo[namespace-uri()=''][1]"
                 roleLabel="error"
