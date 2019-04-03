@@ -101,10 +101,27 @@
         <xsl:variable name="allqfs" select="$root/key('fix-id', $ref)"/>
         <xsl:sequence select="$allqfs[1]"/>
     </xsl:function>
+    
+    <xsl:function name="es:getElementsInScope">
+        <xsl:param name="context"/>
+        <xsl:sequence select="es:getElementsInScope($context, ('http://purl.oclc.org/dsdl/schematron', ''))"></xsl:sequence>
+    </xsl:function>
+    <xsl:function name="es:getElementsInScope">
+        <xsl:param name="context"/>
+        <xsl:param name="namespaces"/>
+        <xsl:variable name="ancestorChilds" select="$context/ancestor::*/*"/>
+        <xsl:variable name="precedings" select="$context/preceding::*"/>
+        <xsl:variable name="precedingAncestorChilds" select="$ancestorChilds intersect $precedings"/>
+        <xsl:variable name="precedingAncestorChildsNS" select="$precedingAncestorChilds[namespace-uri(.) = $namespaces]"/>
+        <xsl:sequence select="$precedingAncestorChildsNS"/>
+    </xsl:function>
 
     <xsl:template match="sqf:fix" mode="sqf:xsm">
         <xsl:param name="location" tunnel="yes" as="xs:string"/>
+        
         <axsl:template match="{$location}">
+            <xsl:apply-templates select="preceding-sibling::sch:*|preceding-sibling::xsl:*" mode="sqf:xsm"/>
+            
             <xsl:apply-templates select="sqf:param | sqf:delete | sqf:add | sqf:replace | sqf:stringReplace" mode="#current"/>
         </axsl:template>
     </xsl:template>

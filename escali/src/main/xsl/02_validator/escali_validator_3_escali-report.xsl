@@ -135,20 +135,23 @@
                                 <xsl:for-each-group select="current-group() except ." group-starting-with="svrl:fired-rule">
                                     <es:rule>
                                         <xsl:copy-of select="@*"/>
-                                        <xsl:apply-templates select="(current-group(), ./node()) except ."/>
+                                        <es:fixes>
+                                            <xsl:apply-templates select="./node()"/>
+                                        </es:fixes>
+                                        <xsl:apply-templates select="current-group() except ."/>
                                     </es:rule>
                                 </xsl:for-each-group>
                             </xsl:variable>
                             <xsl:for-each-group select="$rules" group-by="@es:id">
-                                <xsl:variable name="fixes" select="current-group()[1]/sqf:fix"/>
+                                <xsl:variable name="fixes" select="current-group()[1]/es:fixes"/>
                                 <es:rule>
                                     <xsl:apply-templates select="@xml:base"/>
                                     <es:meta>
                                         <xsl:apply-templates select="@* except @xml:base"/>
                                         <xsl:apply-templates select="key('paraByRefid', current-grouping-key(), $root)"/>
+                                        <xsl:sequence select="$fixes/node()"/>
                                     </es:meta>
-                                    <xsl:sequence select="$fixes"/>
-                                    <xsl:sequence select="current-group()/(node() except sqf:fix)"/>
+                                    <xsl:sequence select="current-group()/(node() except es:fixes)"/>
                                 </es:rule>
                             </xsl:for-each-group>
                         </es:pattern>
@@ -190,9 +193,8 @@
 
     <xsl:template match="sqf:sheet" priority="10"/>
 
-
-
-    <xsl:template match="sqf:fix | sqf:fix//node()">
+    
+    <xsl:template match="sqf:fix | sqf:fix//node() | svrl:fired-rule//node()">
         <xsl:copy>
             <xsl:apply-templates select="@*"/>
             <xsl:apply-templates select="node()"/>

@@ -25,7 +25,7 @@
 
     <xsl:function name="es:fix-for-fired-rule" as="node()*">
         <xsl:param name="rule" as="element(sch:rule)"/>
-        <xsl:apply-templates select="$rule/sqf:fix" mode="sqf:fix-for-fired-rule"/>
+        <xsl:apply-templates select="$rule/(* except (sch:assert | sch:report))" mode="sqf:fix-for-fired-rule"/>
     </xsl:function>
 
 
