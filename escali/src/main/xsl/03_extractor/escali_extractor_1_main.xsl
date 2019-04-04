@@ -120,7 +120,7 @@
         <xsl:param name="location" tunnel="yes" as="xs:string"/>
         
         <axsl:template match="{$location}">
-            <xsl:apply-templates select="preceding-sibling::sch:*|preceding-sibling::xsl:*" mode="sqf:xsm"/>
+            <xsl:apply-templates select="preceding-sibling::sch:*|preceding-sibling::xsl:*|./sch:* | ./xsl:*" mode="sqf:xsm"/>
             
             <xsl:apply-templates select="sqf:param | sqf:delete | sqf:add | sqf:replace | sqf:stringReplace" mode="#current"/>
         </axsl:template>
@@ -232,8 +232,8 @@
     
     <xsl:template match="xsl:*" mode="sqf:xsm">
         <xsl:copy>
-            <xsl:apply-templates select="@*"/>
-            <xsl:apply-templates select="node()"/>
+            <xsl:apply-templates select="@*" mode="#current"/>
+            <xsl:apply-templates select="node()" mode="#current"/>
         </xsl:copy>
     </xsl:template>
 

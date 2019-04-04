@@ -97,6 +97,18 @@
             <xsl:apply-templates select="node()" mode="#current"/>
         </xsl:copy>
     </xsl:template>
+
+    <xsl:template match="xsl:*" mode="sqf:fix-for-fired-rule" priority="100">
+        <axsl:element name="{name()}">
+            <xsl:apply-templates select="@*" mode="#current"/>
+            <xsl:apply-templates select="node()" mode="#current"/>
+        </axsl:element>
+    </xsl:template>
+    <xsl:template match="xsl:*/@*" mode="sqf:fix-for-fired-rule" priority="100">
+        <axsl:attribute name="{name()}"><xsl:value-of select="."/></axsl:attribute>
+    </xsl:template>
+    
+    
     
     <!-- 
         copies all nodes:
