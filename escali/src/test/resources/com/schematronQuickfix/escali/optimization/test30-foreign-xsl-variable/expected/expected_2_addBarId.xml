@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+    <foo id="foo1">
+        <bar/>
+    </foo>
+    <foo id="foo2">
+        <bar id="rule_foo2 fix_foo2 ae_foo2"/>
+    </foo>
+</root>
