@@ -36,10 +36,15 @@ public class T16NodeCreationNodeTypePi extends FixingTestBase {
 		return "expected";
 	}
 
+
 	@Test
-	public void test(){
+	public void test_1(){
 		doTest(new ExecutionSetup(1, "addBarPi"));
-		
+
 	}
-	
+	@Test
+	public void test_2(){
+		doTest(new ExecutionSetup(1, "addBarPiShort"));
+
+	}
 }

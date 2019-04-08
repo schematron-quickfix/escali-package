@@ -170,7 +170,12 @@
         <xsm:content>
             <xsl:choose>
                 <xsl:when test="@target | @node-type">
-                    <xsl:element name="xsl:{@node-type}">
+                    <xsl:variable name="node-type" select="
+                            if (@node-type = 'pi') then
+                                ('processing-instruction')
+                            else
+                                (@node-type)"/>
+                    <xsl:element name="xsl:{$node-type}">
                         <xsl:if test="@target">
                             <xsl:attribute name="name" select="@target"/>
                         </xsl:if>

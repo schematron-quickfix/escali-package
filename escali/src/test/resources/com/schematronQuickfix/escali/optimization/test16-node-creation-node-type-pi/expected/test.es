@@ -18,6 +18,9 @@
                 <sqf:fix id="addBarPi">
                     <sqf:add target="bar" node-type="processing-instruction" select="'bar-value'"/>
                 </sqf:fix>
+                <sqf:fix id="addBarPiShort">
+                    <sqf:add target="bar" node-type="pi" select="'bar-value'"/>
+                </sqf:fix>
             </es:meta>
             <es:assert id="w41aab1_w20aab3b1b1"
                 location="/*:root[namespace-uri()=''][1]/*:foo[namespace-uri()=''][1]"
@@ -26,6 +29,9 @@
                 <es:text>Foo should not be empty.</es:text>
                 <sqf:fix fixId="addBarPi" title="Add bar PI" id="addBarPi_w41aab1_w20aab3b1b1">
                     <sqf:call-fix ref="addBarPi"/>
+                </sqf:fix>
+                <sqf:fix fixId="addBarPiShort" title="Add bar PI" id="addBarPiShort_w41aab1_w20aab3b1b1">
+                    <sqf:call-fix ref="addBarPiShort"/>
                 </sqf:fix>
             </es:assert>
         </es:rule>
