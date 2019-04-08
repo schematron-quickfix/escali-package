@@ -76,7 +76,7 @@
         <xsl:variable name="patterns" select="
                 for $u in $respectedUris[doc-available(.)]
                 return
-                    (doc($u)//sch:pattern|//sch:pattern)"/>
+                    (doc($u)//sch:pattern)"/>
         <es:schemaInfo>
             <es:meta>
                 <es:schema>

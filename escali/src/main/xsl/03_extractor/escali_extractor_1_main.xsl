@@ -103,9 +103,23 @@
         <xsl:param name="ref" as="attribute()"/>
         <xsl:variable name="root" select="root($ref)"/>
         <xsl:variable name="allqfs" select="$root/key('fix-id', $ref)"/>
-        <xsl:sequence select="$allqfs[1]"/>
+        <xsl:sequence select="es:scopeOfFixes($ref, $allqfs)"/>
     </xsl:function>
-    
+
+    <xsl:function name="es:scopeOfFixes" as="element()?">
+        <xsl:param name="context" as="node()"/>
+        <xsl:param name="fixes" as="element()*"/>
+        <xsl:variable name="contextFixes" select="$context//* intersect $fixes"/>
+        <xsl:sequence select="
+                if ($contextFixes) then
+                    ($contextFixes[last()])
+                else if($context/parent::*) 
+                    then
+                        es:scopeOfFixes($context/parent::*, $fixes)
+                    else 
+                        ()"/>
+    </xsl:function>
+
     <xsl:function name="es:getElementsInScope">
         <xsl:param name="context"/>
         <xsl:sequence select="es:getElementsInScope($context, ('http://purl.oclc.org/dsdl/schematron', ''))"></xsl:sequence>
@@ -128,6 +142,8 @@
             <xsl:apply-templates select="preceding-sibling::sch:* | preceding-sibling::xsl:* | ./sch:* | ./xsl:*" mode="sqf:xsm"/>
 
             <xsl:apply-templates select="sqf:param | sqf:delete | sqf:add | sqf:replace | sqf:stringReplace" mode="#current"/>
+
+            <axsl:next-match/>
         </axsl:template>
     </xsl:template>
     
@@ -154,6 +170,7 @@
         <xsl:variable name="match" select="(@match, '.')[1]"/>
         <axsl:for-each select="{$match}">
             <xsl:element name="xsm:{local-name(.)}">
+                <xsl:copy-of select="namespace::*[name() != '']"/>
                 <axsl:attribute name="node" select="es:getNodePath(.)"/>
                 <xsl:next-match/>
             </xsl:element>
