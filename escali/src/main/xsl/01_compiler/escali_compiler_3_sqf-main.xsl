@@ -86,12 +86,19 @@
     <xsl:template match="node() | @*" mode="sqf:fix-for-fired-rule-add-first-child sqf:fix-for-fired-rule-add-last-child"/>
 
 
-    <xsl:template match="@*[matches(., '[{}]')]" mode="sqf:fix-for-fired-rule sqf:top-level-elements">
-        <axsl:attribute name="{name()}">
-            <xsl:value-of select="."/>
-        </axsl:attribute>
+    <xsl:template match="@*[matches(., '[{}]')]" mode="sqf:fix-for-fired-rule sqf:top-level-elements"/>
+
+
+
+    <xsl:template match="*[@*[matches(., '[{}]')]]" mode="sqf:fix-for-fired-rule-add-first-child sqf:top-level-elements-add-first-child">
+        <xsl:for-each select="@*[matches(., '[{}]')]">
+            <axsl:attribute name="{name()}">
+                <xsl:value-of select="."/>
+            </axsl:attribute>
+        </xsl:for-each>
+        <xsl:next-match/>
     </xsl:template>
-    
+
     <xsl:template match="sch:*" mode="sqf:fix-for-fired-rule sqf:top-level-elements" priority="100">
         <xsl:copy>
             <xsl:apply-templates select="@*" mode="#current"/>
@@ -115,6 +122,7 @@
     <xsl:template match="node() | @*" mode="sqf:top-level-elements">
         <xsl:copy>
             <xsl:apply-templates select="@*" mode="#current"/>
+            <xsl:apply-templates select="." mode="sqf:top-level-elements-add-first-child"/>
             <xsl:apply-templates select="node()" mode="#current"/>
         </xsl:copy>
     </xsl:template>
