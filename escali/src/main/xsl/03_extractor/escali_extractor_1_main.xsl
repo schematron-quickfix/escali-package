@@ -139,7 +139,10 @@
 
         <axsl:template match="{$location}">
             <xsl:apply-templates select="ancestor::es:pattern/es:meta/sch:let" mode="sqf:letpattern"/>
-            <xsl:apply-templates select="preceding-sibling::sch:* | preceding-sibling::xsl:* | ./sch:* | ./xsl:*" mode="sqf:xsm"/>
+            
+            <xsl:variable name="precedingForeigns" select="ancestor::es:meta/* intersect (preceding::sch:*|preceding::xsl:*)"/>
+            
+            <xsl:apply-templates select="$precedingForeigns | ./sch:* | ./xsl:*" mode="sqf:xsm"/>
 
             <xsl:apply-templates select="sqf:param | sqf:delete | sqf:add | sqf:replace | sqf:stringReplace" mode="#current"/>
 
