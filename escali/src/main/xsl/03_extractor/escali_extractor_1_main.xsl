@@ -57,6 +57,7 @@
         <axsl:stylesheet version="2.0">
             <axsl:include href="{resolve-uri('../01_compiler/escali_compiler_0_functions.xsl')}"/>
 
+            <xsl:apply-templates select="es:meta/(xsl:* | sch:*)" mode="sqf:xsm"/>
             <axsl:template match="/">
                 <xsm:manipulator document="{/es:escali-reports/es:meta/es:instance}">
                     <axsl:apply-templates/>
