@@ -63,44 +63,61 @@ public class Fixing {
 		}
 		return this.executeFix(messageIdx, fixName, parameterMap);
 	}
+
 	public ArrayList<TextSource> executeFix(int messageIdx, String fixName, HashMap<String, Object> parameters)
 			throws XSLTErrorListener, IOException {
-		ArrayList<_SVRLMessage> messages = report.getReport().getSortedMessages(_MessageGroup.SVRL_SORTING);
-		if(messages.size() > messageIdx){
-			_SVRLMessage msg = messages.get(messageIdx);
-			_QuickFix selFix = null;
-			for (_QuickFix fix : msg.getQuickFixes()) {
-				if (fix.getFixId().equals(fixName)) {
-					selFix = fix;
-					break;
-				}
-			}
-			
-			if (selFix != null) {
-				if (parameters != null) {
-					HashMap<String, _UserEntry> userEntries = new HashMap<String, _UserEntry>();
-					for (_UserEntry ue : selFix.getParameter()) {
-						userEntries.put(ue.getParameterName(), ue);
-					}
-					for (String name : userEntries.keySet()) {
-						if(parameters.containsKey(name)){
-							userEntries.get(name).setValue(parameters.get(name));
-						}
-					}
-					
-				}
-				
-				return executeFix(selFix);
-			}
-		}
-
-		ArrayList<TextSource> errorResults = new ArrayList<TextSource>();
-		errorResults.add(source);
-		return errorResults;
+		return executeFix(new int[]{messageIdx}, new String[]{fixName}, parameters);
 	}
 
-	private ArrayList<TextSource> executeFix(_QuickFix fix) throws XSLTErrorListener {
-		ArrayList<TextSource> results = escali.executeFix(new _QuickFix[] { fix }, report, source);
+	public ArrayList<TextSource> executeFix(int[] messageIdx, String[] fixNames, HashMap<String, Object> parameters)
+			throws XSLTErrorListener, IOException {
+		ArrayList<_SVRLMessage> messages = report.getReport().getSortedMessages(_MessageGroup.SVRL_SORTING);
+
+		_QuickFix[] fixes = new _QuickFix[messageIdx.length];
+
+		int i = 0;
+		for (int msgIdx:
+			 messageIdx) {
+			if(messages.size() > msgIdx){
+				String fixName = fixNames[i];
+				_SVRLMessage msg = messages.get(msgIdx);
+				_QuickFix selFix = null;
+				for (_QuickFix fix : msg.getQuickFixes()) {
+					if (fix.getFixId().equals(fixName)) {
+						selFix = fix;
+						break;
+					}
+				}
+				if(selFix != null){
+					fixes[i] = selFix;
+
+					if (parameters != null) {
+						HashMap<String, _UserEntry> userEntries = new HashMap<String, _UserEntry>();
+						for (_UserEntry ue : selFix.getParameter()) {
+							userEntries.put(ue.getParameterName(), ue);
+						}
+						for (String name : userEntries.keySet()) {
+							if(parameters.containsKey(name)){
+								userEntries.get(name).setValue(parameters.get(name));
+							}
+						}
+					}
+				} else {
+					ArrayList<TextSource> errorResults = new ArrayList<TextSource>();
+					errorResults.add(source);
+					return errorResults;
+				}
+			} else {
+				throw new IOException("No message with index " + msgIdx);
+			}
+			i++;
+		}
+
+		return executeFix(fixes);
+	}
+
+	private ArrayList<TextSource> executeFix(_QuickFix[] fixes) throws XSLTErrorListener {
+		ArrayList<TextSource> results = escali.executeFix(fixes, report, source);
 		return results;
 	}
 
