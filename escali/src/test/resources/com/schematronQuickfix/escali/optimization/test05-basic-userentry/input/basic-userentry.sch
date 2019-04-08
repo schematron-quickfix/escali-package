@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <sch:schema xmlns:sch="http://purl.oclc.org/dsdl/schematron" queryBinding="xslt2"
-    xmlns:sqf="http://www.schematron-quickfix.com/validator/process">
+    xmlns:sqf="http://www.schematron-quickfix.com/validator/process" xmlns:xs="http://www.w3.org/2001/XMLSchema">
     <sch:title>Schematron unit test - basic userentry</sch:title>
     <sch:pattern id="pattern1">
         <sch:rule context="foo">
