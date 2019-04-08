@@ -7,10 +7,7 @@ import com.github.oxygenPlugins.common.text.TextSource;
 import com.github.oxygenPlugins.common.xml.exceptions.XSLTErrorListener;
 import com.schematronQuickfix.escali.control.Config;
 import com.schematronQuickfix.escali.control.ConfigFactory;
-import com.schematronQuickfix.escali.helpers.EscaliFixingTestPair;
-import com.schematronQuickfix.escali.helpers.ResourceHelper;
-import com.schematronQuickfix.escali.helpers.QuickFixTestStrategy;
-import com.schematronQuickfix.escali.helpers.SchematronInstancePair;
+import com.schematronQuickfix.escali.helpers.*;
 import net.sf.saxon.ma.trie.Tuple2;
 import org.junit.Before;
 import org.xml.sax.SAXException;
@@ -176,6 +173,29 @@ public abstract class FixingTestBase {
 			fail(e.getMessage());
 		}
 	}
+
+    public void doTest(Config config, String[] expectedResult, ExecutionSetup[] executionSetup){
+        try {
+            tester.testQuickFixExecution(
+                    new EscaliMultiFixingTestPair(
+                            new SchematronInstancePair(resource, getInstancePath(), getSchemaPath()),
+                            resource,
+                            expectedResult,
+                            config)
+                            .addExecutionSetup(executionSetup)
+            );
+        } catch (XSLTErrorListener
+                | IOException
+                | CancelException
+                | XPathExpressionException
+                | SAXException
+                | URISyntaxException
+                | XMLStreamException e) {
+            e.printStackTrace();
+            fail(e.getMessage());
+        }
+    }
+
 	public void expectError(ExecutionSetup executionSetup, Class<?> errorClass){
 		expectError(ConfigFactory.createDefaultConfig(), executionSetup, errorClass);
 	}

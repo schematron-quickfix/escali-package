@@ -14,10 +14,7 @@ import javax.xml.xpath.XPathExpressionException;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.Properties;
-import java.util.Set;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
@@ -48,21 +45,54 @@ public class QuickFixTestStrategy {
         Fixing fixing = new Fixing(testPair.getInputPair().getSchemaDocument(), testPair.getInputPair().getInstanceDocument(), testPair.getEscaliConfig());
 
         FixingTestBase.ExecutionSetup exec = testPair.getExecutionSetup();
-        int msgPos = exec.getMsgPos();
+        int msgPos = exec.getMsgPos() - 1;
         String fixId = exec.getFixId();
 
+        testQuickFixExecution(fixing, testPair.getExpected(), new int[]{msgPos}, new String[]{fixId}, exec.getUE());
 
-        ArrayList<TextSource> results = fixing.executeFix(msgPos - 1, fixId, exec.getUE());
+    }
 
-        assertEquals(testPair.getExpected().size(), results.size());
+
+    public void testQuickFixExecution(EscaliMultiFixingTestPair testPair) throws SAXException, CancelException, IOException, XPathExpressionException, URISyntaxException, XSLTErrorListener, XMLStreamException {
+
+        Fixing fixing = new Fixing(testPair.getInputPair().getSchemaDocument(), testPair.getInputPair().getInstanceDocument(), testPair.getEscaliConfig());
+
+        ArrayList<FixingTestBase.ExecutionSetup> execs = testPair.getAllExecutionSetups();
+        int[] msgPositions = new int[execs.size()];
+        String[] fixIds = new String[execs.size()];
+        int i = 0;
+        HashMap<String, Object> userEntries = new HashMap<>();
+
+        for (FixingTestBase.ExecutionSetup exec:
+                execs) {
+
+            msgPositions[i] = exec.getMsgPos() - 1;
+            fixIds[i] = exec.getFixId();
+            i++;
+
+            userEntries.putAll(exec.getUE());
+
+        }
+        testQuickFixExecution(fixing, testPair.getExpected(), msgPositions, fixIds, userEntries);
+    }
+
+
+    private void testQuickFixExecution(Fixing fixing, ArrayList<TextSource> expected, int[] msgPositions, String[] fixIds, HashMap<String, Object> userEntries) throws SAXException, CancelException, IOException, XPathExpressionException, URISyntaxException, XSLTErrorListener, XMLStreamException {
+
+
+
+        ArrayList<TextSource> results = fixing.executeFix(msgPositions, fixIds, userEntries);
+
+        assertEquals(expected.size(), results.size());
 
         for (int j = 0; j < results.size(); j++) {
 
             TextSource act = results.get(j);
-            TextSource exp = testPair.getExpected().get(j);
+            TextSource exp = expected.get(j);
 
 
             act = new PositionalReplace(ignorePIsSheet, act).getSource();
+            exp = new PositionalReplace(ignorePIsSheet, exp).getSource();
 
             assertEquals(
                     exp.toString().replaceAll("\r\n", "\n"),
