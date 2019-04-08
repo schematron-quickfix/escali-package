@@ -86,11 +86,11 @@
         </xsl:for-each>
         <xsl:apply-templates/>
     </xsl:template>
-    
+
     <xsl:template match="sqf:user-entry/*"/>
-        
-    
-    
+
+
+
     <xsl:template match="key('fix-id', $id)/sqf:call-fix">
         <xsl:apply-templates select="es:getRefFix(@ref)" mode="sqf:xsm">
             <xsl:with-param name="params" select="sqf:with-param" tunnel="yes"/>
@@ -122,7 +122,7 @@
 
     <xsl:function name="es:getElementsInScope">
         <xsl:param name="context"/>
-        <xsl:sequence select="es:getElementsInScope($context, ('http://purl.oclc.org/dsdl/schematron', ''))"></xsl:sequence>
+        <xsl:sequence select="es:getElementsInScope($context, ('http://purl.oclc.org/dsdl/schematron', ''))"/>
     </xsl:function>
     <xsl:function name="es:getElementsInScope">
         <xsl:param name="context"/>
@@ -136,7 +136,7 @@
 
     <xsl:template match="sqf:fix" mode="sqf:xsm">
         <xsl:param name="location" tunnel="yes" as="xs:string"/>
-        
+
         <axsl:template match="{$location}">
             <xsl:apply-templates select="ancestor::es:pattern/es:meta/sch:let" mode="sqf:letpattern"/>
             <xsl:apply-templates select="preceding-sibling::sch:* | preceding-sibling::xsl:* | ./sch:* | ./xsl:*" mode="sqf:xsm"/>
@@ -146,7 +146,7 @@
             <axsl:next-match/>
         </axsl:template>
     </xsl:template>
-    
+
     <xsl:template match="sqf:param" mode="sqf:xsm">
         <xsl:param name="params" tunnel="yes"/>
         <xsl:variable name="name" select="@name"/>
@@ -157,21 +157,22 @@
             <xsl:sequence select="$withParam/@select"/>
         </axsl:param>
     </xsl:template>
-    
+
     <xsl:template match="@type" mode="sqf:xsm">
         <xsl:attribute name="as" select="."/>
     </xsl:template>
-    
+
     <xsl:template match="@default" mode="sqf:xsm">
         <xsl:attribute name="select" select="."/>
     </xsl:template>
-    
+
     <xsl:template match="sqf:replace | sqf:add | sqf:delete" mode="sqf:xsm" priority="50">
         <xsl:variable name="match" select="(@match, '.')[1]"/>
         <axsl:for-each select="{$match}">
             <xsl:element name="xsm:{local-name(.)}">
                 <xsl:copy-of select="namespace::*[name() != '']"/>
                 <axsl:attribute name="node" select="es:getNodePath(.)"/>
+
                 <xsl:next-match/>
             </xsl:element>
         </axsl:for-each>
@@ -250,13 +251,13 @@
         </axsl:for-each>
     </xsl:template>
 
-    <xsl:template match="node()|@*" mode="sqf:xsm">
+    <xsl:template match="node() | @*" mode="sqf:xsm">
         <xsl:copy copy-namespaces="no">
             <xsl:apply-templates select="@*" mode="#current"/>
             <xsl:apply-templates select="node()" mode="#current"/>
         </xsl:copy>
     </xsl:template>
-    
+
     <xsl:template match="xsl:*" mode="sqf:xsm">
         <xsl:copy>
             <xsl:apply-templates select="@*" mode="#current"/>

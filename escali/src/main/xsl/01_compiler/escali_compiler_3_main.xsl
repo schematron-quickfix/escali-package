@@ -174,6 +174,7 @@
                         </xsl:if>
                     </xsl:for-each>
                     <axsl:next-match/>
+
                 </svrl:schematron-output>
             </axsl:template>
             <xsl:apply-templates select="(node() | $phaseVariables) except $firsts"/>
@@ -318,7 +319,7 @@
                                 <xsl:attribute name="es:base-id" select="@id"/>
                             </xsl:if>
                             <xsl:call-template name="getRoleFlag"/>
-                            
+
                             <xsl:sequence select="es:fix-for-fired-rule(.)"/>
 
                         </svrl:fired-rule>
