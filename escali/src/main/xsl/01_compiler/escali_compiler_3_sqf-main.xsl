@@ -27,6 +27,14 @@
         <xsl:param name="rule" as="element(sch:rule)"/>
         <xsl:apply-templates select="$rule/(* except (sch:assert | sch:report))" mode="sqf:fix-for-fired-rule"/>
     </xsl:function>
+    
+    <xsl:function name="es:topLevelManipulatorExtension" as="node()*">
+        <xsl:param name="schema" as="element(sch:schema)"/>
+        <xsl:variable name="topLevelLets" select="
+            $schema/sch:let[not(@name = $phaseVariables/@name)] | $phaseVariables
+            "/>
+        <xsl:apply-templates select="$schema/xsl:* | $topLevelLets" mode="sqf:top-level-elements"/>
+    </xsl:function>
 
 
     <xsl:variable name="globalFixes" select="/*/sqf:fixes/sqf:fix"/>
@@ -78,34 +86,37 @@
     <xsl:template match="node() | @*" mode="sqf:fix-for-fired-rule-add-first-child sqf:fix-for-fired-rule-add-last-child"/>
 
 
-    <xsl:template match="@*[matches(., '[{}]')]" mode="sqf:fix-for-fired-rule">
-        <xsl:attribute name="{name()}">
-            <xsl:analyze-string select="." regex="[{{}}]">
-                <xsl:matching-substring>
-                    <xsl:sequence select="concat(., .)"/>
-                </xsl:matching-substring>
-                <xsl:non-matching-substring>
-                    <xsl:sequence select="."/>
-                </xsl:non-matching-substring>
-            </xsl:analyze-string>
-        </xsl:attribute>
+    <xsl:template match="@*[matches(., '[{}]')]" mode="sqf:fix-for-fired-rule sqf:top-level-elements">
+        <axsl:attribute name="{name()}">
+            <xsl:value-of select="."/>
+        </axsl:attribute>
     </xsl:template>
     
-    <xsl:template match="sch:*" mode="sqf:fix-for-fired-rule" priority="100">
+    <xsl:template match="sch:*" mode="sqf:fix-for-fired-rule sqf:top-level-elements" priority="100">
         <xsl:copy>
             <xsl:apply-templates select="@*" mode="#current"/>
             <xsl:apply-templates select="node()" mode="#current"/>
         </xsl:copy>
     </xsl:template>
 
-    <xsl:template match="xsl:*" mode="sqf:fix-for-fired-rule" priority="100">
+    <xsl:template match="xsl:*" mode="sqf:fix-for-fired-rule sqf:top-level-elements" priority="100">
         <axsl:element name="{name()}">
             <xsl:apply-templates select="@*" mode="#current"/>
             <xsl:apply-templates select="node()" mode="#current"/>
         </axsl:element>
     </xsl:template>
-    <xsl:template match="xsl:*/@*" mode="sqf:fix-for-fired-rule" priority="100">
+    <xsl:template match="xsl:*/@*" mode="sqf:fix-for-fired-rule sqf:top-level-elements" priority="100">
         <axsl:attribute name="{name()}"><xsl:value-of select="."/></axsl:attribute>
+    </xsl:template>
+    
+    <!-- 
+        copies all nodes:
+    -->
+    <xsl:template match="node() | @*" mode="sqf:top-level-elements">
+        <xsl:copy>
+            <xsl:apply-templates select="@*" mode="#current"/>
+            <xsl:apply-templates select="node()" mode="#current"/>
+        </xsl:copy>
     </xsl:template>
     
     
