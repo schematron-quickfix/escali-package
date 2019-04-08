@@ -58,6 +58,9 @@
             <axsl:include href="{resolve-uri('../01_compiler/escali_compiler_0_functions.xsl')}"/>
 
             <xsl:apply-templates select="es:meta/(xsl:* | sch:*)" mode="sqf:xsm"/>
+
+            <xsl:apply-templates select="es:pattern/es:meta/sch:let" mode="sqf:xsm"/>
+
             <axsl:template match="/">
                 <xsm:manipulator document="{/es:escali-reports/es:meta/es:instance}">
                     <axsl:apply-templates/>
@@ -121,8 +124,9 @@
         <xsl:param name="location" tunnel="yes" as="xs:string"/>
         
         <axsl:template match="{$location}">
-            <xsl:apply-templates select="preceding-sibling::sch:*|preceding-sibling::xsl:*|./sch:* | ./xsl:*" mode="sqf:xsm"/>
-            
+            <xsl:apply-templates select="ancestor::es:pattern/es:meta/sch:let" mode="sqf:letpattern"/>
+            <xsl:apply-templates select="preceding-sibling::sch:* | preceding-sibling::xsl:* | ./sch:* | ./xsl:*" mode="sqf:xsm"/>
+
             <xsl:apply-templates select="sqf:param | sqf:delete | sqf:add | sqf:replace | sqf:stringReplace" mode="#current"/>
         </axsl:template>
     </xsl:template>
@@ -241,6 +245,26 @@
             <xsl:apply-templates select="@*" mode="#current"/>
             <xsl:apply-templates select="node()" mode="#current"/>
         </xsl:copy>
+    </xsl:template>
+
+    <xsl:variable name="pattern-namespaces" as="node()*">
+        <xsl:for-each select="/es:escali-reports/es:pattern/es:meta">
+            <xsl:namespace name="{@id}" select="concat('http://www.escali.schematron-quickfix.com/', @id)"/>
+        </xsl:for-each>
+    </xsl:variable>
+
+    <xsl:template match="es:pattern/es:meta/sch:let" mode="sqf:xsm">
+        <xsl:variable name="pid" select="../@id"/>
+        <axsl:variable name="{$pid}:{@name}" select="{@value}">
+            <xsl:sequence select="$pattern-namespaces[name() = $pid]"/>
+        </axsl:variable>
+    </xsl:template>
+
+    <xsl:template match="es:pattern/es:meta/sch:let" mode="sqf:letpattern">
+        <xsl:variable name="pid" select="../@id"/>
+        <axsl:variable name="{@name}" select="${$pid}:{@name}">
+            <xsl:sequence select="$pattern-namespaces[name() = $pid]"/>
+        </axsl:variable>
     </xsl:template>
 
     <xsl:template match="sch:let" mode="sqf:xsm">
