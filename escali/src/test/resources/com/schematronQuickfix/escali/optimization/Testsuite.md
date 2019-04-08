@@ -31,7 +31,23 @@
 - types
 - default
 - default sequence
-- namespace type
+
+## Foreign elements
+- sqf:description/\*/sch:value-of
+- {actionEl}/sch:value-of
+- sch:rule/sch:let
+- sqf:fix/sch:let
+- sqf:fix/{actionEl}/sch:let
+- xsl:varibale
+- xsl:for-each
+- global
+    - function usage
+    - variable usage
+    - template
+    - key
+- xsl:include/xsl:import
+- pattern sch:let usage
+- phase sch:let usage
 
 ## Call-fix
 - basic example
@@ -39,13 +55,6 @@
 - mix with action elements
 - with abstract description
 - with abstract parameter
-
-## Foreign elements
-- xsl:varibale
-- sch:value-of
-- sch:let
-- global function usage
-- global variable usage
 
 ## Mutlipe documents
 - doc() in match
@@ -59,6 +68,7 @@
     - text value templates
 
 ## Namespaces
+- namespace type
 - Namespace edge cases
 
 
