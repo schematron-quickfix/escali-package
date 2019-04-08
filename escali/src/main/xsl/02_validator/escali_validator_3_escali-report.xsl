@@ -18,7 +18,7 @@
     along with Escali Schematron.  If not, see http://www.gnu.org/licenses/gpl-3.0.
 
 -->
-<xsl:stylesheet xmlns="http://www.w3.org/1999/xhtml" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:es="http://www.escali.schematron-quickfix.com/" xmlns:sqf="http://www.schematron-quickfix.com/validator/process" xmlns:xd="http://www.oxygenxml.com/ns/doc/xsl" xmlns:svrl="http://purl.oclc.org/dsdl/svrl" exclude-result-prefixes="xs xd svrl es" version="2.0">
+<xsl:stylesheet xmlns="http://www.w3.org/1999/xhtml" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:sch="http://purl.oclc.org/dsdl/schematron" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:es="http://www.escali.schematron-quickfix.com/" xmlns:sqf="http://www.schematron-quickfix.com/validator/process" xmlns:xd="http://www.oxygenxml.com/ns/doc/xsl" xmlns:svrl="http://purl.oclc.org/dsdl/svrl" exclude-result-prefixes="xs xd svrl es" version="2.0">
     <xsl:import href="../01_compiler/escali_compiler_0_getSchemaInfo.xsl"/>
 
     <xd:doc scope="stylesheet">
@@ -119,7 +119,9 @@
                 </xsl:for-each>
                 <xsl:apply-templates select="
                         svrl:ns-prefix-in-attribute-values,
-                        svrl:text[@es:ref = '']"/>
+                        svrl:text[@es:ref = ''],
+                        (sch:* | xsl:*)
+                        "/>
             </es:meta>
             <xsl:for-each-group select="svrl:* except (svrl:text | svrl:ns-prefix-in-attribute-values)" group-starting-with="svrl:active-pattern">
                 <xsl:variable name="id" select="@es:id"/>
@@ -130,6 +132,7 @@
                                 <xsl:apply-templates select="@* except @name"/>
                                 <xsl:apply-templates select="@name"/>
                                 <xsl:apply-templates select="key('paraByRefid', $id)"/>
+                                <xsl:apply-templates select="./node()"/>
                             </es:meta>
                             <xsl:variable name="rules" as="element(es:rule)*">
                                 <xsl:for-each-group select="current-group() except ." group-starting-with="svrl:fired-rule">
@@ -213,7 +216,14 @@
             <xsl:apply-templates select="node()"/>
         </xsl:element>
     </xsl:template>
-
+    
+    <xsl:template match="xsl:* | sch:* | xsl:*//node()" priority="10">
+        <xsl:copy>
+            <xsl:apply-templates select="@*"/>
+            <xsl:apply-templates select="node()"/>
+        </xsl:copy>
+    </xsl:template>
+    
     <xsl:template match="@es:*">
         <xsl:attribute name="{local-name()}" select="."/>
     </xsl:template>

@@ -125,6 +125,10 @@
 
             <axsl:variable name="es:base-uri-root" select="es:base-uri(/)"/>
 
+
+            <xsl:sequence select="sch:pattern/es:createPatternVariables(., true())"/>
+            
+
             <axsl:template match="/" priority="10000000">
                 <axsl:processing-instruction name="es_compact-svrl" select="'{$es:compact-svrl}'"/>
                 <svrl:schematron-output xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:sch="http://purl.oclc.org/dsdl/schematron" xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
@@ -165,6 +169,7 @@
                                 <xsl:attribute name="es:phases" select="
                                         distinct-values((/sch:schema/sch:phase[es:isActive($pattern, @id)]/@id,
                                         ('#ALL')[es:isActive($pattern, .)]))" separator=" "/>
+                                <xsl:sequence select="sch:let"/>
                             </svrl:active-pattern>
                         </xsl:if>
                     </xsl:for-each>
@@ -212,8 +217,8 @@
     </xsl:template>
 
 
-    <xsl:template match="sch:title | sch:phase"/>
-
+    <xsl:template match="sch:title | sch:phase | sch:pattern/sch:let"/>
+    
     <xsl:template match="sch:schema/sch:let[@name = $phaseVariables/@name]"/>
 
 
@@ -287,6 +292,8 @@
             <xsl:attribute name="priority" select="es:getPriority(.) + 10"/>
             <xsl:call-template name="namespace"/>
             <axsl:param name="precId" select="()" as="xs:string*"/>
+
+            <xsl:sequence select="es:createPatternVariables(parent::sch:pattern, false())"/>
 
             <axsl:variable name="es:base-uri" select="
                     es:base-uri(if (. instance of element() or . instance of document-node()) then
@@ -531,5 +538,31 @@
             <xsl:apply-templates/>
         </xsl:copy>
     </xsl:template>
+
+    <xsl:function name="es:createPatternVariables" as="node()*">
+        <xsl:param name="pattern" as="element(sch:pattern)"/>
+        <xsl:param name="isCaller" as="xs:boolean"/>
+        <xsl:variable name="lets" select="$pattern/sch:let"/>
+        <xsl:variable name="id" select="$pattern/@es:id"/>
+        <xsl:variable name="namespace" as="node()">
+            <xsl:namespace name="{$id}" select="concat('http://www.escali.schematron-quickfix.com/', $id)"/>
+        </xsl:variable>
+        <xsl:for-each select="$lets">
+            <axsl:variable>
+                <xsl:sequence select="$namespace"/>
+                <xsl:choose>
+                    <xsl:when test="$isCaller">
+                        <xsl:attribute name="name" select="concat($id, ':', @name)"/>
+                        <xsl:attribute name="select" select="@value"/>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:attribute name="name" select="@name"/>
+                        <xsl:attribute name="select" select="concat('$', $id, ':', @name)"/>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </axsl:variable>
+        </xsl:for-each>
+
+    </xsl:function>
 
 </xsl:stylesheet>
