@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="../input/foreign-pattern-let.sch" type="application/xml" schematypens="http://purl.oclc.org/dsdl/schematron"?>
+<root>
+    <foo id="foo1">
+        <bar id="bar1"/>
+    </foo>
+    <foo id="f2">
+        <bar id="b2"/>
+    </foo>
+</root>

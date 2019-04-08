@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="../input/foreign-global.sch" type="application/xml" schematypens="http://purl.oclc.org/dsdl/schematron"?>
+<root>
+    <foo id="foo1">
+        <bar barId="foo1_1" generic="false"/><bar barId="foo1_2" generic="false"/><bar barId="foo1_3" generic="false"/><bar barId="foo1_4" generic="false"/>
+    </foo>
+    <foo>
+        <bar/>
+    </foo>
+</root>
