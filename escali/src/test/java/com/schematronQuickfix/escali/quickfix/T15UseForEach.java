@@ -11,12 +11,12 @@ public class T15UseForEach extends FixingTestBase {
 
 	@Test
 	public void test_1_lang_xml_lang_foreach_1(){
-		doTest(new ExecutionSetup(1, "lang_xml_lang_foreach_1"));
+		doTest(new ExecutionSetup(1, "lang_xml_lang_foreach#1"));
 	}
 
 	@Test
 	public void test_1_lang_xml_lang_foreach_2(){
-		doTest(new ExecutionSetup(1, "lang_xml_lang_foreach_2"));
+		doTest(new ExecutionSetup(1, "lang_xml_lang_foreach#2"));
 	}
 
 }

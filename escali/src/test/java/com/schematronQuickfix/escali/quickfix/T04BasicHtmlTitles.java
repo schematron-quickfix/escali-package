@@ -24,7 +24,7 @@ public class T04BasicHtmlTitles extends FixingTestBase {
 
 	@Test
 	public void test_2_setTitle_1(){
-		doTest(new ExecutionSetup(2, "setTitle_1"));
+		doTest(new ExecutionSetup(2, "setTitle#1"));
 	}
 
 	@Test
@@ -42,7 +42,7 @@ public class T04BasicHtmlTitles extends FixingTestBase {
 
 	@Test
 	public void test_2_setTitle_3(){
-		doTest(new ExecutionSetup(2, "setTitle_3"));
+		doTest(new ExecutionSetup(2, "setTitle#3"));
 	}
 
 }
