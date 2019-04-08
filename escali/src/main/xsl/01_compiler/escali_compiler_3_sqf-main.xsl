@@ -27,12 +27,12 @@
         <xsl:param name="rule" as="element(sch:rule)"/>
         <xsl:apply-templates select="$rule/(* except (sch:assert | sch:report))" mode="sqf:fix-for-fired-rule"/>
     </xsl:function>
-    
+
     <xsl:function name="es:topLevelManipulatorExtension" as="node()*">
         <xsl:param name="schema" as="element(sch:schema)"/>
         <xsl:variable name="topLevelLets" select="
-            $schema/sch:let[not(@name = $phaseVariables/@name)] | $phaseVariables
-            "/>
+                $schema/sch:let[not(@name = $phaseVariables/@name)] | $phaseVariables
+                "/>
         <xsl:apply-templates select="$schema/xsl:* | $topLevelLets" mode="sqf:top-level-elements"/>
     </xsl:function>
 
@@ -113,9 +113,11 @@
         </axsl:element>
     </xsl:template>
     <xsl:template match="xsl:*/@*" mode="sqf:fix-for-fired-rule sqf:top-level-elements" priority="100">
-        <axsl:attribute name="{name()}"><xsl:value-of select="."/></axsl:attribute>
+        <axsl:attribute name="{name()}">
+            <xsl:value-of select="."/>
+        </axsl:attribute>
     </xsl:template>
-    
+
     <!-- 
         copies all nodes:
     -->
@@ -126,9 +128,9 @@
             <xsl:apply-templates select="node()" mode="#current"/>
         </xsl:copy>
     </xsl:template>
-    
-    
-    
+
+
+
     <!-- 
         copies all nodes:
     -->
