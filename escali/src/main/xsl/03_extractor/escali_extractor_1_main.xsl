@@ -154,18 +154,18 @@
         <xsl:param name="params" tunnel="yes"/>
         <xsl:variable name="name" select="@name"/>
         <xsl:variable name="withParam" select="$params[@name = $name]"/>
-        <axsl:param name="{@name}">
+        <axsl:variable name="{@name}">
             <xsl:apply-templates select="@*" mode="#current"/>
             <xsl:sequence select="namespace::*"/>
             <xsl:sequence select="$withParam/@select"/>
-        </axsl:param>
+        </axsl:variable>
     </xsl:template>
 
-    <xsl:template match="@type" mode="sqf:xsm">
+    <xsl:template match="sqf:*/@type" mode="sqf:xsm">
         <xsl:attribute name="as" select="."/>
     </xsl:template>
 
-    <xsl:template match="@default" mode="sqf:xsm">
+    <xsl:template match="sqf:*/@default" mode="sqf:xsm">
         <xsl:attribute name="select" select="."/>
     </xsl:template>
 
