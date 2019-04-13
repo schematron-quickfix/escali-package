@@ -47,15 +47,6 @@
 
     <xsl:variable name="rule.id.separator" select="'.'"/>
 
-    <!--    <!-\-  
-    marks as an user-entry-parameter
-    -\->
-    <xsl:template match="sqf:fix/sqf:param[@name=parent::sqf:fix/sqf:user-entry/@ref]" mode="#all">
-        <xsl:copy>
-            <xsl:attribute name="user-entry">yes</xsl:attribute>
-            <xsl:apply-templates select="node() | @*" mode="#current"/>
-        </xsl:copy>
-    </xsl:template>-->
     <xsl:key name="ruleByExtendedRule" match="sch:rule" use="./sch:extends/@rule"/>
 
     <xsl:function name="sqf:createAbstractFixId" as="xs:string">
