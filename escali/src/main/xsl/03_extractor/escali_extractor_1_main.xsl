@@ -97,6 +97,14 @@
         </xsl:apply-templates>
     </xsl:template>
 
+    <xsl:template match="sqf:call-fix" mode="sqf:xsm">
+        <axsl:for-each select=".">
+            <xsl:apply-templates select="es:getRefFix(@ref)/(sqf:param | sqf:delete | sqf:add | sqf:replace | sqf:stringReplace | sqf:call-fix)" mode="sqf:xsm">
+                <xsl:with-param name="params" select="sqf:with-param" tunnel="yes"/>
+            </xsl:apply-templates>
+        </axsl:for-each>
+    </xsl:template>
+
     <xsl:template match="sqf:fix"/>
 
     <xsl:function name="es:getRefFix" as="element(sqf:fix)?">
@@ -144,7 +152,7 @@
             
             <xsl:apply-templates select="$precedingForeigns | ./sch:* | ./xsl:*" mode="sqf:xsm"/>
 
-            <xsl:apply-templates select="sqf:param | sqf:delete | sqf:add | sqf:replace | sqf:stringReplace" mode="#current"/>
+            <xsl:apply-templates select="sqf:param | sqf:delete | sqf:add | sqf:replace | sqf:stringReplace | sqf:call-fix" mode="#current"/>
 
             <axsl:next-match/>
         </axsl:template>
