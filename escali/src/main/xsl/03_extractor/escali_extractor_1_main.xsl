@@ -110,7 +110,7 @@
     <xsl:function name="es:getRefFix" as="element(sqf:fix)?">
         <xsl:param name="ref" as="attribute()"/>
         <xsl:variable name="root" select="root($ref)"/>
-        <xsl:variable name="allqfs" select="$root/key('fix-id', $ref)"/>
+        <xsl:variable name="allqfs" select="$root/key('fix-id', $ref) except $ref/ancestor::sqf:fix"/>
         <xsl:sequence select="es:scopeOfFixes($ref, $allqfs)"/>
     </xsl:function>
 
