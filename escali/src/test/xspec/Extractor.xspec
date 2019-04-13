@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<x:description xmlns:x="http://www.jenitennison.com/xslt/xspec" xmlns:es="http://www.escali.schematron-quickfix.com/" xmlns:sqf="http://www.schematron-quickfix.com/validator/process" stylesheet="../../main/xsl/03_extractor/escali_extractor_1_main.xsl">
+
+    <x:param name="es:library" select="/*">
+        <es:rule xml:id="r1">
+            <es:meta>
+                <sqf:fix id="addChilds" xml:id="r1.f1">
+                    <sqf:add match="." position="last-child" node-type="element" target="foo"/>
+                </sqf:fix>
+            </es:meta>
+            <es:assert>
+                <sqf:fix fixId="addChilds" title="Add child bar to root" id="addChilds_w41aab1_w20aab3b1b1" xml:id="r1.f2">
+                    <sqf:call-fix ref="addChilds"/>
+                </sqf:fix>
+            </es:assert>
+        </es:rule>
+        <es:rule xml:id="r2">
+            <es:meta>
+                <sqf:fix id="addChilds" xml:id="r2.f1">
+                    <sqf:call-fix ref="fix2"/>
+                </sqf:fix>
+                <sqf:fix id="fix2" xml:id="r2.f2">
+                    <sqf:add match="." position="last-child" node-type="element" target="foo"/>
+                </sqf:fix>
+            </es:meta>
+            <es:assert>
+                <sqf:fix fixId="addChilds" title="Add child bar to root" id="addChilds_w41aab1_w20aab3b1b1" xml:id="r2.f3">
+                    <sqf:call-fix ref="addChilds"/>
+                </sqf:fix>
+            </es:assert>
+        </es:rule>
+        <es:escali-reports xml:id="g1">
+            <es:meta>
+                <sqf:fix id="global" xml:id="g1.f1">
+                    <sqf:add match="." position="last-child" node-type="element" target="foo"/>
+                </sqf:fix>
+            </es:meta>
+            <es:pattern>
+                <es:rule xml:id="g1.r1">
+                    <es:meta>
+                        <sqf:fix id="rule" xml:id="g1.r1.f1">
+                            <sqf:call-fix ref="global"/>
+                        </sqf:fix>
+                    </es:meta>
+                    <es:assert>
+                        <sqf:fix xml:id="g1.r1.f2">
+                            <sqf:call-fix ref="rule"/>
+                        </sqf:fix>
+                    </es:assert>
+                </es:rule>
+            </es:pattern>
+        </es:escali-reports>
+        <es:escali-reports xml:id="g2">
+            <es:meta>
+                <sqf:fix id="gen-fix" xml:id="g2.f1">
+                    <sqf:add match="." position="last-child" node-type="element" target="foo"/>
+                </sqf:fix>
+            </es:meta>
+            <es:pattern>
+                <es:rule xml:id="g2.r1">
+                    <es:meta>
+                        <sqf:fix id="gen-fix" xml:id="g2.r1.f1">
+                            <sqf:call-fix ref="gen-fix"/>
+                        </sqf:fix>
+                    </es:meta>
+                    <es:assert>
+                        <sqf:fix xml:id="g2.r1.f2">
+                            <sqf:call-fix ref="gen-fix"/>
+                        </sqf:fix>
+                    </es:assert>
+                </es:rule>
+            </es:pattern>
+        </es:escali-reports>
+    </x:param>
+
+    <x:scenario label="Test function es:getRefFix">
+        <x:call function="es:getRefFix"/>
+        <x:scenario label="trivial">
+            <x:call>
+                <x:param name="ref" select="$es:library/id('r1.f2')/sqf:call-fix/@ref"/>
+            </x:call>
+            <x:expect label="test fix id" test="$x:result/@id/string(.)" select="'addChilds'"/>
+            <x:expect label="test xml id" test="$x:result/@xml:id/string(.)" select="'r1.f1'"/>
+        </x:scenario>
+        <x:scenario label="pending references">
+            <x:scenario label="assert to rule ref">
+                <x:call>
+                    <x:param name="ref" select="$es:library/id('r2.f1')/sqf:call-fix[1]/@ref"/>
+                </x:call>
+                <x:expect label="test fix id" test="$x:result/@id/string(.)" select="'fix2'"/>
+                <x:expect label="test xml id" test="$x:result/@xml:id/string(.)" select="'r2.f2'"/>
+            </x:scenario>
+            <x:scenario label="rule to rule ref">
+                <x:call>
+                    <x:param name="ref" select="$es:library/id('r2.f3')/sqf:call-fix[1]/@ref"/>
+                </x:call>
+                <x:expect label="test fix id" test="$x:result/@id/string(.)" select="'addChilds'"/>
+                <x:expect label="test xml id" test="$x:result/@xml:id/string(.)" select="'r2.f1'"/>
+            </x:scenario>
+            <x:scenario label="assert to rule ref (in global context)">
+                <x:call>
+                    <x:param name="ref" select="$es:library/id('g1.r1.f2')/sqf:call-fix[1]/@ref"/>
+                </x:call>
+                <x:expect label="test fix id" test="$x:result/@id/string(.)" select="'rule'"/>
+                <x:expect label="test xml id" test="$x:result/@xml:id/string(.)" select="'g1.r1.f1'"/>
+            </x:scenario>
+            <x:scenario label="rule to global ref">
+                <x:call>
+                    <x:param name="ref" select="$es:library/id('g1.r1.f1')/sqf:call-fix[1]/@ref"/>
+                </x:call>
+                <x:expect label="test fix id" test="$x:result/@id/string(.)" select="'global'"/>
+                <x:expect label="test xml id" test="$x:result/@xml:id/string(.)" select="'g1.f1'"/>
+            </x:scenario>
+        </x:scenario>
+        
+        <x:scenario label="Local overwrites global">
+            <x:scenario label="assert to rule ref (overwriting)">
+                <x:call>
+                    <x:param name="ref" select="$es:library/id('g2.r1.f2')/sqf:call-fix[1]/@ref"/>
+                </x:call>
+                <x:expect label="test fix id" test="$x:result/@id/string(.)" select="'gen-fix'"/>
+                <x:expect label="test xml id" test="$x:result/@xml:id/string(.)" select="'g2.r1.f1'"/>
+            </x:scenario>
+            <x:scenario label="rule to global ref (overwriting)">
+                <x:call>
+                    <x:param name="ref" select="$es:library/id('g2.r1.f1')/sqf:call-fix[1]/@ref"/>
+                </x:call>
+                <x:expect label="test fix id" test="$x:result/@id/string(.)" select="'gen-fix'"/>
+                <x:expect label="test xml id" test="$x:result/@xml:id/string(.)" select="'g2.f1'"/>
+            </x:scenario>
+        </x:scenario>
+    </x:scenario>
+    
+</x:description>
