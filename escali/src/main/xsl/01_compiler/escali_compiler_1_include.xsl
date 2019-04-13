@@ -215,41 +215,22 @@
             </xsl:apply-templates>
         </xsl:copy>
     </xsl:template>
+    
     <!--  
         generates ids to refer the schematron elements
     -->
-    <xsl:template match="sch:pattern | sch:rule | sch:assert | sch:report">
-        <xsl:param name="es:xml-base" tunnel="yes" select="es:base-uri(.)"/>
-        <xsl:copy copy-namespaces="no">
-            <xsl:call-template name="namespace"/>
-            <xsl:apply-templates select="ancestor::*/(@role | @flag | @icon | @see | @xml:lang)"/>
-            <xsl:call-template name="es:baseUri">
-                <xsl:with-param name="es:xml-base" select="$es:xml-base"/>
-            </xsl:call-template>
-            <xsl:attribute name="es:id" select="generate-id()"/>
-            <xsl:apply-templates select="node() | @*">
-                <xsl:with-param name="es:xml-base" select="es:base-uri(.)" tunnel="yes"/>
-            </xsl:apply-templates>
-        </xsl:copy>
+    <xsl:template match="sch:pattern | sch:rule | sch:assert | sch:report" mode="es:addFirstChild">
+        <xsl:apply-templates select="ancestor::*/(@role | @flag | @icon | @see | @xml:lang)"/>
+        <xsl:attribute name="es:id" select="generate-id()"/>
+        <xsl:next-match/>
     </xsl:template>
-
+    
     <!--  
         generates ids to refer the schematron elements
     -->
-    <xsl:template match="sch:pattern[@es:matchType = 'priority']/sch:rule[not(@es:priority)]" priority="10">
-        <xsl:param name="es:xml-base" tunnel="yes" select="es:base-uri(.)"/>
-        <xsl:copy copy-namespaces="no">
-            <xsl:call-template name="namespace"/>
-            <xsl:apply-templates select="ancestor::*/(@role | @flag | @icon | @see | @xml:lang)"/>
-            <xsl:call-template name="es:baseUri">
-                <xsl:with-param name="es:xml-base" select="$es:xml-base"/>
-            </xsl:call-template>
-            <xsl:attribute name="es:id" select="generate-id()"/>
-            <xsl:attribute name="es:priority" select="0"/>
-            <xsl:apply-templates select="node() | @*">
-                <xsl:with-param name="es:xml-base" select="es:base-uri(.)" tunnel="yes"/>
-            </xsl:apply-templates>
-        </xsl:copy>
+    <xsl:template match="sch:pattern[@es:matchType = 'priority']/sch:rule[not(@es:priority)]" mode="es:addFirstChild" priority="10">
+        <xsl:next-match/>
+        <xsl:attribute name="es:priority" select="0"/>
     </xsl:template>
 
     <!--  
@@ -368,11 +349,15 @@
     <xsl:template match="sch:p/@class">
         <xsl:attribute name="es:class" select="."/>
     </xsl:template>
-
+    
+    <xsl:template match="node()" mode="es:addFirstChild es:addLastChild"/>
+        
+    
+    
     <!-- 
         copies all nodes:
     -->
-    <xsl:template match="node() | @*" mode="#all">
+    <xsl:template match="node() | @*" mode="#all" priority="-1">
         <xsl:param name="es:xml-base" tunnel="yes" select="es:base-uri(.)"/>
         <xsl:copy copy-namespaces="no">
             <xsl:call-template name="namespace"/>
@@ -380,9 +365,11 @@
                 <xsl:with-param name="es:xml-base" select="$es:xml-base"/>
             </xsl:call-template>
             <xsl:apply-templates select="@*" mode="#current"/>
+            <xsl:apply-templates select="." mode="es:addFirstChild"/>
             <xsl:apply-templates select="node()" mode="#current">
                 <xsl:with-param name="es:xml-base" select="es:base-uri(.)" tunnel="yes"/>
             </xsl:apply-templates>
+            <xsl:apply-templates select="." mode="es:addLastChild"/>
         </xsl:copy>
     </xsl:template>
 
