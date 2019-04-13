@@ -120,7 +120,8 @@
                 <xsl:apply-templates select="
                         svrl:ns-prefix-in-attribute-values,
                         svrl:text[@es:ref = ''],
-                        (sch:* | xsl:*)
+                        (sch:* | xsl:*),
+                        sqf:fix
                         "/>
             </es:meta>
             <xsl:for-each-group select="svrl:* except (svrl:text | svrl:ns-prefix-in-attribute-values)" group-starting-with="svrl:active-pattern">
