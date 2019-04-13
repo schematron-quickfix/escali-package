@@ -33,7 +33,7 @@
         <xsl:variable name="topLevelLets" select="
                 $schema/sch:let[not(@name = $phaseVariables/@name)] | $phaseVariables
                 "/>
-        <xsl:apply-templates select="$schema/xsl:* | $topLevelLets" mode="sqf:top-level-elements"/>
+        <xsl:apply-templates select="$schema/xsl:* | $topLevelLets | $schema/sqf:fixes/(.|sqf:group)/sqf:fix" mode="sqf:top-level-elements"/>
     </xsl:function>
 
 
@@ -69,7 +69,7 @@
         </xsl:if>
     </xsl:function>
 
-    <xsl:template match="sqf:fix/sqf:description" mode="sqf:fix-for-fired-rule"/>
+    <xsl:template match="sqf:fix/sqf:description" mode="sqf:fix-for-fired-rule sqf:top-level-elements" priority="10"/>
 
     <xsl:template match="sqf:user-entry" mode="sqf:fix-for-fired-rule">
         <sqf:param>
@@ -84,6 +84,8 @@
     </xsl:template>
 
     <xsl:template match="node() | @*" mode="sqf:fix-for-fired-rule-add-first-child sqf:fix-for-fired-rule-add-last-child"/>
+    
+    <xsl:template match="node() | @*" mode="sqf:top-level-elements-add-first-child"/>
 
 
     <xsl:template match="@*[matches(., '[{}]')]" mode="sqf:fix-for-fired-rule sqf:top-level-elements"/>
@@ -117,7 +119,14 @@
             <xsl:value-of select="."/>
         </axsl:attribute>
     </xsl:template>
-
+    <xsl:template match="sqf:fixes//sqf:fix | sqf:fixes//sqf:fix//*" mode="sqf:top-level-elements">
+        <xsl:copy>
+            <xsl:apply-templates select="@*" mode="#current"/>
+            <xsl:apply-templates select="." mode="sqf:top-level-elements-add-first-child"/>
+            <xsl:apply-templates select="node()" mode="#current"/>
+        </xsl:copy>
+    </xsl:template>
+    
     <!-- 
         copies all nodes:
     -->
