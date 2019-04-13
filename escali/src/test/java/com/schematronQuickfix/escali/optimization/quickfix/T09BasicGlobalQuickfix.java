@@ -41,5 +41,11 @@ public class T09BasicGlobalQuickfix extends FixingTestBase {
 		doTest(new ExecutionSetup(1, "deleteFoo"));
 		
 	}
+
+	@Test
+	public void test_2(){
+		doTest(new ExecutionSetup(1, "replaceFoo"));
+
+	}
 	
 }
