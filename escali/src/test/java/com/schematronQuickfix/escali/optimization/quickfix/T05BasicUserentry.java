@@ -44,5 +44,13 @@ public class T05BasicUserentry extends FixingTestBase {
 		);
 		
 	}
+
+	@Test
+	public void test2(){
+		doTest(new ExecutionSetup(1, "global_addBar")
+				.addUE("element", "USERENTRY_element")
+		);
+
+	}
 	
 }

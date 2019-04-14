@@ -4,7 +4,7 @@
     <sch:title>Schematron unit test - basic userentry</sch:title>
     <sch:pattern id="pattern1">
         <sch:rule context="foo">
-            <sch:report test=". = ''" sqf:fix="addBar">Foo should not be empty.</sch:report>
+            <sch:report test=". = ''" sqf:fix="addBar global_addBar">Foo should not be empty.</sch:report>
             <sqf:fix id="addBar">
                 <sqf:description>
                     <sqf:title>Add bar element with content.</sqf:title>
@@ -18,4 +18,18 @@
             </sqf:fix>
         </sch:rule>
     </sch:pattern>
+    
+    <sqf:fixes>
+        <sqf:fix id="global_addBar">
+            <sqf:description>
+                <sqf:title>Add bar element with content.</sqf:title>
+            </sqf:description>
+            <sqf:user-entry name="element" type="xs:string">
+                <sqf:description>
+                    <sqf:title>Enter content for new bar element</sqf:title>
+                </sqf:description>
+            </sqf:user-entry>
+            <sqf:add node-type="element" target="bar" select="$element"/>
+        </sqf:fix>
+    </sqf:fixes>
 </sch:schema>
