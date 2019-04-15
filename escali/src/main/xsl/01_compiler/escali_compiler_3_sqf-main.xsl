@@ -225,11 +225,16 @@
     <xsl:template match="sqf:user-entry" mode="sqf:fix-for-tests">
         <sqf:user-entry name="{@name}_{{$sqf:id}}" ueName="{@name}">
             <xsl:sequence select="@type"/>
-            <xsl:perform-sort>
-                <xsl:sort select="(index-of(('attribute'), local-name()), 99)[1]"/>
+            
+            <axsl:variable name="sqf:user-entry-childs" as="node()*">
                 <xsl:apply-templates select="@default" mode="#current"/>
                 <xsl:apply-templates select="sqf:description" mode="#current"/>
-            </xsl:perform-sort>
+            </axsl:variable>
+            <axsl:variable name="sqf:user-entry-attributes" select="$sqf:user-entry-childs[. instance of attribute()]"/>
+            
+            <axsl:sequence select="$sqf:user-entry-attributes"/>
+            <axsl:sequence select="$sqf:user-entry-childs except $sqf:user-entry-attributes"/>
+            
         </sqf:user-entry>
     </xsl:template>
 
@@ -252,18 +257,36 @@
     </xsl:template>
 
     <xsl:template match="sqf:description" mode="sqf:fix-for-tests">
-        <xsl:choose>
-            <xsl:when test="es:isDescriptionSimple(.)">
-                <axsl:attribute name="title">
-                    <xsl:apply-templates select="sqf:title/node()"/>
-                </axsl:attribute>
-            </xsl:when>
-            <xsl:otherwise>
-                <sqf:description>
-                    <xsl:apply-templates/>
-                </sqf:description>
-            </xsl:otherwise>
-        </xsl:choose>
+        <xsl:variable name="description" as="element(sqf:description)">
+            <sqf:description>
+                <xsl:apply-templates/>
+            </sqf:description>
+        </xsl:variable>
+        <axsl:variable name="sqf:description" as="node()">
+            <xsl:choose>
+                <xsl:when test="es:isDescriptionSimple($description)">
+                    <xsl:sequence select="$description/(* except sqf:title)"/>
+                    <axsl:attribute name="title">
+                        <xsl:sequence select="$description/sqf:title/node()"/>
+                    </axsl:attribute>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:sequence select="$description"/>
+                </xsl:otherwise>
+            </xsl:choose>
+        </axsl:variable>
+        <axsl:sequence select="$sqf:description"/>
+    </xsl:template>
+
+    <xsl:template match="sqf:description/sqf:with-param | sqf:description/sqf:param">
+        <axsl:variable name="{@name}">
+            <xsl:apply-templates select="@*"/>
+            <xsl:apply-templates select="node()"/>
+        </axsl:variable>
+    </xsl:template>
+
+    <xsl:template match="sqf:description/sqf:param/@default">
+        <xsl:attribute name="select" select="."/>
     </xsl:template>
 
     <xsl:template match="sqf:fix"/>
@@ -290,7 +313,7 @@
 
     <xsl:function name="es:isDescriptionSimple" as="xs:boolean">
         <xsl:param name="description" as="element(sqf:description)"/>
-        <xsl:sequence select="not($description/(* except sqf:title[1]))"/>
+        <xsl:sequence select="not($description/(sqf:* except sqf:title[1]))"/>
     </xsl:function>
 
     <xsl:function name="es:getDescription" as="element(sqf:description)">
