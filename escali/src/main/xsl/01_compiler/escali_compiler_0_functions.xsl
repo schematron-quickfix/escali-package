@@ -18,7 +18,7 @@
     along with Escali Schematron.  If not, see http://www.gnu.org/licenses/gpl-3.0.
 
     -->
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:es="http://www.escali.schematron-quickfix.com/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xd="http://www.oxygenxml.com/ns/doc/xsl" xmlns:xsm="http://www.schematron-quickfix.com/manipulator/process" xmlns:sch="http://purl.oclc.org/dsdl/schematron" exclude-result-prefixes="xs xd sch xsm" version="2.0">
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:es="http://www.escali.schematron-quickfix.com/" xmlns:sqf="http://www.schematron-quickfix.com/validator/process" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xd="http://www.oxygenxml.com/ns/doc/xsl" xmlns:xsm="http://www.schematron-quickfix.com/manipulator/process" xmlns:sch="http://purl.oclc.org/dsdl/schematron" exclude-result-prefixes="xs xd sch xsm" version="2.0">
 
     <xd:doc scope="stylesheet">
         <xd:desc>
@@ -411,6 +411,29 @@
                     "/>
             </xsl:otherwise>
         </xsl:choose>
+    </xsl:function>
+    
+    <xsl:key name="fix-id" match="sqf:fix" use="@id"/>
+    
+    <xsl:function name="es:getRefFix" as="element(sqf:fix)?">
+        <xsl:param name="ref" as="attribute()"/>
+        <xsl:variable name="root" select="root($ref)"/>
+        <xsl:variable name="allqfs" select="$root/key('fix-id', $ref) except $ref/ancestor::sqf:fix"/>
+        <xsl:sequence select="es:scopeOfFixes($ref, $allqfs)"/>
+    </xsl:function>
+    
+    <xsl:function name="es:scopeOfFixes" as="element()?">
+        <xsl:param name="context" as="node()"/>
+        <xsl:param name="fixes" as="element()*"/>
+        <xsl:variable name="contextFixes" select="$context//* intersect $fixes"/>
+        <xsl:sequence select="
+            if ($contextFixes) then
+            ($contextFixes[last()])
+            else if($context/parent::*) 
+            then
+            es:scopeOfFixes($context/parent::*, $fixes)
+            else 
+            ()"/>
     </xsl:function>
 
 </xsl:stylesheet>

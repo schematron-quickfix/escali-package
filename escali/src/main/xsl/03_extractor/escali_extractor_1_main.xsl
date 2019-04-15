@@ -49,7 +49,7 @@
     <xsl:param name="markChanges" as="xs:boolean" select="true()"/>
     <xsl:param name="missing-fixes-handle" select="2" as="xs:integer"/>
 
-    <xsl:key name="fix-id" match="sqf:fix" use="@id"/>
+    
 
     <xsl:include href="../01_compiler/escali_compiler_0_functions.xsl"/>
 
@@ -107,26 +107,7 @@
 
     <xsl:template match="sqf:fix"/>
 
-    <xsl:function name="es:getRefFix" as="element(sqf:fix)?">
-        <xsl:param name="ref" as="attribute()"/>
-        <xsl:variable name="root" select="root($ref)"/>
-        <xsl:variable name="allqfs" select="$root/key('fix-id', $ref) except $ref/ancestor::sqf:fix"/>
-        <xsl:sequence select="es:scopeOfFixes($ref, $allqfs)"/>
-    </xsl:function>
-
-    <xsl:function name="es:scopeOfFixes" as="element()?">
-        <xsl:param name="context" as="node()"/>
-        <xsl:param name="fixes" as="element()*"/>
-        <xsl:variable name="contextFixes" select="$context//* intersect $fixes"/>
-        <xsl:sequence select="
-                if ($contextFixes) then
-                    ($contextFixes[last()])
-                else if($context/parent::*) 
-                    then
-                        es:scopeOfFixes($context/parent::*, $fixes)
-                    else 
-                        ()"/>
-    </xsl:function>
+    
 
     <xsl:function name="es:getElementsInScope">
         <xsl:param name="context"/>
