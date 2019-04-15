@@ -189,7 +189,7 @@
                     <axsl:value-of select="generate-id($es:context)"/>
                     <xsl:sequence select="$id-suffix"/>
                 </axsl:variable>
-                <xsl:variable name="description" select="sqf:description"/>
+                <xsl:variable name="description" select="es:getDescription(.)"/>
                 <xsl:variable name="preDescription" select="$description/preceding-sibling::*"/>
 
                 <xsl:apply-templates select="$preDescription"/>
@@ -291,6 +291,47 @@
     <xsl:function name="es:isDescriptionSimple" as="xs:boolean">
         <xsl:param name="description" as="element(sqf:description)"/>
         <xsl:sequence select="not($description/(* except sqf:title[1]))"/>
+    </xsl:function>
+
+    <xsl:function name="es:getDescription" as="element(sqf:description)">
+        <xsl:param name="fix" as="element(sqf:fix)"/>
+        <xsl:sequence select="es:getDescription($fix, (), true())"/>
+    </xsl:function>
+
+    <xsl:function name="es:getDescription" as="element(sqf:description)">
+        <xsl:param name="fix" as="element(sqf:fix)"/>
+        <xsl:param name="precedings" as="element()*"/>
+        <xsl:param name="isTargetFix" as="xs:boolean"/>
+        <xsl:variable name="description" select="$fix/sqf:description"/>
+        <xsl:choose>
+            <xsl:when test="$description and $isTargetFix">
+                <xsl:sequence select="$fix/sqf:description"/>
+            </xsl:when>
+            <xsl:when test="$description">
+                <sqf:description>
+                    <xsl:sequence select="$precedings"/>
+                    <xsl:sequence select="$description/preceding-sibling::* intersect $fix/(xsl:* | sch:let)"/>
+                    <xsl:sequence select="$description/node()"/>
+                </sqf:description>
+            </xsl:when>
+            <xsl:when test="$fix/sqf:call-fix">
+                <xsl:variable name="first-call" select="$fix/sqf:call-fix[1]"/>
+                <xsl:variable name="calledFix" select="es:getRefFix($first-call/@ref)"/>
+                <xsl:variable name="with-params" select="$first-call/sqf:with-param"/>
+                <xsl:variable name="params" select="$calledFix/sqf:param[not(@name = $with-params/@name)]"/>
+                <xsl:variable name="precedings" select="
+                        ($precedings,
+                        ($first-call/preceding-sibling::* intersect $fix/(xsl:* | sch:let) | $with-params),
+                        $params
+                        )"/>
+                <xsl:sequence select="es:getDescription($calledFix, $precedings, false())"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <sqf:description>
+                    <sqf:title>NO DESCRIPTION AVAILABLE</sqf:title>
+                </sqf:description>
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:function>
 
 </xsl:stylesheet>
