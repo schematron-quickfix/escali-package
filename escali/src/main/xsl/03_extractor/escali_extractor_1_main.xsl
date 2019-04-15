@@ -55,6 +55,8 @@
 
     <xsl:template match="/es:escali-reports">
         <axsl:stylesheet version="2.0">
+            <xsl:apply-templates select="es:meta/es:ns-prefix-in-attribute-values" mode="sqf:xsm"/>
+            
             <axsl:include href="{resolve-uri('../01_compiler/escali_compiler_0_functions.xsl')}"/>
 
             <xsl:apply-templates select="es:meta/(xsl:* | sch:*)" mode="sqf:xsm"/>
@@ -288,4 +290,13 @@
         <axsl:copy-of select="{@select}"/>
     </xsl:template>
 
+<!--    
+        Namespace handling
+    
+    -->
+    
+    <xsl:template match="es:ns-prefix-in-attribute-values" mode="sqf:xsm">
+        <xsl:namespace name="{@prefix}" select="@uri"/>
+    </xsl:template>
+    
 </xsl:stylesheet>

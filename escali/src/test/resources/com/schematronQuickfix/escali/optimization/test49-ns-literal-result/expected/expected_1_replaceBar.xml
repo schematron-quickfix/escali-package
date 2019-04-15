@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<foo:root xmlns:foo="foo.com">
+    <foo:foo>
+        <foo:baz>baz-content</foo:baz>
+    </foo:foo>
+</foo:root>
