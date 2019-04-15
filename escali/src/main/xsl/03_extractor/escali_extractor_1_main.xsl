@@ -72,7 +72,7 @@
             <xsl:apply-templates select=".//(es:assert | es:report)"/>
         </axsl:stylesheet>
     </xsl:template>
-
+    
     <xsl:template match="es:assert | es:report">
         <xsl:apply-templates select="sqf:fix">
             <xsl:with-param name="location" select="@location/string()" tunnel="yes"/>
@@ -289,7 +289,7 @@
     <xsl:template match="sqf:copy-of" mode="sqf:xsm">
         <axsl:copy-of select="{@select}"/>
     </xsl:template>
-
+    
 <!--    
         Namespace handling
     

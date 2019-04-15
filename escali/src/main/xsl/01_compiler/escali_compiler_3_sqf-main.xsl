@@ -33,7 +33,7 @@
         <xsl:variable name="topLevelLets" select="
                 $schema/sch:let[not(@name = $phaseVariables/@name)] | $phaseVariables
                 "/>
-        <xsl:apply-templates select="$schema/xsl:* | $topLevelLets | $schema/sqf:fixes/(.|sqf:group)/sqf:fix" mode="sqf:top-level-elements"/>
+        <xsl:apply-templates select="$schema/xsl:* | $topLevelLets | $schema/sqf:fixes/(. | sqf:group)/sqf:fix" mode="sqf:top-level-elements"/>
     </xsl:function>
 
 
@@ -84,7 +84,7 @@
     </xsl:template>
 
     <xsl:template match="node() | @*" mode="sqf:fix-for-fired-rule-add-first-child sqf:fix-for-fired-rule-add-last-child"/>
-    
+
     <xsl:template match="node() | @*" mode="sqf:top-level-elements-add-first-child"/>
 
 
@@ -126,7 +126,7 @@
             <xsl:apply-templates select="node()" mode="#current"/>
         </xsl:copy>
     </xsl:template>
-    
+
     <!-- 
         copies all nodes:
     -->
