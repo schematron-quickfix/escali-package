@@ -99,7 +99,7 @@
 
     <xsl:template match="sqf:call-fix" mode="sqf:xsm">
         <axsl:for-each select=".">
-            <xsl:apply-templates select="es:getRefFix(@ref)/(sqf:param | sqf:delete | sqf:add | sqf:replace | sqf:stringReplace | sqf:call-fix)" mode="sqf:xsm">
+            <xsl:apply-templates select="es:getRefFix(@ref)/(sqf:param | sch:* | xsl:* | sqf:delete | sqf:add | sqf:replace | sqf:stringReplace | sqf:call-fix)" mode="sqf:xsm">
                 <xsl:with-param name="params" select="sqf:with-param" tunnel="yes"/>
             </xsl:apply-templates>
         </axsl:for-each>
@@ -127,13 +127,12 @@
         <xsl:param name="location" tunnel="yes" as="xs:string"/>
 
         <axsl:template match="{$location}">
+            
             <xsl:apply-templates select="ancestor::es:pattern/es:meta/sch:let" mode="sqf:letpattern"/>
             
             <xsl:variable name="precedingForeigns" select="ancestor::es:meta/* intersect (preceding::sch:*|preceding::xsl:*)"/>
             
-            <xsl:apply-templates select="$precedingForeigns | ./sch:* | ./xsl:*" mode="sqf:xsm"/>
-
-            <xsl:apply-templates select="sqf:param | sqf:delete | sqf:add | sqf:replace | sqf:stringReplace | sqf:call-fix" mode="#current"/>
+            <xsl:apply-templates select="$precedingForeigns | ./sch:* | ./xsl:* | sqf:param | sqf:delete | sqf:add | sqf:replace | sqf:stringReplace | sqf:call-fix" mode="#current"/>
 
             <axsl:next-match/>
         </axsl:template>
