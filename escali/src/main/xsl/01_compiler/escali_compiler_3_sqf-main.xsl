@@ -71,15 +71,15 @@
 
     <xsl:template match="sqf:fix/sqf:description" mode="sqf:fix-for-fired-rule sqf:top-level-elements" priority="10"/>
 
-    <xsl:template match="sqf:user-entry" mode="sqf:fix-for-fired-rule">
+    <xsl:template match="sqf:user-entry" mode="sqf:fix-for-fired-rule sqf:top-level-elements" priority="10">
         <sqf:param>
             <xsl:copy-of select="@name | @type"/>
         </sqf:param>
     </xsl:template>
 
-    <xsl:template match="sqf:fix/@use-when | sqf:fix/@use-for-each" mode="sqf:fix-for-fired-rule"/>
+    <xsl:template match="sqf:fix/@use-when | sqf:fix/@use-for-each" mode="sqf:fix-for-fired-rule sqf:top-level-elements"/>
 
-    <xsl:template match="sqf:fix[@use-for-each]" mode="sqf:fix-for-fired-rule-add-first-child">
+    <xsl:template match="sqf:fix[@use-for-each]" mode="sqf:fix-for-fired-rule-add-first-child sqf:top-level-elements-add-first-child">
         <sqf:param name="sqf:current"/>
     </xsl:template>
 
