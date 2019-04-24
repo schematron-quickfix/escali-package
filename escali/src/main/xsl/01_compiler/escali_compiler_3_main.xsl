@@ -140,7 +140,7 @@
                     <xsl:attribute name="es:schema" select="@es:uri"/>
                     <axsl:attribute name="es:instance" select="document-uri(/)"/>
                     <xsl:sequence select="es:topLevelManipulatorExtension(/*)"/>
-                    <xsl:for-each-group select="/sch:schema/sch:ns" group-by="concat(@uri, @prefix)">
+                    <xsl:for-each-group select="/sch:schema/(sch:ns|es:default-namespace)" group-by="concat(@uri, @prefix)">
                         <svrl:ns-prefix-in-attribute-values uri="{@uri}" prefix="{@prefix}">
                             <!--                            <xsl:attribute name="prefix" select="distinct-values(current-group()/@prefix)" separator=" "/>-->
                         </svrl:ns-prefix-in-attribute-values>
@@ -224,7 +224,6 @@
 
 
     <xsl:template match="es:default-namespace">
-        <xsl:namespace name="" select="@uri"/>
         <xsl:attribute name="xpath-default-namespace" select="@uri"/>
     </xsl:template>
 

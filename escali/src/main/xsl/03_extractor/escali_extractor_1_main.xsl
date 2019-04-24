@@ -54,7 +54,7 @@
     <xsl:include href="../01_compiler/escali_compiler_0_functions.xsl"/>
 
     <xsl:template match="/es:escali-reports">
-        <axsl:stylesheet version="2.0">
+        <axsl:stylesheet version="2.0" exclude-result-prefixes="#all">
             <xsl:apply-templates select="es:meta/es:ns-prefix-in-attribute-values" mode="sqf:xsm"/>
             
             <axsl:include href="{resolve-uri('../01_compiler/escali_compiler_0_functions.xsl')}"/>
@@ -296,7 +296,14 @@
     -->
     
     <xsl:template match="es:ns-prefix-in-attribute-values" mode="sqf:xsm">
-        <xsl:namespace name="{@prefix}" select="@uri"/>
+        <xsl:choose>
+            <xsl:when test="@prefix != ''">
+                <xsl:namespace name="{@prefix}" select="@uri"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:attribute name="xpath-default-namespace" select="@uri"/>
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:template>
     
 </xsl:stylesheet>

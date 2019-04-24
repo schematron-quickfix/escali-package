@@ -322,7 +322,7 @@
 
 
     <xsl:variable name="namespace">
-        <xsl:for-each select="/sch:schema/sch:ns">
+        <xsl:for-each select="/sch:schema/(sch:ns | /es:default-namespace)">
             <es:ns pre="{@prefix}" uri="{@uri}" schemaDefined="true"/>
         </xsl:for-each>
     </xsl:variable>
