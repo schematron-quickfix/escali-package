@@ -50,6 +50,8 @@
     <xsl:key name="phaseByInactivePatternId" match="sch:phase" use="es:getRefPhases(.)/es:inactive/@pattern"/>
 
     <xsl:key name="nodeById" match="*[@id | @xml:id]" use="@id | @xml:id"/>
+    
+    <xsl:key name="nodeByPath" match="node() | @*" use="es:getNodePath(.)"/>
 
     <!--  
     returns for a $pattern if it is active (true) or inactive (false)
@@ -434,6 +436,13 @@
             es:scopeOfFixes($context/parent::*, $fixes)
             else 
             ()"/>
+    </xsl:function>
+    
+    <xsl:function name="es:nodeByPath" as="node()">
+        <xsl:param name="path" as="xs:string"/>
+        <xsl:param name="document" as="document-node()"/>
+        <xsl:variable name="node" select="key('nodeByPath', $path, $document)"/>
+        <xsl:sequence select="$node"/>
     </xsl:function>
 
 </xsl:stylesheet>
