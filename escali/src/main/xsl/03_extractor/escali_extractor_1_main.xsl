@@ -330,6 +330,10 @@
         </axsl:choose>
     </xsl:function>
 
+    <xsl:template match="sqf:keep | sqf:copy-of" mode="sqf:xsm">
+        <axsl:copy-of select="{(@select, 'node()')[1]}"/>
+    </xsl:template>
+
     <xsl:template match="sqf:add/@select | sqf:replace/@select | sqf:stringReplace/@select" mode="sqf:xsm">
         <axsl:sequence select="{.}"/>
     </xsl:template>
