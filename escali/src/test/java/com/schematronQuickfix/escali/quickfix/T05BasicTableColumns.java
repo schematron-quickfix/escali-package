@@ -2,14 +2,12 @@ package com.schematronQuickfix.escali.quickfix;
 
 import org.junit.Test;
 
-public class T05BasicTableColumns extends FixingTestBase {
+public class T05BasicTableColumns extends FixingTestBaseChangePi {
 
     @Override
 	public String getFolder() {
 		return "test05-basic-table-columns";
 	}
-
-
 
 	@Test
 	public void test_1_proportional(){

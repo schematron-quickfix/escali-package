@@ -9,7 +9,7 @@ import java.util.List;
 
 
 @RunWith(Parameterized.class)
-public class T16Inconsistency extends FixingTestBase {
+public class T16Inconsistency extends FixingTestBaseChangePi {
 
 
 	private String fixId;

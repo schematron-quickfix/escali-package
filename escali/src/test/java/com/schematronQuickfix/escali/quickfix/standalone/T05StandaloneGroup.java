@@ -1,9 +1,9 @@
 package com.schematronQuickfix.escali.quickfix.standalone;
 
-import com.schematronQuickfix.escali.quickfix.FixingTestBase;
+import com.schematronQuickfix.escali.quickfix.FixingTestBaseChangePi;
 import org.junit.Test;
 
-public class T05StandaloneGroup extends FixingTestBase {
+public class T05StandaloneGroup extends FixingTestBaseChangePi {
 
     @Override
 	public String getFolder() {

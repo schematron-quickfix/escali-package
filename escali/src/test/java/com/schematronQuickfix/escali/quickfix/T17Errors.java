@@ -3,7 +3,7 @@ package com.schematronQuickfix.escali.quickfix;
 import com.github.oxygenPlugins.common.xml.exceptions.XSLTErrorListener;
 import org.junit.Test;
 
-public class T17Errors extends FixingTestBase {
+public class T17Errors extends FixingTestBaseChangePi {
 
     @Override
 	public String getFolder() {

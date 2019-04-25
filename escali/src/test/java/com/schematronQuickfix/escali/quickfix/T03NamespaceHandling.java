@@ -9,7 +9,7 @@ import java.util.List;
 
 
 @RunWith(Parameterized.class)
-public class T03NamespaceHandling extends FixingTestBase {
+public class T03NamespaceHandling extends FixingTestBaseChangePi {
 
 
 	private String fixId;

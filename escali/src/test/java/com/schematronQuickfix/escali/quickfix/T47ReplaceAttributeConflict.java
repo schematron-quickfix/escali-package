@@ -5,7 +5,7 @@ import org.junit.Test;
 
 import static org.junit.Assume.assumeTrue;
 
-public class T47ReplaceAttributeConflict extends FixingTestBase {
+public class T47ReplaceAttributeConflict extends FixingTestBaseChangePi {
 
     @Override
 	public String getFolder() {

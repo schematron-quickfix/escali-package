@@ -4,7 +4,7 @@ import com.schematronQuickfix.escali.control.Config;
 import com.schematronQuickfix.escali.control.ConfigFactory;
 import org.junit.Test;
 
-public class T12HideChangeMarker extends FixingTestBase {
+public class T12HideChangeMarker extends FixingTestBaseChangePi {
 
 	private static Config escaliConfig;
 

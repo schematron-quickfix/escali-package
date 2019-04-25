@@ -2,7 +2,7 @@ package com.schematronQuickfix.escali.quickfix;
 
 import org.junit.Test;
 
-public class T24AddSelectWithAtomicValues extends FixingTestBase {
+public class T24AddSelectWithAtomicValues extends FixingTestBaseChangePi {
 
     @Override
 	public String getFolder() {

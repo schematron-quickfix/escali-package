@@ -2,7 +2,7 @@ package com.schematronQuickfix.escali.quickfix;
 
 import org.junit.Test;
 
-public class T07BasicPis extends FixingTestBase {
+public class T07BasicPis extends FixingTestBaseChangePi {
 
     @Override
 	public String getFolder() {

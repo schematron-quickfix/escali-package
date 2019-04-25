@@ -2,14 +2,13 @@ package com.schematronQuickfix.escali.quickfix;
 
 import org.junit.Test;
 
-public class T02BasicHtmlHeadlines extends FixingTestBase {
+public class T02BasicHtmlHeadlines extends FixingTestBaseChangePi {
 
 
     @Override
 	public String getFolder() {
 		return "test02-basic-html-headlines";
 	}
-
 
 	@Test
 	public void test_delete(){

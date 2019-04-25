@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @RunWith(Parameterized.class)
-public class T37LetsInPatterns extends FixingTestBase {
+public class T37LetsInPatterns extends FixingTestBaseChangePi {
 
 	private String variant;
 

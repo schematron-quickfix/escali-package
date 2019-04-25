@@ -2,7 +2,7 @@ package com.schematronQuickfix.escali.quickfix;
 
 import org.junit.Test;
 
-public class T27NamespaceHandling extends FixingTestBase {
+public class T27NamespaceHandling extends FixingTestBaseChangePi {
 
     @Override
 	public String getFolder() {

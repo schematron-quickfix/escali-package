@@ -1,10 +1,9 @@
 package com.schematronQuickfix.escali.quickfix.standalone;
 
-import com.github.oxygenPlugins.common.process.exceptions.CancelException;
-import com.schematronQuickfix.escali.quickfix.FixingTestBase;
+import com.schematronQuickfix.escali.quickfix.FixingTestBaseChangePi;
 import org.junit.Test;
 
-public class T01BasicExample extends FixingTestBase {
+public class T01BasicExample extends FixingTestBaseChangePi {
 
     @Override
 	public String getFolder() {

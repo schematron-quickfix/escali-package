@@ -2,7 +2,7 @@ package com.schematronQuickfix.escali.quickfix;
 
 import org.junit.Test;
 
-public class T49GroupIdConflict extends FixingTestBase {
+public class T49GroupIdConflict extends FixingTestBaseChangePi {
 
     @Override
 	public String getFolder() {

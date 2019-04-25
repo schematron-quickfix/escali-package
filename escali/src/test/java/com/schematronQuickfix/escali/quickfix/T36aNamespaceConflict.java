@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @RunWith(Parameterized.class)
-public class T36aNamespaceConflict extends FixingTestBase {
+public class T36aNamespaceConflict extends FixingTestBaseChangePi {
 
 	private String variant;
 

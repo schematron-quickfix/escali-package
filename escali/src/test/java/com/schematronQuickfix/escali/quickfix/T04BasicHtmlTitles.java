@@ -2,15 +2,13 @@ package com.schematronQuickfix.escali.quickfix;
 
 import org.junit.Test;
 
-public class T04BasicHtmlTitles extends FixingTestBase {
+public class T04BasicHtmlTitles extends FixingTestBaseChangePi {
 
 
     @Override
 	public String getFolder() {
 		return "test04-basic-html-titles";
 	}
-
-
 
 	@Test
 	public void test_1_deleteComment(){

@@ -1,12 +1,11 @@
 package com.schematronQuickfix.escali.quickfix;
 
 import com.github.oxygenPlugins.common.process.exceptions.CancelException;
-import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assume.assumeTrue;
 
-public class T48QueryBinding extends FixingTestBase {
+public class T48QueryBinding extends FixingTestBaseChangePi {
 
     @Override
 	public String getFolder() {

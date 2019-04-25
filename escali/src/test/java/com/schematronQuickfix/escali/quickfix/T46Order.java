@@ -4,7 +4,7 @@ import org.junit.Test;
 
 import static org.junit.Assume.assumeTrue;
 
-public class T46Order extends FixingTestBase {
+public class T46Order extends FixingTestBaseChangePi {
 
     @Override
 	public String getFolder() {

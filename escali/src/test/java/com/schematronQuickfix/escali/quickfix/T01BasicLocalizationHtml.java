@@ -1,14 +1,8 @@
 package com.schematronQuickfix.escali.quickfix;
 
-import net.sf.saxon.ma.trie.Tuple2;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
 
-import java.util.Arrays;
-import java.util.List;
-
-public class T01BasicLocalizationHtml extends FixingTestBase {
+public class T01BasicLocalizationHtml extends FixingTestBaseChangePi {
 
 
     @Override
