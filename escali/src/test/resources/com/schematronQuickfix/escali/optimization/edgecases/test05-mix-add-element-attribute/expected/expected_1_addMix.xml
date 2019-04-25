@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+    <?sqfc-start ?><foo bar="baz"><?sqfc-end ?><?sqfc-start ?><foo bar="baz"/><?sqfc-end ?></foo>
+    <foo bar="baz"/>
+</root>
