@@ -395,47 +395,51 @@
         <xsl:variable name="name" select="(name($ns), '#null')[. != ''][1]"/>
         <xsl:sequence select="concat($name, ':', $ns)"/>
     </xsl:function>
-    
+
     <xsl:function name="es:valueToXPath" as="xs:string">
         <xsl:param name="values" as="item()*"/>
         <xsl:choose>
             <xsl:when test="count($values) gt 1">
-                <xsl:sequence select="string-join( for $v in  $values return es:valueToXPath($v), ', ')"/>
+                <xsl:sequence select="
+                        string-join(for $v in $values
+                        return
+                            es:valueToXPath($v), ', ')"/>
             </xsl:when>
             <xsl:otherwise>
                 <xsl:variable name="value" select="$values[1]"/>
                 <xsl:sequence select="
-                    concat(
-                    '''',
-                    replace($value, '('')', '$1$1'), 
-                    ''''
-                    )
-                    "/>
+                        concat(
+                        '''',
+                        replace($value, '('')', '$1$1'),
+                        ''''
+                        )
+                        "/>
             </xsl:otherwise>
         </xsl:choose>
     </xsl:function>
-    
+
     <xsl:key name="fix-id" match="sqf:fix" use="@id"/>
-    
+
     <xsl:function name="es:getRefFix" as="element(sqf:fix)?">
         <xsl:param name="ref" as="attribute()"/>
         <xsl:variable name="root" select="root($ref)"/>
         <xsl:variable name="allqfs" select="$root/key('fix-id', $ref) except $ref/ancestor::sqf:fix"/>
         <xsl:sequence select="es:scopeOfFixes($ref, $allqfs)"/>
     </xsl:function>
-    
+
     <xsl:function name="es:scopeOfFixes" as="element()?">
         <xsl:param name="context" as="node()"/>
         <xsl:param name="fixes" as="element()*"/>
         <xsl:variable name="contextFixes" select="$context//* intersect $fixes"/>
         <xsl:sequence select="
-            if ($contextFixes) then
-            ($contextFixes[last()])
-            else if($context/parent::*) 
-            then
-            es:scopeOfFixes($context/parent::*, $fixes)
-            else 
-            ()"/>
+                if ($contextFixes) then
+                    ($contextFixes[last()])
+                else
+                    if ($context/parent::*)
+                    then
+                        es:scopeOfFixes($context/parent::*, $fixes)
+                    else
+                        ()"/>
     </xsl:function>
     
     <xsl:function name="es:nodeByPath" as="node()">

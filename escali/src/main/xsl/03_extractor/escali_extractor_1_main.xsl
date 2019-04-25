@@ -49,14 +49,15 @@
     <xsl:param name="markChanges" as="xs:boolean" select="true()"/>
     <xsl:param name="missing-fixes-handle" select="2" as="xs:integer"/>
 
-    
+
+
 
     <xsl:include href="../01_compiler/escali_compiler_0_functions.xsl"/>
 
     <xsl:template match="/es:escali-reports">
         <axsl:stylesheet version="2.0" exclude-result-prefixes="#all">
             <xsl:apply-templates select="es:meta/es:ns-prefix-in-attribute-values" mode="sqf:xsm"/>
-            
+
             <axsl:include href="{resolve-uri('../01_compiler/escali_compiler_0_functions.xsl')}"/>
 
             <xsl:apply-templates select="es:meta/(xsl:* | sch:*)" mode="sqf:xsm"/>
@@ -111,7 +112,9 @@
 
         </axsl:stylesheet>
     </xsl:template>
-    
+
+
+
     <xsl:template match="es:assert | es:report">
         <xsl:apply-templates select="sqf:fix">
             <xsl:with-param name="location" select="@location/string()" tunnel="yes"/>
@@ -148,7 +151,7 @@
 
     <xsl:template match="sqf:fix"/>
 
-    
+
 
     <xsl:function name="es:getElementsInScope">
         <xsl:param name="context"/>
@@ -168,11 +171,11 @@
         <xsl:param name="location" tunnel="yes" as="xs:string"/>
 
         <axsl:template match="{$location}">
-            
+
             <xsl:apply-templates select="ancestor::es:pattern/es:meta/sch:let" mode="sqf:letpattern"/>
-            
-            <xsl:variable name="precedingForeigns" select="ancestor::es:meta/* intersect (preceding::sch:*|preceding::xsl:*)"/>
-            
+
+            <xsl:variable name="precedingForeigns" select="ancestor::es:meta/* intersect (preceding::sch:* | preceding::xsl:*)"/>
+
             <xsl:apply-templates select="$precedingForeigns | ./sch:* | ./xsl:* | sqf:param | sqf:delete | sqf:add | sqf:replace | sqf:stringReplace | sqf:call-fix" mode="#current"/>
 
             <axsl:next-match/>
@@ -424,12 +427,12 @@
     <xsl:template match="sqf:copy-of" mode="sqf:xsm">
         <axsl:copy-of select="{@select}"/>
     </xsl:template>
-    
-<!--    
+
+    <!--    
         Namespace handling
     
     -->
-    
+
     <xsl:template match="es:ns-prefix-in-attribute-values" mode="sqf:xsm">
         <xsl:choose>
             <xsl:when test="@prefix != ''">
@@ -440,5 +443,5 @@
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
-    
+
 </xsl:stylesheet>
