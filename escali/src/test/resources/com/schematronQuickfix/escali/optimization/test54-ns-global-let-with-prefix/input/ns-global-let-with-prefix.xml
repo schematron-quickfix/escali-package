@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="../input/foreign-global.sch" type="application/xml" schematypens="http://purl.oclc.org/dsdl/schematron"?>
+<foo:root xmlns:foo="foo.com">
+    <foo:foo id="foo1">
+        <foo:bar/>
+    </foo:foo>
+    <foo:foo>
+        <foo:bar/>
+    </foo:foo>
+</foo:root>
