@@ -18,6 +18,9 @@
                 <sqf:fix id="replaceFoo">
                     <sqf:replace target="bar" node-type="element" select="'bar-content'"/>
                 </sqf:fix>
+                <sqf:fix id="replaceFooKeep">
+                    <sqf:replace target="bar" node-type="keep" select="'bar-content'"/>
+                </sqf:fix>
             </es:meta>
             <es:assert id="w41aab1_w20aab3b1b1"
                 location="/*:root[namespace-uri()=''][1]/*:foo[namespace-uri()=''][1]"
@@ -26,6 +29,9 @@
                 <es:text>Foo should not be empty.</es:text>
                 <sqf:fix fixId="replaceFoo" title="Replace foo by bar" id="replaceFoo_w41aab1_w20aab3b1b1">
                     <sqf:call-fix ref="replaceFoo"/>
+                </sqf:fix>
+                <sqf:fix fixId="replaceFooKeep" title="Replace foo by bar (keep)" id="replaceFooKeep_w41aab1_w20aab3b1b1">
+                    <sqf:call-fix ref="replaceFooKeep"/>
                 </sqf:fix>
             </es:assert>
         </es:rule>

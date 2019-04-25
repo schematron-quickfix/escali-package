@@ -37,9 +37,14 @@ public class T13NodeCreationNodeTypeElement extends FixingTestBase {
 	}
 
 	@Test
-	public void test(){
+	public void test_1(){
 		doTest(new ExecutionSetup(1, "replaceFoo"));
 		
+	}
+	@Test
+	public void test_2(){
+		doTest(new ExecutionSetup(1, "replaceFooKeep"));
+
 	}
 	
 }

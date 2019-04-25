@@ -4,12 +4,18 @@
     <sch:title>Schematron unit test - node creation node-type element</sch:title>
     <sch:pattern id="pattern1">
         <sch:rule context="foo">
-            <sch:assert test="normalize-space(.) != ''" sqf:fix="replaceFoo">Foo should not be empty.</sch:assert>
+            <sch:assert test="normalize-space(.) != ''" sqf:fix="replaceFoo replaceFooKeep">Foo should not be empty.</sch:assert>
             <sqf:fix id="replaceFoo">
                 <sqf:description>
                     <sqf:title>Replace <sch:name/> by bar</sqf:title>
                 </sqf:description>
                 <sqf:replace target="bar" node-type="element" select="'bar-content'"/>
+            </sqf:fix>
+            <sqf:fix id="replaceFooKeep">
+                <sqf:description>
+                    <sqf:title>Replace <sch:name/> by bar (keep)</sqf:title>
+                </sqf:description>
+                <sqf:replace target="bar" node-type="keep" select="'bar-content'"/>
             </sqf:fix>
         </sch:rule>
     </sch:pattern>
