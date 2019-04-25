@@ -114,6 +114,8 @@ public abstract class FixingTestBase {
 	public Config getConfig(){
 		Config config = ConfigFactory.createDefaultConfig();
 		config.setCompactSVRL(false);
+		config.setInternalValidation(false);
+		config.setChangePrefix("");
 		return config;
 	}
 
