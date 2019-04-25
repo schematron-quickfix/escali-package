@@ -183,8 +183,12 @@
         <xsl:variable name="body">
             <xsl:apply-templates select="@select | node()" mode="#current"/>
         </xsl:variable>
-        <xsm:content>
+        <axsl:variable name="sqf:content" as="item()*">
+            <xsl:sequence select="namespace::*"/>
             <xsl:choose>
+                <xsl:when test="@node-type = 'keep'">
+                    <xsl:sequence select="es:nodeKeepCreation(.)"/>
+                </xsl:when>
                 <xsl:when test="@target | @node-type">
                     <xsl:variable name="node-type" select="
                             if (@node-type = 'pi') then
@@ -195,15 +199,58 @@
                         <xsl:if test="@target">
                             <xsl:attribute name="name" select="@target"/>
                         </xsl:if>
-                        <xsl:sequence select="$body"/>
+                        <xsl:apply-templates select="@select | node()" mode="#current"/>
                     </xsl:element>
                 </xsl:when>
                 <xsl:otherwise>
-                    <xsl:sequence select="$body"/>
+                    <xsl:apply-templates select="@select | node()" mode="#current"/>
                 </xsl:otherwise>
             </xsl:choose>
+
+        </axsl:variable>
+        <axsl:variable name="sqf:attrContent" select="$sqf:content[. instance of attribute()]"/>
+        <axsl:variable name="sqf:noAttrContent" select="$sqf:content[not(. instance of attribute())]"/>
+        <xsm:content>
+            <axsl:copy-of select="$sqf:attrContent" copy-namespaces="no"/>
+            <axsl:copy-of select="$sqf:noAttrContent" copy-namespaces="no"/>
         </xsm:content>
     </xsl:template>
+
+    <xsl:function name="es:nodeKeepCreation" as="element(xsl:choose)">
+        <xsl:param name="addReplace" as="element()"/>
+        <xsl:variable name="content">
+            <xsl:apply-templates select="$addReplace/(@select | node())" mode="sqf:xsm"/>
+        </xsl:variable>
+        <axsl:choose>
+            <axsl:when test=". instance of element()">
+                <axsl:element name="{$addReplace/@target}">
+                    <xsl:sequence select="$content"/>
+                </axsl:element>
+            </axsl:when>
+            <axsl:when test=". instance of attribute()">
+                <axsl:attribute name="{$addReplace/@target}">
+                    <xsl:sequence select="$content"/>
+                </axsl:attribute>
+            </axsl:when>
+            <axsl:when test=". instance of processing-instruction()">
+                <axsl:processing-instruction name="{$addReplace/@target}">
+                    <xsl:sequence select="$content"/>
+                </axsl:processing-instruction>
+            </axsl:when>
+            <axsl:when test=". instance of comment()">
+                <axsl:comment>
+                    <xsl:sequence select="$content"/>
+                </axsl:comment>
+            </axsl:when>
+            <axsl:when test=". instance of text()">
+                <axsl:variable name="sqf:text-content" as="item()*">
+                    <xsl:sequence select="$content"/>
+                </axsl:variable>
+                <axsl:value-of select="$sqf:text-content"/>
+            </axsl:when>
+            <axsl:otherwise/>
+        </axsl:choose>
+    </xsl:function>
 
     <xsl:template match="sqf:add/@select | sqf:replace/@select | sqf:stringReplace/@select" mode="sqf:xsm">
         <axsl:sequence select="{.}"/>
