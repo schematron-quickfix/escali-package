@@ -64,12 +64,51 @@
             <xsl:apply-templates select="es:pattern/es:meta/sch:let" mode="sqf:xsm"/>
 
             <axsl:template match="/">
+                <axsl:variable name="sqf:document" select="/"/>
                 <xsm:manipulator document="{/es:escali-reports/es:meta/es:instance}">
-                    <axsl:apply-templates/>
+                    <axsl:variable name="sqf:manipulator-body" as="node()*">
+                        <axsl:apply-templates/>
+                    </axsl:variable>
+                    
+
+                    <axsl:for-each-group select="$sqf:manipulator-body[@sqf:markAttributeChange]" group-by="
+                            if (@sqf:markAttributeChange = 'this') then
+                                @node
+                            else
+                                es:getNodePath(es:nodeByPath(@node, $sqf:document)/parent::*)">
+                        <xsm:add position="before">
+                            <axsl:attribute name="node" select="current-grouping-key()"/>
+                            <xsm:content>
+                                <axsl:processing-instruction name="sqfc-start"/>
+                            </xsm:content>
+                        </xsm:add>
+                        <xsm:add position="first-child">
+                            <axsl:attribute name="node" select="current-grouping-key()"/>
+                            <xsm:content>
+                                <axsl:processing-instruction name="sqfc-end"/>
+                            </xsm:content>
+                        </xsm:add>
+                    </axsl:for-each-group>
+                    
+                    <axsl:apply-templates select="$sqf:manipulator-body" mode="cleanup"/>
+
                 </xsm:manipulator>
             </axsl:template>
 
             <xsl:apply-templates select=".//(es:assert | es:report)"/>
+
+            <axsl:template match="@sqf:markAttributeChange" mode="cleanup"/>
+
+            <!-- 
+                copies all nodes:
+            -->
+            <axsl:template match="node() | @*" mode="cleanup">
+                <axsl:copy>
+                    <axsl:apply-templates select="@*" mode="#current"/>
+                    <axsl:apply-templates select="node()" mode="#current"/>
+                </axsl:copy>
+            </axsl:template>
+
         </axsl:stylesheet>
     </xsl:template>
     
@@ -162,16 +201,48 @@
     <xsl:template match="sqf:replace | sqf:add | sqf:delete" mode="sqf:xsm" priority="50">
         <xsl:variable name="match" select="(@match, '.')[1]"/>
         <axsl:for-each select="{$match}">
-            <xsl:element name="xsm:{local-name(.)}">
-                <xsl:copy-of select="namespace::*[name() != '']"/>
-                <axsl:attribute name="node" select="es:getNodePath(.)"/>
-
+            <axsl:variable name="xsm:content" as="node()*">
                 <xsl:next-match/>
+            </axsl:variable>
+            <axsl:variable name="xsm:node" select="es:getNodePath(.)"/>
+            <xsl:variable name="node-type" select="
+                    if (local-name(.) = 'delete') then
+                        'replace'
+                    else
+                        local-name(.)"/>
+
+            <xsl:element name="xsm:{$node-type}">
+                <axsl:sequence select="namespace::*"/>
+                <axsl:attribute name="node" select="$xsm:node"/>
+                <xsl:if test="$markChanges">
+                    <xsl:variable name="markerTest" select="
+                            if (self::sqf:delete) then
+                                '$xsm:content/@* or . instance of attribute()'
+                            else
+                                '$xsm:content/@*'
+                            "/>
+                    <axsl:if test="{$markerTest}">
+                        <axsl:attribute name="sqf:markAttributeChange" select="
+                                if (. instance of attribute()) then
+                                    'parent'
+                                else
+                                    'this'
+                                "/>
+                    </axsl:if>
+                </xsl:if>
+                <axsl:sequence select="$xsm:content"/>
             </xsl:element>
         </axsl:for-each>
     </xsl:template>
 
-    <xsl:template match="sqf:delete" mode="sqf:xsm"/>
+    <xsl:template match="sqf:delete" mode="sqf:xsm">
+        <xsm:content>
+            <xsl:if test="$markChanges">
+                <axsl:processing-instruction name="sqfc-start"/>
+                <axsl:processing-instruction name="sqfc-end"/>
+            </xsl:if>
+        </xsm:content>
+    </xsl:template>
 
 
     <xsl:template match="sqf:add" mode="sqf:xsm" priority="25">
@@ -180,9 +251,6 @@
     </xsl:template>
 
     <xsl:template match="sqf:add | sqf:replace" mode="sqf:xsm">
-        <xsl:variable name="body">
-            <xsl:apply-templates select="@select | node()" mode="#current"/>
-        </xsl:variable>
         <axsl:variable name="sqf:content" as="item()*">
             <xsl:sequence select="namespace::*"/>
             <xsl:choose>
@@ -212,7 +280,17 @@
         <axsl:variable name="sqf:noAttrContent" select="$sqf:content[not(. instance of attribute())]"/>
         <xsm:content>
             <axsl:copy-of select="$sqf:attrContent" copy-namespaces="no"/>
+            <xsl:if test="$markChanges">
+                <axsl:if test="count($sqf:noAttrContent) gt 0">
+                    <axsl:processing-instruction name="sqfc-start"/>
+                </axsl:if>
+            </xsl:if>
             <axsl:copy-of select="$sqf:noAttrContent" copy-namespaces="no"/>
+            <xsl:if test="$markChanges">
+                <axsl:if test="count($sqf:noAttrContent) gt 0">
+                    <axsl:processing-instruction name="sqfc-end"/>
+                </axsl:if>
+            </xsl:if>
         </xsm:content>
     </xsl:template>
 
@@ -266,7 +344,13 @@
                 <axsl:matching-substring>
                     <xsm:step replace="true">
                         <axsl:attribute name="length" select="string-length(.)"/>
+                        <xsl:if test="$markChanges">
+                            <axsl:processing-instruction name="sqfc-start"/>
+                        </xsl:if>
                         <xsl:apply-templates select="@select | node()" mode="#current"/>
+                        <xsl:if test="$markChanges">
+                            <axsl:processing-instruction name="sqfc-end"/>
+                        </xsl:if>
                     </xsm:step>
                 </axsl:matching-substring>
                 <axsl:non-matching-substring>
