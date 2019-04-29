@@ -359,7 +359,13 @@
             <axsl:otherwise/>
         </axsl:choose>
     </xsl:function>
-
+    
+    <xsl:template match="sqf:copy-of[@unparsed-mode = 'true']" mode="sqf:xsm" priority="10">
+        <axsl:for-each select="{(@select, 'node()')[1]}">
+            <xsm:copy select="{{ es:getNodePath(.) }}"/>
+        </axsl:for-each>
+    </xsl:template>
+    
     <xsl:template match="sqf:keep | sqf:copy-of" mode="sqf:xsm">
         <axsl:copy-of select="{(@select, 'node()')[1]}"/>
     </xsl:template>
