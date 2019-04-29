@@ -15,6 +15,7 @@ import javax.xml.transform.URIResolver;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.xpath.XPathExpressionException;
 
+import com.github.oxygenPlugins.common.xml.staxParser.StringNode;
 import org.xml.sax.SAXException;
 
 import com.github.oxygenPlugins.common.process.exceptions.CancelException;
@@ -88,19 +89,28 @@ public class Executor {
 		if (config.isXmlSaveMode()) {
 			ArrayList<TextSource> xsmResults = new ArrayList<TextSource>();
 			for (TextSource result : extractorResult) {
-				try {
-					PositionalReplace pr = new PositionalReplace(result, true);
-					xsmResults.add(pr.getSource());
-				} catch (IOException e) {
-					xsmResults.add(input);
-				} catch (SAXException e) {
-					xsmResults.add(input);
-				} catch (XMLStreamException e) {
-					xsmResults.add(input);
-				} catch (XPathExpressionException e) {
-					xsmResults.add(input);
-				} catch (CancelException e) {
-					xsmResults.add(input);
+
+				if(!"".equals(result.toString())){
+					try {
+						StringNode resultNode = new StringNode(result);
+						if(resultNode.getXPathBoolean("/xsm:manipulator")){
+							PositionalReplace pr = new PositionalReplace(result, true);
+							xsmResults.add(pr.getSource());
+						}  else if(resultNode.getXPathBoolean("/empty")){
+//							expected for main result of extractor, do nothing
+						}
+					} catch (IOException e) {
+						xsmResults.add(input);
+					} catch (SAXException e) {
+						xsmResults.add(input);
+					} catch (XMLStreamException e) {
+						xsmResults.add(input);
+					} catch (XPathExpressionException e) {
+						xsmResults.add(input);
+					} catch (CancelException e) {
+						xsmResults.add(input);
+					}
+
 				}
 			}
 			return xsmResults;
