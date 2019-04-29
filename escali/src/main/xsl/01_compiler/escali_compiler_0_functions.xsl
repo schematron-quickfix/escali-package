@@ -448,5 +448,10 @@
         <xsl:variable name="node" select="key('nodeByPath', $path, $document)"/>
         <xsl:sequence select="$node"/>
     </xsl:function>
+    
+    <xsl:function name="es:is-attribute" as="xs:boolean">
+        <xsl:param name="item" as="item()"/>
+        <xsl:sequence select="$item instance of attribute()"/>
+    </xsl:function>
 
 </xsl:stylesheet>

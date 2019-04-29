@@ -53,8 +53,10 @@
 
 
     <xsl:include href="../01_compiler/escali_compiler_0_functions.xsl"/>
-
+    
     <xsl:template match="/es:escali-reports">
+        
+        
         <axsl:stylesheet version="2.0" exclude-result-prefixes="#all">
             <xsl:attribute name="xml:base" select="/es:escali-reports/es:meta/@schema"/>
 
@@ -306,8 +308,8 @@
             </xsl:choose>
 
         </axsl:variable>
-        <axsl:variable name="sqf:attrContent" select="$sqf:content[. instance of attribute()]"/>
-        <axsl:variable name="sqf:noAttrContent" select="$sqf:content[not(. instance of attribute())]"/>
+        <axsl:variable name="sqf:attrContent" select="$sqf:content[es:is-attribute(.)]"/>
+        <axsl:variable name="sqf:noAttrContent" select="$sqf:content[not(es:is-attribute(.))]"/>
         <xsm:content>
             <axsl:copy-of select="$sqf:attrContent" copy-namespaces="no"/>
             <xsl:if test="$markChanges">
