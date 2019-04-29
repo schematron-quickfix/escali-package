@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<schema xmlns="http://purl.oclc.org/dsdl/schematron" xmlns:htm="http://www.html.de" xmlns:sqf="http://www.schematron-quickfix.com/validator/process" xmlns:es="http://www.escali.schematron-quickfix.com/" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:html="http://www.data2type.de/html" queryBinding="xslt2">
+<schema xmlns="http://purl.oclc.org/dsdl/schematron" xmlns:htm="http://www.html.de" xmlns:sqf="http://www.schematron-quickfix.com/validator/process" xmlns:es="http://www.escali.schematron-quickfix.com/" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:html="http://www.data2type.de/html" xmlns:xs="http://www.w3.org/2001/XMLSchema" queryBinding="xslt2">
 	<es:default-namespace uri="http://www.w3.org/1999/xhtml"/>
+    <ns uri="http://www.data2type.de/html" prefix="html"/>
+    <ns uri="http://www.w3.org/2001/XMLSchema" prefix="xs"/>
     <xsl:function name="html:getColAndRows" xmlns="http://www.w3.org/1999/xhtml">
 		<xsl:param name="preCells"/>
 		<xsl:param name="cells"/>

@@ -3,6 +3,7 @@
     xmlns:sqf="http://www.schematron-quickfix.com/validator/process" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:d2t="http://www.data2type.de">
     
     <sch:ns uri="http://www.data2type.de" prefix="d2t"/>
+    <sch:ns uri="http://www.w3.org/2001/XMLSchema" prefix="xs"/>
     
     <xsl:function name="d2t:defComplexType" as="element(xs:complexType)">
         <xsl:param name="name" as="xs:string"/>

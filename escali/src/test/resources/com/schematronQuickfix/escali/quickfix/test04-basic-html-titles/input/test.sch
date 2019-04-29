@@ -31,7 +31,7 @@
             </sqf:fix><!---->
             <sqf:fix id="setTitle" use-when="//html:h1" use-for-each="//html:h1">
                 <sqf:description>
-                    <sqf:title>Take the title from the headline no <sch:value-of select="$sqf:pos"/>.</sqf:title>
+                    <sqf:title>Take the title from the headline #<sch:value-of select="$sqf:current-position"/>.</sqf:title>
                 </sqf:description>
                 <sqf:replace target="title" node-type="element">
                     <sch:value-of select="$sqf:current"/>

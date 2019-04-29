@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<schema xmlns="http://purl.oclc.org/dsdl/schematron" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:sqf="http://www.schematron-quickfix.com/validator/process" queryBinding="xslt2">
-    <ns uri="http://www.escali.schematron-quickfix.com/example" prefix="ex"/>
-    <pattern>
-        <rule context="foo">
-            <assert test="false()" sqf:fix="addBefore addAfter addChild addLastChild">test.</assert>
+<sch:schema xmlns:sch="http://purl.oclc.org/dsdl/schematron" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:sqf="http://www.schematron-quickfix.com/validator/process" queryBinding="xslt2">
+    <sch:ns uri="http://www.escali.schematron-quickfix.com/example" prefix="ex"/>
+    <sch:pattern>
+        <sch:rule context="foo">
+            <sch:assert test="false()" sqf:fix="addBefore addAfter addChild addLastChild">test.</sch:assert>
             <sqf:fix id="addBefore">
                 <sqf:description>
                     <sqf:title>Add before!</sqf:title>
@@ -32,6 +32,6 @@
                 <sqf:add match="." node-type="element" target="bar1" position="last-child"/>
                 <sqf:add match="." node-type="element" target="bar2" position="last-child"/>
             </sqf:fix>
-        </rule>
-    </pattern>
-</schema>
+        </sch:rule>
+    </sch:pattern>
+</sch:schema>

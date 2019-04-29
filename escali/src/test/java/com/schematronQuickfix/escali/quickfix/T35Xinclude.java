@@ -13,7 +13,7 @@ public class T35Xinclude extends FixingTestBaseChangePi {
 	public void test_1_addElement(){
 		doTest(
 				new ExecutionSetup(1, "addElement")
-					.addExecProp("SUFFIX", "_main:_included")
+					.addExecProp("SUFFIX", "_included")
 		);
 	}
 

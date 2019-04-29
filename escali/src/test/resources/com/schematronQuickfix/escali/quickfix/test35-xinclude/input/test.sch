@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<schema xmlns="http://purl.oclc.org/dsdl/schematron" xmlns:sqf="http://www.schematron-quickfix.com/validator/process" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" queryBinding="xslt2">
-    <pattern>
-        <rule context="/root/element">
-            <assert test="false()" sqf:fix="addElement addAllElement deleteIdAttr replaceElement deleteAllIdAttr replaceAllElement">Include test</assert>
+<sch:schema xmlns:sch="http://purl.oclc.org/dsdl/schematron" xmlns:sqf="http://www.schematron-quickfix.com/validator/process" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" queryBinding="xslt2">
+    <sch:pattern>
+        <sch:rule context="/root/element">
+            <sch:assert test="false()" sqf:fix="addElement addAllElement deleteIdAttr replaceElement deleteAllIdAttr replaceAllElement">Include test</sch:assert>
             <sqf:fix id="addElement">
                 <sqf:description>
                     <sqf:title>Add element as first child to current element</sqf:title>
@@ -39,6 +39,6 @@
                 </sqf:description>
                 <sqf:replace match="/root/element" target="root" node-type="element" xmlns=""><content/></sqf:replace>
             </sqf:fix>
-        </rule>
-    </pattern>
-</schema>
+        </sch:rule>
+    </sch:pattern>
+</sch:schema>

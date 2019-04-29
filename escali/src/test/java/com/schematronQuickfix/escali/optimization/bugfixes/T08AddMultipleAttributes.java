@@ -2,9 +2,10 @@ package com.schematronQuickfix.escali.optimization.bugfixes;
 
 import com.schematronQuickfix.escali.control.Config;
 import com.schematronQuickfix.escali.quickfix.FixingTestBase;
+import com.schematronQuickfix.escali.quickfix.FixingTestBaseChangePi;
 import org.junit.Test;
 
-public class T08AddMultipleAttributes extends FixingTestBase {
+public class T08AddMultipleAttributes extends FixingTestBaseChangePi {
 
 
 
@@ -29,7 +30,6 @@ public class T08AddMultipleAttributes extends FixingTestBase {
 	public Config getConfig() {
 		Config config = super.getConfig();
 		config.setInternalValidation(false);
-		config.setChangePrefix("sqfc");
 		return config;
 	}
 
