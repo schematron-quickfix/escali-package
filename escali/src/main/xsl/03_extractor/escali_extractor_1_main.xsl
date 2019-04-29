@@ -184,6 +184,8 @@
         <xsl:variable name="precedingAncestorChildsNS" select="$precedingAncestorChilds[namespace-uri(.) = $namespaces]"/>
         <xsl:sequence select="$precedingAncestorChildsNS"/>
     </xsl:function>
+    
+    <xsl:variable name="global-meta" select="/es:escali-reports/es:meta"/>
 
     <xsl:template match="sqf:fix" mode="sqf:xsm">
         <xsl:param name="location" tunnel="yes" as="xs:string"/>
@@ -191,8 +193,10 @@
         <axsl:template match="{$location}">
 
             <xsl:apply-templates select="ancestor::es:pattern/es:meta/sch:let" mode="sqf:letpattern"/>
-
-            <xsl:variable name="precedingForeigns" select="ancestor::es:meta/* intersect (preceding::sch:* | preceding::xsl:*)"/>
+            
+            <xsl:variable name="ancestorMeta" select="(ancestor::es:meta except $global-meta)"/>
+            
+            <xsl:variable name="precedingForeigns" select="$ancestorMeta/* intersect (preceding::sch:* | preceding::xsl:*)"/>
 
             <xsl:apply-templates select="$precedingForeigns | ./sch:* | ./xsl:* | sqf:param | sqf:delete | sqf:add | sqf:replace | sqf:stringReplace | sqf:call-fix" mode="#current"/>
 
