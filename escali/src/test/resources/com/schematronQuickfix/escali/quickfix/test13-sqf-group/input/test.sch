@@ -150,11 +150,11 @@
                         <sqf:title>Enter the text of the &lt;h3&gt;.</sqf:title>
                     </sqf:description>
                 </sqf:user-entry>
-                <sqf:add match="$firstPrecedingHeading" position="after" target="h3" node-type="element">
-                    <sch:value-of select="$h3"/>
-                </sqf:add>
                 <sqf:add match="$firstPrecedingHeading" position="after" target="h2" node-type="element">
                     <sch:value-of select="$h2"/>
+                </sqf:add>
+                <sqf:add match="$firstPrecedingHeading" position="after" target="h3" node-type="element">
+                    <sch:value-of select="$h3"/>
                 </sqf:add>
             </sqf:fix>
             <sqf:fix id="setH4ToH2" use-when="not((following::node()[matches(name(), 'h[123456]')])[1]/(self::h4 | self::h5))">

@@ -199,7 +199,7 @@ public abstract class FixingTestBase {
     }
 
 	public void expectError(ExecutionSetup executionSetup, Class<?> errorClass){
-		expectError(ConfigFactory.createDefaultConfig(), executionSetup, errorClass);
+		expectError(getConfig(), executionSetup, errorClass);
 	}
 	public void expectError(Config config, ExecutionSetup executionSetup, Class<?> errorClass){
 		try {

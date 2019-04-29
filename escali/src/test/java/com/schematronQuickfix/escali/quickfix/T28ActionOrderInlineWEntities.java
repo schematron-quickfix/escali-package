@@ -16,7 +16,7 @@ public class T28ActionOrderInlineWEntities extends FixingTestBaseChangePi {
 
 	@Test
 	public void test_1_deleteOther(){
-		doTest(new ExecutionSetup(1, "deleteOther"));
+		doTest(getConfig(), new String[]{}, new ExecutionSetup(1, "deleteOther"));
 	}
 
 	@Test
