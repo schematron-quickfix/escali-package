@@ -108,6 +108,13 @@
             </axsl:template>
 
             <xsl:apply-templates select=".//(es:assert | es:report)"/>
+            
+            <axsl:template match="*">
+                <axsl:apply-templates select="@*"/>
+                <axsl:apply-templates/>
+            </axsl:template>
+            
+            <axsl:template match="@*|text()|processing-instruction()|comment()" priority="-1"/>
 
             <axsl:template match="@sqf:markAttributeChange | @xml:base" mode="cleanup"/>
 
@@ -226,8 +233,12 @@
                         local-name(.)"/>
 
             <xsl:element name="xsm:{$node-type}">
-                <axsl:sequence select="namespace::*"/>
                 <axsl:attribute name="xml:base" select="base-uri(.)"/>
+                <axsl:sequence select="
+                      if (. instance of attribute()) 
+                    then (parent::*/namespace::*) 
+                    else namespace::*
+                    "/>
                 <axsl:attribute name="node" select="$xsm:node"/>
                 <xsl:if test="$markChanges">
                     <xsl:variable name="markerTest" select="
