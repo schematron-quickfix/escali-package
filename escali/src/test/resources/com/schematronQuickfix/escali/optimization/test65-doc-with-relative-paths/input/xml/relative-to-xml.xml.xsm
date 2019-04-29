@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsm:manipulator xmlns:xsm="http://www.schematron-quickfix.com/manipulator/process" document="file:/C:/Users/Nico/Work/Java2/escali-main-package/escali/src/test/resources/com/schematronQuickfix/escali/optimization/test65-doc-with-relative-paths/input/xml/relative-to-xml.xml">
+    <xsm:add node="/*:relative-to-xml[namespace-uri()=''][1]" position="first-child">
+        <xsm:content>
+            <?sqfc-start?>
+            <bar xmlns="http://www.escali.schematron-quickfix.com/null-namespace">baz</bar>
+            <?sqfc-end?>
+        </xsm:content>
+    </xsm:add>
+</xsm:manipulator>
