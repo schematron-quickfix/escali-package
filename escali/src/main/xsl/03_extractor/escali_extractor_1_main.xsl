@@ -299,6 +299,9 @@
                         <xsl:if test="@target">
                             <xsl:attribute name="name" select="@target"/>
                         </xsl:if>
+                        <xsl:if test="$node-type = 'attribute'">
+                            <xsl:attribute name="separator" select="' '"/>
+                        </xsl:if>
                         <xsl:apply-templates select="@select | node()" mode="#current"/>
                     </xsl:element>
                 </xsl:when>

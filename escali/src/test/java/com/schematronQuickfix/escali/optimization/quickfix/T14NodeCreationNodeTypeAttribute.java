@@ -41,5 +41,11 @@ public class T14NodeCreationNodeTypeAttribute extends FixingTestBase {
 		doTest(new ExecutionSetup(1, "addBar"));
 		
 	}
+
+	@Test
+	public void test_2(){
+		doTest(new ExecutionSetup(1, "addBarWSequence"));
+
+	}
 	
 }
