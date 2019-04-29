@@ -51,7 +51,7 @@
 
     <xsl:key name="nodeById" match="*[@id | @xml:id]" use="@id | @xml:id"/>
     
-    <xsl:key name="nodeByPath" match="node() | @*" use="es:getNodePath(.)"/>
+    <xsl:key name="nodeByPath" match="node() | @*" use="es:getNodePath(., true())"/>
 
     <!--  
     returns for a $pattern if it is active (true) or inactive (false)

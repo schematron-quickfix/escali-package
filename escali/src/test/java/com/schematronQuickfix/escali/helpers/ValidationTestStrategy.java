@@ -106,6 +106,7 @@ public class ValidationTestStrategy {
 					+ "| /svrl:schematron-output/@es:instance "
 					+ "| //@es:roleLabel|//@role "
 					+ "| /es:escali-reports/es:meta/@instance "
+					+ "| /es:escali-reports/es:meta/@schema "
 					+ "| /es:escali-reports/es:meta/es:schema "
 					+ "| /es:escali-reports/es:meta/es:instance "
 					+ "| //es:meta/@id "

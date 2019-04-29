@@ -137,7 +137,7 @@
                     </xsl:if>
                     <xsl:attribute name="phase" select="$phase"/>
                     <xsl:copy-of select="@schemaVersion | @es:link | @es:icon"/>
-                    <xsl:attribute name="es:schema" select="@es:uri"/>
+                    <xsl:attribute name="es:schema" select="es:base-uri(.)"/>
                     <axsl:attribute name="es:instance" select="document-uri(/)"/>
                     <xsl:sequence select="es:topLevelManipulatorExtension(/*)"/>
                     <xsl:for-each-group select="/sch:schema/(sch:ns|es:default-namespace)" group-by="concat(@uri, @prefix)">
