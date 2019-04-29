@@ -97,9 +97,9 @@
                                     </xsm:content>
                                 </xsm:add>
                             </axsl:for-each-group>
-
-                            <axsl:apply-templates select="current-group()" mode="cleanup"/>
-
+                            
+                            <axsl:apply-templates select="es:xsmActionOrder(current-group())" mode="cleanup"/>
+                            
                         </xsm:manipulator>
 
 

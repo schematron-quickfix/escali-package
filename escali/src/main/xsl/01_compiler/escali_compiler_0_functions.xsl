@@ -454,4 +454,51 @@
         <xsl:sequence select="$item instance of attribute()"/>
     </xsl:function>
 
+    <xsl:function name="es:xsmActionOrder" as="element()*">
+        <xsl:param name="actions" as="element()*"/>
+        <xsl:for-each-group select="$actions" group-by="@node">
+            <xsl:variable name="adds" select="current-group()/self::xsm:add"/>
+            <xsl:variable name="firstReplace" select="es:xsmSelectFirstReplace(current-group() except $adds)"/>
+
+            <xsl:variable name="addBefore" select="$adds[@position = 'before']"/>
+            <xsl:variable name="addAfter" select="$adds[@position = 'after']"/>
+            <xsl:variable name="addFChild" select="$adds[@position = 'first-child'][not($firstReplace)]"/>
+            <xsl:variable name="addLChild" select="$adds[@position = 'last-child'][not($firstReplace)]"/>
+
+            <xsl:sequence select="$addBefore, $firstReplace, $addFChild, $addLChild, $addAfter"/>
+
+        </xsl:for-each-group>
+    </xsl:function>
+
+    <xsl:function name="es:xsmSelectFirstReplace" as="element()*">
+        <xsl:param name="replaces" as="element()*"/>
+        <xsl:variable name="positional" select="$replaces[@start-position]"/>
+        <xsl:variable name="complete" select="$replaces except $positional"/>
+        <xsl:choose>
+            <xsl:when test="$complete">
+                <xsl:sequence select="$complete[1]"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:variable name="positional_1" select="$positional[1]"/>
+                <xsl:variable name="positional_rest" select="$positional except $positional_1"/>
+                <xsl:variable name="occupiedPositions" select="es:getPositionsFromReplace($positional_1)"/>
+                <xsl:variable name="positional_rest" select="$positional_rest[not(es:getPositionsFromReplace(.) = $occupiedPositions)]"/>
+                <xsl:sequence select="
+                        ($positional_1,
+                        if ($positional_rest) then
+                            es:xsmSelectFirstReplace($positional_rest)
+                        else
+                            ())"/>
+            </xsl:otherwise>
+        </xsl:choose>
+
+    </xsl:function>
+
+    <xsl:function name="es:getPositionsFromReplace" as="xs:integer*">
+        <xsl:param name="replace" as="element()"/>
+        <xsl:sequence select="$replace/(@start-position/xs:integer(.) to @end-position/xs:integer(.) - 1)"/>
+    </xsl:function>
+
+
+
 </xsl:stylesheet>

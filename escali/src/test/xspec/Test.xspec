@@ -159,4 +159,57 @@
             <x:expect label="result value" select="string(.)">'one', 'two', 'three'</x:expect>
         </x:scenario>
     </x:scenario>
+
+    <x:scenario label="Scenarion for testing function es:xsmSelectFirstReplace">
+        <x:call function="es:xsmSelectFirstReplace"/>
+        <x:scenario label="Replace with position">
+            <x:scenario label="Replace with position - without conflict">
+                <x:call>
+                    <x:param select="/*"> <xsm:replace node="/*:root/*:foo/text()[1]" start-position="0" end-position="3"/> <xsm:replace node="/*:root/*:foo/text()[1]" start-position="8" end-position="11"/> </x:param>
+                </x:call>
+                <x:expect select="/*" label="Result is equal to input"> <xsm:replace node="/*:root/*:foo/text()[1]" start-position="0" end-position="3"/> <xsm:replace node="/*:root/*:foo/text()[1]" start-position="8" end-position="11"/> </x:expect>
+            </x:scenario>
+            <x:scenario label="Replace with position - with inner conflict">
+                <x:call>
+                    <x:param select="/*"> <xsm:replace node="/*:root/*:foo/text()[1]" start-position="0" end-position="10"/> <xsm:replace node="/*:root/*:foo/text()[1]" start-position="2" end-position="3"/> </x:param>
+                </x:call>
+                <x:expect select="/*" label="Result is only first"><xsm:replace node="/*:root/*:foo/text()[1]" start-position="0" end-position="10"/></x:expect>
+            </x:scenario>
+            <x:scenario label="Replace with position - with nested conflict">
+                <x:call>
+                    <x:param select="/*"><xsm:replace node="/*:root/*:foo/text()[1]" start-position="0" end-position="3"/><xsm:replace node="/*:root/*:foo/text()[1]" start-position="2" end-position="10"/></x:param>
+                </x:call>
+                <x:expect select="/*" label="Result is only first"><xsm:replace node="/*:root/*:foo/text()[1]" start-position="0" end-position="3"/></x:expect>
+            </x:scenario>
+            <x:scenario label="Replace with position - with mix of nested conflict and no conflict">
+                <x:call>
+                    <x:param select="/*"><xsm:replace node="/*:root/*:foo/text()[1]" start-position="0" end-position="3"/><xsm:replace node="/*:root/*:foo/text()[1]" start-position="2" end-position="10"/><xsm:replace node="/*:root/*:foo/text()[1]" start-position="12" end-position="15"/></x:param>
+                </x:call>
+                <x:expect select="/*" label="Result is first and last"><xsm:replace node="/*:root/*:foo/text()[1]" start-position="0" end-position="3"/><xsm:replace node="/*:root/*:foo/text()[1]" start-position="12" end-position="15"/></x:expect>
+            </x:scenario>
+            
+            <x:scenario label="Replace with position - with mix of nested conflict and no conflict in other order">
+                <x:call>
+                    <x:param select="/*"><xsm:replace node="/*:root/*:foo/text()[1]" start-position="0" end-position="2"/><xsm:replace node="/*:root/*:foo/text()[1]" start-position="3" end-position="12"/><xsm:replace node="/*:root/*:foo/text()[1]" start-position="10" end-position="15"/></x:param>
+                </x:call>
+                <x:expect select="/*" label="Result is first and second"><xsm:replace node="/*:root/*:foo/text()[1]" start-position="0" end-position="2"/><xsm:replace node="/*:root/*:foo/text()[1]" start-position="3" end-position="12"/></x:expect>
+            </x:scenario>
+            
+            <x:scenario label="Replace with position - with two nested conflicts">
+                <x:call>
+                    <x:param select="/*"><xsm:replace node="/*:root/*:foo/text()[1]" start-position="0" end-position="3"/><xsm:replace node="/*:root/*:foo/text()[1]" start-position="2" end-position="12"/><xsm:replace node="/*:root/*:foo/text()[1]" start-position="10" end-position="15"/></x:param>
+                </x:call>
+                <x:expect select="/*" label="Result is first and last"><xsm:replace node="/*:root/*:foo/text()[1]" start-position="0" end-position="3"/><xsm:replace node="/*:root/*:foo/text()[1]" start-position="10" end-position="15"/></x:expect>
+            </x:scenario>
+            
+            <x:scenario label="Replace with position - with two nested conflicts in other order">
+                <x:call>
+                    <x:param select="/*"><xsm:replace node="/*:root/*:foo/text()[1]" start-position="0" end-position="3"/><xsm:replace node="/*:root/*:foo/text()[1]" start-position="10" end-position="15"/><xsm:replace node="/*:root/*:foo/text()[1]" start-position="2" end-position="12"/></x:param>
+                </x:call>
+                <x:expect select="/*" label="Result is first and second"><xsm:replace node="/*:root/*:foo/text()[1]" start-position="0" end-position="3"/><xsm:replace node="/*:root/*:foo/text()[1]" start-position="10" end-position="15"/></x:expect>
+            </x:scenario>
+            
+        </x:scenario>
+    </x:scenario>
+
 </x:description>
