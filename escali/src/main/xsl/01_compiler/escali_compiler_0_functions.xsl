@@ -499,6 +499,23 @@
         <xsl:sequence select="$replace/(@start-position/xs:integer(.) to @end-position/xs:integer(.) - 1)"/>
     </xsl:function>
 
+    <xsl:function name="es:position-consisty-check" as="xs:string">
+        <xsl:param name="position" as="xs:string"/>
+        <xsl:param name="node" as="node()"/>
+        <xsl:variable name="node-type" select="es:getNodeType($node)"/>
+        <xsl:variable name="no-element-position" select="
+                if ($position = ('first-child', 'last-child')) then
+                    ('after')
+                else
+                    ($position)
+                "/>
+        <xsl:sequence select="
+                if ($node-type = ('comment', 'processing-instruction', 'text')) then
+                    ($no-element-position)
+                else
+                    ($position)"/>
+    </xsl:function>
+
 
 
 </xsl:stylesheet>

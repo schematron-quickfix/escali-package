@@ -284,7 +284,7 @@
 
 
     <xsl:template match="sqf:add" mode="sqf:xsm" priority="25">
-        <axsl:attribute name="position" select="'{(@position, 'first-child')[1]}'"/>
+        <axsl:attribute name="position" select="es:position-consisty-check('{(@position, 'first-child')[1]}', .)"/>
         <xsl:next-match/>
     </xsl:template>
 
