@@ -231,7 +231,13 @@
             <axsl:variable name="xsm:content" as="node()*">
                 <xsl:next-match/>
             </axsl:variable>
-            <axsl:variable name="xsm:node" select="es:getNodePath(., true())"/>
+            <xsl:variable name="xsm-node" select="
+                    if (self::sqf:add) then
+                        ('(if(. instance of attribute()) then .. else .)')
+                    else
+                        ('.')
+                    "/>
+            <axsl:variable name="xsm:node" select="es:getNodePath({$xsm-node}, true())"/>
             <xsl:variable name="node-type" select="
                     if (local-name(.) = 'delete') then
                         'replace'
@@ -255,7 +261,7 @@
                             "/>
                     <axsl:if test="{$markerTest}">
                         <axsl:attribute name="sqf:markAttributeChange" select="
-                                if (. instance of attribute()) then
+                                if (. instance of attribute()and {not(self::sqf:add)}()) then
                                     'parent'
                                 else
                                     'this'
