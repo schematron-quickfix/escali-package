@@ -317,16 +317,17 @@
             </xsl:choose>
 
         </axsl:variable>
+        <axsl:variable name="sqf:context-node-type" select="es:getNodeType(.)"/>
         <axsl:variable name="sqf:attrContent" select="$sqf:content[es:is-attribute(.)]"/>
         <axsl:variable name="sqf:noAttrContent" select="$sqf:content[not(es:is-attribute(.))]"/>
         <xsm:content>
-            <axsl:copy-of select="$sqf:attrContent" copy-namespaces="no"/>
+            <axsl:copy-of select="es:attribute-consisty-check($sqf:attrContent, $sqf:context-node-type, '{local-name()}')" copy-namespaces="no"/>
             <xsl:if test="$markChanges">
                 <axsl:if test="count($sqf:noAttrContent) gt 0">
                     <axsl:processing-instruction name="sqfc-start"/>
                 </axsl:if>
             </xsl:if>
-            <axsl:copy-of select="$sqf:noAttrContent" copy-namespaces="no"/>
+            <axsl:copy-of select="es:no-attribute-consisty-check($sqf:noAttrContent, $sqf:context-node-type, '{local-name()}')" copy-namespaces="no"/>
             <xsl:if test="$markChanges">
                 <axsl:if test="count($sqf:noAttrContent) gt 0">
                     <axsl:processing-instruction name="sqfc-end"/>

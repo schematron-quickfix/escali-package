@@ -454,6 +454,55 @@
         <xsl:sequence select="$item instance of attribute()"/>
     </xsl:function>
 
+    <xsl:function name="es:attribute-consisty-check" as="attribute()*">
+        <xsl:param name="attributes" as="attribute()*"/>
+        <xsl:param name="context-node-type" as="xs:string"/>
+        <xsl:param name="xsm-operation" as="xs:string"/>
+
+        <xsl:choose>
+            <xsl:when test="not($attributes)"/>
+            <xsl:when test="$xsm-operation = 'add'">
+                <xsl:sequence select="
+                        if ($context-node-type = ('element', 'attribute')) then
+                            ($attributes)
+                        else
+                            ()"/>
+            </xsl:when>
+            <xsl:when test="$xsm-operation = 'replace' and $context-node-type = 'attribute'">
+                <xsl:sequence select="$attributes"/>
+            </xsl:when>
+            <xsl:when test="$xsm-operation = 'replace'">
+                <xsl:message terminate="yes">Nodes from the type <xsl:value-of select="$context-node-type"/> can not be replaced by Attributes.</xsl:message>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:message terminate="yes">Unknown operation <xsl:value-of select="$xsm-operation"/>.</xsl:message>
+            </xsl:otherwise>
+        </xsl:choose>
+
+    </xsl:function>
+    <xsl:function name="es:no-attribute-consisty-check" as="item()*">
+        <xsl:param name="items" as="item()*"/>
+        <xsl:param name="context-node-type" as="xs:string"/>
+        <xsl:param name="xsm-operation" as="xs:string"/>
+
+        <xsl:choose>
+            <xsl:when test="not($items)"/>
+            <xsl:when test="$xsm-operation = 'add'">
+                <xsl:sequence select="$items"/>
+            </xsl:when>
+            <xsl:when test="$xsm-operation = 'replace' and $context-node-type = 'attribute'">
+                <xsl:message terminate="yes">Attributes can only replaced by other attributes.</xsl:message>
+            </xsl:when>
+            <xsl:when test="$xsm-operation = 'replace'">
+                <xsl:sequence select="$items"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:message terminate="yes">Unknown operation <xsl:value-of select="$xsm-operation"/>.</xsl:message>
+            </xsl:otherwise>
+        </xsl:choose>
+
+    </xsl:function>
+
     <xsl:function name="es:xsmActionOrder" as="element()*">
         <xsl:param name="actions" as="element()*"/>
         <xsl:for-each-group select="$actions" group-by="@node">
