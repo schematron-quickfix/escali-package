@@ -247,7 +247,7 @@
             <xsl:element name="xsm:{$node-type}">
                 <axsl:attribute name="xml:base" select="base-uri(.)"/>
                 <axsl:sequence select="
-                      if (. instance of attribute()) 
+                      if (. instance of attribute() or {@position = ('after', 'before')}()) 
                     then (parent::*/namespace::*) 
                     else namespace::*
                     "/>
