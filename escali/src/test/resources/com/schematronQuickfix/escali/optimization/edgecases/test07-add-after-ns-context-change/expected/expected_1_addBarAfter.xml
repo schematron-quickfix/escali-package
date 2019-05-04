@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+    <foo:foo xmlns:foo="foo.com"/><foo:bar xmlns:foo="foo.com">baz</foo:bar>
+</root>
