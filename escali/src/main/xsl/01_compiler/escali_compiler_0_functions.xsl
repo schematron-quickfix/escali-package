@@ -50,7 +50,7 @@
     <xsl:key name="phaseByInactivePatternId" match="sch:phase" use="es:getRefPhases(.)/es:inactive/@pattern"/>
 
     <xsl:key name="nodeById" match="*[@id | @xml:id]" use="@id | @xml:id"/>
-    
+
     <xsl:key name="nodeByPath" match="node() | @*" use="es:getNodePath(., true())"/>
 
     <!--  
@@ -441,14 +441,14 @@
                     else
                         ()"/>
     </xsl:function>
-    
+
     <xsl:function name="es:nodeByPath" as="node()">
         <xsl:param name="path" as="xs:string"/>
         <xsl:param name="document" as="document-node()"/>
         <xsl:variable name="node" select="key('nodeByPath', $path, $document)"/>
         <xsl:sequence select="$node"/>
     </xsl:function>
-    
+
     <xsl:function name="es:is-attribute" as="xs:boolean">
         <xsl:param name="item" as="item()"/>
         <xsl:sequence select="$item instance of attribute()"/>

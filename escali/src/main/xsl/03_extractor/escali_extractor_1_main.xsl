@@ -53,10 +53,10 @@
 
 
     <xsl:include href="../01_compiler/escali_compiler_0_functions.xsl"/>
-    
+
     <xsl:template match="/es:escali-reports">
-        
-        
+
+
         <axsl:stylesheet version="2.0" exclude-result-prefixes="#all">
             <xsl:attribute name="xml:base" select="/es:escali-reports/es:meta/@schema"/>
 
@@ -97,9 +97,9 @@
                                     </xsm:content>
                                 </xsm:add>
                             </axsl:for-each-group>
-                            
+
                             <axsl:apply-templates select="es:xsmActionOrder(current-group())" mode="cleanup"/>
-                            
+
                         </xsm:manipulator>
 
 
@@ -110,13 +110,13 @@
             </axsl:template>
 
             <xsl:apply-templates select=".//(es:assert | es:report)"/>
-            
+
             <axsl:template match="*">
                 <axsl:apply-templates select="@*"/>
                 <axsl:apply-templates/>
             </axsl:template>
-            
-            <axsl:template match="@*|text()|processing-instruction()|comment()" priority="-1"/>
+
+            <axsl:template match="@* | text() | processing-instruction() | comment()" priority="-1"/>
 
             <axsl:template match="@sqf:markAttributeChange | @xml:base" mode="cleanup"/>
 
@@ -186,7 +186,7 @@
         <xsl:variable name="precedingAncestorChildsNS" select="$precedingAncestorChilds[namespace-uri(.) = $namespaces]"/>
         <xsl:sequence select="$precedingAncestorChildsNS"/>
     </xsl:function>
-    
+
     <xsl:variable name="global-meta" select="/es:escali-reports/es:meta"/>
 
     <xsl:template match="sqf:fix" mode="sqf:xsm">
@@ -195,9 +195,9 @@
         <axsl:template match="{$location}">
 
             <xsl:apply-templates select="ancestor::es:pattern/es:meta/sch:let" mode="sqf:letpattern"/>
-            
+
             <xsl:variable name="ancestorMeta" select="(ancestor::es:meta except $global-meta)"/>
-            
+
             <xsl:variable name="precedingForeigns" select="$ancestorMeta/* intersect (preceding::sch:* | preceding::xsl:*)"/>
 
             <xsl:apply-templates select="$precedingForeigns | ./sch:* | ./xsl:* | sqf:param | sqf:delete | sqf:add | sqf:replace | sqf:stringReplace | sqf:call-fix" mode="#current"/>
@@ -371,13 +371,13 @@
             <axsl:otherwise/>
         </axsl:choose>
     </xsl:function>
-    
+
     <xsl:template match="sqf:copy-of[@unparsed-mode = 'true']" mode="sqf:xsm" priority="10">
         <axsl:for-each select="{(@select, 'node()')[1]}">
             <xsm:copy select="{{ es:getNodePath(.) }}"/>
         </axsl:for-each>
     </xsl:template>
-    
+
     <xsl:template match="sqf:keep | sqf:copy-of" mode="sqf:xsm">
         <axsl:copy-of select="{(@select, 'node()')[1]}"/>
     </xsl:template>
