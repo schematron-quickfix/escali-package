@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+    <?foo?>
+    <foo bar="foo_baz"/>
+    <!-- foo -->
+    <text>foo</text>
+</root>
