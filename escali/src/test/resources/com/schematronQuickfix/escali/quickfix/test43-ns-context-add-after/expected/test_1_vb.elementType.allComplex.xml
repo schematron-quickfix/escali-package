@@ -18,5 +18,5 @@
         <xs:sequence>
             <?sqfc-start ?><xs:element name="head" type="headType"><?sqfc-end ?></xs:element>
         </xs:sequence>
-    </xs:complexType><?sqfc-start ?><xs:complexType xmlns:d2t="http://www.data2type.de" name="headType"><xs:annotation><xs:appinfo><d2t:xsdguide/></xs:appinfo></xs:annotation></xs:complexType><?sqfc-end ?>
+    </xs:complexType><?sqfc-start ?><xs:complexType name="headType"><xs:annotation><xs:appinfo><d2t:xsdguide xmlns:d2t="http://www.data2type.de"/></xs:appinfo></xs:annotation></xs:complexType><?sqfc-end ?>
 </xs:schema>
