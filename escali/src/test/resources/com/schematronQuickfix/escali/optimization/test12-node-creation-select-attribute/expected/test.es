@@ -18,6 +18,12 @@
                 <sqf:fix id="replaceFoo">
                     <sqf:replace select="bar"/>
                 </sqf:fix>
+                <sqf:fix id="replaceByAtomic">
+                    <sqf:replace match="bar" select="1"/>
+                </sqf:fix>
+                <sqf:fix id="replaceByAtomicSeq">
+                    <sqf:replace match="bar" select="1 to 10"/>
+                </sqf:fix>
             </es:meta>
             <es:assert id="w41aab1_w20aab3b1b1"
                 location="/*:root[namespace-uri()=''][1]/*:foo[namespace-uri()=''][1]"
@@ -26,6 +32,12 @@
                 <es:text>Foo should not be empty.</es:text>
                 <sqf:fix fixId="replaceFoo" title="Replace foo by bar" id="replaceFoo_w41aab1_w20aab3b1b1">
                     <sqf:call-fix ref="replaceFoo"/>
+                </sqf:fix>
+                <sqf:fix fixId="replaceByAtomic" title="Replace by atomic value" id="replaceByAtomic_w41aab1_w20aab3b1b1">
+                    <sqf:call-fix ref="replaceByAtomic"/>
+                </sqf:fix>
+                <sqf:fix fixId="replaceByAtomicSeq" title="Replace by sequence of atomic values" id="replaceByAtomicSeq_w41aab1_w20aab3b1b1">
+                    <sqf:call-fix ref="replaceByAtomicSeq"/>
                 </sqf:fix>
             </es:assert>
         </es:rule>
