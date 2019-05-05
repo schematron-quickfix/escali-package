@@ -484,9 +484,8 @@
         <xsl:param name="items" as="item()*"/>
         <xsl:param name="context-node-type" as="xs:string"/>
         <xsl:param name="xsm-operation" as="xs:string"/>
-
         <xsl:choose>
-            <xsl:when test="not($items)"/>
+            <xsl:when test="count($items) = 0"/>
             <xsl:when test="$xsm-operation = 'add'">
                 <xsl:sequence select="$items"/>
             </xsl:when>
