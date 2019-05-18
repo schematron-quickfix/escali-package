@@ -586,4 +586,94 @@
 
 
 
+    <xsl:function name="es:instert-content-into-ns-context" as="element(xsm:content)">
+        <xsl:param name="xsmcontent" as="element(xsm:content)"/>
+        <xsl:param name="namespacecontext" as="element()"/>
+        <xsl:variable name="context-prefixes" select="in-scope-prefixes($namespacecontext)"/>
+        <xsl:for-each select="$xsmcontent">
+            <xsl:variable name="prefixes" select="in-scope-prefixes(.)"/>
+            <xsl:variable name="badPrefixes" select="
+                    for $p in $prefixes
+                    return
+                        $p[. = $context-prefixes]
+                        [$xsmcontent/namespace::*[name() = $p] != $namespacecontext/namespace::*[name() = $p]]"/>
+            <xsl:variable name="aliasPrefixes" select="es:find-id-seq-value($badPrefixes, ($context-prefixes, $prefixes))"/>
+            <xsl:copy copy-namespaces="no">
+                <xsl:sequence select="namespace::*[not(name() = $badPrefixes)]"/>
+                <xsl:for-each select="@*">
+                    <xsl:variable name="aName" select="name()"/>
+                    <xsl:variable name="badPrefix" select="$badPrefixes[starts-with($aName, concat(., ':'))]"/>
+                    <xsl:choose>
+                        <xsl:when test="$badPrefix">
+                            <xsl:variable name="badPrefixIdx" select="index-of($badPrefixes, $badPrefix)"/>
+                            <xsl:variable name="aliasPrefix" select="$aliasPrefixes[$badPrefixIdx]"/>
+                            <!--                            <xsl:namespace name="{$aliasPrefix}" select="$xsmcontent/namespace::*[name() = $badPrefix]"/>-->
+                            <xsl:attribute name="{$aliasPrefix}:{replace(name(), '^[^:]+:', '')}" select="." namespace="{$xsmcontent/namespace::*[name() = $badPrefix]}"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:copy/>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </xsl:for-each>
+                <xsl:sequence select="node()"/>
+            </xsl:copy>
+        </xsl:for-each>
+    </xsl:function>
+
+
+
+    <xsl:function name="es:find-id-seq-value" as="xs:string*">
+        <xsl:param name="baseValues" as="xs:string*"/>
+        <xsl:param name="used-values" as="xs:string*"/>
+        <xsl:param name="seperator" as="xs:string"/>
+        <xsl:variable name="first" select="$baseValues[1]" as="xs:string?"/>
+        <xsl:choose>
+            <xsl:when test="$first">
+                <xsl:variable name="rest" select="$baseValues[position() gt 1]" as="xs:string*"/>
+                <xsl:variable name="firstId" select="es:find-id-value($first, ($used-values, $rest), $seperator)"/>
+                <xsl:sequence select="
+                        ($firstId,
+                        es:find-id-seq-value($rest, ($used-values, $firstId), $seperator)
+                        )
+                        "/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:sequence select="()"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:function>
+
+    <xsl:function name="es:find-id-seq-value" as="xs:string*">
+        <xsl:param name="baseValues" as="xs:string*"/>
+        <xsl:param name="used-values" as="xs:string*"/>
+        <xsl:sequence select="es:find-id-seq-value($baseValues, $used-values, '_')"/>
+    </xsl:function>
+
+    <xsl:function name="es:find-id-value" as="xs:string">
+        <xsl:param name="baseValue" as="xs:string"/>
+        <xsl:param name="used-values" as="xs:string*"/>
+        <xsl:param name="seperator" as="xs:string"/>
+
+        <xsl:variable name="startsWithUsed" select="$used-values[starts-with(., concat($baseValue, $seperator))]"/>
+        <xsl:variable name="presetValues" select="
+                for $s in 2 to count($startsWithUsed) + 2
+                return
+                    concat($baseValue, $seperator, $s)"/>
+        <xsl:variable name="notUsedValues" select="($presetValues[not(. = $used-values)])[1]"/>
+        <xsl:sequence select="
+                if ($baseValue = $used-values) then
+                    $notUsedValues
+                else
+                    $baseValue
+                "/>
+
+    </xsl:function>
+
+    <xsl:function name="es:find-id-value" as="xs:string">
+        <xsl:param name="baseValue" as="xs:string"/>
+        <xsl:param name="used-values" as="xs:string*"/>
+        <xsl:sequence select="es:find-id-value($baseValue, $used-values, '_')"/>
+    </xsl:function>
+
+
 </xsl:stylesheet>

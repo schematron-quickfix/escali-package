@@ -228,9 +228,12 @@
     <xsl:template match="sqf:replace | sqf:add | sqf:delete" mode="sqf:xsm" priority="50">
         <xsl:variable name="match" select="(@match, '.')[1]"/>
         <axsl:for-each select="{$match}">
-            <axsl:variable name="xsm:content" as="node()*">
+            <axsl:variable name="xsm:childs" as="node()*">
                 <xsl:next-match/>
             </axsl:variable>
+            <axsl:variable name="xsm:content" select="$xsm:childs/self::xsm:content" as="element(xsm:content)"/>
+            <axsl:variable name="xsm:position" select="es:only-attributes($xsm:childs)" as="attribute(position)?"/>
+            
             <xsl:variable name="xsm-node" select="
                     if (self::sqf:add) then
                         ('(if(. instance of attribute()) then .. else .)')
@@ -268,7 +271,8 @@
                                 "/>
                     </axsl:if>
                 </xsl:if>
-                <axsl:sequence select="$xsm:content"/>
+                <axsl:sequence select="$xsm:position"/>
+                <axsl:sequence select="es:instert-content-into-ns-context($xsm:content, $xsm:namespace-context)"/>
             </xsl:element>
         </axsl:for-each>
     </xsl:template>
