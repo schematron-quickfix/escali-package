@@ -159,41 +159,17 @@
         <xsl:apply-templates/>
     </xsl:template>
 
+    <xsl:template match="sqf:fix"/>
+
     <xsl:template match="sqf:user-entry/*"/>
 
 
-
-    <xsl:template match="key('fix-id', $id)/sqf:call-fix">
+    <xsl:template match="sqf:call-fix">
         <xsl:apply-templates select="es:getRefFix(@ref)" mode="sqf:xsm">
             <xsl:with-param name="params" select="sqf:with-param" tunnel="yes"/>
         </xsl:apply-templates>
     </xsl:template>
 
-    <xsl:template match="sqf:call-fix" mode="sqf:xsm">
-        <axsl:for-each select=".">
-            <xsl:apply-templates select="es:getRefFix(@ref)/(sqf:param | sch:* | xsl:* | sqf:delete | sqf:add | sqf:replace | sqf:stringReplace | sqf:call-fix)" mode="sqf:xsm">
-                <xsl:with-param name="params" select="sqf:with-param" tunnel="yes"/>
-            </xsl:apply-templates>
-        </axsl:for-each>
-    </xsl:template>
-
-    <xsl:template match="sqf:fix"/>
-
-
-
-    <xsl:function name="es:getElementsInScope">
-        <xsl:param name="context"/>
-        <xsl:sequence select="es:getElementsInScope($context, ('http://purl.oclc.org/dsdl/schematron', ''))"/>
-    </xsl:function>
-    <xsl:function name="es:getElementsInScope">
-        <xsl:param name="context"/>
-        <xsl:param name="namespaces"/>
-        <xsl:variable name="ancestorChilds" select="$context/ancestor::*/*"/>
-        <xsl:variable name="precedings" select="$context/preceding::*"/>
-        <xsl:variable name="precedingAncestorChilds" select="$ancestorChilds intersect $precedings"/>
-        <xsl:variable name="precedingAncestorChildsNS" select="$precedingAncestorChilds[namespace-uri(.) = $namespaces]"/>
-        <xsl:sequence select="$precedingAncestorChildsNS"/>
-    </xsl:function>
 
     <xsl:variable name="global-meta" select="/es:escali-reports/es:meta"/>
 
@@ -214,6 +190,14 @@
         </axsl:template>
     </xsl:template>
 
+
+    <xsl:template match="sqf:call-fix" mode="sqf:xsm">
+        <axsl:for-each select=".">
+            <xsl:apply-templates select="es:getRefFix(@ref)/(sqf:param | sch:* | xsl:* | sqf:delete | sqf:add | sqf:replace | sqf:stringReplace | sqf:call-fix)" mode="sqf:xsm">
+                <xsl:with-param name="params" select="sqf:with-param" tunnel="yes"/>
+            </xsl:apply-templates>
+        </axsl:for-each>
+    </xsl:template>
     <xsl:template match="sqf:param" mode="sqf:xsm">
         <xsl:param name="params" tunnel="yes"/>
         <xsl:variable name="name" select="@name"/>
