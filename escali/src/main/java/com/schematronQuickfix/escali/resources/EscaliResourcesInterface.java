@@ -12,7 +12,6 @@ public interface EscaliResourcesInterface {
 	public Source[] getValidator() throws FileNotFoundException;
 	public Source getSvrlPrinter(String type) throws FileNotFoundException;
 	public Source getExtractor() throws FileNotFoundException;
-	public Source[] getManipulator() throws FileNotFoundException;
 	public Source getSchematronSchema() throws FileNotFoundException;
 	Source getSchematronForSchematron() throws FileNotFoundException;
 }

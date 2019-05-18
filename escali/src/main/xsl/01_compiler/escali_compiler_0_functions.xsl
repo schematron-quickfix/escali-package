@@ -676,4 +676,40 @@
     </xsl:function>
 
 
+    <xsl:function name="xsm:postprocess">
+        <xsl:param name="document" as="document-node()"/>
+        <xsl:apply-templates select="$document" mode="xsm:postprocess"/>
+    </xsl:function>
+
+
+    <!-- 
+        copies all nodes:
+    -->
+    <xsl:template match="node() | @*" mode="xsm:postprocess">
+        <xsl:copy>
+            <xsl:apply-templates select="@*" mode="#current"/>
+            <xsl:apply-templates select="node()" mode="#current"/>
+        </xsl:copy>
+    </xsl:template>
+    <xsl:template match="*[namespace-uri() = 'http://www.escali.schematron-quickfix.com/null-namespace']" priority="1000" mode="xsm:postprocess">
+        <xsl:variable name="next-match" as="node()?">
+            <xsl:next-match/>
+        </xsl:variable>
+        <xsl:for-each select="$next-match">
+            <xsl:choose>
+                <xsl:when test=". instance of element()">
+                    <xsl:element name="{local-name()}" namespace="">
+                        <xsl:copy-of select="@*"/>
+                        <xsl:copy-of select="node()"/>
+                    </xsl:element>
+                </xsl:when>
+                <xsl:when test=". instance of attribute()">
+                    <xsl:attribute name="{local-name()}" select="." namespace=""/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:copy-of select="."/>
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:for-each>
+    </xsl:template>
 </xsl:stylesheet>

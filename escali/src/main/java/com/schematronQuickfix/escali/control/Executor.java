@@ -33,11 +33,9 @@ import com.schematronQuickfix.xsm.operations.PositionalReplace;
 public class Executor {
 
 	private XSLTPipe extractor = new XSLTPipe("Extractor");
-	private XSLTStep[] manipulatorGenSteps = null;
 
 	public Executor(EscaliResourcesInterface resource) throws XSLTErrorListener, FileNotFoundException {
 		extractor.addStep(resource.getExtractor());
-		manipulatorGenSteps = new XSLTStep[] { new XSLTStep(resource.getManipulator()[0], new ArrayList<Parameter>()) };
 	}
 
 	// public TextSource execute(_QuickFix[] fixes, SVRLReport report, Config
@@ -83,7 +81,6 @@ public class Executor {
 
 		TextSource extractorXSL = extractor.pipeMain(svrl, params);
 		manipulator.addStep(extractorXSL, ueParams);
-		manipulator.addStep(manipulatorGenSteps[0]);
 		ArrayList<TextSource> extractorResult = manipulator.pipe(input, config.createManipulatorParams());
 
 		if (config.isXmlSaveMode()) {

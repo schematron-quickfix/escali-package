@@ -96,11 +96,6 @@ public class EscaliArchiveResources implements EscaliResourcesInterface {
 	}
 
 	@Override
-	public Source[] getManipulator() throws FileNotFoundException {
-		return getInputStream(manipulatorFolder, new String[] {"escali_manipulator_2_postprocess.xsl" });
-	}
-
-	@Override
 	public Source getSchematronSchema() throws FileNotFoundException {
 		return getInputStream(this.path + "schema/SQF/", "iso-schematron.xsd");
 	}

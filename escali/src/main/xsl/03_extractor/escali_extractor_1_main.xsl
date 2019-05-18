@@ -75,7 +75,7 @@
                 </axsl:variable>
                 <empty/>
                 <axsl:for-each-group select="$sqf:manipulator-body" group-by="base-uri(.)">
-                    <axsl:result-document href="{{concat(current-grouping-key(), '.xsm')}}">
+                    <axsl:variable name="xsm:document">
                         <xsm:manipulator document="{{current-grouping-key()}}">
 
 
@@ -101,7 +101,15 @@
                             <axsl:apply-templates select="es:xsmActionOrder(current-group())" mode="cleanup"/>
 
                         </xsm:manipulator>
+                    </axsl:variable>
 
+                    <axsl:result-document href="{{concat(current-grouping-key(), '.xsm')}}">
+
+                        <!--
+                        Call xsm:postprocess function (formaly standalone XSLT postprocess)
+                            - Handles nodes in null namespace
+                        -->
+                        <axsl:sequence select="xsm:postprocess($xsm:document)"/>
 
                     </axsl:result-document>
 
