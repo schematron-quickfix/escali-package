@@ -541,12 +541,27 @@
 
             <xsl:variable name="addBefore" select="$adds[@position = 'before']"/>
             <xsl:variable name="addAfter" select="$adds[@position = 'after']"/>
-            <xsl:variable name="addFChild" select="$adds[@position = 'first-child'][not($firstReplace)]"/>
+            <xsl:variable name="addAttributes" select="es:mergeAddAttributes($adds[@position = 'first-child'][xsm:content/@*][not($firstReplace)])"/>
+            <xsl:variable name="addFChild" select="($adds[@position = 'first-child'][not(xsm:content/@*)])[not($firstReplace)]"/>
             <xsl:variable name="addLChild" select="$adds[@position = 'last-child'][not($firstReplace)]"/>
 
-            <xsl:sequence select="$addBefore, $firstReplace, $addFChild, $addLChild, $addAfter"/>
+            <xsl:sequence select="$addBefore, $firstReplace, $addAttributes, $addFChild, $addLChild, $addAfter"/>
 
         </xsl:for-each-group>
+    </xsl:function>
+    <xsl:function name="es:mergeAddAttributes" as="element(xsm:add)?">
+        <xsl:param name="addAttributes" as="element(xsm:add)*"/>
+        <xsl:if test="$addAttributes">
+            <xsm:add>
+                <xsl:sequence select="$addAttributes[1]/(@* | namespace::*)"/>
+                <xsm:content>
+                    <xsl:for-each-group select="$addAttributes/xsm:content/(@* | namespace::*)" group-by="QName(namespace-uri(), name())">
+                        <xsl:sequence select="."/>
+                    </xsl:for-each-group>
+                    <xsl:sequence select="$addAttributes/xsm:content/node()"/>
+                </xsm:content>
+            </xsm:add>
+        </xsl:if>
     </xsl:function>
 
     <xsl:function name="es:xsmSelectFirstReplace" as="element()*">
