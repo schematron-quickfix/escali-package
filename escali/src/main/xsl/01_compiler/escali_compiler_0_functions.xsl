@@ -441,7 +441,18 @@
                     else
                         ()"/>
     </xsl:function>
-
+<!--
+    es:nodeByPath
+    Inverse function of es:getNodePath
+    
+    $path = An XPath to a node, returned by the function es:getNodePath
+    
+    $document = the context document to search for the node
+    
+    return value = returns the node $n inside of $document, which satisfies
+                   the expression $path = es:getNodePath($n, true())
+    
+    -->
     <xsl:function name="es:nodeByPath" as="node()">
         <xsl:param name="path" as="xs:string"/>
         <xsl:param name="document" as="document-node()"/>
@@ -449,11 +460,30 @@
         <xsl:sequence select="$node"/>
     </xsl:function>
 
+    <!--
+    es:is-attribute
+    
+    Function to check if an item is from type attribute.
+    Used to wrap an "instance of" query, to prevent static compiler warnings
+    
+    $item = item of any type
+    
+    return value = true if $item is an attribute
+    -->
     <xsl:function name="es:is-attribute" as="xs:boolean">
         <xsl:param name="item" as="item()"/>
         <xsl:sequence select="$item instance of attribute()"/>
     </xsl:function>
 
+    <!--
+    es:only-attributes
+    
+    Function to return only attributes from a sequence of unknown typed items
+    
+    $item = sequence of items of any type
+    
+    return value = all items of $item, which are attributes
+    -->
     <xsl:function name="es:only-attributes" as="attribute()*">
         <xsl:param name="item" as="item()*"/>
         <xsl:for-each select="$item">
@@ -464,6 +494,16 @@
                         ()"/>
         </xsl:for-each>
     </xsl:function>
+
+    <!--
+    es:no-attributes
+    
+    Function to filter attributes from a sequence of unknown typed items
+    
+    $item = sequence of items of any type
+    
+    return value = all items of $item, which are not attributes
+    -->
     <xsl:function name="es:no-attributes" as="item()*">
         <xsl:param name="item" as="item()*"/>
         <xsl:for-each select="$item">
@@ -474,6 +514,24 @@
                         (.)"/>
         </xsl:for-each>
     </xsl:function>
+
+    <!--    
+    es:attribute-consisty-check
+    
+    Function to check consisty of XSM actions for attribute items
+    respecting the node type of the XSM context node.
+    
+    $attributes = a sequence of attributes, which should be added or replace other nodes
+    
+    $context-node-type = type of the XSM context node (possible values: 
+                         'element', 'attribute', 'text', 'comment', 'processing-instruction')
+    
+    $xsm-operation = Kind of the XSM operation (possible values: 'add', 'replace')
+    
+    return value = Returns the input sequence $attributes, an empty sequence by trying 
+                   to add attributes to other nodes than elements or attributes or 
+                   throws an exception by trying to replace non-attributes by attributes 
+    -->
     <xsl:function name="es:attribute-consisty-check" as="attribute()*">
         <xsl:param name="attributes" as="attribute()*"/>
         <xsl:param name="context-node-type" as="xs:string"/>
@@ -500,6 +558,23 @@
         </xsl:choose>
 
     </xsl:function>
+
+    <!--    
+    es:no-attribute-consisty-check
+    
+    Function to check consisty of XSM actions for no attribute items
+    respecting the node type of the XSM context node.
+    
+    $items = a item sequence which should be added or replace other nodes
+    
+    $context-node-type = type of the XSM context node (possible values: 
+                         'element', 'attribute', 'text', 'comment', 'processing-instruction')
+    
+    $xsm-operation = Kind of the XSM operation (possible values: 'add', 'replace')
+    
+    return value = Returns the input sequence $items or throws an exception 
+                   by trying to replace attributes by non-attributes
+    -->
     <xsl:function name="es:no-attribute-consisty-check" as="item()*">
         <xsl:param name="items" as="item()*"/>
         <xsl:param name="context-node-type" as="xs:string"/>
@@ -521,6 +596,34 @@
         </xsl:choose>
 
     </xsl:function>
+
+    <!--
+    es:xsmActionOrder
+    
+    Function to handle edge cases of multiple XSM action elements,
+    prevents conflicts, rule the order of the actions.
+    
+    $actions = a sequence of XSM action elements
+    
+    return value = a sequence of XSM action elements, 
+                   by default it is the input sequence $actions
+                   for edge cases the input squence is filtered 
+                   or manipulated. 
+    
+    
+    Edge cases to handle:
+    
+    1. Multiple xsm:add try to add same attributes to the same element.
+        => Uses the function es:mergeAddAttributes()
+    2. Multiple xsm:replace or xsm:delete try to replace the same node 
+       or the same substrings of the same text node
+        => Uses the function es:xsmSelectFirstReplace()
+    3. Multiple actions to the same nodes
+        => Resorting of actions
+    4. Connected actions with @sqf:depends-on
+        => Filtering of connected actions, if one action was filterd 
+           by the other edge cases
+    -->
 
     <xsl:function name="es:xsmActionOrder" as="element()*">
         <xsl:param name="actions" as="element()*"/>
@@ -549,6 +652,39 @@
 
         </xsl:for-each-group>
     </xsl:function>
+    <!--
+    es:mergeAddAttributes
+    
+    $addAttributes = a sequence xsm:add elements which are adding at least one attribute
+                     all xsm:add elements should have the same node attribute and @position = 'first-child'
+    
+    return value = 
+                    empty sequence if $addAttributes is empty
+                    one xsm:add element with merged content and merged attributes
+                    
+    Example:
+    
+    $addAttributes:
+        <xsm:add node="/foo" position="first-child"> 
+            <xsm:content foo="foo" bar="bar">
+                <foo/>
+            </xsm:content>
+        </xsm:add>
+        <xsm:add node="/foo" position="first-child"> 
+            <xsm:content baz="baz">
+                <foo/>
+            </xsm:content>
+        </xsm:add>
+    
+    return value:
+        <xsm:add node="/foo" position="first-child"> 
+            <xsm:content foo="foo" bar="bar" baz="baz">
+                <foo/>
+                <foo/>
+            </xsm:content>
+        </xsm:add>
+    
+    -->
     <xsl:function name="es:mergeAddAttributes" as="element(xsm:add)?">
         <xsl:param name="addAttributes" as="element(xsm:add)*"/>
         <xsl:if test="$addAttributes">
@@ -563,6 +699,42 @@
             </xsm:add>
         </xsl:if>
     </xsl:function>
+
+    <!--
+    es:xsmSelectFirstReplace
+    
+    Function to handle multiple xsm:replace or xsm:delete elements on the same node.
+    
+    $replaces = a sequence of one or more xsm:replace|xsm:delete elements 
+                all $replaces should have the same node attribute
+    
+    return value = returns from the input sequence $replaces only the first element.
+                   Except for positional $replaces it returns a sequence of
+                   elements of all $replaces which are not in conflict with a preceding
+                   replacement or deletion
+                   
+    
+    Example 1:
+    
+    $replaces:
+        <xsm:replace node="/foo"/>
+        <xsm:replace node="/foo"/>
+        
+    return value:
+        <xsm:replace node="/foo"/>
+
+    Example 2:
+    
+    $replaces:
+       (<xsm:replace start-position="2" end-position="5"/>,
+        <xsm:replace start-position="4" end-position="7"/>,
+        <xsm:replace start-position="6" end-position="10"/>)
+        
+    return value:
+       (<xsm:replace start-position="2" end-position="5"/>,
+        <xsm:replace start-position="6" end-position="10"/>)
+    
+    -->
 
     <xsl:function name="es:xsmSelectFirstReplace" as="element()*">
         <xsl:param name="replaces" as="element()*"/>
@@ -588,11 +760,53 @@
 
     </xsl:function>
 
+    <!--
+    es:getPositionsFromReplace
+    
+    Function to returns for an xsm:replace all integer positions
+    which needs to be replaced.
+    
+    $replace = xsm:replace element with @start-position and @end-position attributes.
+    
+    return value = a sequence of all integer values between $replace/@start-position 
+                   and $replace/@end-position. Including start, excluding end.
+                   
+    Example:
+    
+    $replace:
+        <xsm:replace start-position="1" end-position="5"/>
+        
+    return value:
+        (1, 2, 3, 4)
+    
+    -->
     <xsl:function name="es:getPositionsFromReplace" as="xs:integer*">
         <xsl:param name="replace" as="element()"/>
         <xsl:sequence select="$replace/(@start-position/xs:integer(.) to @end-position/xs:integer(.) - 1)"/>
     </xsl:function>
-
+    <!--
+    es:position-consisty-check
+    
+    Function to convert the position of an xsm:add
+    depending on the type of a the ancher node.
+    
+    $position = orignal position (possible values: 'first-child', 'last-child', 'before', 'after'
+    $node = Anchor node
+    
+    return value = if it makes sense: $position  
+                   if not, a corrected position.
+                   
+    Example:
+    
+    $position:
+        'first-child'
+    
+    $node:
+        <?processing-instruction ?>
+    
+    return value:
+        'after'
+    -->
     <xsl:function name="es:position-consisty-check" as="xs:string">
         <xsl:param name="position" as="xs:string"/>
         <xsl:param name="node" as="node()"/>
@@ -610,6 +824,31 @@
                     ($position)"/>
     </xsl:function>
 
+    <!--    
+    es:instert-content-into-ns-context
+    
+    Function to convert attributes of xsm:content elements 
+    so that there  will be no prefix conflicts to a given 
+    namespace context
+    
+    $xsmcontent = an xsm:content input element
+    $namespacecontext = The attributes and childs of $xsmcontent should be 
+                        insertet into this element
+    return value = A copy of $xsmcontent, but the attributes converted, so that 
+                   no prefix conflict occur with the namespace declarations of 
+                   $namespacecontext
+                   
+    Example:
+    
+    $xsmcontent:
+        <xsm:content foo:bar="bar-value" xmlns:foo="bar.de"><foo:bar/></xsm:content>
+        
+    $namespacecontext:
+        <foo:foo xmlns:foo="foo.de" foo:foo="foo-value"><foo:bar/></foo:foo>
+        
+    return value:
+        <xsm:content foo_2:bar="bar-value" xmlns:foo_2="bar.de"><foo:bar xmlns:foo="bar.de"/></xsm:content>
+    -->
 
 
     <xsl:function name="es:instert-content-into-ns-context" as="element(xsm:content)">
@@ -647,6 +886,32 @@
     </xsl:function>
 
 
+    <!--    
+    es:find-id-seq-value
+    
+    Function to create a unique values in a given value set
+    
+    $baseValues = values which may already exists in $used-values
+    $used-values = given value set of forbidden return values.
+    $separator = a separator to add a suffixes to the items of $baseValues
+    
+    return value = a copy of the $baseValues sequence, 
+                   adds to some items a suffix. 
+                   The suffix ensures that the return value does 
+                   not occur in $used-values or in $baseValues 
+     Example:
+    
+    $baseValues:
+        ('foo', 'foo_2')
+    
+    $use-values:
+        ('foo', 'foo_3', 'foo_4', 'foo_6')
+    
+    return value:
+        ('foo_5', 'foo_2')
+                   
+    
+    -->
 
     <xsl:function name="es:find-id-seq-value" as="xs:string*">
         <xsl:param name="baseValues" as="xs:string*"/>
@@ -669,12 +934,42 @@
         </xsl:choose>
     </xsl:function>
 
+    <!--
+    See es:find-id-seq-value#3
+    Set default value $seperator to '_'
+        
+    -->
     <xsl:function name="es:find-id-seq-value" as="xs:string*">
         <xsl:param name="baseValues" as="xs:string*"/>
         <xsl:param name="used-values" as="xs:string*"/>
         <xsl:sequence select="es:find-id-seq-value($baseValues, $used-values, '_')"/>
     </xsl:function>
 
+    <!--
+    es:find-id-value
+    
+    Function to create a unique value in a given value set
+    
+    $baseValue = value which may already exists in $used-values
+    $used-values = given value set of forbidden return values.
+    $separator = a separator to add a suffix to the $baseValue
+    
+    return value = concats the $baseValue and an optional suffix. 
+                   The suffix ensures that the return value does 
+                   not occur in $used-values 
+                   
+    Example:
+    
+    $baseValue:
+        'foo'
+    
+    $use-values:
+        ('foo', 'foo_2', 'foo_3', 'foo_4', 'foo_6')
+    
+    return value:
+        'foo_5'
+    
+    -->
     <xsl:function name="es:find-id-value" as="xs:string">
         <xsl:param name="baseValue" as="xs:string"/>
         <xsl:param name="used-values" as="xs:string*"/>
@@ -695,6 +990,10 @@
 
     </xsl:function>
 
+    <!--    
+    See es:find-id-value#3
+    Set default value $seperator to '_'
+    -->
     <xsl:function name="es:find-id-value" as="xs:string">
         <xsl:param name="baseValue" as="xs:string"/>
         <xsl:param name="used-values" as="xs:string*"/>
@@ -702,6 +1001,21 @@
     </xsl:function>
 
 
+    <!--    
+    XSM Postprocess
+    MODE: xsm:postprocess
+    
+    Post process for manipulator
+    Handles null namespace
+    -->
+
+    <!--    
+        Function to call the postprocess
+        for XSM sheets
+        
+        $document = XSM sheet as document
+        return value = XSM sheet after processed by the XSM postprocess
+    -->
     <xsl:function name="xsm:postprocess">
         <xsl:param name="document" as="document-node()"/>
         <xsl:apply-templates select="$document" mode="xsm:postprocess"/>
@@ -717,6 +1031,12 @@
             <xsl:apply-templates select="node()" mode="#current"/>
         </xsl:copy>
     </xsl:template>
+
+    <!--
+    Converts literal result nodes
+    in helper null namespace
+    back into real null namespace
+    -->
     <xsl:template match="*[namespace-uri() = 'http://www.escali.schematron-quickfix.com/null-namespace']" priority="1000" mode="xsm:postprocess">
         <xsl:variable name="next-match" as="node()?">
             <xsl:next-match/>
@@ -738,4 +1058,8 @@
             </xsl:choose>
         </xsl:for-each>
     </xsl:template>
+
+
+
+
 </xsl:stylesheet>

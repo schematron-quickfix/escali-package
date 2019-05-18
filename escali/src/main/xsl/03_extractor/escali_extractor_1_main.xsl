@@ -18,7 +18,7 @@
     along with Escali Schematron.  If not, see http://www.gnu.org/licenses/gpl-3.0.
 
 -->
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:sqfc="http://www.schematron-quickfix.com/validator/process/changes" xmlns:sqf="http://www.schematron-quickfix.com/validator/process" xmlns:xd="http://www.oxygenxml.com/ns/doc/xsl" xmlns:svrl="http://purl.oclc.org/dsdl/svrl" xmlns:axsl="http://www.w3.org/1999/XSL/TransformAlias" xmlns:es="http://www.escali.schematron-quickfix.com/" xmlns:xsm="http://www.schematron-quickfix.com/manipulator/process" xmlns:sch="http://purl.oclc.org/dsdl/schematron" exclude-result-prefixes="xs xd" version="2.0">
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:sqf="http://www.schematron-quickfix.com/validator/process" xmlns:xd="http://www.oxygenxml.com/ns/doc/xsl" xmlns:svrl="http://purl.oclc.org/dsdl/svrl" xmlns:axsl="http://www.w3.org/1999/XSL/TransformAlias" xmlns:es="http://www.escali.schematron-quickfix.com/" xmlns:xsm="http://www.schematron-quickfix.com/manipulator/process" xmlns:sch="http://purl.oclc.org/dsdl/schematron" exclude-result-prefixes="xs xd" version="2.0">
     <xsl:namespace-alias stylesheet-prefix="axsl" result-prefix="xsl"/>
     <xd:doc scope="stylesheet">
         <xd:desc>
@@ -54,6 +54,12 @@
 
     <xsl:include href="../01_compiler/escali_compiler_0_functions.xsl"/>
 
+    <!--    
+    Initial template
+    Creates basic XSLT structure
+    Creates static templates
+    -->
+
     <xsl:template match="/es:escali-reports">
 
 
@@ -62,22 +68,44 @@
 
             <xsl:apply-templates select="es:meta/es:ns-prefix-in-attribute-values" mode="sqf:xsm"/>
 
+            <!--            
+            Includes function library and postprocess xsl
+            -->
             <axsl:include href="{resolve-uri('../01_compiler/escali_compiler_0_functions.xsl')}"/>
 
             <xsl:apply-templates select="es:meta/(xsl:* | sch:*)" mode="sqf:xsm"/>
 
             <xsl:apply-templates select="es:pattern/es:meta/sch:let" mode="sqf:xsm"/>
 
+            <!--            
+            Main template
+            -->
             <axsl:template match="/">
                 <axsl:variable name="sqf:document" select="/"/>
+                <!--                
+                temporary process, to create xsm actions
+                -->
                 <axsl:variable name="sqf:manipulator-body" as="node()*">
                     <axsl:apply-templates/>
                 </axsl:variable>
+
+                <!--                
+                Main result is an dummy <empty/> element
+                -->
                 <empty/>
+
+                <!--                
+                Groups XSM actions by base-uri
+                Creates for each base uri one XSM sheet
+                -->
                 <axsl:for-each-group select="$sqf:manipulator-body" group-by="base-uri(.)">
                     <axsl:variable name="xsm:document">
                         <xsm:manipulator document="{{current-grouping-key()}}">
 
+                            <!--                         
+                            Creates change marker for XSM actions, 
+                            which are marked manipulating attributes
+                            -->
 
                             <axsl:for-each-group select="current-group()[@sqf:markAttributeChange]" group-by="
                                     if (@sqf:markAttributeChange = 'this') then
@@ -98,6 +126,11 @@
                                 </xsm:add>
                             </axsl:for-each-group>
 
+                            <!--                            
+                            Use es:xsmActionOrder function to prevent / handle recoverable conflicts
+                            Applies return value in cleanup mode
+                            -->
+
                             <axsl:apply-templates select="es:xsmActionOrder(current-group())" mode="cleanup"/>
 
                         </xsm:manipulator>
@@ -117,19 +150,36 @@
 
             </axsl:template>
 
+
+            <!--
+            Creates QuickFix specific templates by applying asserts/reports
+            -->
             <xsl:apply-templates select=".//(es:assert | es:report)"/>
 
+            <!--            
+            Static template to pass through elements
+            to its children or attributes
+            -->
             <axsl:template match="*">
                 <axsl:apply-templates select="@*"/>
                 <axsl:apply-templates/>
             </axsl:template>
 
+            <!--            
+            Static template in default mode to
+            prevent, pasting node values into XSM sheet.
+            -->
+
             <axsl:template match="@* | text() | processing-instruction() | comment()" priority="-1"/>
+
+            <!--            
+            Removes helper attributes in cleanup mode
+            -->
 
             <axsl:template match="@sqf:markAttributeChange | @xml:base | @sqf:depends-on | @xml:id" mode="cleanup"/>
 
             <!-- 
-                copies all nodes:
+                copies all nodes in cleanup mode
             -->
             <axsl:template match="node() | @*" mode="cleanup">
                 <axsl:copy>
@@ -142,13 +192,22 @@
     </xsl:template>
 
 
-
+    <!--
+    Applies sqf:fix only
+    provide location in $location tunnel parameter
+    -->
     <xsl:template match="es:assert | es:report">
         <xsl:apply-templates select="sqf:fix">
             <xsl:with-param name="location" select="@location/string()" tunnel="yes"/>
         </xsl:apply-templates>
     </xsl:template>
 
+
+    <!--
+    Matches only on QuickFixes which was selected by global $id parameter 
+    ("Caller QuickFixes")
+    Converts user entries to global XSLT parameter
+    -->
     <xsl:template match="key('fix-id', $id)">
         <xsl:for-each select="sqf:user-entry">
             <axsl:param>
@@ -159,11 +218,24 @@
         <xsl:apply-templates/>
     </xsl:template>
 
+    <!--
+    Ignores all other QuickFixes
+    -->
     <xsl:template match="sqf:fix"/>
 
     <xsl:template match="sqf:user-entry/*"/>
 
 
+    <!--
+        Handles sqf:call-fix in sqf:fix of tests
+        Applies called QuickFix in scope, 
+        which contains the action elements 
+        
+        + - - - - - - - - - - - - - -+
+        |  SWITCH INTO sqf:xsm MODE  |
+        + - - - - - - - - - - - - - -+
+        
+    -->
     <xsl:template match="sqf:call-fix">
         <xsl:apply-templates select="es:getRefFix(@ref)" mode="sqf:xsm">
             <xsl:with-param name="params" select="sqf:with-param" tunnel="yes"/>
@@ -171,6 +243,15 @@
     </xsl:template>
 
 
+    <!--  
+    MODE: sqf:xsm
+    Handles QuickFix in rules or global QFs ("Action QuickFixes")
+    - Creates template for Schematron error location
+    - Applies pattern variables in mode sqf:letpattern
+    - Applies foreign elements (variables, xslt structures)
+    - parameter, sqf:call-fix
+    - action elements
+    -->
     <xsl:variable name="global-meta" select="/es:escali-reports/es:meta"/>
 
     <xsl:template match="sqf:fix" mode="sqf:xsm">
@@ -190,6 +271,12 @@
         </axsl:template>
     </xsl:template>
 
+    <!--    
+    MODE: sqf:xml
+    Handles sqf:call-fix elements in Action QuickFixes
+    - look up for called QF in scope
+    - applies its foreign elements, parameter, sqf:call-fix, action elements
+    -->
 
     <xsl:template match="sqf:call-fix" mode="sqf:xsm">
         <axsl:for-each select=".">
@@ -198,6 +285,12 @@
             </xsl:apply-templates>
         </axsl:for-each>
     </xsl:template>
+
+    <!--
+    MODE: sqf:xml
+    Converts sqf:param into a XSLT variable
+    -->
+
     <xsl:template match="sqf:param" mode="sqf:xsm">
         <xsl:param name="params" tunnel="yes"/>
         <xsl:variable name="name" select="@name"/>
@@ -209,13 +302,33 @@
         </axsl:variable>
     </xsl:template>
 
+    <!--
+    MODE: sqf:xml
+    Handles type attribute of sqf:param elements
+    -->
+
     <xsl:template match="sqf:*/@type" mode="sqf:xsm">
         <xsl:attribute name="as" select="."/>
     </xsl:template>
 
+    <!--
+    MODE: sqf:xml
+    Handles default attribute of sqf:param elements
+    -->
+
     <xsl:template match="sqf:*/@default" mode="sqf:xsm">
         <xsl:attribute name="select" select="."/>
     </xsl:template>
+
+    <!--
+    MODE: sqf:xsm
+    Creates XSM action element for sqf:add and sqf:delete
+    - Handles specifica for node attribute, if sqf:add matches on attribute
+    - Sets the namespace context to the correct source element
+    - Marks XSM action element as attribute manipulations, if neccessary
+    - prevents prefix conflicts of created content with namespace context 
+      using the function es:instert-content-into-ns-context
+    -->
 
     <xsl:template match="sqf:add | sqf:delete" mode="sqf:xsm" priority="50">
         <xsl:variable name="match" select="(@match, '.')[1]"/>
@@ -274,6 +387,16 @@
         </axsl:for-each>
     </xsl:template>
 
+    <!--
+    MODE: sqf:xml
+    Creates XSM action element for sqf:replace
+    - Handles specifica replacing attributes -> implements as xsm:delete + xsm:add to prevent conflicts
+    - Sets the namespace context to the correct source element
+    - Marks XSM action element as attribute manipulations, if neccessary
+    - prevents prefix conflicts of created content with namespace context 
+      using the function es:instert-content-into-ns-context
+    -->
+
     <xsl:template match="sqf:replace" mode="sqf:xsm" priority="50">
         <xsl:variable name="match" select="(@match, '.')[1]"/>
         <axsl:for-each select="{$match}">
@@ -328,6 +451,15 @@
             </axsl:choose>
         </axsl:for-each>
     </xsl:template>
+
+    <!--    
+    C O N T E N T   C R E A T I O N
+    -->
+
+
+    <!--
+    delete creates nothing except of marker changes
+    -->
     <xsl:template match="sqf:delete" mode="sqf:xsm">
         <xsm:content>
             <xsl:if test="$markChanges">
@@ -337,12 +469,22 @@
         </xsm:content>
     </xsl:template>
 
-
+    <!--
+    Creates position attribute for xsm:add
+    Makes a consisty check with the es:position-consisty-check function
+    -->
     <xsl:template match="sqf:add" mode="sqf:xsm" priority="25">
         <axsl:attribute name="position" select="es:position-consisty-check('{(@position, 'first-child')[1]}', .)"/>
         <xsl:next-match/>
     </xsl:template>
 
+    <!--
+    Creates content for sqf:add and sqf:replace
+    - Implements @target & @node-type attributes
+    - Uses es:nodeKeepCreation function for @node-type = 'keep'
+    - Makes consisty checks for attributes and non-attribute nodes
+      with functions es:attribute-consisty-check and es:no-attribute-consisty-check
+    -->
     <xsl:template match="sqf:add | sqf:replace" mode="sqf:xsm">
         <axsl:variable name="sqf:content" as="item()*">
             <xsl:sequence select="namespace::*"/>
@@ -391,6 +533,13 @@
         </xsm:content>
     </xsl:template>
 
+    <!--    
+    Returns an xsl:choose condition to create nodes depending on the context node
+    Used for (sqf:add|sqf:replace)[@node-type='keep']
+    
+    $addReplace = sqf:add or sqf:replace element
+    return value = xsl:choose condition
+    -->
     <xsl:function name="es:nodeKeepCreation" as="element(xsl:choose)">
         <xsl:param name="addReplace" as="element()"/>
         <xsl:variable name="content">
@@ -427,21 +576,41 @@
         </axsl:choose>
     </xsl:function>
 
+    <!--    
+    Implements sqf:copy-of with @unparsed-mode = 'true'
+    TODO: test all edge cases!
+    -->
+
     <xsl:template match="sqf:copy-of[@unparsed-mode = 'true']" mode="sqf:xsm" priority="10">
         <axsl:for-each select="{(@select, 'node()')[1]}">
             <xsm:copy select="{{ es:getNodePath(.) }}"/>
         </axsl:for-each>
     </xsl:template>
 
+    <!--    
+    Implements sqf:copy-of with @unparsed-mode = 'false' and sqf:keep
+    -->
     <xsl:template match="sqf:keep | sqf:copy-of" mode="sqf:xsm">
         <axsl:copy-of select="{(@select, 'node()')[1]}"/>
     </xsl:template>
 
+
+    <!--    
+    Implements select attribute of action elements
+    -->
     <xsl:template match="sqf:add/@select | sqf:replace/@select | sqf:stringReplace/@select" mode="sqf:xsm">
         <axsl:sequence select="{.}"/>
     </xsl:template>
 
-
+    <!--
+    Implements action element sqf:stringReplace
+    - uses xsl:analyze to execute the regex expression in temp variable
+        - creates for each match or non-match an xsm:step
+        - creates content for matches
+        - stores text lengths of matches and non-matches.
+    - Create for each matching xsm:step an xsm:replace
+        - calculate @start-position and @end-position by lenghts of preceding xsm:step
+    -->
     <xsl:template match="sqf:stringReplace" mode="sqf:xsm">
         <xsl:variable name="match" select="(@match, '.')[1]"/>
         <axsl:variable name="sqf:nodePath" select="es:getNodePath({$match}, true())"/>
@@ -482,6 +651,11 @@
         </axsl:for-each>
     </xsl:template>
 
+    <!--    
+    Copy literal result elements
+    for content creation
+    -->
+
     <xsl:template match="node() | @*" mode="sqf:xsm">
         <xsl:copy copy-namespaces="no">
             <xsl:apply-templates select="@*" mode="#current"/>
@@ -489,6 +663,13 @@
         </xsl:copy>
     </xsl:template>
 
+    <!--    
+    F O R E I G N   E L E M E N T S
+    -->
+
+    <!--
+    Copy foreign XSLT elements 
+    -->
     <xsl:template match="xsl:*" mode="sqf:xsm">
         <xsl:copy>
             <xsl:apply-templates select="@*" mode="#current"/>
@@ -496,19 +677,32 @@
         </xsl:copy>
     </xsl:template>
 
+    <!--
+    Helper variable to implement variables in es:pattern (coming from sch:pattern)
+    Stores namespace nodes unique for each es:pattern/es:meta 
+    -->
     <xsl:variable name="pattern-namespaces" as="node()*">
         <xsl:for-each select="/es:escali-reports/es:pattern/es:meta">
             <xsl:namespace name="{@id}" select="concat('http://www.escali.schematron-quickfix.com/', @id)"/>
         </xsl:for-each>
     </xsl:variable>
 
+    <!--    
+    Implements global variables for pattern variables 
+    with unique names (namespace unique for the pattern) 
+    -->
     <xsl:template match="es:pattern/es:meta/sch:let" mode="sqf:xsm">
         <xsl:variable name="pid" select="../@id"/>
         <axsl:variable name="{$pid}:{@name}" select="{@value}">
             <xsl:sequence select="$pattern-namespaces[name() = $pid]"/>
         </axsl:variable>
     </xsl:template>
-
+    <!--
+    MODE: sqf:letpattern
+    Implements pattern variables for an xsl:template
+    reasign the values of unique global variables to 
+    its original variable names so the usages are not broken. 
+    -->
     <xsl:template match="es:pattern/es:meta/sch:let" mode="sqf:letpattern">
         <xsl:variable name="pid" select="../@id"/>
         <axsl:variable name="{@name}" select="${$pid}:{@name}">
@@ -516,23 +710,31 @@
         </axsl:variable>
     </xsl:template>
 
+    <!--
+    Implements sch:let variables
+    -->
     <xsl:template match="sch:let" mode="sqf:xsm">
         <axsl:variable name="{@name}" select="{@value}"/>
     </xsl:template>
-
+    <!--
+    Implements sch:value-of
+    -->
     <xsl:template match="sch:value-of" mode="sqf:xsm">
         <axsl:value-of select="{@select}"/>
     </xsl:template>
 
+    <!--
+    Implements sqf:copy-of
+    -->
     <xsl:template match="sqf:copy-of" mode="sqf:xsm">
         <axsl:copy-of select="{@select}"/>
     </xsl:template>
 
     <!--    
         Namespace handling
-    
+        Creates for each es:ns-prefix-in-attribute-values a namespace node
+        If prefixe is an empty string, create a xpath-default-namespace attribute.
     -->
-
     <xsl:template match="es:ns-prefix-in-attribute-values" mode="sqf:xsm">
         <xsl:choose>
             <xsl:when test="@prefix != ''">
