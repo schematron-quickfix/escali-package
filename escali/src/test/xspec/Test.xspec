@@ -151,7 +151,7 @@
             </x:call>
             <x:expect label="result value" select="string(.)">'"value"'</x:expect>
         </x:scenario>
-        
+
         <x:scenario label="More than one values">
             <x:call>
                 <x:param select="'one','two','three'"/>
@@ -187,28 +187,374 @@
                 </x:call>
                 <x:expect select="/*" label="Result is first and last"><xsm:replace node="/*:root/*:foo/text()[1]" start-position="0" end-position="3"/><xsm:replace node="/*:root/*:foo/text()[1]" start-position="12" end-position="15"/></x:expect>
             </x:scenario>
-            
+
             <x:scenario label="Replace with position - with mix of nested conflict and no conflict in other order">
                 <x:call>
                     <x:param select="/*"><xsm:replace node="/*:root/*:foo/text()[1]" start-position="0" end-position="2"/><xsm:replace node="/*:root/*:foo/text()[1]" start-position="3" end-position="12"/><xsm:replace node="/*:root/*:foo/text()[1]" start-position="10" end-position="15"/></x:param>
                 </x:call>
                 <x:expect select="/*" label="Result is first and second"><xsm:replace node="/*:root/*:foo/text()[1]" start-position="0" end-position="2"/><xsm:replace node="/*:root/*:foo/text()[1]" start-position="3" end-position="12"/></x:expect>
             </x:scenario>
-            
+
             <x:scenario label="Replace with position - with two nested conflicts">
                 <x:call>
                     <x:param select="/*"><xsm:replace node="/*:root/*:foo/text()[1]" start-position="0" end-position="3"/><xsm:replace node="/*:root/*:foo/text()[1]" start-position="2" end-position="12"/><xsm:replace node="/*:root/*:foo/text()[1]" start-position="10" end-position="15"/></x:param>
                 </x:call>
                 <x:expect select="/*" label="Result is first and last"><xsm:replace node="/*:root/*:foo/text()[1]" start-position="0" end-position="3"/><xsm:replace node="/*:root/*:foo/text()[1]" start-position="10" end-position="15"/></x:expect>
             </x:scenario>
-            
+
             <x:scenario label="Replace with position - with two nested conflicts in other order">
                 <x:call>
                     <x:param select="/*"><xsm:replace node="/*:root/*:foo/text()[1]" start-position="0" end-position="3"/><xsm:replace node="/*:root/*:foo/text()[1]" start-position="10" end-position="15"/><xsm:replace node="/*:root/*:foo/text()[1]" start-position="2" end-position="12"/></x:param>
                 </x:call>
                 <x:expect select="/*" label="Result is first and second"><xsm:replace node="/*:root/*:foo/text()[1]" start-position="0" end-position="3"/><xsm:replace node="/*:root/*:foo/text()[1]" start-position="10" end-position="15"/></x:expect>
             </x:scenario>
-            
+
+        </x:scenario>
+    </x:scenario>
+    <x:scenario label="Scenarion for testing function es:mergeAddAttributes" focus="">
+        <x:call function="es:mergeAddAttributes"/>
+        <x:scenario label="Empty input">
+            <x:call>
+                <x:param select="/*">
+                    <!--                    empty sequence --> </x:param>
+            </x:call>
+            <x:expect label="Result is an empty sequence" select="/*">
+                <!--                    empty sequence --> </x:expect>
+        </x:scenario>
+        <x:scenario label="One xsm:add">
+            <x:call>
+                <x:param select="/*" xml:space="preserve">
+                    <xsm:add node="/foo" position="first-child"> 
+                        <xsm:content foo="bar" bar="baz">
+                            <foo/>
+                        </xsm:content>
+                    </xsm:add>
+                </x:param>
+            </x:call>
+            <x:expect label="Result should be equal to input" select="/*" xml:space="preserve">
+                <xsm:add node="/foo" position="first-child"> 
+                    <xsm:content foo="bar" bar="baz">
+                        <foo/>
+                    </xsm:content>
+                </xsm:add>
+            </x:expect>
+            <x:expect label="Attribute order" test="/*/xsm:content/@*/name()" select="('foo', 'bar')"/>
+        </x:scenario>
+        <x:scenario label="Two xsm:add with different attributes">
+            <x:call>
+                <x:param select="/*" xml:space="preserve">
+                    <xsm:add node="/foo" position="first-child"> 
+                        <xsm:content foo="foo" bar="bar">
+                            <foo/>
+                        </xsm:content>
+                    </xsm:add>
+                    <xsm:add node="/foo" position="first-child"> 
+                        <xsm:content baz="baz">
+                            <foo/>
+                        </xsm:content>
+                    </xsm:add>
+                </x:param>
+            </x:call>
+            <x:expect label="Result should be merged." select="/*" xml:space="preserve">
+                <xsm:add node="/foo" position="first-child"> 
+                    <xsm:content foo="foo" bar="bar" baz="baz">
+                        <foo/>
+                        <foo/>
+                    </xsm:content>
+                </xsm:add>
+            </x:expect>
+            <x:expect label="Attribute order" test="/*/xsm:content/@*/name()" select="('foo', 'bar', 'baz')"/>
+        </x:scenario>
+        <x:scenario label="Two xsm:add with same attributes">
+            <x:call>
+                <x:param select="/*" xml:space="preserve">
+                    <xsm:add node="/foo" position="first-child"> 
+                        <xsm:content foo="foo" bar="bar">
+                            <foo/>
+                        </xsm:content>
+                    </xsm:add>
+                    <xsm:add node="/foo" position="first-child"> 
+                        <xsm:content foo="bar" bar="baz">
+                            <bar/>
+                        </xsm:content>
+                    </xsm:add>
+                </x:param>
+            </x:call>
+            <x:expect label="Result should be merged." select="/*" xml:space="preserve">
+                <xsm:add node="/foo" position="first-child"> 
+                    <xsm:content foo="foo" bar="bar">
+                        <foo/>
+                        <bar/>
+                    </xsm:content>
+                </xsm:add>
+            </x:expect>
+            <x:expect label="Attribute order" test="/*/xsm:content/@*/name()" select="('foo', 'bar')"/>
+        </x:scenario>
+        <x:scenario label="Two xsm:adds with same attributes but different prefixes">
+            <x:call>
+                <x:param select="/*" xml:space="preserve">
+                    <xsm:add node="/foo" position="first-child"> 
+                        <xsm:content foo:foo="foo" xmlns:foo="foo.de"/>
+                    </xsm:add>
+                    <xsm:add node="/foo" position="first-child"> 
+                        <xsm:content bar:foo="bar" xmlns:bar="foo.de"/>
+                    </xsm:add>
+                </x:param>
+            </x:call>
+            <x:expect label="Result should be merged." select="/*" xml:space="preserve">
+                <xsm:add node="/foo" position="first-child"> 
+                    <xsm:content foo:foo="foo" xmlns:foo="foo.de"/>
+                </xsm:add>
+            </x:expect>
+            <x:expect label="Attribute order" test="/*/xsm:content/@*/name()" select="('foo:foo')"/>
+        </x:scenario>
+        <x:scenario label="Two xsm:adds with prefixes conflicts">
+            <x:call>
+                <x:param select="/*" xml:space="preserve">
+                    <xsm:add node="/foo" position="first-child"> 
+                        <xsm:content foo:foo="foo" xmlns:foo="foo.de"/>
+                    </xsm:add>
+                    <xsm:add node="/foo" position="first-child"> 
+                        <xsm:content foo:foo="bar" xmlns:foo="foo.com"/>
+                    </xsm:add>
+                </x:param>
+            </x:call>
+            <x:expect label="Result should be merged." select="/*" xml:space="preserve">
+                <xsm:add node="/foo" position="first-child"> 
+                    <xsm:content foo:foo="foo" xmlns:foo="foo.de" foo1:foo="bar" xmlns:foo1="foo.com"/>
+                </xsm:add>
+            </x:expect>
+            <x:expect label="Attribute order" test="/*/xsm:content/@*/name()" select="('foo:foo', 'foo_2:foo')"/>
+        </x:scenario>
+    </x:scenario>
+
+    <x:scenario label="Scenarion for testing function es:xsmActionOrder">
+        <x:call function="es:xsmActionOrder"/>
+
+        <x:scenario label="Resolve add/replace attribute conflict">
+            <x:scenario label="Two adds, same node adds the same attribute">
+                <x:call>
+                    <x:param name="actions" select="/*"> <xsm:add node="/root[1]/foo[1]" position="first-child"> <xsm:content foo="foo1"/> </xsm:add> <xsm:add node="/root[1]/foo[1]" position="first-child"> <xsm:content foo="foo2"/> </xsm:add> </x:param>
+                </x:call>
+                <x:expect label="Result is one add with attribute merge" select="/*"> <xsm:add node="/root[1]/foo[1]" position="first-child"><xsm:content foo="foo1"/></xsm:add> </x:expect>
+            </x:scenario>
+            <x:scenario label="Two adds, same node adds the same but also different attributes">
+                <x:call>
+                    <x:param name="actions" select="/*"> <xsm:add node="/root[1]/foo[1]" position="first-child"> <xsm:content foo="foo1" bar=""/> </xsm:add> <xsm:add node="/root[1]/foo[1]" position="first-child"> <xsm:content foo="foo2" baz=""/> </xsm:add> </x:param>
+                </x:call>
+                <x:expect label="Result is one add with attribute merge" select="/*"> <xsm:add node="/root[1]/foo[1]" position="first-child"><xsm:content foo="foo1" bar="" baz=""/></xsm:add> </x:expect>
+                <x:expect label="Attribute order" test=".//xsm:content/@*/name()" select="('foo', 'bar', 'baz')"/>
+            </x:scenario>
+            <x:scenario label="Mix of add attributes and elements">
+                <x:call>
+                    <x:param name="actions" select="/*"> <xsm:add node="/root[1]/foo[1]" position="first-child"> <xsm:content bar="baz"> <foo bar="baz"/> </xsm:content> </xsm:add> </x:param>
+                </x:call>
+                <x:expect label="Result should not change anything" select="/*"> <xsm:add node="/root[1]/foo[1]" position="first-child"> <xsm:content bar="baz"> <foo bar="baz"/> </xsm:content> </xsm:add> </x:expect>
+            </x:scenario>
+            <x:scenario label="Mix of add attributes and other nodes">
+                <x:call>
+                    <x:param name="actions" select="/*"> <xsm:add node="/root[1]/foo[1]" position="first-child"> <xsm:content bar="baz">
+                        <!--comment -->text<?pi?> </xsm:content> </xsm:add> </x:param>
+                </x:call>
+                <x:expect label="Result should not change anything" select="/*"> <xsm:add node="/root[1]/foo[1]" position="first-child"> <xsm:content bar="baz">
+                    <!--comment -->text<?pi?> </xsm:content> </xsm:add> </x:expect>
+            </x:scenario>
+            <x:scenario label="Two adds with mix of attributes and elements">
+                <x:call>
+                    <x:param name="actions" select="/*"> <xsm:add node="/root[1]/foo[1]" position="first-child"> <xsm:content bar="baz"> <foo1 bar="baz"/> </xsm:content> </xsm:add><xsm:add node="/root[1]/foo[1]" position="first-child"> <xsm:content bar="baz-foo"> <foo2 bar="baz"/> </xsm:content> </xsm:add></x:param>
+                </x:call>
+                <x:expect label="Result should one add with attribute merge, but keep childs" select="/*"> <xsm:add node="/root[1]/foo[1]" position="first-child"> <xsm:content bar="baz"> <foo1 bar="baz"/> <foo2 bar="baz"/> </xsm:content> </xsm:add> </x:expect>
+            </x:scenario>
+            <x:scenario label="Add/deletes with depends on connection">
+                <x:call>
+                    <x:param name="actions" select="/*"> <xsm:delete node="/root[1]/foo[1]/bar[1]/@id[1]" xml:id="delete1"/> <xsm:add position="first-child" node="/root[1]/foo[1]/bar[1]" sqf:depends-on="delete1"> <xsm:content idref="bar1"/> </xsm:add> <xsm:delete node="/root[1]/foo[1]/bar[1]/@id[1]" xml:id="delete2"/> <xsm:add position="first-child" node="/root[1]/foo[1]/bar[1]" sqf:depends-on="delete2"> <xsm:content _id=""/> </xsm:add> </x:param>
+                </x:call>
+                <x:expect label="Result should one add with attribute merge, but keep childs" select="/*"> <xsm:delete node="/root[1]/foo[1]/bar[1]/@id[1]" xml:id="delete1"/> <xsm:add position="first-child" node="/root[1]/foo[1]/bar[1]" sqf:depends-on="delete1"> <xsm:content idref="bar1"/> </xsm:add> </x:expect>
+            </x:scenario>
+
+        </x:scenario>
+    </x:scenario>
+    <x:scenario label="Scenarion for testing function es:getPositionsFromReplace">
+        <x:call function="es:getPositionsFromReplace"/>
+        <x:scenario label="Basic test">
+            <x:call>
+                <x:param name="replace" select="/*"><xsm:replace start-position="1" end-position="5"/></x:param>
+            </x:call>
+            <x:expect label="Result positions" select="1, 2, 3, 4"/>
+        </x:scenario>
+        <x:scenario label="Sequence 2">
+            <x:call>
+                <x:param name="replace" select="/*"><xsm:replace start-position="5" end-position="10"/></x:param>
+            </x:call>
+            <x:expect label="Result positions" select="5, 6, 7, 8, 9"/>
+        </x:scenario>
+        <x:scenario label="Sequence with no values">
+            <x:call>
+                <x:param name="replace" select="/*"><xsm:replace start-position="12" end-position="10"/></x:param>
+            </x:call>
+            <x:expect label="Result empy sequence" select="()"/>
+        </x:scenario>
+    </x:scenario>
+    <x:scenario label="Scenarion for testing function es:position-consisty-check">
+        <x:call function="es:position-consisty-check"/>
+        <x:scenario label="Basic test">
+            <x:call>
+                <x:param name="position" select="'before'"/>
+                <x:param name="node" select="/*"><el/></x:param>
+            </x:call>
+            <x:expect label="Result position" select="'before'"/>
+        </x:scenario>
+        <x:scenario label="Position 'first-child' for pi">
+            <x:call>
+                <x:param name="position" select="'first-child'"/>
+                <x:param name="node" select="/processing-instruction()"><?pi?></x:param>
+            </x:call>
+            <x:expect label="Result position should be 'after'" select="'after'"/>
+        </x:scenario>
+        <x:scenario label="Position 'last-child' for text">
+            <x:call>
+                <x:param name="position" select="'last-child'"/>
+                <x:param name="node" select="/text()">text</x:param>
+            </x:call>
+            <x:expect label="Result position should be 'after'" select="'after'"/>
+        </x:scenario>
+    </x:scenario>
+    <x:scenario label="Scenarion for testing function es:instert-content-into-ns-context">
+        <x:call function="es:instert-content-into-ns-context"/>
+        <x:scenario label="Basic test">
+            <x:call>
+                <x:param name="xsmcontent" select="/*"> <xsm:content xmlns:bar="bar.de"/> </x:param>
+                <x:param name="namespaces" select="/*"> <ns-provider xmlns:foo="foo.de"/> </x:param>
+            </x:call>
+            <x:expect label="Result xsm:content" select="/*"> <xsm:content xmlns:bar="bar.de"/> </x:expect>
+            <x:expect label="Namespace prefixes" select="'bar'" test="/*/namespace::*/name()[not(. = $x:xspecPrefixes)]"/>
+        </x:scenario>
+        <x:scenario label="Simple conflict">
+            <x:call>
+                <x:param name="xsmcontent" select="/*"> <xsm:content xmlns:foo="bar.de" foo:foo="bar"/> </x:param>
+                <x:param name="namespaces" select="/*"> <ns-provider xmlns:foo="foo.de"/> </x:param>
+            </x:call>
+            <x:expect label="Result namespaces" select="/*"> <xsm:content xmlns:foo_2="bar.de" foo_2:foo="bar"/> </x:expect>
+            <x:expect label="Namespace prefixes" select="'foo_2'" test="/*/namespace::*/name()[not(. = $x:xspecPrefixes)]"/>
+        </x:scenario>
+
+        <x:scenario label="Deep conflict">
+            <x:call>
+                <x:param name="xsmcontent" select="/*"> <xsm:content xmlns:foo="bar.de" foo:foo="bar"/> </x:param>
+                <x:param name="namespaces" select="/*"> <ns-provider xmlns:foo="foo.de" xmlns:foo_2="foo2.de" xmlns:foo_3="foo3.de"/> </x:param>
+            </x:call>
+            <x:expect label="Result namespaces" select="/*"> <xsm:content xmlns:foo_4="bar.de" foo_4:foo="bar"/> </x:expect>
+            <x:expect label="Namespace prefixes" select="'foo_4'" test="/*/namespace::*/name()[not(. = $x:xspecPrefixes)]"/>
+        </x:scenario>
+        <x:scenario label="Input more than once">
+            <x:call>
+                <x:param name="xsmcontent" select="/*"> <xsm:content xmlns:foo="foo.de" foo:foo="foo" xmlns:bar="bar.de" bar:bar="bar"/> </x:param>
+                <x:param name="namespaces" select="/*"> <ns-provider xmlns:foo="foo.com" xmlns:foo_2="foo2.com" xmlns:foo_3="foo3.com"/> </x:param>
+            </x:call>
+            <x:expect label="Result namespaces" select="/*"> <xsm:content xmlns:foo_4="foo.de" foo_4:foo="foo" xmlns:bar="bar.de" bar:bar="bar"/> </x:expect>
+            <x:expect label="Attribute names" select="'foo_4:foo', 'bar:bar'" test="/*/@*/name()"/>
+        </x:scenario>
+        <x:scenario label="Input more than once with conflict">
+            <x:call>
+                <x:param name="xsmcontent" select="/*"> <xsm:content xmlns:foo="foo.de" foo:foo="foo" xmlns:foo_2="foo2.de" foo_2:bar="bar"/> </x:param>
+                <x:param name="namespaces" select="/*"> <ns-provider xmlns:foo="foo.com" xmlns:foo_2_1="foo.com"/> </x:param>
+            </x:call>
+            <x:expect label="Result namespaces" select="/*"> <xsm:content xmlns:foo_3="foo.de" foo_3:foo="foo" xmlns:foo_2="foo2.de" foo_2:bar="bar"/> </x:expect>
+            <x:expect label="Attribute names" select="'foo_3:foo', 'foo_2:bar'" test="/*/@*/name()"/>
+        </x:scenario>
+    </x:scenario>
+    <x:scenario label="Scenarion for testing function es:find-id-value">
+        <x:call function="es:find-id-value"/>
+        <x:scenario label="Trivial no-conflict case">
+            <x:call>
+                <x:param select="'foo'"/>
+                <x:param select="('bar', 'baz')"/>
+            </x:call>
+            <x:expect label="Result value" select="'foo'"/>
+        </x:scenario>
+        <x:scenario label="Trivial conflict case">
+            <x:call>
+                <x:param select="'foo'"/>
+                <x:param select="('foo', 'bar', 'baz')"/>
+            </x:call>
+            <x:expect label="Result value" select="'foo_2'"/>
+        </x:scenario>
+        <x:scenario label="Complex conflict case">
+            <x:call>
+                <x:param select="'foo'"/>
+                <x:param select="('foo', 'fooBar', 'foo_2', 'foo_3')"/>
+            </x:call>
+            <x:expect label="Result value" select="'foo_4'"/>
+        </x:scenario>
+        <x:scenario label="Complex conflict case with gaps">
+            <x:call>
+                <x:param select="'foo'"/>
+                <x:param select="('foo', 'foo_', 'foo_2', 'foo_5', 'foo_4')"/>
+            </x:call>
+            <x:expect label="Result value" select="'foo_3'"/>
+        </x:scenario>
+    </x:scenario>
+    <x:scenario label="Scenarion for testing function es:find-id-seq-value">
+        <x:call function="es:find-id-seq-value"/>
+        <x:scenario label="Single value input">
+            <x:scenario label="Trivial no-conflict case">
+                <x:call>
+                    <x:param select="'foo'"/>
+                    <x:param select="('bar', 'baz')"/>
+                </x:call>
+                <x:expect label="Result value" select="'foo'"/>
+            </x:scenario>
+            <x:scenario label="Trivial conflict case">
+                <x:call>
+                    <x:param select="'foo'"/>
+                    <x:param select="('foo', 'bar', 'baz')"/>
+                </x:call>
+                <x:expect label="Result value" select="'foo_2'"/>
+            </x:scenario>
+            <x:scenario label="Complex conflict case">
+                <x:call>
+                    <x:param select="'foo'"/>
+                    <x:param select="('foo', 'fooBar', 'foo_2', 'foo_3')"/>
+                </x:call>
+                <x:expect label="Result value" select="'foo_4'"/>
+            </x:scenario>
+            <x:scenario label="Complex conflict case with gaps">
+                <x:call>
+                    <x:param select="'foo'"/>
+                    <x:param select="('foo', 'foo_', 'foo_2', 'foo_5', 'foo_4')"/>
+                </x:call>
+                <x:expect label="Result value" select="'foo_3'"/>
+            </x:scenario>
+        </x:scenario>
+        <x:scenario label="Multiple input values">
+            <x:scenario label="Trivial no-conflict case">
+                <x:call>
+                    <x:param select="('foo', 'bar')"/>
+                    <x:param select="('baz', 'bazz')"/>
+                </x:call>
+                <x:expect label="Result sequence" select="('foo', 'bar')"/>
+            </x:scenario>
+            <x:scenario label="Trivial conflict case">
+                <x:call>
+                    <x:param select="'foo', 'bar'"/>
+                    <x:param select="('foo', 'bar', 'baz')"/>
+                </x:call>
+                <x:expect label="Result sequence" select="'foo_2', 'bar_2'"/>
+            </x:scenario>
+            <x:scenario label="Complex conflict">
+                <x:call>
+                    <x:param select="'foo', 'foo_2'"/>
+                    <x:param select="('foo')"/>
+                </x:call>
+                <x:expect label="Result sequence" select="'foo_3', 'foo_2'"/>
+            </x:scenario>
+            <x:scenario label="Complex conflict with multiple dependencies">
+                <x:call>
+                    <x:param select="'foo', 'foo_2', 'foo_4', 'foo_5', 'foo_4_2'"/>
+                    <x:param select="('foo', 'foo_3', 'foo_4')"/>
+                </x:call>
+                <x:expect label="Result sequence" select="'foo_6', 'foo_2', 'foo_4_3', 'foo_5', 'foo_4_2'"/>
+            </x:scenario>
         </x:scenario>
     </x:scenario>
 
