@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-model href="../input/test.sch" type="application/xml" schematypens="http://purl.oclc.org/dsdl/schematron"?>
 <root>
-    <?sqfc-start ?><foo c="value1"><?sqfc-end ?></foo>
+    <?sqfc-start ?><foo a="" b="" c="value1"><?sqfc-end ?></foo>
 </root>

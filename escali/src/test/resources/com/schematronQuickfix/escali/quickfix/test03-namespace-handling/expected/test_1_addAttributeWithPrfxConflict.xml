@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ns1:root xmlns:ns1="namespace1">
-    <?sqfc-start ?><section title="without namespaces" ns1_2:a="" xmlns:ns1_2="namespace2"><?sqfc-end ?>
+    <?sqfc-start ?><section title="without namespaces" xmlns:ns1_2="namespace2" ns1_2:a=""><?sqfc-end ?>
         
     </section>
     
