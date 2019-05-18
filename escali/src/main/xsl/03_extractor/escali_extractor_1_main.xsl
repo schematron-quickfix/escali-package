@@ -126,7 +126,7 @@
 
             <axsl:template match="@* | text() | processing-instruction() | comment()" priority="-1"/>
 
-            <axsl:template match="@sqf:markAttributeChange | @xml:base" mode="cleanup"/>
+            <axsl:template match="@sqf:markAttributeChange | @xml:base | @sqf:depends-on | @xml:id" mode="cleanup"/>
 
             <!-- 
                 copies all nodes:
@@ -233,7 +233,7 @@
         <xsl:attribute name="select" select="."/>
     </xsl:template>
 
-    <xsl:template match="sqf:replace | sqf:add | sqf:delete" mode="sqf:xsm" priority="50">
+    <xsl:template match="sqf:add | sqf:delete" mode="sqf:xsm" priority="50">
         <xsl:variable name="match" select="(@match, '.')[1]"/>
         <axsl:for-each select="{$match}">
             <axsl:variable name="xsm:childs" as="node()*">
@@ -290,6 +290,60 @@
         </axsl:for-each>
     </xsl:template>
 
+    <xsl:template match="sqf:replace" mode="sqf:xsm" priority="50">
+        <xsl:variable name="match" select="(@match, '.')[1]"/>
+        <axsl:for-each select="{$match}">
+            <axsl:variable name="xsm:content" as="element(xsm:content)">
+                <xsl:next-match/>
+            </axsl:variable>
+            <axsl:variable name="xsm:node" select="es:getNodePath(., true())"/>
+            <axsl:variable name="xsm:namespace-context" select="
+                    if (not(. instance of element()))
+                    then
+                        parent::*
+                    else
+                        .
+                    "/>
+            <axsl:choose>
+                <axsl:when test=". instance of attribute()">
+                    <xsm:delete xml:id="{generate-id(.)}_{{generate-id(.)}}">
+                        <axsl:attribute name="node" select="$xsm:node"/>
+                        <axsl:attribute name="xml:base" select="base-uri(.)"/>
+                    </xsm:delete>
+                    <xsm:add position="first-child" sqf:depends-on="{generate-id(.)}_{{generate-id(.)}}">
+                        <axsl:attribute name="node" select="es:getNodePath(parent::*, true())"/>
+                        <axsl:attribute name="xml:base" select="base-uri(.)"/>
+                        <axsl:sequence select="$xsm:namespace-context/namespace::*"/>
+                        <xsl:if test="$markChanges">
+                            <axsl:attribute name="sqf:markAttributeChange" select="'this'"/>
+                        </xsl:if>
+
+                        <axsl:sequence select="es:instert-content-into-ns-context($xsm:content, $xsm:namespace-context)"/>
+                    </xsm:add>
+                </axsl:when>
+                <axsl:otherwise>
+                    <xsm:replace>
+                        <axsl:attribute name="xml:base" select="base-uri(.)"/>
+
+                        <axsl:sequence select="$xsm:namespace-context/namespace::*"/>
+                        <axsl:attribute name="node" select="$xsm:node"/>
+                        <xsl:if test="$markChanges">
+                            <axsl:if test="$xsm:content/@*">
+                                <axsl:attribute name="sqf:markAttributeChange" select="
+                                        if (. instance of attribute()and {not(self::sqf:add)}()) then
+                                            'parent'
+                                        else
+                                            'this'
+                                        "/>
+                            </axsl:if>
+                        </xsl:if>
+                        <axsl:sequence select="es:instert-content-into-ns-context($xsm:content, $xsm:namespace-context)"/>
+                    </xsm:replace>
+
+                </axsl:otherwise>
+            </axsl:choose>
+        </axsl:for-each>
+    </xsl:template>
     <xsl:template match="sqf:delete" mode="sqf:xsm">
         <xsm:content>
             <xsl:if test="$markChanges">

@@ -524,9 +524,20 @@
 
     <xsl:function name="es:xsmActionOrder" as="element()*">
         <xsl:param name="actions" as="element()*"/>
+
+        <xsl:variable name="actions" as="element()*">
+            <xsl:for-each-group select="$actions" group-by="@node">
+                <xsl:variable name="adds" select="current-group()/self::xsm:add"/>
+                <xsl:variable name="firstReplace" select="es:xsmSelectFirstReplace(current-group() except $adds)"/>
+                <xsl:sequence select="$adds | $firstReplace"/>
+            </xsl:for-each-group>
+        </xsl:variable>
+
+        <xsl:variable name="actions" select="$actions except $actions[@sqf:depends-on][not(@sqf:depends-on = $actions/@xml:id)]"/>
+
         <xsl:for-each-group select="$actions" group-by="@node">
             <xsl:variable name="adds" select="current-group()/self::xsm:add"/>
-            <xsl:variable name="firstReplace" select="es:xsmSelectFirstReplace(current-group() except $adds)"/>
+            <xsl:variable name="firstReplace" select="current-group() except $adds"/>
 
             <xsl:variable name="addBefore" select="$adds[@position = 'before']"/>
             <xsl:variable name="addAfter" select="$adds[@position = 'after']"/>
