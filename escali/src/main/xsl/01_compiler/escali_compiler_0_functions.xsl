@@ -454,6 +454,26 @@
         <xsl:sequence select="$item instance of attribute()"/>
     </xsl:function>
 
+    <xsl:function name="es:only-attributes" as="attribute()*">
+        <xsl:param name="item" as="item()*"/>
+        <xsl:for-each select="$item">
+            <xsl:sequence select="
+                    if (es:is-attribute(.)) then
+                        (.)
+                    else
+                        ()"/>
+        </xsl:for-each>
+    </xsl:function>
+    <xsl:function name="es:no-attributes" as="item()*">
+        <xsl:param name="item" as="item()*"/>
+        <xsl:for-each select="$item">
+            <xsl:sequence select="
+                    if (es:is-attribute(.)) then
+                        ()
+                    else
+                        (.)"/>
+        </xsl:for-each>
+    </xsl:function>
     <xsl:function name="es:attribute-consisty-check" as="attribute()*">
         <xsl:param name="attributes" as="attribute()*"/>
         <xsl:param name="context-node-type" as="xs:string"/>
