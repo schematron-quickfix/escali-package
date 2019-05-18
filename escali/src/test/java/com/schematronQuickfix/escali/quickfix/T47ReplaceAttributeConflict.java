@@ -12,12 +12,6 @@ public class T47ReplaceAttributeConflict extends FixingTestBaseChangePi {
 		return "test47-replaceAttributeConflict";
 	}
 
-	@Before
-	public void before(){
-//    	PENDING: Conflict of two replaces. Needs to be fixed.
-    	assumeTrue("PENDING: Conflict of two replaces. Needs to be fixed.", false);
-	}
-
 
 	@Test
 	public void test_1_replaceAttribut(){

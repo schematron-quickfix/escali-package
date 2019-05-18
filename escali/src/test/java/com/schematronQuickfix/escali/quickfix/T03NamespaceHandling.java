@@ -22,7 +22,7 @@ public class T03NamespaceHandling extends FixingTestBaseChangePi {
 				new String[]{"addElementWithNs2"},
 				new String[]{"addElementWithNullNs"},
 				new String[]{"addAttributeWithNs1"},
-				new String[]{PENDING_PREFIX + "addAttributeWithPrfxConflict"}, // PENDING
+				new String[]{"addAttributeWithPrfxConflict"},
 				new String[]{"addAttributeWithNs2"},
 				new String[]{"addAttributeWithNullNs"},
 				new String[]{"addElementWithNs2AsDef"}
