@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsm:manipulator xmlns:xsm="http://www.schematron-quickfix.com/manipulator/process" document="test.xml">
+    <xsm:add node="/errors/error[1]" position="@">
+        <xsm:content bar="foo"/>
+    </xsm:add>
+</xsm:manipulator>

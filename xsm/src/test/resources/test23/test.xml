@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--<?xml-model href="../input/test.sch" type="application/xml" schematypens="http://purl.oclc.org/dsdl/schematron"?>-->
+<!DOCTYPE errors SYSTEM "http://www.schematron-quickfix.com/test.dtd">
+<errors>
+    <error>
+        
+    </error>
+    <error>
+        
+    </error>
+    <error2>
+        
+    </error2>
+</errors>

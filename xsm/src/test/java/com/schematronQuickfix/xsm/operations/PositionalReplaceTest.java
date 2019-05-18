@@ -242,6 +242,7 @@ public class PositionalReplaceTest {
 //		assertEquals(PositionalReplaceTestCase.createTestCase(new File(folder + "expected-6.xml"), false).toString(), PositionalReplaceTestCase.createTestCase(new File(folder + "replacer-6.xsm"), true).toString());
 		testFolder(folder);
 	}
+
 	
 	private static String STRING_MAIN_FOLDER = "src/test/resources/";
 
@@ -280,6 +281,12 @@ public class PositionalReplaceTest {
 		testFolder(STRING_MAIN_FOLDER + "test23/");
 
 		TextSource.implementEntityResolver(null);
+	}
+
+	@Test
+	public void test24AttributeOrder(){
+		String folder = STRING_MAIN_FOLDER + "test24/";
+		testFolder(folder);
 	}
 	
 	private static FilenameFilter fnf = new FilenameFilter() {
