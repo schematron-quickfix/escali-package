@@ -55,7 +55,6 @@ public class T72InconsistencyAdd extends FixingTestBase {
 
 	@Test
 	public void test_processing_instruction(){
-		assumeTrue(!"addAttrBar".equals(fixId));
 		doTest(new ExecutionSetup(1, fixId));
 	}
 
@@ -66,12 +65,10 @@ public class T72InconsistencyAdd extends FixingTestBase {
 
 	@Test
 	public void test_comment(){
-		assumeTrue(!"addAttrBar".equals(fixId));
 		doTest(new ExecutionSetup(3, fixId));
 	}
 	@Test
 	public void test_text(){
-		assumeTrue(!"addAttrBar".equals(fixId));
 		doTest(new ExecutionSetup(4, fixId));
 	}
 
