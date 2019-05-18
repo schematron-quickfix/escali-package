@@ -257,11 +257,16 @@
 
             <xsl:element name="xsm:{$node-type}">
                 <axsl:attribute name="xml:base" select="base-uri(.)"/>
-                <axsl:sequence select="
-                      if (. instance of attribute() or {@position = ('after', 'before')}()) 
-                    then (parent::*/namespace::*) 
-                    else namespace::*
-                    "/>
+                <axsl:variable name="xsm:namespace-context" select="
+                    if (not(. instance of element())) 
+                    then parent::* 
+                    else 
+                    {
+                    if (@position = ('after', 'before')) 
+                    then 'parent::*' 
+                    else '.'
+                    }"/>
+                <axsl:sequence select="$xsm:namespace-context/namespace::*"/>
                 <axsl:attribute name="node" select="$xsm:node"/>
                 <xsl:if test="$markChanges">
                     <xsl:variable name="markerTest" select="
