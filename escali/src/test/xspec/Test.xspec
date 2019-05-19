@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<x:description xmlns:x="http://www.jenitennison.com/xslt/xspec" xmlns:es="http://www.escali.schematron-quickfix.com/" stylesheet="../../main/xsl/01_compiler/escali_compiler_0_functions.xsl">
+<x:description xmlns:x="http://www.jenitennison.com/xslt/xspec" xmlns:es="http://www.escali.schematron-quickfix.com/" xmlns:xsm="http://www.schematron-quickfix.com/manipulator/process" xmlns:sqf="http://www.schematron-quickfix.com/validator/process" stylesheet="../../main/xsl/01_compiler/escali_compiler_0_functions.xsl">
+
+    <x:param name="x:xspecPrefixes" select="'xsl', 'xs', 'test', 'x', 'es', 'xsm', 'sqf', 'xml'"/>
 
     <x:scenario label="Scenario for testing function getNodePath">
         <x:call function="es:getNodePath"> </x:call>
