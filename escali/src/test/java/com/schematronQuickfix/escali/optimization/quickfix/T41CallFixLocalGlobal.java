@@ -25,7 +25,6 @@ public class T41CallFixLocalGlobal extends FixingTestBase {
 	@Override
 	public Config getConfig() {
 		Config config = super.getConfig();
-		config.setInternalValidation(false);
 		return config;
 	}
 

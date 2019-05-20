@@ -28,7 +28,6 @@ public class T49NsLiteralResult extends ValidationTestBase {
 	@Override
 	public Config getConfig() {
 		Config config = super.getConfig();
-		config.setInternalValidation(false);
 		return config;
 	}
 

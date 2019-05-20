@@ -28,7 +28,6 @@ public class T51NsTriggersNamespaceDecl extends ValidationTestBase {
 	@Override
 	public Config getConfig() {
 		Config config = super.getConfig();
-		config.setInternalValidation(false);
 		return config;
 	}
 

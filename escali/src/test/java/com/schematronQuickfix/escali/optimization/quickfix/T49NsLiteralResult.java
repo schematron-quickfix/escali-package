@@ -26,7 +26,6 @@ public class T49NsLiteralResult extends FixingTestBase {
 	@Override
 	public Config getConfig() {
 		Config config = super.getConfig();
-		config.setInternalValidation(false);
 		return config;
 	}
 

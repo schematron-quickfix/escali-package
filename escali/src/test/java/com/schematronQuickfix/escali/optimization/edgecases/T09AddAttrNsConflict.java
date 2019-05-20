@@ -28,7 +28,6 @@ public class T09AddAttrNsConflict extends FixingTestBase {
 	@Override
 	public Config getConfig() {
 		Config config = super.getConfig();
-		config.setInternalValidation(false);
 		return config;
 	}
 

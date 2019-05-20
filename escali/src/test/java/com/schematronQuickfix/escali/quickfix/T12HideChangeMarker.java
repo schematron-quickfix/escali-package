@@ -11,7 +11,6 @@ public class T12HideChangeMarker extends FixingTestBaseChangePi {
 	static {
 		escaliConfig = ConfigFactory.createDefaultConfig();
 		escaliConfig.setChangePrefix("");
-		escaliConfig.setInternalValidation(false);
 	}
 
     @Override

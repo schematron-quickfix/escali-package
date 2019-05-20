@@ -26,7 +26,6 @@ public class T46UseForEachCallFix extends FixingTestBase {
 	@Override
 	public Config getConfig() {
 		Config config = super.getConfig();
-		config.setInternalValidation(false);
 		return config;
 	}
 

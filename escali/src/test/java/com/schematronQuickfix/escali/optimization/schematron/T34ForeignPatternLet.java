@@ -29,7 +29,6 @@ public class T34ForeignPatternLet extends ValidationTestBase {
 	@Override
 	public Config getConfig() {
 		Config config = super.getConfig();
-		config.setInternalValidation(false);
 		config.setPhase("phase1");
 		return config;
 	}

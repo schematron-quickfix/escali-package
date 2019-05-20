@@ -31,7 +31,6 @@ public class T23UserEntryDefault extends ValidationTestBase {
 	@Override
 	public Config getConfig() {
 		Config config = super.getConfig();
-		config.setInternalValidation(false);
 		return config;
 	}
 

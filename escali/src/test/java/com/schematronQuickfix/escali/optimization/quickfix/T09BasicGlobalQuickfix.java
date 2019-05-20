@@ -27,7 +27,6 @@ public class T09BasicGlobalQuickfix extends FixingTestBase {
 	@Override
 	public Config getConfig() {
 		Config config = super.getConfig();
-		config.setInternalValidation(false);
 		return config;
 	}
 

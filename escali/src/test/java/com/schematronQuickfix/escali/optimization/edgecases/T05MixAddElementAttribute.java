@@ -29,7 +29,6 @@ public class T05MixAddElementAttribute extends FixingTestBaseChangePi {
 	@Override
 	public Config getConfig() {
 		Config config = super.getConfig();
-		config.setInternalValidation(false);
 		return config;
 	}
 
