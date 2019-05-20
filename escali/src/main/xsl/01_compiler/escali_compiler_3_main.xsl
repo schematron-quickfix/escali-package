@@ -97,7 +97,7 @@
     <xsl:variable name="uri" select="/sch:schema/@es:uri"/>
     <xsl:variable name="defaultRole" select="/sch:schema/@es:defaultRole"/>
     <xsl:variable name="defaultRoleLabel" select="/sch:schema/@es:defaultRoleLabel"/>
-    
+
     <xsl:variable name="phaseVariables" select="/sch:schema/sch:phase[@id = $phase]/sch:let"/>
 
     <xsl:template match="sch:schema">
@@ -127,7 +127,7 @@
 
 
             <xsl:sequence select="sch:pattern/es:createPatternVariables(., true())"/>
-            
+
 
             <axsl:template match="/" priority="10000000">
                 <axsl:processing-instruction name="es_compact-svrl" select="'{$es:compact-svrl}'"/>
@@ -141,7 +141,7 @@
                     <xsl:attribute name="es:schema" select="es:base-uri(.)"/>
                     <axsl:attribute name="es:instance" select="document-uri(/)"/>
                     <xsl:sequence select="es:topLevelManipulatorExtension(/*)"/>
-                    <xsl:for-each-group select="/sch:schema/(sch:ns|es:default-namespace)" group-by="concat(@uri, @prefix)">
+                    <xsl:for-each-group select="/sch:schema/(sch:ns | es:default-namespace)" group-by="concat(@uri, @prefix)">
                         <svrl:ns-prefix-in-attribute-values uri="{@uri}" prefix="{@prefix}">
                             <!--                            <xsl:attribute name="prefix" select="distinct-values(current-group()/@prefix)" separator=" "/>-->
                         </svrl:ns-prefix-in-attribute-values>
@@ -179,7 +179,7 @@
                 </svrl:schematron-output>
             </axsl:template>
             <xsl:apply-templates select="(node() | $phaseVariables) except $firsts"/>
-            
+
 
             <xsl:variable name="sep">', '</xsl:variable>
             <axsl:function name="es:getPhase" as="xs:string+">
@@ -220,7 +220,7 @@
 
 
     <xsl:template match="sch:title | sch:phase | sch:pattern/sch:let"/>
-    
+
     <xsl:template match="sch:schema/sch:let[@name = $phaseVariables/@name]"/>
 
 

@@ -4,7 +4,7 @@
     <x:param name="x:xspecPrefixes" select="'xsl', 'xs', 'test', 'x', 'es', 'xsm', 'sqf', 'xml', 'sch', 'axsl'"/>
 
     <x:scenario label="Scenario for testing function getNodePath">
-        <x:call function="es:getNodePath"> </x:call>
+        <x:call function="es:getNodePath"/> 
         <x:scenario label="Root Element">
             <x:call>
                 <x:param name="node" select="/*" href="xml/getNodePath.xml"/>
