@@ -132,6 +132,7 @@
             <axsl:template match="/" priority="10000000">
                 <axsl:processing-instruction name="es_compact-svrl" select="'{$es:compact-svrl}'"/>
                 <svrl:schematron-output xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:sch="http://purl.oclc.org/dsdl/schematron" xmlns:svrl="http://purl.oclc.org/dsdl/svrl">
+                    <xsl:attribute name="es:queryBinding" select="@queryBinding"/>
                     <xsl:if test="sch:title">
                         <xsl:attribute name="title" select="sch:title" separator=", "/>
                     </xsl:if>
