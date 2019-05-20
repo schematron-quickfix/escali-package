@@ -691,7 +691,11 @@
             <xsm:add>
                 <xsl:sequence select="$addAttributes[1]/(@* | namespace::*)"/>
                 <xsm:content>
-                    <xsl:for-each-group select="$addAttributes/xsm:content/(@* | namespace::*)" group-by="QName(namespace-uri(), name())">
+                    <xsl:for-each-group select="$addAttributes/xsm:content/(@* | namespace::*)" group-by="
+                            if (. instance of attribute()) then
+                                QName(namespace-uri(), name())
+                            else
+                                name()">
                         <xsl:sequence select="."/>
                     </xsl:for-each-group>
                     <xsl:sequence select="$addAttributes/xsm:content/node()"/>
