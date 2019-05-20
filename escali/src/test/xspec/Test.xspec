@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<x:description xmlns:x="http://www.jenitennison.com/xslt/xspec" xmlns:es="http://www.escali.schematron-quickfix.com/" xmlns:xsm="http://www.schematron-quickfix.com/manipulator/process" xmlns:sqf="http://www.schematron-quickfix.com/validator/process" stylesheet="../../main/xsl/01_compiler/escali_compiler_0_functions.xsl">
+<x:description xmlns:x="http://www.jenitennison.com/xslt/xspec" xmlns:es="http://www.escali.schematron-quickfix.com/" xmlns:xsm="http://www.schematron-quickfix.com/manipulator/process" xmlns:sqf="http://www.schematron-quickfix.com/validator/process" xmlns:sch="http://purl.oclc.org/dsdl/schematron" xmlns:axsl="http://www.w3.org/1999/XSL/TransformAlias" stylesheet="../../main/xsl/01_compiler/escali_compiler_0_functions.xsl">
 
-    <x:param name="x:xspecPrefixes" select="'xsl', 'xs', 'test', 'x', 'es', 'xsm', 'sqf', 'xml'"/>
+    <x:param name="x:xspecPrefixes" select="'xsl', 'xs', 'test', 'x', 'es', 'xsm', 'sqf', 'xml', 'sch', 'axsl'"/>
 
     <x:scenario label="Scenario for testing function getNodePath">
         <x:call function="es:getNodePath"> </x:call>
@@ -213,7 +213,7 @@
 
         </x:scenario>
     </x:scenario>
-    <x:scenario label="Scenarion for testing function es:mergeAddAttributes" focus="">
+    <x:scenario label="Scenarion for testing function es:mergeAddAttributes">
         <x:call function="es:mergeAddAttributes"/>
         <x:scenario label="Empty input">
             <x:call>
@@ -556,6 +556,58 @@
                     <x:param select="('foo', 'foo_3', 'foo_4')"/>
                 </x:call>
                 <x:expect label="Result sequence" select="'foo_6', 'foo_2', 'foo_4_3', 'foo_5', 'foo_4_2'"/>
+            </x:scenario>
+        </x:scenario>
+    </x:scenario>
+    <x:scenario label="Scenarion for testing function es:createPatternVariables">
+        <x:call function="es:createPatternVariables"/>
+        <x:scenario label="As caller">
+            <x:call>
+                <x:param position="2" select="true()"/>
+            </x:call>
+            <x:scenario label="Trivial case">
+                <x:call>
+                    <x:param position="1" select="/*">
+                        <sch:pattern es:id="p1">
+                            <sch:let name="foo" value="'bar'"/>
+                        </sch:pattern>
+                    </x:param>
+                </x:call>
+                <x:expect label="Variable name" select="'es:p1-pattern-lets'" test="axsl:variable/@name/string(.)"/>
+                <x:expect label="Intern variable conversation" select="/*" test="axsl:variable/axsl:variable">
+                    <axsl:variable name="foo" select="'bar'" version="..."/>
+                </x:expect>
+                <x:expect label="XSLT version of internal variables" select="'2.0'" test="distinct-values(axsl:variable/axsl:variable/@version)"/>
+                <x:expect label="Correct map creation" select="'map{''foo'':$foo}'" test="replace(axsl:variable/axsl:sequence/@select, '\s', '')"/>
+            </x:scenario>
+            <x:scenario label="Two variables">
+                <x:call>
+                    <x:param position="1" select="/*">
+                        <sch:pattern es:id="p2">
+                            <sch:let name="foo" value="'foo'"/>
+                            <sch:let name="bar" value="'bar'"/>
+                        </sch:pattern>
+                    </x:param>
+                </x:call>
+                <x:expect label="Variable name" select="'es:p2-pattern-lets'" test="axsl:variable/@name/string(.)"/>
+                <x:expect label="Intern variable conversation" select="/*" test="axsl:variable/axsl:variable">
+                    <axsl:variable name="foo" select="'foo'" version="..."/>
+                    <axsl:variable name="bar" select="'bar'" version="..."/>
+                </x:expect>
+                <x:expect label="XSLT version of internal variables" select="'2.0'" test="distinct-values(axsl:variable/axsl:variable/@version)"/>
+                <x:expect label="Correct map creation" select="'map{''foo'':$foo,''bar'':$bar}'" test="replace(axsl:variable/axsl:sequence/@select, '\s', '')"/>
+            </x:scenario>
+            <x:scenario label="Variable with QueryBinding">
+                <x:call>
+                    <x:param position="1" select="/*/sch:pattern">
+                        <sch:schema queryBinding="xslt3">
+                            <sch:pattern es:id="p3">
+                                <sch:let name="foo" value="'bar'"/>
+                            </sch:pattern>
+                        </sch:schema>
+                    </x:param>
+                </x:call>
+                <x:expect label="XSLT version of internal variables" select="'3.0'" test="distinct-values(axsl:variable/axsl:variable/@version)"/>
             </x:scenario>
         </x:scenario>
     </x:scenario>
