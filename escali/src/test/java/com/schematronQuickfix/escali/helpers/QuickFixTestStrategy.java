@@ -85,6 +85,22 @@ public class QuickFixTestStrategy {
 
         assertEquals(expected.size(), results.size());
 
+        if(expected.size() > 0){
+            results.sort(new Comparator<TextSource>() {
+                @Override
+                public int compare(TextSource o1, TextSource o2) {
+                    return o1.toString().compareTo(o2.toString());
+                }
+            });
+            expected.sort(new Comparator<TextSource>() {
+                @Override
+                public int compare(TextSource o1, TextSource o2) {
+                    return o1.toString().compareTo(o2.toString());
+                }
+            });
+
+        }
+
         for (int j = 0; j < results.size(); j++) {
 
             TextSource act = results.get(j);
