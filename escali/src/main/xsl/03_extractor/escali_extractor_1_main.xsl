@@ -75,8 +75,9 @@
 
             <xsl:apply-templates select="es:meta/(xsl:* | sch:*)" mode="sqf:xsm"/>
 
-            <xsl:apply-templates select="es:pattern/es:meta/sch:let" mode="sqf:xsm"/>
-
+            
+            <xsl:sequence select="es:pattern/es:meta/es:createPatternVariables(., true())"/>
+            
             <!--            
             Main template
             -->
@@ -258,8 +259,9 @@
         <xsl:param name="location" tunnel="yes" as="xs:string"/>
 
         <axsl:template match="{$location}">
-
-            <xsl:apply-templates select="ancestor::es:pattern/es:meta/sch:let" mode="sqf:letpattern"/>
+            
+            <xsl:sequence select="ancestor::es:pattern/es:meta/es:createPatternVariables(., false())"/>
+            
 
             <xsl:variable name="ancestorMeta" select="(ancestor::es:meta except $global-meta)"/>
 
@@ -675,39 +677,6 @@
             <xsl:apply-templates select="@*" mode="#current"/>
             <xsl:apply-templates select="node()" mode="#current"/>
         </xsl:copy>
-    </xsl:template>
-
-    <!--
-    Helper variable to implement variables in es:pattern (coming from sch:pattern)
-    Stores namespace nodes unique for each es:pattern/es:meta 
-    -->
-    <xsl:variable name="pattern-namespaces" as="node()*">
-        <xsl:for-each select="/es:escali-reports/es:pattern/es:meta">
-            <xsl:namespace name="{@id}" select="concat('http://www.escali.schematron-quickfix.com/', @id)"/>
-        </xsl:for-each>
-    </xsl:variable>
-
-    <!--    
-    Implements global variables for pattern variables 
-    with unique names (namespace unique for the pattern) 
-    -->
-    <xsl:template match="es:pattern/es:meta/sch:let" mode="sqf:xsm">
-        <xsl:variable name="pid" select="../@id"/>
-        <axsl:variable name="{$pid}:{@name}" select="{@value}">
-            <xsl:sequence select="$pattern-namespaces[name() = $pid]"/>
-        </axsl:variable>
-    </xsl:template>
-    <!--
-    MODE: sqf:letpattern
-    Implements pattern variables for an xsl:template
-    reasign the values of unique global variables to 
-    its original variable names so the usages are not broken. 
-    -->
-    <xsl:template match="es:pattern/es:meta/sch:let" mode="sqf:letpattern">
-        <xsl:variable name="pid" select="../@id"/>
-        <axsl:variable name="{@name}" select="${$pid}:{@name}">
-            <xsl:sequence select="$pattern-namespaces[name() = $pid]"/>
-        </axsl:variable>
     </xsl:template>
 
     <!--
