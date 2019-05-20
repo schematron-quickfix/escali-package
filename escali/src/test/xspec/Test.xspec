@@ -42,7 +42,7 @@
             <x:expect label="Document node" select="string(.)">/</x:expect>
         </x:scenario>
     </x:scenario>
-    <x:scenario label="Scenario for testing function getNodePath with includes only">
+    <x:scenario label="Scenario for testing function getNodePath with includes only" pending="XInclude not supported in Oxygen">
         <x:call function="es:getNodePath">
             <x:param position="2" select="true()"/>
         </x:call>
@@ -133,6 +133,7 @@
             <x:expect label="All elements and attributes" select="'mixed'"/>
         </x:scenario>
 
+    </x:scenario>
     <x:scenario label="Scenarion for testing function valueToXPath">
         <x:call function="es:valueToXPath"/>
         <x:scenario label="Trivial value">
