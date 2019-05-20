@@ -5,7 +5,8 @@
         instance="#IGNORED#"
         phase="#ALL"
         schema=""
-        title="Schematron unit test - sch:ns in XPath">
+        title="Schematron unit test - sch:ns in XPath"
+        queryBinding="xslt2">
         <es:title>Schematron unit test - sch:ns in XPath</es:title>
         <es:schema>#IGNORED#</es:schema>
         <es:instance>#IGNORED#</es:instance>

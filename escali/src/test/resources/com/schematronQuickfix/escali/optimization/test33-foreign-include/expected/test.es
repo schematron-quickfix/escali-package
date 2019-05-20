@@ -5,7 +5,8 @@
         instance="#IGNORED#"
         phase="#ALL"
         schema=""
-        title="Schematron unit test - foreign global">
+        title="Schematron unit test - foreign global"
+        queryBinding="xslt2">
         <es:title>Schematron unit test - foreign global</es:title>
         <es:schema>#IGNORED#</es:schema>
         <es:instance>#IGNORED#</es:instance>

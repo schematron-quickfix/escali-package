@@ -5,7 +5,8 @@
         instance="#IGNORED#"
         phase="#ALL"
         schema=""
-        title="Schematron unit test - node creation position last-child">
+        title="Schematron unit test - node creation position last-child"
+        queryBinding="xslt2">
         <es:title>Schematron unit test - node creation position last-child</es:title>
         <es:schema>#IGNORED#</es:schema>
         <es:instance>#IGNORED#</es:instance>

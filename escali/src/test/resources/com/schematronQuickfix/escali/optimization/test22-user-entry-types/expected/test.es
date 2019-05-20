@@ -5,7 +5,8 @@
         instance="#IGNORED#"
         phase="#ALL"
         schema=""
-        title="Schematron unit test - userentry types">
+        title="Schematron unit test - userentry types"
+        queryBinding="xslt2">
         <es:title>Schematron unit test - userentry types</es:title>
         <es:schema>#IGNORED#</es:schema>
         <es:instance>#IGNORED#</es:instance>

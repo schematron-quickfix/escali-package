@@ -5,7 +5,8 @@
         instance="#IGNORED#"
         phase="#ALL"
         schema=""
-        title="Schematron unit test - call-fix basic">
+        title="Schematron unit test - call-fix basic"
+        queryBinding="xslt2">
         <es:title>Schematron unit test - call-fix basic</es:title>
         <es:schema>#IGNORED#</es:schema>
         <es:instance>#IGNORED#</es:instance>

@@ -5,7 +5,8 @@
         instance="#IGNORED#"
         phase="#ALL"
         schema=""
-        title="Schematron unit test - sch:ns with namespace declaration trigger">
+        title="Schematron unit test - sch:ns with namespace declaration trigger"
+        queryBinding="xslt2">
         <es:title>Schematron unit test - sch:ns with namespace declaration trigger</es:title>
         <es:schema>#IGNORED#</es:schema>
         <es:instance>#IGNORED#</es:instance>

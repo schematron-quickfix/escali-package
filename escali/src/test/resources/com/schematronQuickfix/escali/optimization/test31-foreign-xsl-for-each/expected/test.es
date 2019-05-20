@@ -5,7 +5,8 @@
         instance="#IGNORED#"
         phase="#ALL"
         schema=""
-        title="Schematron unit test - foreign xsl:for-each">
+        title="Schematron unit test - foreign xsl:for-each"
+        queryBinding="xslt2">
         <es:title>Schematron unit test - foreign xsl:for-each</es:title>
         <es:schema>#IGNORED#</es:schema>
         <es:instance>#IGNORED#</es:instance>

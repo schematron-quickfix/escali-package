@@ -5,7 +5,8 @@
         instance="file:/C:/Users/Nico/Work/Java2/escali-main-package/escali/target/test-classes/com/schematronQuickfix/escali/optimization/test01-trivial-delete/input/trivial-delete.xml"
         phase="#ALL"
         schema=""
-        title="Schematron unit test - basic delete">
+        title="Schematron unit test - basic delete"
+        queryBinding="xslt2">
         <es:title>Schematron unit test - basic delete</es:title>
         <es:schema>file:/C:/Users/Nico/Work/Java2/escali-main-package/escali/target/test-classes/com/schematronQuickfix/escali/optimization/test01-trivial-delete/input/trivial-delete.sch</es:schema>
         <es:instance>file:/C:/Users/Nico/Work/Java2/escali-main-package/escali/target/test-classes/com/schematronQuickfix/escali/optimization/test01-trivial-delete/input/trivial-delete.xml</es:instance>
