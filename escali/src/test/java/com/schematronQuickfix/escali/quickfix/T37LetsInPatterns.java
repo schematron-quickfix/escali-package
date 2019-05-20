@@ -16,7 +16,8 @@ public class T37LetsInPatterns extends FixingTestBaseChangePi {
 	public static List<String[]> fixIds() {
 		return Arrays.asList(
 				new String[]{"a"},
-				new String[]{"b"}
+				new String[]{"b"},
+				new String[]{"c"}
 		);
 	}
 
