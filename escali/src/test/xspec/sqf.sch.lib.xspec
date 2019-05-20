@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<x:description xmlns:x="http://www.jenitennison.com/xslt/xspec" xmlns:sqf="http://www.schematron-quickfix.com/validator/process" xmlns:sch="http://purl.oclc.org/dsdl/schematron" xmlns:es="http://www.escali.schematron-quickfix.com/" stylesheet="../../main/schema/SQF/sqf.sch.lib.xsl">
+    <!--<x:scenario label="Scenario for testing function getRoots">
+        <x:call function="sqf:getRoots">
+            <x:param name="context" select="''"/>
+        </x:call>
+        <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
+    </x:scenario>-->
+
+    <x:scenario label="Scenario for testing function getAvailableFixOrGroups">
+        <x:call function="sqf:getAvailableFixOrGroups"/>
+        <x:scenario label="Global and local">
+            <x:call>
+                <x:param name="localOrGlobal" position="2" select="'GLOBAL_AND_LOCAL'"/>
+            </x:call>
+            <x:scenario label="Trivial local ">
+                <x:call>
+                    <x:param name="context" select="/sch:rule/sch:assert">
+                        <sch:rule>
+                            <sch:assert/>
+                            <sqf:fix id="local"/>
+                        </sch:rule>
+                    </x:param>
+                </x:call>
+                <x:expect label="Count" select="1" test="count(sqf:fix)"/>
+                <x:expect label="IDs" select="'local'" test="sqf:fix/@id/string(.)"/>
+            </x:scenario>
+            <x:scenario label="Trivial global">
+                <x:call>
+                    <x:param name="context" select="/sch:schema/sch:pattern/sch:rule/sch:assert">
+                        <sch:schema>
+                            <sch:pattern>
+                                <sch:rule>
+                                    <sch:assert/>
+                                </sch:rule>
+                            </sch:pattern>
+                            <sqf:fixes>
+                                <sqf:fix id="global"/>
+                            </sqf:fixes>
+                        </sch:schema>
+                    </x:param>
+                </x:call>
+                <x:expect label="Count" select="1" test="count(sqf:fix)"/>
+                <x:expect label="IDs" select="'global'" test="sqf:fix/@id/string(.)"/>
+            </x:scenario>
+            <x:scenario label="Global and local">
+                <x:call>
+                    <x:param name="context" select="/sch:schema/sch:pattern/sch:rule/sch:assert">
+                        <sch:schema>
+                            <sch:pattern>
+                                <sch:rule>
+                                    <sch:assert/>
+                                    <sqf:fix id="local"/>
+                                </sch:rule>
+                            </sch:pattern>
+                            <sqf:fixes>
+                                <sqf:fix id="global"/>
+                            </sqf:fixes>
+                        </sch:schema>
+                    </x:param>
+                </x:call>
+                <x:expect label="Count" select="2" test="count(sqf:fix)"/>
+                <x:expect label="IDs" select="'local', 'global'" test="sqf:fix/@id/string(.)"/>
+            </x:scenario>
+            <x:scenario label="Groups">
+                <x:call>
+                    <x:param name="context" select="/sch:schema/sch:pattern/sch:rule/sch:assert">
+                        <sch:schema>
+                            <sch:pattern>
+                                <sch:rule>
+                                    <sch:assert/>
+                                    <sqf:group id="local_group">
+                                        <sqf:fix id="local_fix"/>
+                                    </sqf:group>
+                                </sch:rule>
+                            </sch:pattern>
+                            <sqf:fixes>
+                                <sqf:group id="global_group">
+                                    <sqf:fix id="global_fix"/>
+                                </sqf:group>
+                            </sqf:fixes>
+                        </sch:schema>
+                    </x:param>
+                </x:call>
+                <x:expect label="Group Count" select="2" test="count(sqf:group)"/>
+                <x:expect label="Group IDs" select="'local_group', 'global_group'" test="sqf:group/@id/string(.)"/>
+                <x:expect label="Fix Count" select="2" test="count(sqf:fix)"/>
+                <x:expect label="Fix IDs" select="'local_fix', 'global_fix'" test="sqf:fix/@id/string(.)"/>
+            </x:scenario>
+            <x:scenario label="Local overloads global">
+                <x:call>
+                    <x:param name="context" select="/sch:schema/sch:pattern/sch:rule/sch:assert">
+                        <sch:schema>
+                            <sch:pattern>
+                                <sch:rule>
+                                    <sch:assert/>
+                                    <sqf:fix id="fix1"/>
+                                </sch:rule>
+                            </sch:pattern>
+                            <sqf:fixes>
+                                <sqf:fix id="fix1"/>
+                            </sqf:fixes>
+                        </sch:schema>
+                    </x:param>
+                </x:call>
+                <x:expect label="Group Count" select="0" test="count(sqf:group)"/>
+                <x:expect label="Group IDs" select="()" test="sqf:group/@id/string(.)"/>
+                <x:expect label="Fix Count" select="1" test="count(sqf:fix)"/>
+                <x:expect label="Fix IDs" select="'fix1'" test="sqf:fix/@id/string(.)"/>
+            </x:scenario>
+            <x:scenario label="Context is in sqf:fix">
+                <x:call>
+                    <x:param name="context" select="/sch:schema/sch:pattern/sch:rule/sqf:fix[1]/sqf:call-fix">
+                        <sch:schema>
+                            <sch:pattern>
+                                <sch:rule>
+                                    <sch:assert/>
+                                    <sqf:fix id="local_1">
+                                        <sqf:call-fix/>
+                                    </sqf:fix>
+                                    <sqf:fix id="local_2"/>
+                                </sch:rule>
+                            </sch:pattern>
+                            <sqf:fixes>
+                                <sqf:fix id="global"/>
+                            </sqf:fixes>
+                        </sch:schema>
+                    </x:param>
+                </x:call>
+                <x:expect label="Fix Count" select="3" test="count(sqf:fix)"/>
+                <x:expect label="Fix IDs" select="'local_1', 'local_2', 'global'" test="sqf:fix/@id/string(.)"/>
+            </x:scenario>
+            <x:scenario label="Context is in sqf:fix and local overloads global">
+                <x:call>
+                    <x:param name="context" select="/sch:schema/sch:pattern/sch:rule/sqf:fix[1]/sqf:call-fix">
+                        <sch:schema>
+                            <sch:pattern>
+                                <sch:rule>
+                                    <sch:assert/>
+                                    <sqf:fix id="fix_1" es:local="true">
+                                        <sqf:call-fix/>
+                                    </sqf:fix>
+                                </sch:rule>
+                            </sch:pattern>
+                            <sqf:fixes>
+                                <sqf:fix id="fix_1"/>
+                            </sqf:fixes>
+                        </sch:schema>
+                    </x:param>
+                </x:call>
+                <x:expect label="Fix Count" select="1" test="count(sqf:fix)"/>
+                <x:expect label="Fix IDs" select="'fix_1'" test="sqf:fix/@id/string(.)"/>
+                <x:expect label="Local Fix Count" select="1" test="count(sqf:fix[@es:local='true'])"/>
+            </x:scenario>
+        </x:scenario>
+    </x:scenario>
+
+    <!--<x:scenario label="Scenario for testing function getAvailableFixOrGroups">
+        <x:call function="sqf:getAvailableFixOrGroups">
+            <x:param name="context" select="''"/>
+            <x:param name="localOrGlobal" select="''"/>
+        </x:call>
+        <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
+    </x:scenario>
+
+    <x:scenario label="Scenario for testing function getSQFDescrLangs">
+        <x:call function="sqf:getSQFDescrLangs">
+            <x:param name="descriptionEl" select="''"/>
+        </x:call>
+        <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
+    </x:scenario>
+
+    <x:scenario label="Scenario for testing function getLang">
+        <x:call function="sqf:getLang">
+            <x:param name="node" select="''"/>
+        </x:call>
+        <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
+    </x:scenario>
+
+    <x:scenario label="Scenario for testing function getRefFix">
+        <x:call function="sqf:getRefFix">
+            <x:param name="call-fix" select="''"/>
+        </x:call>
+        <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
+    </x:scenario>
+
+    <x:scenario label="Scenario for testing function hasDescription">
+        <x:call function="sqf:hasDescription">
+            <x:param name="fix" select="''"/>
+        </x:call>
+        <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
+    </x:scenario>
+
+    <x:scenario label="Scenario for testing function isReferered">
+        <x:call function="sqf:isReferered">
+            <x:param name="fix" select="''"/>
+        </x:call>
+        <x:expect label="Not yet implemented" select="'Not yet implemented'"/>
+    </x:scenario>-->
+</x:description>

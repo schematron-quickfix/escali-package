@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<x:description xmlns:x="http://www.jenitennison.com/xslt/xspec" xmlns:sqf="http://www.schematron-quickfix.com/validator/process" xmlns:sch="http://purl.oclc.org/dsdl/schematron" schematron="../../main/schema/SQF/sqf.sch">
+    <x:scenario label="Generic fixes - recurse call test">
+        <x:scenario label="Positives">
+            <x:scenario label="Trivial">
+                <x:context select="sch:rule/sqf:fix[1]/sqf:call-fix">
+                    <sch:rule>
+                        <sqf:fix id="call">
+                            <sqf:call-fix ref="generic"/>
+                        </sqf:fix>
+                        <sqf:fix id="generic"/>
+                    </sch:rule>
+                </x:context>
+                <x:expect-not-assert id="generic-fixes_1-1"/>
+                <x:expect-not-report id="generic-fixes_1-2"/>
+            </x:scenario>
+            <x:scenario label="Global reference">
+                <x:context select="sch:schema/sch:pattern/sch:rule/sqf:fix[1]/sqf:call-fix">
+                    <sch:schema>
+                        <sch:pattern>
+                            <sch:rule>
+                                <sqf:fix id="call">
+                                    <sqf:call-fix ref="generic"/>
+                                </sqf:fix>
+                            </sch:rule>
+                        </sch:pattern>
+                        <sqf:fixes>
+                            <sqf:fix id="generic"/>
+                        </sqf:fixes>
+                    </sch:schema>
+                </x:context>
+                <x:expect-not-assert id="generic-fixes_1-1"/>
+                <x:expect-not-report id="generic-fixes_1-2"/>
+            </x:scenario>
+            <x:scenario label="Global reference via overloading">
+                <x:context select="sch:schema/sch:pattern/sch:rule/sqf:fix[1]/sqf:call-fix">
+                    <sch:schema>
+                        <sch:pattern>
+                            <sch:rule>
+                                <sqf:fix id="fix_1">
+                                    <sqf:call-fix ref="fix_1"/>
+                                </sqf:fix>
+                            </sch:rule>
+                        </sch:pattern>
+                        <sqf:fixes>
+                            <sqf:fix id="fix_1"/>
+                        </sqf:fixes>
+                    </sch:schema>
+                </x:context>
+                <x:expect-not-assert id="generic-fixes_1-1"/>
+                <x:expect-not-report id="generic-fixes_1-2"/>
+            </x:scenario>
+        </x:scenario>
+        <x:scenario label="Negatives">
+            <x:scenario label="Looping reference">
+                <x:context select="sch:schema/sch:pattern/sch:rule/sqf:fix[1]/sqf:call-fix">
+                    <sch:schema>
+                        <sch:pattern>
+                            <sch:rule>
+                                <sqf:fix id="fix_1">
+                                    <sqf:call-fix ref="fix_1"/>
+                                </sqf:fix>
+                            </sch:rule>
+                        </sch:pattern>
+                    </sch:schema>
+                </x:context>
+                <x:expect-not-assert id="generic-fixes_1-1"/>
+                <x:expect-report id="generic-fixes_1-2"/>
+            </x:scenario>
+            <x:scenario label="Missing reference">
+                <x:context select="sch:schema/sch:pattern/sch:rule/sqf:fix[1]/sqf:call-fix">
+                    <sch:schema>
+                        <sch:pattern>
+                            <sch:rule>
+                                <sqf:fix id="fix_1">
+                                    <sqf:call-fix ref="fix_2"/>
+                                </sqf:fix>
+                            </sch:rule>
+                        </sch:pattern>
+                    </sch:schema>
+                </x:context>
+                <x:expect-assert id="generic-fixes_1-1"/>
+                <x:expect-not-report id="generic-fixes_1-2"/>
+            </x:scenario>
+        </x:scenario>
+    </x:scenario>
+</x:description>
