@@ -18,7 +18,7 @@
     along with Escali Schematron.  If not, see http://www.gnu.org/licenses/gpl-3.0.
 
     -->
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:es="http://www.escali.schematron-quickfix.com/" xmlns:sqf="http://www.schematron-quickfix.com/validator/process" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xd="http://www.oxygenxml.com/ns/doc/xsl" xmlns:xsm="http://www.schematron-quickfix.com/manipulator/process" xmlns:sch="http://purl.oclc.org/dsdl/schematron" exclude-result-prefixes="xs xd sch xsm" version="2.0">
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:es="http://www.escali.schematron-quickfix.com/" xmlns:sqf="http://www.schematron-quickfix.com/validator/process" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:axsl="http://www.w3.org/1999/XSL/TransformAlias" xmlns:xd="http://www.oxygenxml.com/ns/doc/xsl" xmlns:xsm="http://www.schematron-quickfix.com/manipulator/process" xmlns:sch="http://purl.oclc.org/dsdl/schematron" exclude-result-prefixes="xs xd sch xsm" version="2.0">
 
     <xd:doc scope="stylesheet">
         <xd:desc>
@@ -998,6 +998,80 @@
         <xsl:param name="baseValue" as="xs:string"/>
         <xsl:param name="used-values" as="xs:string*"/>
         <xsl:sequence select="es:find-id-value($baseValue, $used-values, '_')"/>
+    </xsl:function>
+
+    <!--
+    es:find-id-value
+    
+    Function to 
+     a. create a globale variable for pattern variables to 
+        act like global variables but without name conflicts
+     b. variables of each pattern variable, to place them in 
+        each xsl:template to act as if the global variables 
+        was declared
+    depending on $isCaller. This function works for Escali Compiler
+    and for Escali Extractor.
+    
+    $patternOrEsMeta = sch:pattern or es:pattern/es:meta element 
+                       which may contain sch:let variables.
+    $isCaller = If true, create a global variable (a). 
+                If false, create variable for XSL templates (b)  
+    
+    return value = Depending on $isCaller
+                   a. An xsl:variable element with an unique name 
+                      for the $patternOrEsMeta. The variable value 
+                      will be a map which contains for each sch:let 
+                      variable of $patternOrEsMeta an entry with the 
+                      pattern '{let/@name}' : {let/@value}.
+                      
+                   b. For each sch:let variable of $patternOrEsMeta
+                      one xsl:variable with the same name. The value
+                      will be a look up in the corresponding map 
+                      variable.
+                     
+    
+    -->
+    <xsl:function name="es:createPatternVariables" as="node()*">
+        <xsl:param name="patternOrEsMeta" as="element()"/>
+        <xsl:param name="isCaller" as="xs:boolean"/>
+        
+        <xsl:variable name="queryBinding" select="root($patternOrEsMeta)/(sch:schema/@queryBinding | es:escali-reports/es:meta/@queryBinding)"/>
+        <xsl:variable name="xslversion" select="
+            if (lower-case($queryBinding) = ('xslt3', 'xpath3')) then
+            ('3.0')
+            else
+            ('2.0')"/>
+        
+        <xsl:variable name="lets" select="$patternOrEsMeta/sch:let"/>
+        <xsl:variable name="id" select="$patternOrEsMeta/(@es:id, @id)[1]"/>
+        <xsl:variable name="namespace" as="node()">
+            <xsl:namespace name="{$id}" select="concat('http://www.escali.schematron-quickfix.com/', $id)"/>
+        </xsl:variable>
+        <xsl:choose>
+            <xsl:when test="not($lets)"/>
+            <xsl:when test="$isCaller">
+                <axsl:variable name="es:{$id}-pattern-lets" version="3.0" as="map(*)">
+                    <xsl:for-each select="$lets">
+                        <axsl:variable name="{@name}" select="{@value}" version="{$xslversion}"/>
+                    </xsl:for-each>
+                    <xsl:variable name="map-content" select="
+                            for $l in $lets
+                            return
+                                concat('''', $l/@name, ''' : $', $l/@name)
+                            "/>
+
+                    <axsl:sequence select=" map {{
+                        {string-join($map-content, ', ')}
+                        }}"/>
+                </axsl:variable>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:for-each select="$lets">
+                    <axsl:variable name="{@name}" select="$es:{$id}-pattern-lets('{@name}')" version="3.0"/>
+                </xsl:for-each>
+            </xsl:otherwise>
+        </xsl:choose>
+
     </xsl:function>
 
 

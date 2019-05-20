@@ -540,30 +540,6 @@
         </xsl:copy>
     </xsl:template>
 
-    <xsl:function name="es:createPatternVariables" as="node()*">
-        <xsl:param name="pattern" as="element(sch:pattern)"/>
-        <xsl:param name="isCaller" as="xs:boolean"/>
-        <xsl:variable name="lets" select="$pattern/sch:let"/>
-        <xsl:variable name="id" select="$pattern/@es:id"/>
-        <xsl:variable name="namespace" as="node()">
-            <xsl:namespace name="{$id}" select="concat('http://www.escali.schematron-quickfix.com/', $id)"/>
-        </xsl:variable>
-        <xsl:for-each select="$lets">
-            <axsl:variable>
-                <xsl:sequence select="$namespace"/>
-                <xsl:choose>
-                    <xsl:when test="$isCaller">
-                        <xsl:attribute name="name" select="concat($id, ':', @name)"/>
-                        <xsl:attribute name="select" select="@value"/>
-                    </xsl:when>
-                    <xsl:otherwise>
-                        <xsl:attribute name="name" select="@name"/>
-                        <xsl:attribute name="select" select="concat('$', $id, ':', @name)"/>
-                    </xsl:otherwise>
-                </xsl:choose>
-            </axsl:variable>
-        </xsl:for-each>
-
-    </xsl:function>
+    
 
 </xsl:stylesheet>
