@@ -460,9 +460,11 @@
             <let name="ref" value="@ref"/>
             <let name="ancFix" value="ancestor::sqf:fix"/>
             <let name="availableFixes" value="sqf:getAvailableFixOrGroups(.)/self::sqf:fix"/>
+            
+            <let name="globalFixes" value="sqf:getAvailableFixOrGroups(., $GLOBAL_ONLY)/self::sqf:fix"/>
 
             <assert test="$ref = $availableFixes/@id" see="http://www.schematron-quickfix.com/quickFix/reference.html#sqf:call-fix" sqf:fix="createLocal createGlobal" id="generic-fixes_1-1">The QuickFix with the id <value-of select="$ref"/> is not available in this rule.</assert>
-            <report test="$ancFix/@id = $ref and not(($availableFixes except $ancFix)[@id = $ref])" see="http://www.schematron-quickfix.com/quickFix/reference.html#sqf:call-fix" sqf:fix="delete createGlobal" id="generic-fixes_1-2">The fix should not call its self. It will produce an endless loop.</report>
+            <report test="$ancFix/@id = $ref and not(($globalFixes except $ancFix)[@id = $ref])" see="http://www.schematron-quickfix.com/quickFix/reference.html#sqf:call-fix" sqf:fix="delete createGlobal renameFix" id="generic-fixes_1-2">The fix should not call its self. It will produce an endless loop.</report>
 
 
             <sqf:fix id="renameFix">
@@ -499,7 +501,7 @@
             <let name="refFixId" value="../@ref"/>
             <let name="localRefFix" value="sqf:getAvailableFixOrGroups(., $LOCAL_ONLY)[@id = $refFixId]"/>
             <let name="refFix" value="
-                    if ($localRefFix)
+                    if ($localRefFix except ancestor::sqf:fix)
                     then
                         ($localRefFix)
                     else
