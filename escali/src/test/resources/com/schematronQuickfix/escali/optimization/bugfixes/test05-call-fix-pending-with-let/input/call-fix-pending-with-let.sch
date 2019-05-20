@@ -3,7 +3,7 @@
     <sch:title>Schematron unit test - bug fix - call-fix pending with let</sch:title>
     <sch:pattern id="pattern1">
         <sch:rule context="foo">
-            <sch:assert test=". != ''" sqf:fix="addChild addChilds">Foo should not be empty.</sch:assert>
+            <sch:assert test=". != ''" sqf:fix="addChild">Foo should not be empty.</sch:assert>
             <sqf:fix id="addChild">
                 <sqf:description>
                     <sqf:title>Add child bar to foo and root.</sqf:title>
