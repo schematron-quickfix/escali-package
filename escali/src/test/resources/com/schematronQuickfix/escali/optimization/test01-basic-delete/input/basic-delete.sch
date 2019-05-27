@@ -4,7 +4,7 @@
     <sch:title>Schematron unit test - basic delete</sch:title>
     <sch:pattern id="pattern1">
         <sch:rule context="foo">
-            <sch:assert test=". != ''" sqf:fix="deleteFoo">Foo should not be empty.</sch:assert>
+            <sch:assert test=". != ''" sqf:fix="deleteFoo" id="delete1">Foo should not be empty.</sch:assert>
             <sqf:fix id="deleteFoo">
                 <sqf:description>
                     <sqf:title>Delete foo</sqf:title>
