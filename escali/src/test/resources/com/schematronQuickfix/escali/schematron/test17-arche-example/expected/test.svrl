@@ -40,7 +40,7 @@
             </sqf:user-entry>
         </sqf:fix>
     </svrl:successful-report>
-    <svrl:fired-rule context="arc:tier[@geschlecht = 'weiblich']" es:id="d3e8"/>
+    <svrl:fired-rule context="arc:tier[@geschlecht = 'weiblich']" es:id="d3e9"/>
     <svrl:successful-report location="/*:arche[namespace-uri()='http://www.schematron.info/arche'][1]/*:ladung[namespace-uri()='http://www.schematron.info/arche'][1]/*:zimmer[namespace-uri()='http://www.schematron.info/arche'][2]/*:tier[namespace-uri()='http://www.schematron.info/arche'][3]"
         es:id="d2e4_d3e14" role="0.375" test="
         number(arc:alter) &gt;
@@ -97,7 +97,7 @@
             </sqf:user-entry>
         </sqf:fix>
     </svrl:successful-report>
-    <svrl:fired-rule context="arc:tier[@geschlecht = 'weiblich']" es:id="d3e8"/>
+    <svrl:fired-rule context="arc:tier[@geschlecht = 'weiblich']" es:id="d3e9"/>
     <svrl:successful-report location="/*:arche[namespace-uri()='http://www.schematron.info/arche'][1]/*:ladung[namespace-uri()='http://www.schematron.info/arche'][1]/*:zimmer[namespace-uri()='http://www.schematron.info/arche'][4]/*:tier[namespace-uri()='http://www.schematron.info/arche'][8]"
         es:id="d2e4_d3e14" role="0.375" test="
         number(arc:alter) &gt;
@@ -117,7 +117,7 @@
         </sqf:fix>
     </svrl:successful-report>
     <svrl:active-pattern es:id="d3e3" es:phases="#ALL"/>
-    <svrl:fired-rule context="arc:nutzlast" es:id="d3e8"/>
+    <svrl:fired-rule context="arc:nutzlast" es:id="d3e0"/>
     <svrl:successful-report location="/*:arche[namespace-uri()='http://www.schematron.info/arche'][1]/*:nutzlast[namespace-uri()='http://www.schematron.info/arche'][1]"
         sqf:default-fix="extend-w2328aab3b1b3-w2551ab1b1b1b1"
         es:id="d2e4_d3e14" role="0.375" test=". &lt; $nutzlast">
@@ -130,7 +130,7 @@
         </sqf:fix>
     </svrl:successful-report>
     <svrl:active-pattern es:id="d3e3" es:phases="#ALL"/>
-    <svrl:fired-rule context="arc:tier[@fleischfresser = 'ja']" es:id="d3e8"/>
+    <svrl:fired-rule context="arc:tier[@fleischfresser = 'ja']" es:id="d3e1"/>
     <svrl:successful-report location="/*:arche[namespace-uri()='http://www.schematron.info/arche'][1]/*:ladung[namespace-uri()='http://www.schematron.info/arche'][1]/*:zimmer[namespace-uri()='http://www.schematron.info/arche'][1]/*:tier[namespace-uri()='http://www.schematron.info/arche'][2]"
         es:id="d2e4_d3e14" role="0.375" test="parent::*/arc:tier[@fleischfresser = 'nein']
         ">
@@ -142,7 +142,7 @@
             </sqf:description>
         </sqf:fix>
     </svrl:successful-report>
-    <svrl:fired-rule context="arc:tier[@fleischfresser = 'ja']" es:id="d3e8"/>
+    <svrl:fired-rule context="arc:tier[@fleischfresser = 'ja']" es:id="d3e1"/>
     <svrl:successful-report location="/*:arche[namespace-uri()='http://www.schematron.info/arche'][1]/*:ladung[namespace-uri()='http://www.schematron.info/arche'][1]/*:zimmer[namespace-uri()='http://www.schematron.info/arche'][2]/*:tier[namespace-uri()='http://www.schematron.info/arche'][3]"
         es:id="d2e4_d3e14" role="0.375" test="parent::*/arc:tier/arc:gewicht &lt; (arc:gewicht div 2)">
         <svrl:text>Noah, dieser Fleischfresser ist zu stark (schwer) für seinen Zimmer­genossen. Er könnte ihn als Nahrungsquelle benutzen.</svrl:text>
@@ -152,7 +152,7 @@
             </sqf:description>
         </sqf:fix>
     </svrl:successful-report>
-    <svrl:fired-rule context="arc:tier" es:id="d3e8"/>
+    <svrl:fired-rule context="arc:tier" es:id="d3e2"/>
     <svrl:successful-report location="/*:arche[namespace-uri()='http://www.schematron.info/arche'][1]/*:ladung[namespace-uri()='http://www.schematron.info/arche'][1]/*:zimmer[namespace-uri()='http://www.schematron.info/arche'][3]/*:tier[namespace-uri()='http://www.schematron.info/arche'][3]"
         es:id="d2e4_d3e14" role="0.375" test="parent::*/arc:tier/arc:gewicht &lt; (arc:gewicht div 10)">
         <svrl:text>Noah, das Tier ist zu schwer für seine Zimmergenossen! Es könnte einen zertrampeln.</svrl:text>
@@ -163,7 +163,7 @@
         </sqf:fix>
     </svrl:successful-report>
     <svrl:active-pattern es:id="d3e3" es:phases="#ALL"/>
-    <svrl:fired-rule context="arc:tier" es:id="d3e8"/>
+    <svrl:fired-rule context="arc:tier" es:id="d3e3"/>
     <svrl:successful-report location="/*:arche[namespace-uri()='http://www.schematron.info/arche'][1]/*:ladung[namespace-uri()='http://www.schematron.info/arche'][1]/*:zimmer[namespace-uri()='http://www.schematron.info/arche'][1]/*:tier[namespace-uri()='http://www.schematron.info/arche'][1]"
         es:id="d2e4_d3e14" role="0.375" test="count(//arc:tier[arc:art = current()/arc:art]) &gt; 2">
         <svrl:text>In der Arche gibt es mehr als zwei Tiere dieser Art.</svrl:text>
@@ -184,7 +184,7 @@
             </sqf:description>
         </sqf:fix>
     </svrl:successful-report>
-    <svrl:fired-rule context="arc:tier" es:id="d3e8"/>
+    <svrl:fired-rule context="arc:tier" es:id="d3e3"/>
     <svrl:successful-report location="/*:arche[namespace-uri()='http://www.schematron.info/arche'][1]/*:ladung[namespace-uri()='http://www.schematron.info/arche'][1]/*:zimmer[namespace-uri()='http://www.schematron.info/arche'][1]/*:tier[namespace-uri()='http://www.schematron.info/arche'][2]"
         es:id="d2e4_d3e14" role="0.375" test="count(parent::*/arc:tier[arc:art = current()/arc:art]) &lt; 2">
         <svrl:text>In dieser Unterkunft gibt es weniger als zwei Tiere dieser Art.</svrl:text>
@@ -204,7 +204,7 @@
         </sqf:fix>
     </svrl:failed-assert>
     
-    <svrl:fired-rule context="arc:tier" es:id="d3e8"/>
+    <svrl:fired-rule context="arc:tier" es:id="d3e3"/>
     <svrl:successful-report location="/*:arche[namespace-uri()='http://www.schematron.info/arche'][1]/*:ladung[namespace-uri()='http://www.schematron.info/arche'][1]/*:zimmer[namespace-uri()='http://www.schematron.info/arche'][2]/*:tier[namespace-uri()='http://www.schematron.info/arche'][3]"
         es:id="d2e4_d3e14" role="0.375" test="count(parent::*/arc:tier[arc:art = current()/arc:art]) &lt; 2">
         <svrl:text>In dieser Unterkunft gibt es weniger als zwei Tiere dieser Art.</svrl:text>
@@ -223,7 +223,7 @@
             </sqf:description>
         </sqf:fix>
     </svrl:failed-assert>
-    <svrl:fired-rule context="arc:tier" es:id="d3e8"/>
+    <svrl:fired-rule context="arc:tier" es:id="d3e3"/>
     <svrl:successful-report location="/*:arche[namespace-uri()='http://www.schematron.info/arche'][1]/*:ladung[namespace-uri()='http://www.schematron.info/arche'][1]/*:zimmer[namespace-uri()='http://www.schematron.info/arche'][3]/*:tier[namespace-uri()='http://www.schematron.info/arche'][1]"
         es:id="d2e4_d3e14" role="0.375" test="count(//arc:tier[arc:art = current()/arc:art]) &gt; 2">
         <svrl:text>In der Arche gibt es mehr als zwei Tiere dieser Art.</svrl:text>
@@ -244,7 +244,7 @@
             </sqf:description>
         </sqf:fix>
     </svrl:failed-assert>
-    <svrl:fired-rule context="arc:tier" es:id="d3e8"/>
+    <svrl:fired-rule context="arc:tier" es:id="d3e3"/>
     <svrl:successful-report location="/*:arche[namespace-uri()='http://www.schematron.info/arche'][1]/*:ladung[namespace-uri()='http://www.schematron.info/arche'][1]/*:zimmer[namespace-uri()='http://www.schematron.info/arche'][3]/*:tier[namespace-uri()='http://www.schematron.info/arche'][2]"
         es:id="d2e4_d3e14" role="0.375" test="count(//arc:tier[arc:art = current()/arc:art]) &gt; 2">
         <svrl:text>In der Arche gibt es mehr als zwei Tiere dieser Art.</svrl:text>
@@ -265,7 +265,7 @@
             </sqf:description>
         </sqf:fix>
     </svrl:failed-assert>
-    <svrl:fired-rule context="arc:tier" es:id="d3e8"/>
+    <svrl:fired-rule context="arc:tier" es:id="d3e3"/>
     <svrl:successful-report location="/*:arche[namespace-uri()='http://www.schematron.info/arche'][1]/*:ladung[namespace-uri()='http://www.schematron.info/arche'][1]/*:zimmer[namespace-uri()='http://www.schematron.info/arche'][3]/*:tier[namespace-uri()='http://www.schematron.info/arche'][3]"
         es:id="d2e4_d3e14" role="0.375" test="count(parent::*/arc:tier[arc:art = current()/arc:art]) &lt; 2">
         <svrl:text>In dieser Unterkunft gibt es weniger als zwei Tiere dieser Art.</svrl:text>
@@ -301,7 +301,7 @@
         </sqf:fix>
     </svrl:failed-assert>
     <svrl:active-pattern es:id="d3e3" es:phases="#ALL"/>
-    <svrl:fired-rule context="arc:zimmer" es:id="d3e8"/>
+    <svrl:fired-rule context="arc:zimmer" es:id="d3e4"/>
     <svrl:successful-report location="/*:arche[namespace-uri()='http://www.schematron.info/arche'][1]/*:ladung[namespace-uri()='http://www.schematron.info/arche'][1]/*:zimmer[namespace-uri()='http://www.schematron.info/arche'][4]"
         es:id="d2e4_d3e14" role="0.375" test="count(arc:tier) &gt; 6">
         <svrl:text>Noah, bringst du zu viele Tiere in einem Zimmer unter, könnte sich das schlecht auf die Zimmergemeinschaft auswirken! Du solltest nicht mehr als 6 Tiere in einem Zimmer unterbringen.</svrl:text>

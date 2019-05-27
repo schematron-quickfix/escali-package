@@ -13,7 +13,7 @@
         <let name="minGewicht" value="arc:gewicht div 2" xmlns="http://purl.oclc.org/dsdl/schematron"/>
     </svrl:fired-rule>
     <svrl:successful-report location="/*:arche[namespace-uri()='http://www.schematron.info/arche'][1]/*:ladung[namespace-uri()='http://www.schematron.info/arche'][1]/*:zimmer[namespace-uri()='http://www.schematron.info/arche'][2]/*:tier[namespace-uri()='http://www.schematron.info/arche'][1]"
-        test="parent::*/arc:tier/arc:gewicht &lt; $minGewicht">
+        test="parent::*/arc:tier/arc:gewicht &lt; $minGewicht" es:roleLabel="fatal">
         <svrl:text>Noah, das Tier ist zu schwer für seine Zimmergenossen! Es könnte einen zertrampeln/angreifen.</svrl:text>
     </svrl:successful-report>
     <svrl:fired-rule context="arc:tier[@fleischfresser='ja']" >
