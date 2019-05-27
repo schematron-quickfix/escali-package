@@ -47,7 +47,7 @@ public class T19QueryBinding extends ValidationTestBase {
 	public void test_2_xslt2_fix(){
 		this.schema = "input/test_2.sch";
 
-		doTest(ConfigFactory.createDefaultConfig(), "expected/test_2.svrl");
+		doTest(ConfigFactory.createDefaultConfig(), "expected/test_2.es");
 
 	}
 
@@ -55,7 +55,7 @@ public class T19QueryBinding extends ValidationTestBase {
 	public void test_3_xslt3_fix(){
 		this.schema = "input/test_3.sch";
 
-		doTest(ConfigFactory.createDefaultConfig(), "expected/test_3.svrl");
+		doTest(ConfigFactory.createDefaultConfig(), "expected/test_3.es");
 
 	}
 

@@ -39,7 +39,7 @@ public class T12EsParamTest extends ValidationTestBase {
 		Config config = ConfigFactory.createDefaultConfig();
 		config.setCompactSVRL(false);
 		config.addValidationParam("config", param);
-		doTest(config, "expected/" + param + ".svrl");
+		doTest(config, "expected/" + param + ".es");
 		
 	}
 

@@ -12,7 +12,7 @@ import com.github.oxygenPlugins.common.process.log.MuteProcessLoger;
 import com.schematronQuickfix.escali.control.Config;
 import com.schematronQuickfix.escali.control.ConfigFactory;
 import com.schematronQuickfix.escali.helpers.ResourceHelper;
-import com.schematronQuickfix.escali.helpers.EscaliTestPair;
+import com.schematronQuickfix.escali.helpers.EscaliValidationTestPair;
 import com.schematronQuickfix.escali.helpers.ValidationTestStrategy;
 
 public abstract class ValidationTestBase {
@@ -44,7 +44,7 @@ public abstract class ValidationTestBase {
 	}
 
 	public String getFormat(){
-		return SVRLReport.SVRL_FORMAT;
+		return SVRLReport.ESCALI_FORMAT;
 	}
 	
 	public SVRLReport doTest(){
@@ -65,7 +65,7 @@ public abstract class ValidationTestBase {
 	
 	public SVRLReport doTest(Config config, String expectedSvrl){
 		try {
-			return tester.testStandardValidation(new EscaliTestPair(resource, getInstancePath(), getSchemaPath(), new String[]{expectedSvrl}, config), getFormat());
+			return tester.testStandardValidation(new EscaliValidationTestPair(resource, getInstancePath(), getSchemaPath(), expectedSvrl, config));
 		} catch (IOException e) {
 			fail(e.getMessage());
 			return null;
@@ -83,7 +83,7 @@ public abstract class ValidationTestBase {
 
 	public void expectError(Config config, Class<?> errorClass){
 		try {
-			tester.executeStandardValidation(new EscaliTestPair(resource, getInstancePath(), getSchemaPath(), new String[]{}, config));
+			tester.executeStandardValidation(new EscaliValidationTestPair(resource, getInstancePath(), getSchemaPath(), getInstancePath(), config));
 			fail("Test execution did not failed though error with class " + errorClass.getName() + " expected.");
 		} catch (Exception e){
 			assertEquals(e.getClass().getName(), errorClass.getName());

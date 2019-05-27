@@ -146,7 +146,7 @@
                                     </es:rule>
                                 </xsl:for-each-group>
                             </xsl:variable>
-                            <xsl:for-each-group select="$rules" group-by="@es:id">
+                            <xsl:for-each-group select="$rules" group-by="(@es:id, generate-id())[1]">
                                 <xsl:variable name="fixes" select="current-group()[1]/es:fixes"/>
                                 <es:rule>
                                     <xsl:apply-templates select="@xml:base"/>

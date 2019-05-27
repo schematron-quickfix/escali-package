@@ -1,19 +1,24 @@
 package com.schematronQuickfix.escali.helpers;
 
-import static org.junit.Assert.assertThat;
+import static com.schematronQuickfix.escali.control.SVRLReport.ESCALI_FORMAT;
 import static org.junit.Assert.fail;
-import static org.xmlunit.matchers.CompareMatcher.isIdenticalTo;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.xpath.XPathExpressionException;
 
+import com.github.oxygenPlugins.common.xml.xpath.ProcessNamespaces;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
+import org.xmlunit.assertj.ValueAssert;
+import org.xmlunit.assertj.XmlAssert;
 import org.xmlunit.util.Predicate;
 
 import com.github.oxygenPlugins.common.process.exceptions.CancelException;
@@ -29,6 +34,8 @@ public class ValidationTestStrategy {
 	
 	
 	private ProcessLoger logger;
+
+	private int testCounter = 0;
 	
 	public ValidationTestStrategy(ProcessLoger logger) {
 		this.logger = logger;
@@ -36,34 +43,68 @@ public class ValidationTestStrategy {
 
 
 
-	public SVRLReport executeStandardValidation(EscaliTestPair testPair) throws XSLTErrorListener, IOException, CancelException, SAXException, XMLStreamException, XPathExpressionException, URISyntaxException {
+	public SVRLReport executeStandardValidation(EscaliValidationTestPair testPair) throws XSLTErrorListener, IOException, CancelException, SAXException, XMLStreamException, XPathExpressionException, URISyntaxException {
 		SchematronInstancePair inputPair = testPair.getInputPair();
 		Validation val = new Validation(inputPair.getSchemaDocument(), testPair.getEscaliConfig(), logger);
 		SVRLReport report = val.validate(inputPair.getInstanceDocument());
 		return report;
 	}
-	public SVRLReport testStandardValidation(EscaliTestPair testPair){
-		return testStandardValidation(testPair, SVRLReport.SVRL_FORMAT);
+	public SVRLReport testStandardValidation(EscaliValidationTestPair testPair){
+		return testStandardValidation(testPair, SVRLReport.ESCALI_FORMAT);
 	}
-	public SVRLReport testStandardValidation(EscaliTestPair testPair, String format){
-
+	public SVRLReport testStandardValidation(EscaliValidationTestPair testPair, String format){
+		this.testCounter = 0;
 		try {
 
 			SVRLReport report = executeStandardValidation(testPair);
 
-			TextSource svrlTxt = report.getFormatetReport(format);
-			
-			StringNode expectedSN = ignore(testPair.getExpected().get(0));
-			StringNode actualSN = ignore(svrlTxt);
+			ExpectedReportData expected = testPair.getExpected();
+			String actualXml =  report.getFormatetReport(format).toString();
 
-			assertThat(
-                    actualSN.getDocument(),
-                    isIdenticalTo(expectedSN.getDocument())
-                            .normalizeWhitespace()
-                            .ignoreComments()
-                            .withAttributeFilter(noBaseAttribute())
-                            .throwComparisonFailure()
-            );
+			if(expected.title != null){
+				isEqualTo(
+						assertThatXPathValue(actualXml, "/es:escali-reports/es:meta/@title")
+						, expected.title)
+				;
+			}
+
+			if(expected.phase != null){
+				isEqualTo(
+						assertThatXPathValue(actualXml, "/es:escali-reports/es:meta/@phase")
+						, expected.phase)
+				;
+			}
+
+			if(expected.queryBinding != null){
+				isEqualTo(
+						assertThatXPathValue(actualXml, "/es:escali-reports/es:meta/@queryBinding")
+						, expected.queryBinding)
+				;
+			}
+
+//			Check message count
+			if(expected.getMessageCount() > 0){
+
+				isEqualTo(
+						assertThatXPathValue(actualXml, "count(//es:assert|//es:report)")
+						, expected.getMessageCount())
+				;
+			}
+
+//			Check asserts
+			if(expected.asserts != null) {
+				validateSchTests(actualXml, expected.asserts, "assert");
+			}
+
+//			Check reports
+			if(expected.reports != null) {
+				validateSchTests(actualXml, expected.reports, "report");
+			}
+
+
+			if(testCounter == 0){
+				fail("This unit test has no active tests!");
+			}
 
 			return report;
 
@@ -79,8 +120,47 @@ public class ValidationTestStrategy {
 		}
 
 
+
 	}
-	
+
+	private void validateSchTests(String xml, ArrayList<ExpectedReportData.Test> tests, String assertOrReport){
+		String basicXPath = "//es:" + assertOrReport;
+
+		ValueAssert valueAssert = assertThatXPathValue(xml, "count(" + basicXPath + ")")
+				.as("Ammount of " + assertOrReport + " tests does not match!");
+
+		isEqualTo(valueAssert, tests.size());
+
+
+
+		for (int i = 0; i < tests.size(); i++) {
+			ExpectedReportData.Test test = tests.get(i);
+
+			validateSchTest(xml, test, "(" + basicXPath + ")[" + (i + 1) + "]");
+
+		}
+	}
+	private void validateSchTest(String xml, ExpectedReportData.Test test, String basicXPath){
+
+		if(test.getMessage() != null){
+			assertThatXPathValue(xml, basicXPath + "/@message | " + basicXPath + "/es:text")
+					.isEqualTo(test.getMessage());
+		}
+		if(test.getLocation() != null){
+			assertThatXPathValue(xml, basicXPath + "/@location")
+					.isEqualTo(test.getLocation());
+		}
+		if(test.getLabel() != null){
+			assertThatXPathValue(xml, basicXPath + "/@roleLabel")
+					.isEqualTo(test.getLabel());
+		}
+		if(test.getId() != null){
+			assertThatXPathValue(xml, basicXPath + "/@base-id")
+					.isEqualTo(test.getId());
+		}
+
+	}
+
 	public static Predicate<Attr> noBaseAttribute() {
         return new Predicate<Attr>() {
             @Override
@@ -96,6 +176,55 @@ public class ValidationTestStrategy {
         };
 
     }
+
+	private ValueAssert isEqualTo(ValueAssert vAssert, int expected){
+		try {
+			testCounter++;
+			return vAssert.isEqualTo(expected);
+		} catch (Throwable e){
+			addMessage(e, vAssert.info.descriptionText());
+			throw e;
+		}
+	}
+
+	private ValueAssert isEqualTo(ValueAssert vAssert, String expected){
+		try {
+			this.testCounter++;
+			return vAssert.isEqualTo(expected);
+		} catch (Throwable e){
+			addMessage(e, vAssert.info.descriptionText());
+			throw e;
+		}
+	}
+
+	private static void addMessage(Throwable e, String message){
+		try {
+			Field messageField = Throwable.class.
+					getDeclaredField("detailMessage");
+			messageField.setAccessible(true);
+			messageField.set(e, message);
+		} catch (NoSuchFieldException | IllegalAccessException e1) {
+			System.err.println(e1.getLocalizedMessage());
+			return;
+		}
+	}
+
+	private static ValueAssert assertThatXPathValue(String xml, String xpath){
+		return assertThat(xml).valueByXPath(xpath);
+	}
+
+    private static XmlAssert assertThat(String xml){
+		return XmlAssert.assertThat(xml).withNamespaceContext(namespaceMap());
+	}
+
+
+
+	private static HashMap<String, String> namespaceMap(){
+		HashMap<String, String> nsMap = new HashMap<>();
+		nsMap.put("es", ProcessNamespaces.ES_NS);
+		nsMap.put("sqf", ProcessNamespaces.SQF_NS);
+		return nsMap;
+	}
 	
 	private static StringNode ignore(TextSource xml){
 		try {
