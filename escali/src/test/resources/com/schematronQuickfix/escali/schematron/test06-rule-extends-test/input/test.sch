@@ -1,4 +1,4 @@
-<schema xmlns="http://purl.oclc.org/dsdl/schematron">
+<schema xmlns="http://purl.oclc.org/dsdl/schematron" queryBinding="xslt2">
     <title>Extends test</title>
     <ns uri="http://www.schematron.info/arche" prefix="arc"/>
     <phase id="phase1">

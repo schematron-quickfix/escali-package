@@ -3,6 +3,7 @@
     title="Schematron unit test"
     xmlns:es="http://www.escali.schematron-quickfix.com/"
     phase="#ALL"
+    es:queryBinding="xslt2"
     es:schema="file:/D:/nico/Work/Java/net.sqf.tester/data/schematron/sch-tests/test4/in/test4.sch"
     es:instance="file:/D:/nico/Work/Java/net.sqf.tester/data/schematron/sch-tests/test4/in/test4.xml">
     <svrl:active-pattern id="pattern3" es:is-a="pattern4" es:phases="phase1 phase2 #ALL" />
@@ -17,7 +18,9 @@
         test="false()">
         <svrl:text>Test 2</svrl:text>
     </svrl:failed-assert>
-    <svrl:active-pattern id="pattern5" es:is-a="pattern6" es:phases="#ALL"/>
+    <svrl:active-pattern id="pattern5" es:is-a="pattern6" es:phases="#ALL">
+        <let name="testa2" value="6" xmlns="http://purl.oclc.org/dsdl/schematron"/>
+    </svrl:active-pattern>
     <svrl:fired-rule context="pattern6" />
     <svrl:failed-assert location="/*:root[namespace-uri()=''][1]/*:pattern6[namespace-uri()=''][1]"
         test="false()">

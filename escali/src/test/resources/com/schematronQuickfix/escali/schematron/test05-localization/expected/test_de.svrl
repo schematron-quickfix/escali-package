@@ -3,6 +3,7 @@
     xmlns:es="http://www.escali.schematron-quickfix.com/"
     title="localisation test"
     phase="#ALL"
+    es:queryBinding="xslt2"
     es:schema="file:/D:/nico/Work/Java/net.sqf.tester/data/schematron/sch-tests/test5/in/lang.sch"
     es:instance="file:/D:/nico/Work/Java/net.sqf.tester/data/schematron/sch-tests/test5/in/lang.xhtml">
     <svrl:active-pattern es:phases="#ALL"/>

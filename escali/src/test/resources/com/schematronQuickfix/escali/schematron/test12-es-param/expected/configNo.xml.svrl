@@ -3,8 +3,13 @@
     xmlns:es="http://www.escali.schematron-quickfix.com/"
     title="Schematron unit test"
     phase="#ALL"
+    es:queryBinding="xslt2"
     es:schema="file:/D:/nico/Work/Java/net.sqf.tester/data/schematron/sch-tests/test12/in/param.sch"
     es:instance="file:/D:/nico/Work/Java/net.sqf.tester/data/schematron/sch-tests/test12/in/param.xml">
+    <xsl:param xmlns:xsl="http://www.w3.org/1999/XSL/Transform" name="config"/>
+    <let xmlns="http://purl.oclc.org/dsdl/schematron"
+        name="configDoc"
+        value="doc(resolve-uri($config))"/>
     <svrl:active-pattern id="pattern1" es:phases="#ALL" />
     <svrl:fired-rule context="pattern1" />
     <svrl:active-pattern id="pattern2" es:phases="#ALL" />

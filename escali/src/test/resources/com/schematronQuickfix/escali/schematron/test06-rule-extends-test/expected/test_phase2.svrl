@@ -3,15 +3,20 @@
     xmlns:es="http://www.escali.schematron-quickfix.com/"
     phase="phase2"
     title="Extends test"
+    es:queryBinding="xslt2"
     es:schema="file:/D:/nico/Work/Java/net.sqf.tester/data/schematron/sch-tests/test6/in/extends.sch"
     es:instance="file:/D:/nico/Work/Java/net.sqf.tester/data/schematron/sch-tests/test6/in/extends.xml">
     <svrl:ns-prefix-in-attribute-values uri="http://www.schematron.info/arche"
         prefix="arc" />
     <svrl:active-pattern id="pattern2" es:phases="phase2 #ALL"/>
-    <svrl:fired-rule context="arc:tier[@fleischfresser='ja']" />
+    <svrl:fired-rule context="arc:tier[@fleischfresser='ja']" >
+        <let name="minGewicht" value="arc:gewicht div 2" xmlns="http://purl.oclc.org/dsdl/schematron"/>
+    </svrl:fired-rule>
     <svrl:successful-report location="/*:arche[namespace-uri()='http://www.schematron.info/arche'][1]/*:ladung[namespace-uri()='http://www.schematron.info/arche'][1]/*:zimmer[namespace-uri()='http://www.schematron.info/arche'][2]/*:tier[namespace-uri()='http://www.schematron.info/arche'][1]"
         test="parent::*/arc:tier/arc:gewicht &lt; $minGewicht">
         <svrl:text>Noah, das Tier ist zu schwer für seine Zimmergenossen! Es könnte einen zertrampeln/angreifen.</svrl:text>
     </svrl:successful-report>
-    <svrl:fired-rule context="arc:tier[@fleischfresser='ja']" />
+    <svrl:fired-rule context="arc:tier[@fleischfresser='ja']" >
+        <let name="minGewicht" value="arc:gewicht div 2" xmlns="http://purl.oclc.org/dsdl/schematron"/>
+    </svrl:fired-rule>
 </svrl:schematron-output>

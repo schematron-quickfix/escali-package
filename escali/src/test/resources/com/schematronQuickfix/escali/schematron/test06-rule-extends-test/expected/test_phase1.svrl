@@ -1,12 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svrl:schematron-output xmlns:svrl="http://purl.oclc.org/dsdl/svrl" xmlns:es="http://www.escali.schematron-quickfix.com/" phase="phase1" title="Extends test" es:schema="file:/D:/nico/Work/Java/net.sqf.tester/data/schematron/sch-tests/test6/in/extends.sch" es:instance="file:/D:/nico/Work/Java/net.sqf.tester/data/schematron/sch-tests/test6/in/extends.xml">
+<svrl:schematron-output xmlns:svrl="http://purl.oclc.org/dsdl/svrl" xmlns:es="http://www.escali.schematron-quickfix.com/" phase="phase1" title="Extends test"     es:queryBinding="xslt2"
+    es:schema="file:/D:/nico/Work/Java/net.sqf.tester/data/schematron/sch-tests/test6/in/extends.sch" es:instance="file:/D:/nico/Work/Java/net.sqf.tester/data/schematron/sch-tests/test6/in/extends.xml">
     <svrl:ns-prefix-in-attribute-values uri="http://www.schematron.info/arche" prefix="arc"/>
     <svrl:active-pattern id="pattern1" es:phases="phase1 #ALL"/>
-    <svrl:fired-rule context="arc:tier[@fleischfresser='nein']"/>
-    <svrl:fired-rule context="arc:tier[@fleischfresser='nein']"/>
-    <svrl:fired-rule context="arc:tier[@fleischfresser='nein']"/>
+    <svrl:fired-rule context="arc:tier[@fleischfresser='nein']">
+        <let name="minGewicht" value="arc:gewicht div 10" xmlns="http://purl.oclc.org/dsdl/schematron"/>
+    </svrl:fired-rule>
+    <svrl:fired-rule context="arc:tier[@fleischfresser='nein']">
+        <let name="minGewicht" value="arc:gewicht div 10" xmlns="http://purl.oclc.org/dsdl/schematron"/>
+    </svrl:fired-rule>
+    <svrl:fired-rule context="arc:tier[@fleischfresser='nein']">
+        <let name="minGewicht" value="arc:gewicht div 10" xmlns="http://purl.oclc.org/dsdl/schematron"/>
+    </svrl:fired-rule>
     <svrl:successful-report location="/*:arche[namespace-uri()='http://www.schematron.info/arche'][1]/*:ladung[namespace-uri()='http://www.schematron.info/arche'][1]/*:zimmer[namespace-uri()='http://www.schematron.info/arche'][3]/*:tier[namespace-uri()='http://www.schematron.info/arche'][1]" test="parent::*/arc:tier/arc:gewicht &lt; $minGewicht">
         <svrl:text>Noah, das Tier ist zu schwer für seine Zimmergenossen! Es könnte einen zertrampeln/angreifen.</svrl:text>
     </svrl:successful-report>
-    <svrl:fired-rule context="arc:tier[@fleischfresser='nein']"/>
+    <svrl:fired-rule context="arc:tier[@fleischfresser='nein']">
+        <let name="minGewicht" value="arc:gewicht div 10" xmlns="http://purl.oclc.org/dsdl/schematron"/>
+    </svrl:fired-rule>
 </svrl:schematron-output>

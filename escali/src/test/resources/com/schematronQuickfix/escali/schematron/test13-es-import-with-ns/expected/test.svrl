@@ -1,4 +1,5 @@
 <svrl:schematron-output xmlns:svrl="http://purl.oclc.org/dsdl/svrl" xmlns:es="http://www.escali.schematron-quickfix.com/" xmlns:xs="http://www.w3.org/2001/XMLSchema" title="Schematron unit test" phase="#ALL"
+    es:queryBinding="xslt2"
     es:schema="file:/D:/nico/Work/Java/net.sqf.tester/data/schematron/sch-tests/test13/in/test13.sch"
     es:instance="file:/D:/nico/Work/Java/net.sqf.tester/data/schematron/sch-tests/test13/in/test13.xml">
     <svrl:ns-prefix-in-attribute-values uri="a" prefix="a" />

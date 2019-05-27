@@ -3,6 +3,7 @@
     xmlns:es="http://www.escali.schematron-quickfix.com/"
     title="Schematron unit test"
     phase="#ALL"
+    es:queryBinding="xslt2"
     es:schema="file:/D:/nico/Work/Java/net.sqf.tester/data/schematron/sch-tests/test2/in/test2.sch"
     es:instance="file:/D:/nico/Work/Java/net.sqf.tester/data/schematron/sch-tests/test2/in/test2.xml">
     <svrl:text>This are imported patterns</svrl:text>

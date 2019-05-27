@@ -3,6 +3,7 @@
     xmlns:es="http://www.escali.schematron-quickfix.com/"
     title="Schematron unit test"
     phase="#ALL"
+    es:queryBinding="xslt2"
     es:schema="file:/D:/nico/Work/Java/net.sqf.tester/data/schematron/sch-tests/test11/in/getLang.sch"
     es:instance="file:/D:/nico/Work/Java/net.sqf.tester/data/schematron/sch-tests/test11/in/getLang.xml">
     <svrl:active-pattern id="pattern1" es:phases="#ALL" />

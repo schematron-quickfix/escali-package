@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svrl:schematron-output xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
     xmlns:es="http://www.escali.schematron-quickfix.com/" xmlns:sqf="http://www.schematron-quickfix.com/validator/process"
+    es:queryBinding="xslt2"
     title="XPath 2"
     phase="#ALL">
     <svrl:active-pattern es:phases="#ALL"/>
