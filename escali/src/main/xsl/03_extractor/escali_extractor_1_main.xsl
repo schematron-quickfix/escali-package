@@ -75,9 +75,9 @@
 
             <xsl:apply-templates select="es:meta/(xsl:* | sch:*)" mode="sqf:xsm"/>
 
-            
+
             <xsl:sequence select="es:pattern/es:meta/es:createPatternVariables(., true())"/>
-            
+
             <!--            
             Main template
             -->
@@ -259,9 +259,9 @@
         <xsl:param name="location" tunnel="yes" as="xs:string"/>
 
         <axsl:template match="{$location}">
-            
+
             <xsl:sequence select="ancestor::es:pattern/es:meta/es:createPatternVariables(., false())"/>
-            
+
 
             <xsl:variable name="ancestorMeta" select="(ancestor::es:meta except $global-meta)"/>
 
@@ -274,7 +274,7 @@
     </xsl:template>
 
     <!--    
-    MODE: sqf:xml
+    MODE: sqf:xsm
     Handles sqf:call-fix elements in Action QuickFixes
     - look up for called QF in scope
     - applies its foreign elements, parameter, sqf:call-fix, action elements
@@ -289,7 +289,7 @@
     </xsl:template>
 
     <!--
-    MODE: sqf:xml
+    MODE: sqf:xsm
     Converts sqf:param into a XSLT variable
     -->
 
@@ -305,7 +305,7 @@
     </xsl:template>
 
     <!--
-    MODE: sqf:xml
+    MODE: sqf:xsm
     Handles type attribute of sqf:param elements
     -->
 
@@ -314,7 +314,7 @@
     </xsl:template>
 
     <!--
-    MODE: sqf:xml
+    MODE: sqf:xsm
     Handles default attribute of sqf:param elements
     -->
 
@@ -351,7 +351,7 @@
             </axsl:variable>
             <axsl:variable name="xsm:content" select="$xsm:childs/self::xsm:content" as="element(xsm:content)"/>
             <axsl:variable name="xsm:position" select="es:only-attributes($xsm:childs)" as="attribute(position)?"/>
-            
+
             <xsl:variable name="xsm-node" select="
                     if (self::sqf:add) then
                         ('(if(. instance of attribute()) then .. else .)')
@@ -401,7 +401,7 @@
     </xsl:template>
 
     <!--
-    MODE: sqf:xml
+    MODE: sqf:xsm
     Creates XSM action element for sqf:replace
     - Handles specifica replacing attributes -> implements as xsm:delete + xsm:add to prevent conflicts
     - Sets the namespace context to the correct source element
@@ -481,6 +481,7 @@
             </xsl:if>
         </xsm:content>
     </xsl:template>
+
 
     <!--
     Creates position attribute for xsm:add
