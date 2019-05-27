@@ -175,66 +175,79 @@
         <xsl:param name="test" as="element()" tunnel="yes"/>
         <xsl:variable name="messageId" select="$test/@es:id"/>
 
-        <axsl:if test="{(parent::sqf:group/@use-when,'true()')[1]}">
-            <axsl:if test="{(@use-when, 'true()')[1]}">
-                <axsl:variable name="sqf:id">
-                    <axsl:text>
-                        <xsl:value-of select="@id"/>
-                    </axsl:text>
-                    <axsl:text>
-                        <xsl:text>-</xsl:text>
-                        <xsl:value-of select="$messageId"/>
-                        <xsl:text>-</xsl:text>
-                    </axsl:text>
-                    <axsl:value-of select="generate-id($es:context)"/>
-                    <xsl:sequence select="$id-suffix"/>
-                </axsl:variable>
-                <xsl:variable name="description" select="es:getDescription(.)"/>
-                <xsl:variable name="preDescription" select="$description/preceding-sibling::*"/>
+        <xsl:variable name="rule" select="$test/parent::sch:rule"/>
+        <xsl:variable name="ruleLetsAndStuff" select="$rule/(* except (sch:assert | sch:report | sqf:*))"/>
+        <xsl:variable name="precedingStuff" select="(./preceding::*[. >> $test] intersect $ruleLetsAndStuff)"/>
 
-                <xsl:apply-templates select="$preDescription"/>
 
-                <sqf:fix messageId="{$messageId}">
-                    <xsl:call-template name="namespace"/>
-                    <xsl:attribute name="contextId">
-                        <xsl:text>{generate-id($es:context)}</xsl:text>
-                    </xsl:attribute>
-                    <xsl:attribute name="id">{$sqf:id}</xsl:attribute>
-                    <xsl:attribute name="role" select="es:getRole(.)"/>
-                    <axsl:attribute name="fixId">
+        <axsl:variable name="sqf:fix">
+
+            <xsl:apply-templates select="$precedingStuff"/>
+
+            <axsl:if test="{(parent::sqf:group/@use-when,'true()')[1]}">
+
+                <axsl:if test="{(@use-when, 'true()')[1]}">
+                    <axsl:variable name="sqf:id">
                         <axsl:text>
                             <xsl:value-of select="@id"/>
                         </axsl:text>
+                        <axsl:text>
+                            <xsl:text>-</xsl:text>
+                            <xsl:value-of select="$messageId"/>
+                            <xsl:text>-</xsl:text>
+                        </axsl:text>
+                        <axsl:value-of select="generate-id($es:context)"/>
                         <xsl:sequence select="$id-suffix"/>
-                    </axsl:attribute>
-                    <xsl:apply-templates select="$description[1]" mode="#current"/>
-                    <xsl:apply-templates select="sqf:user-entry" mode="#current"/>
-                    <sqf:call-fix ref="{@id}">
-                        <xsl:for-each select="sqf:user-entry">
-                            <sqf:with-param name="{@name}" select="${@name}_{{$sqf:id}}"/>
-                        </xsl:for-each>
-                        <xsl:if test="@use-for-each">
-                            <sqf:with-param name="sqf:current" select="({@use-for-each})[{{$sqf:current-position}}]"/>
-                        </xsl:if>
-                    </sqf:call-fix>
-                </sqf:fix>
+                    </axsl:variable>
+                    <xsl:variable name="description" select="es:getDescription(.)"/>
+                    <xsl:variable name="preDescription" select="$description/preceding-sibling::*"/>
+
+                    <xsl:apply-templates select="$preDescription"/>
+
+                    <sqf:fix messageId="{$messageId}">
+                        <xsl:call-template name="namespace"/>
+                        <xsl:attribute name="contextId">
+                            <xsl:text>{generate-id($es:context)}</xsl:text>
+                        </xsl:attribute>
+                        <xsl:attribute name="id">{$sqf:id}</xsl:attribute>
+                        <xsl:attribute name="role" select="es:getRole(.)"/>
+                        <axsl:attribute name="fixId">
+                            <axsl:text>
+                                <xsl:value-of select="@id"/>
+                            </axsl:text>
+                            <xsl:sequence select="$id-suffix"/>
+                        </axsl:attribute>
+                        <xsl:apply-templates select="$description[1]" mode="#current"/>
+                        <xsl:apply-templates select="sqf:user-entry" mode="#current"/>
+                        <sqf:call-fix ref="{@id}">
+                            <xsl:for-each select="sqf:user-entry">
+                                <sqf:with-param name="{@name}" select="${@name}_{{$sqf:id}}"/>
+                            </xsl:for-each>
+                            <xsl:if test="@use-for-each">
+                                <sqf:with-param name="sqf:current" select="({@use-for-each})[{{$sqf:current-position}}]"/>
+                            </xsl:if>
+                        </sqf:call-fix>
+                    </sqf:fix>
+                </axsl:if>
             </axsl:if>
-        </axsl:if>
+        </axsl:variable>
+
+        <axsl:sequence select="$sqf:fix"/>
     </xsl:template>
 
     <xsl:template match="sqf:user-entry" mode="sqf:fix-for-tests">
         <sqf:user-entry name="{@name}_{{$sqf:id}}" ueName="{@name}">
             <xsl:sequence select="@type"/>
-            
+
             <axsl:variable name="sqf:user-entry-childs" as="node()*">
                 <xsl:apply-templates select="@default" mode="#current"/>
                 <xsl:apply-templates select="sqf:description" mode="#current"/>
             </axsl:variable>
             <axsl:variable name="sqf:user-entry-attributes" select="$sqf:user-entry-childs[. instance of attribute()]"/>
-            
+
             <axsl:sequence select="$sqf:user-entry-attributes"/>
             <axsl:sequence select="$sqf:user-entry-childs except $sqf:user-entry-attributes"/>
-            
+
         </sqf:user-entry>
     </xsl:template>
 
