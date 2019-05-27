@@ -34,6 +34,16 @@
                 $schema/sch:let[not(@name = $phaseVariables/@name)] | $phaseVariables
                 "/>
         <xsl:apply-templates select="$schema/xsl:* | $topLevelLets | $schema/sqf:fixes/(. | sqf:group)/sqf:fix" mode="sqf:top-level-elements"/>
+
+        <xsl:variable name="ignorableTests" select="$schema//(sch:assert | sch:report)[@es:ignorableId]"/>
+        <xsl:if test="$ignorableTests">
+            <sqf:fix id="es:ignore">
+                <sqf:param name="id"/>
+                <sch:let name="precPI" value="./(preceding-sibling::node() except preceding-sibling::text()[normalize-space(.) = ''])[last()]/self::processing-instruction(es_ignore)"/>
+                <sqf:add node-type="processing-instruction" target="es_ignore" select="$id" position="before" use-when="not($precPI)"/>
+                <sqf:replace match="$precPI" node-type="processing-instruction" target="es_ignore" select="string(.), $id"/>
+            </sqf:fix>
+        </xsl:if>
     </xsl:function>
 
 
@@ -57,14 +67,35 @@
                     $localGroups | $globalGroups[not(@id = ($localGroups/@id,
                     $localFixes/@id))]"/>
 
-            <axsl:variable name="sqf:rule-context" select="."/>
 
 
-            <xsl:apply-templates select="
-                    ($availableFixes | $availableGroups)[@id = $fix-calls]
-                    " mode="sqf:fix-for-tests">
-                <xsl:with-param name="test" select="$test" tunnel="yes"/>
-            </xsl:apply-templates>
+
+            <xsl:variable name="quickfixes" as="node()*">
+                <xsl:apply-templates select="
+                        ($availableFixes | $availableGroups)[@id = $fix-calls]
+                        " mode="sqf:fix-for-tests">
+                    <xsl:with-param name="test" select="$test" tunnel="yes"/>
+                </xsl:apply-templates>
+
+                <xsl:variable name="ignoreId" select="$test/@es:ignorableId"/>
+                <xsl:if test="$ignoreId">
+                    <xsl:variable name="role" select="($test/@es:roleLabel, 'error')[1]"/>
+                    <sqf:fix fixId="ignore_{$ignoreId}" title="Ignore this {
+                    if ($role = 'fatal') then
+                    ('fatal error')
+                    else
+                    ($role)}." id="es:ignore_{$test/@es:id}_{$ignoreId}_{{generate-id(.)}}">
+                        <sqf:call-fix ref="es:ignore">
+                            <sqf:with-param name="id" select="'{$ignoreId}'"/>
+                        </sqf:call-fix>
+                    </sqf:fix>
+                </xsl:if>
+            </xsl:variable>
+
+            <xsl:if test="$quickfixes">
+                <axsl:variable name="sqf:rule-context" select="."/>
+                <xsl:sequence select="$quickfixes"/>
+            </xsl:if>
 
         </xsl:if>
     </xsl:function>
