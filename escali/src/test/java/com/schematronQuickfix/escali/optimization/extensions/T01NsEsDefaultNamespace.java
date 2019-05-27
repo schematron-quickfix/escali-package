@@ -1,16 +1,16 @@
-package com.schematronQuickfix.escali.optimization.edgecases;
+package com.schematronQuickfix.escali.optimization.extensions;
 
 import com.schematronQuickfix.escali.control.Config;
 import com.schematronQuickfix.escali.quickfix.FixingTestBase;
 import org.junit.Test;
 
-public class T03NsEsDefaultNamespace extends FixingTestBase {
+public class T01NsEsDefaultNamespace extends FixingTestBase {
 
 
 
     @Override
 	public String getFolder() {
-		return "test03-ns-es-default-namespace";
+		return "test01-ns-es-default-namespace";
 	}
 
 
