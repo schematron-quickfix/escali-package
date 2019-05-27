@@ -45,5 +45,14 @@ public class T06BasicUseWhen extends FixingTestBase {
 	public void test_2(){
 		doTest(new ExecutionSetup(2, "addBar"));
 	}
+
+	@Test
+	public void test_3(){
+		doTest(new ExecutionSetup(1, "addOrReplaceBar"));
+	}
+	@Test
+	public void test_4(){
+		doTest(new ExecutionSetup(2, "addOrReplaceBar"));
+	}
 	
 }

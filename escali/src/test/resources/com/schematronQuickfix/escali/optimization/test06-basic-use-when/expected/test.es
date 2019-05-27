@@ -19,6 +19,10 @@
                 <sqf:fix id="addBar">
                     <sqf:add node-type="element" target="bar" select="'staticContent'"/>
                 </sqf:fix>
+                <sqf:fix id="addOrReplaceBar">
+                    <sqf:add node-type="element" target="bar" select="'staticContent'" use-when="not(bar)"/>
+                    <sqf:replace match="bar" select="'staticContent'"/>
+                </sqf:fix>
             </es:meta>
             <es:report id="w41aab1_w20aab3b1b1"
                 location="/*:root[namespace-uri()=''][1]/*:foo[namespace-uri()=''][1]"
@@ -28,12 +32,18 @@
                 <sqf:fix fixId="addBar" title="Add bar element with content." id="addBar_w41aab1_w20aab3b1b1">
                     <sqf:call-fix ref="addBar"/>
                 </sqf:fix>
+                <sqf:fix fixId="addOrReplaceBar" title="Add or replace bar." id="addOrReplaceBar_w41aab1_w20aab3b1b1">
+                    <sqf:call-fix ref="addOrReplaceBar"/>
+                </sqf:fix>
             </es:report>
             <es:report id="w41aab1_w20aab3b1b2"
                 location="/*:root[namespace-uri()=''][1]/*:foo[namespace-uri()=''][2]"
                 roleLabel="error"
                 test=". = ''">
                 <es:text>Foo should not be empty.</es:text>
+                <sqf:fix fixId="addOrReplaceBar" title="Add or replace bar." id="addOrReplaceBar_w41aab1_w20aab3b1b1">
+                    <sqf:call-fix ref="addOrReplaceBar"/>
+                </sqf:fix>
             </es:report>
         </es:rule>
     </es:pattern>

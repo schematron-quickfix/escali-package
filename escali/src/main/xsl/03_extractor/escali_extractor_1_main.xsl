@@ -322,6 +322,17 @@
         <xsl:attribute name="select" select="."/>
     </xsl:template>
 
+
+    <!--
+    MODE: sqf:xsm
+    Implements use-when conditions for each action element.
+    -->
+    <xsl:template match="sqf:add[@use-when] | sqf:delete[@use-when] | sqf:replace[@use-when] | sqf:stringReplace[@use-when]" mode="sqf:xsm" priority="60">
+        <axsl:if test="{@use-when}">
+            <xsl:next-match/>
+        </axsl:if>
+    </xsl:template>
+
     <!--
     MODE: sqf:xsm
     Creates XSM action element for sqf:add and sqf:delete
