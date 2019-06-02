@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="test.sch" phase="phase1" type="application/xml" schematypens="http://purl.oclc.org/dsdl/schematron"?>
+<root>
+    <pattern1/>
+    <pattern2/>
+    <pattern3/>
+    <importPattern/>
+    <notImportPattern/>
+</root>

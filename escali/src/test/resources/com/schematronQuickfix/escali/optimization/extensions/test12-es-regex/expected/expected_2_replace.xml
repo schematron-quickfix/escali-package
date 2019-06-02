@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="test.sch" phase="#ALL" type="application/xml" schematypens="http://purl.oclc.org/dsdl/schematron"?>
+<root>
+    <t1>foo bar baz</t1>
+    <t2>foo <ph>foo</ph> <ph>baz</ph></t2>
+    <t3>foo b<ph>a</ph>r baz</t3>
+    <!-- foo bar baz -->
+    <t5 a="foo bar baz"/>
+    <?t6 foo bar baz?>
+</root>
