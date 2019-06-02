@@ -46,6 +46,7 @@ public class ExpectedReportData {
         private String label;
         private String id;
 
+        private ArrayList<QF> quickFixes = new ArrayList<>();
         public Test(String message) {
             this(message, null, null, null);
         }
@@ -72,6 +73,33 @@ public class ExpectedReportData {
 
         public String getId() {
             return id;
+        }
+
+        public ArrayList<QF> getQuickFixes() {
+            return quickFixes;
+        }
+
+        public QF addQuickFix(){
+            QF fix = new QF();
+            quickFixes.add(fix);
+            return fix;
+        }
+
+    }
+
+    public static class QF {
+        private String description = null;
+        private String role = null;
+        private String fixId = null;
+
+        public String getDescription() {
+            return description;
+        }
+        public String getFixId() {
+            return fixId;
+        }
+        public String getRole() {
+            return role;
         }
     }
 
@@ -106,46 +134,23 @@ public class ExpectedReportData {
             test.message = XPR.getString("es:text", testEl);
         }
 
-    }
+        NodeList fixes = XPR.getNodeSet("sqf:fix", testEl);
 
-    public void addSVRLTest(Element testEl) throws XPathExpressionException {
-        Test test = "failed-assert".equals(testEl.getLocalName()) ? addAssert() : addReport();
-
-        test.id = XPR.getAttributValue(testEl,"base-id", ES_NS, null);
-        test.label = XPR.getAttributValue(testEl,"roleLabel", ES_NS, null);
-        test.location = XPR.getAttributValue(testEl,"location", "", null);
-
-
-        if(XPR.getBoolean("svrl:text", testEl)){
-            test.message = XPR.getString("svrl:text", testEl);
+        for (int i = 0; i < fixes.getLength(); i++) {
+            Node fixEl = fixes.item(i);
+            QF qf = test.addQuickFix();
+            qf.description = XPR.getAttributValue(fixEl, "title", "", null);
+            qf.role = XPR.getAttributValue(fixEl, "role", "", null);
+            qf.fixId = XPR.getAttributValue(fixEl, "fixId", "", null);
         }
 
     }
+
+
 
     private static XPathReader XPR = new XPathReader();
 
 
-    public static ExpectedReportData createSVRLExpectReportData(Document doc){
-        ExpectedReportData expData = new ExpectedReportData();
-        try {
-            Node root = XPR.getNode("/svrl:schematron-output", doc);
-
-            expData.title = XPR.getAttributValue(root, "title", "", null);
-            expData.queryBinding = XPR.getAttributValue(root, "queryBinding", ES_NS, null);
-            expData.phase = XPR.getAttributValue(root, "phase", "", null);
-
-
-            NodeList tests = XPR.getNodeSet("//(svrl:failed-assert|svrl:successful-report)", doc);
-            for (int i = 0; i < tests.getLength(); i++) {
-                expData.addSVRLTest((Element) tests.item(i));
-            }
-
-        } catch (XPathExpressionException e) {
-            e.printStackTrace();
-        }
-
-        return expData;
-    }
     public static ExpectedReportData createEscaliExpectReportData(Document doc){
         ExpectedReportData expData = new ExpectedReportData();
         try {

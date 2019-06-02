@@ -135,8 +135,10 @@ public class ValidationTestStrategy {
 
 		for (int i = 0; i < tests.size(); i++) {
 			ExpectedReportData.Test test = tests.get(i);
+			String basicXPathTest = "(" + basicXPath + ")[" + (i + 1) + "]";
+			validateSchTest(xml, test, basicXPathTest);
 
-			validateSchTest(xml, test, "(" + basicXPath + ")[" + (i + 1) + "]");
+
 
 		}
 	}
@@ -158,7 +160,45 @@ public class ValidationTestStrategy {
 			assertThatXPathValue(xml, basicXPath + "/@base-id")
 					.isEqualTo(test.getId());
 		}
+		validateTestQFs(xml, test.getQuickFixes(), basicXPath);
 
+	}
+
+
+	private void validateTestQFs(String xml, ArrayList<ExpectedReportData.QF> qfs, String basicXPath){
+
+		String basicQFXPath = basicXPath + "/sqf:fix";
+
+		ValueAssert valueAssert = assertThatXPathValue(xml, "count(" + basicQFXPath + ")")
+				.as("Ammount of quick fixes does not match! (Test: " + basicXPath + ")");
+
+		isEqualTo(valueAssert, qfs.size());
+
+
+
+		for (int i = 0; i < qfs.size(); i++) {
+			ExpectedReportData.QF qf = qfs.get(i);
+
+			validateTestQF(xml, qf, "(" + basicQFXPath + ")[" + (i + 1) + "]");
+
+		}
+	}
+
+	private void validateTestQF(String xml, ExpectedReportData.QF qf, String basicXPath){
+		if(qf.getDescription() != null){
+			assertThatXPathValue(xml, basicXPath + "/@title | " + basicXPath + "/es:text")
+					.isEqualTo(qf.getDescription());
+		}
+
+		if(qf.getRole() != null){
+			assertThatXPathValue(xml, basicXPath + "/@role")
+					.isEqualTo(qf.getRole());
+		}
+
+		if(qf.getFixId() != null){
+			assertThatXPathValue(xml, basicXPath + "/@fixId")
+					.isEqualTo(qf.getFixId());
+		}
 	}
 
 	public static Predicate<Attr> noBaseAttribute() {
