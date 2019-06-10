@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="es-ignoreable.sch" phase="#ALL" type="application/xml" schematypens="http://purl.oclc.org/dsdl/schematron"?>
+<root>
+    <t1>foo</t1>
+    <?es_ignore id_t1?><t1>foo</t1>
+    <!-- foo -->
+    <?es_ignore id_t2?><!-- foo -->
+    <t3 a="foo">bar</t3>
+    <?es_ignore id_t3 id_t3a?><t3 a="foo">bar</t3>
+    <?t4 foo?>
+    <?es_ignore id_t4?><?t4 foo?>
+    <e>foo <?es_ignore id_t5?><t5>bar</t5> baz</e>
+    <e>foo <?es_ignore id_t5?><t5>bar</t5> baz</e>
+    
+    <?es_ignore id_t6a?><t6>foo</t6>
+</root>
