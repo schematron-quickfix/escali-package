@@ -440,7 +440,7 @@
         <xsl:choose>
             <xsl:when test="$regex">
                 <axsl:variable name="es:regexPos" select="es:getRegexPosition($es:context, '{$regex}', '{$regexFlags}', $es:pos)"/>
-                <axsl:variable name="es:substrings" select="$es:regexPos, $es:regexPos + string-length(.)"/>
+                <axsl:variable name="es:substrings" select="$es:regexPos - 1, $es:regexPos + string-length(.) - 1"/>
                 <axsl:attribute name="es:substring" select="$es:substrings"/>
             </xsl:when>
             <xsl:otherwise>

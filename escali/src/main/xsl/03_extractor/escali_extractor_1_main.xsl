@@ -200,6 +200,7 @@
     <xsl:template match="es:assert | es:report">
         <xsl:apply-templates select="sqf:fix">
             <xsl:with-param name="location" select="@location/string()" tunnel="yes"/>
+            <xsl:with-param name="substring" select="@substring" tunnel="yes"/>
         </xsl:apply-templates>
     </xsl:template>
 
@@ -344,7 +345,18 @@
     -->
 
     <xsl:template match="sqf:add | sqf:delete" mode="sqf:xsm" priority="50">
+        <xsl:param name="substring" tunnel="yes" as="attribute()?"/>
         <xsl:variable name="match" select="(@match, '.')[1]"/>
+
+        <xsl:variable name="es:startEndPositions" as="attribute()*">
+            <xsl:if test="$substring and normalize-space($match) = '.'">
+                <xsl:attribute name="start-position" select="tokenize($substring, '\s')[1]"/>
+                <xsl:attribute name="end-position" select="tokenize($substring, '\s')[2]"/>
+            </xsl:if>
+        </xsl:variable>
+
+        <axsl:variable name="es:isStringReplacement" select="{exists($es:startEndPositions)}()"/>
+
         <axsl:for-each select="{$match}">
             <axsl:variable name="xsm:childs" as="node()*">
                 <xsl:next-match/>
@@ -366,6 +378,7 @@
                         local-name(.)"/>
 
             <xsl:element name="xsm:{$node-type}">
+                <xsl:sequence select="$es:startEndPositions"/>
                 <axsl:attribute name="xml:base" select="base-uri(.)"/>
                 <axsl:variable name="xsm:namespace-context" select="
                     if (not(. instance of element())) 
@@ -411,7 +424,18 @@
     -->
 
     <xsl:template match="sqf:replace" mode="sqf:xsm" priority="50">
+        <xsl:param name="substring" tunnel="yes" as="attribute()?"/>
         <xsl:variable name="match" select="(@match, '.')[1]"/>
+
+        <xsl:variable name="es:startEndPositions" as="attribute()*">
+            <xsl:if test="$substring and normalize-space($match) = '.'">
+                <xsl:attribute name="start-position" select="tokenize($substring, '\s')[1]"/>
+                <xsl:attribute name="end-position" select="tokenize($substring, '\s')[2]"/>
+            </xsl:if>
+        </xsl:variable>
+
+        <axsl:variable name="es:isStringReplacement" select="{exists($es:startEndPositions)}()"/>
+
         <axsl:for-each select="{$match}">
             <axsl:variable name="xsm:content" as="element(xsm:content)">
                 <xsl:next-match/>
@@ -425,7 +449,7 @@
                         .
                     "/>
             <axsl:choose>
-                <axsl:when test=". instance of attribute()">
+                <axsl:when test=". instance of attribute() and not($es:isStringReplacement)">
                     <xsm:delete xml:id="{generate-id(.)}_{{generate-id(.)}}">
                         <axsl:attribute name="node" select="$xsm:node"/>
                         <axsl:attribute name="xml:base" select="base-uri(.)"/>
@@ -443,6 +467,7 @@
                 </axsl:when>
                 <axsl:otherwise>
                     <xsm:replace>
+                        <xsl:sequence select="$es:startEndPositions"/>
                         <axsl:attribute name="xml:base" select="base-uri(.)"/>
 
                         <axsl:sequence select="$xsm:namespace-context/namespace::*"/>
@@ -528,7 +553,13 @@
             </xsl:choose>
 
         </axsl:variable>
-        <axsl:variable name="sqf:context-node-type" select="es:getNodeType(.)"/>
+        
+        <axsl:variable name="sqf:context-node-type" select="
+                if ($es:isStringReplacement) then
+                    ('text')
+                else
+                    es:getNodeType(.)"/>
+        
         <axsl:variable name="sqf:attrContent" select="es:only-attributes($sqf:content)" as="attribute()*"/>
         <axsl:variable name="sqf:noAttrContent" select="es:no-attributes($sqf:content)"/>
         <xsm:content>
