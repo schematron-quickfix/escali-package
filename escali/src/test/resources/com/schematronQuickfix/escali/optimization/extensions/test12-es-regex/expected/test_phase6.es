@@ -3,11 +3,11 @@
     <es:meta queryBinding="xslt2" title="Schematron unit test" phase="phase6"/>
     <es:pattern>
         <es:rule>
-            <es:assert location="/*:root[namespace-uri()=''][1]/processing-instruction()[local-name()='t6'][1]" roleLabel="error" test="false()" substring="5 8">
+            <es:assert location="/*:root[namespace-uri()=''][1]/processing-instruction()[local-name()='t6'][1]" roleLabel="error" test="false()" substring="4 7">
                 <es:text>Bad content: "bar"</es:text>
                 <sqf:fix role="replace" fixId="replace" title='Replace "bar".'/>
-                <sqf:fix role="delete" fixId="deletePhrase" title='Delete phrase.'/>
-                <sqf:fix role="add" fixId="addPhrase" title='Add marker around the phrase.'/>
+                <sqf:fix role="delete" fixId="delete" title='Delete phrase.'/>
+                <sqf:fix role="add" fixId="add" title='Add marker around the phrase.'/>
             </es:assert>
         </es:rule>
     </es:pattern>

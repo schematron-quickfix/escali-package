@@ -4,7 +4,7 @@
     <t1>foo bar baz</t1>
     <t2>foo <ph>bar</ph> <ph>baz</ph></t2>
     <t3>foo b<ph>a</ph>r baz</t3>
-    <?marker?><!-- foo bar baz --><?marker?>
+    <!-- foo <?marker?>bar<?marker?> baz -->
     <t5 a="foo bar baz"/>
     <?t6 foo bar baz?>
 </root>

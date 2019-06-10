@@ -6,5 +6,5 @@
     <t3>foo b<ph>a</ph>r baz</t3>
     <!-- foo bar baz -->
     <t5 a="foo bar baz"/>
-    <?marker?><?t6 foo bar baz?><?marker?>
+    <?t6 foo <?marker?>bar<?marker?> baz?>
 </root>

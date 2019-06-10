@@ -24,37 +24,37 @@
     </phase>
     <pattern id="pattern1">
         <rule context="t1/text()" es:regex="bar">
-            <assert test="false()" sqf:fix="replace deletePhrase addPhrase">Bad content: "<value-of select="."/>"</assert>
+            <assert test="false()" sqf:fix="replace delete add">Bad content: "<value-of select="."/>"</assert>
         </rule>
     </pattern>
     <pattern id="pattern2">
         <rule context="t2//text()" es:regex="bar">
-            <assert test="false()" sqf:fix="replace deletePhrase addPhrase">Bad content: "<value-of select="."/>"</assert>
+            <assert test="false()" sqf:fix="replace delete add">Bad content: "<value-of select="."/>"</assert>
         </rule>
     </pattern>
     <pattern id="pattern3a">
         <rule context="t3//text()" es:regex="bar">
-            <assert test="false()" sqf:fix="replace deletePhrase addPhrase">Bad content: "<value-of select="."/>"</assert>
+            <assert test="false()" sqf:fix="replace delete add">Bad content: "<value-of select="."/>"</assert>
         </rule>
     </pattern>
     <pattern id="pattern3b">
         <rule context="t3" es:regex="bar">
-            <assert test="false()" sqf:fix="replace deletePhrase addPhrase">Bad content: "<value-of select="."/>"</assert>
+            <assert test="false()" sqf:fix="replace delete add">Bad content: "<value-of select="."/>"</assert>
         </rule>
     </pattern>
     <pattern id="pattern4">
         <rule context="comment()" es:regex="bar">
-            <assert test="false()" sqf:fix="replace deletePhrase addPhrase">Bad content: "<value-of select="."/>"</assert>
+            <assert test="false()" sqf:fix="replace delete add">Bad content: "<value-of select="."/>"</assert>
         </rule>
     </pattern>
     <pattern id="pattern5">
         <rule context="t5/@a" es:regex="bar">
-            <assert test="false()" sqf:fix="replace deletePhrase addPhrase">Bad content: "<value-of select="."/>"</assert>
+            <assert test="false()" sqf:fix="replace delete add">Bad content: "<value-of select="."/>"</assert>
         </rule>
     </pattern>
     <pattern id="pattern6">
         <rule context="processing-instruction()" es:regex="bar">
-            <assert test="false()" sqf:fix="replace deletePhrase addPhrase">Bad content: "<value-of select="."/>"</assert>
+            <assert test="false()" sqf:fix="replace delete add">Bad content: "<value-of select="."/>"</assert>
         </rule>
     </pattern>
     
@@ -65,22 +65,13 @@
             </sqf:description>
             <sqf:replace match="." select="'foo'"/>
         </sqf:fix>
-        <sqf:fix id="replacePhrase">
-            <sqf:param name="phrase"/>
-            <sqf:description>
-                <sqf:title>Replace phrase by <value-of select="$phrase"/></sqf:title>
-            </sqf:description>
-            <sqf:replace match=".">
-                <value-of select="$phrase"/>
-            </sqf:replace>
-        </sqf:fix>
-        <sqf:fix id="deletePhrase">
+        <sqf:fix id="delete">
             <sqf:description>
                 <sqf:title>Delete phrase.</sqf:title>
             </sqf:description>
             <sqf:delete match="."/>
         </sqf:fix>
-        <sqf:fix id="addPhrase">
+        <sqf:fix id="add">
             <sqf:description>
                 <sqf:title>Add marker around the phrase.</sqf:title>
             </sqf:description>
