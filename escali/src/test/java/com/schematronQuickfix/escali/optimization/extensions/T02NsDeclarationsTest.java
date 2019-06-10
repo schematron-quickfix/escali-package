@@ -2,9 +2,10 @@ package com.schematronQuickfix.escali.optimization.extensions;
 
 import com.schematronQuickfix.escali.control.Config;
 import com.schematronQuickfix.escali.quickfix.FixingTestBase;
+import com.schematronQuickfix.escali.quickfix.FixingTestBaseChangePi;
 import org.junit.Test;
 
-public class T02NsDeclarationsTest extends FixingTestBase {
+public class T02NsDeclarationsTest extends FixingTestBaseChangePi {
 
 
 

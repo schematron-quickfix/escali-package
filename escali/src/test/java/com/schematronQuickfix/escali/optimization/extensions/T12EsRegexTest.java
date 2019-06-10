@@ -12,6 +12,7 @@ import java.util.List;
 @RunWith(Parameterized.class)
 public class T12EsRegexTest extends FixingTestBase {
 
+	private String title;
 	private final int msgPos;
 
 	@Parameterized.Parameters(name = "{0} - {1}")
@@ -19,7 +20,7 @@ public class T12EsRegexTest extends FixingTestBase {
 		return Arrays.asList(
 				new String[]{"trivial", "1"},
 				new String[]{"inline markup simple", "2"},
-				new String[]{"inline markup complex", "3"},
+				new String[]{PENDING_PREFIX + "inline markup complex", "3"},
 				new String[]{"comment", "4"},
 				new String[]{"attribute", "5"},
 				new String[]{"pi", "6"}
@@ -27,7 +28,13 @@ public class T12EsRegexTest extends FixingTestBase {
 	}
 
 	public T12EsRegexTest(String title, String msgPos) {
+		this.title = title;
 		this.msgPos = Integer.parseInt(msgPos);
+	}
+
+	@Override
+	protected boolean isPending() {
+		return this.title.startsWith(PENDING_PREFIX);
 	}
 
 	@Override

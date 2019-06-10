@@ -15,9 +15,6 @@ public class T12EsRegexValTest extends ValidationTestBase {
 	@Parameterized.Parameters(name = "{0}")
 	public static List<String[]> basePhases() {
 		return Arrays.asList(
-//				new String[]{null},
-//				new String[]{"de"},
-//				new String[]{"en"},
 				new String[]{"phase1"},
 				new String[]{"phase2"},
 				new String[]{"phase3a"},
