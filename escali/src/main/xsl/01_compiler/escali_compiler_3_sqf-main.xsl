@@ -80,11 +80,14 @@
                 <xsl:variable name="ignoreId" select="$test/@es:ignorableId"/>
                 <xsl:if test="$ignoreId">
                     <xsl:variable name="role" select="($test/@es:roleLabel, 'error')[1]"/>
-                    <sqf:fix fixId="ignore_{$ignoreId}" title="Ignore this {
-                    if ($role = 'fatal') then
-                    ('fatal error')
-                    else
-                    ($role)}." id="es:ignore_{$test/@es:id}_{$ignoreId}_{{generate-id(.)}}">
+                    <xsl:variable name="roles" select="('info', 'information', 'warn', 'warning', 'error', 'fatal')"/>
+                    <xsl:variable name="roleLabels" select="('info', 'info', 'warning', 'warning', 'error', 'fatal error')"/>
+                    <xsl:variable name="roleLabel" select="
+                            if ($role = $roles) then
+                                $roleLabels[index-of($roles, $role)]
+                            else
+                                ($role)"/>
+                    <sqf:fix fixId="ignore_{$ignoreId}" title="Ignore this {$roleLabel}." id="es:ignore_{$test/@es:id}_{$ignoreId}_{{generate-id(.)}}">
                         <sqf:call-fix ref="es:ignore">
                             <sqf:with-param name="id" select="'{$ignoreId}'"/>
                         </sqf:call-fix>
