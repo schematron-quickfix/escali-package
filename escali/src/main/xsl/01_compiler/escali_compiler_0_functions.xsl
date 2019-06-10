@@ -441,7 +441,7 @@
                     else
                         ()"/>
     </xsl:function>
-<!--
+    <!--
     es:nodeByPath
     Inverse function of es:getNodePath
     
@@ -1038,14 +1038,14 @@
     <xsl:function name="es:createPatternVariables" as="node()*">
         <xsl:param name="patternOrEsMeta" as="element()"/>
         <xsl:param name="isCaller" as="xs:boolean"/>
-        
+
         <xsl:variable name="queryBinding" select="root($patternOrEsMeta)/(sch:schema/@queryBinding | es:escali-reports/es:meta/@queryBinding)"/>
         <xsl:variable name="xslversion" select="
-            if (lower-case($queryBinding) = ('xslt3', 'xpath3')) then
-            ('3.0')
-            else
-            ('2.0')"/>
-        
+                if (lower-case($queryBinding) = ('xslt3', 'xpath3')) then
+                    ('3.0')
+                else
+                    ('2.0')"/>
+
         <xsl:variable name="lets" select="$patternOrEsMeta/sch:let"/>
         <xsl:variable name="id" select="$patternOrEsMeta/(@es:id, @id)[1]"/>
         <xsl:variable name="namespace" as="node()">

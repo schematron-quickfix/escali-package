@@ -40,19 +40,16 @@ public class T02NsDeclarationsTest extends FixingTestBaseChangePi {
 	@Test
 	public void test_1(){
 		doTest(new ExecutionSetup(1, "delete"));
-		
 	}
 
 	@Test
 	public void test_2(){
 		doTest(new ExecutionSetup(2, "delete"));
-
 	}
 
 	@Test
 	public void test_3(){
 		doTest(new ExecutionSetup(3, "delete"));
-
 	}
 
 
