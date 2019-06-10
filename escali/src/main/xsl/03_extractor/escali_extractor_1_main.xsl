@@ -358,6 +358,7 @@
         <axsl:variable name="es:isStringReplacement" select="{exists($es:startEndPositions)}()"/>
 
         <axsl:for-each select="{$match}">
+            <xsl:sequence select="namespace::*[name() != '']"/>
             <axsl:variable name="xsm:childs" as="node()*">
                 <xsl:next-match/>
             </axsl:variable>
@@ -437,6 +438,7 @@
         <axsl:variable name="es:isStringReplacement" select="{exists($es:startEndPositions)}()"/>
 
         <axsl:for-each select="{$match}">
+            <xsl:sequence select="namespace::*[name() != '']"/>
             <axsl:variable name="xsm:content" as="element(xsm:content)">
                 <xsl:next-match/>
             </axsl:variable>
