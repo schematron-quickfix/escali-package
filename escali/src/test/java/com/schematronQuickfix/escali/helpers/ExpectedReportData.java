@@ -47,6 +47,9 @@ public class ExpectedReportData {
         private String id;
 
         private ArrayList<QF> quickFixes = new ArrayList<>();
+        private boolean isSubstring = false;
+        private int[] substrings = new int[2];
+
         public Test(String message) {
             this(message, null, null, null);
         }
@@ -85,6 +88,25 @@ public class ExpectedReportData {
             return fix;
         }
 
+        public boolean isSubstring() {
+            return this.isSubstring;
+        }
+
+        public int getSubstringStart(){
+            if(isSubstring){
+                return substrings[0];
+            } else {
+                return -1;
+            }
+        }
+
+        public int getSubstringEnd(){
+            if(isSubstring){
+                return substrings[1];
+            } else {
+                return -1;
+            }
+        }
     }
 
     public static class QF {
@@ -102,6 +124,7 @@ public class ExpectedReportData {
             return role;
         }
     }
+
 
     public Test addReport(){
         if(this.reports == null){
@@ -128,6 +151,12 @@ public class ExpectedReportData {
         test.id = XPR.getAttributValue(testEl,"base-id", "", null);
         test.label = XPR.getAttributValue(testEl,"roleLabel", "", null);
         test.location = XPR.getAttributValue(testEl,"location", "", null);
+        String substring = XPR.getAttributValue(testEl,"substring", "", null);
+        if (substring != null){
+            test.isSubstring = true;
+            test.substrings[0] = Integer.parseInt(substring.split("\\s")[0]);
+            test.substrings[1] = Integer.parseInt(substring.split("\\s")[1]);
+        }
 
 
         if(test.message == null && XPR.getBoolean("es:text", testEl)){

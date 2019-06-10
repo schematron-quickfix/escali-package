@@ -160,6 +160,13 @@ public class ValidationTestStrategy {
 			assertThatXPathValue(xml, basicXPath + "/@base-id")
 					.isEqualTo(test.getId());
 		}
+		if(test.isSubstring()){
+			assertThatXPathValue(xml, "substring-before(" + basicXPath + "/@substring, ' ')")
+					.isEqualTo(test.getSubstringStart());
+			assertThatXPathValue(xml, "substring-after(" + basicXPath + "/@substring, ' ')")
+					.isEqualTo(test.getSubstringEnd());
+		}
+
 		validateTestQFs(xml, test.getQuickFixes(), basicXPath);
 
 	}
