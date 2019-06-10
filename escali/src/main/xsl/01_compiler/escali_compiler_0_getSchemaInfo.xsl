@@ -159,7 +159,9 @@
     </xsl:template>
 
     <xsl:template match="sch:include | es:import | xsl:include" mode="es:meta">
-        <xsl:variable name="abs-uri" select="resolve-uri(@href, document-uri(/))"/>
+        <xsl:variable name="splitetPath" select="tokenize(@href, '#')"/>
+        <xsl:variable name="docPath" select="$splitetPath[1]"/>
+        <xsl:variable name="abs-uri" select="resolve-uri($docPath, document-uri(/))"/>
         <es:include>
             <xsl:attribute name="uri" select="$abs-uri"/>
             <xsl:attribute name="type" select="
@@ -179,8 +181,15 @@
             <xsl:if test="self::es:import[@phase]">
                 <xsl:attribute name="phase" select="@phase"/>
             </xsl:if>
-            <xsl:variable name="includes" select="doc($abs-uri)/*/(sch:include | es:import | xsl:include)"/>
-            <xsl:apply-templates select="$includes" mode="#current"/>
+            <xsl:choose>
+                <xsl:when test="$splitetPath[2] != ''">
+                    <xsl:attribute name="id" select="$splitetPath[2]"/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:variable name="includes" select="doc($abs-uri)/*/(sch:include | es:import | xsl:include)"/>
+                    <xsl:apply-templates select="$includes" mode="#current"/>
+                </xsl:otherwise>
+            </xsl:choose>
         </es:include>
     </xsl:template>
 
