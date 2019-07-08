@@ -9,6 +9,20 @@
 	<artifactId>xsm</artifactId>
 	<name>XPath based String Manipulation</name>
 	<description>The XSM processor performs manipulations of XML documents based on XPath. The manipulations are done by unparsed text modifications. Any other content will be preserved.</description>
+    <distributionManagement>
+        <repository>
+            <id>default</id>
+            <layout>default</layout>
+            <name>github</name>
+            <url>${project.baseUri}/../bin/releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>default</id>
+            <layout>default</layout>
+            <name>github</name>
+            <url>${project.baseUri}/../bin/snappshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
 	<build>
 		<plugins>
 			<plugin>
