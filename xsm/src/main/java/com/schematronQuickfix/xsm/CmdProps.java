@@ -2,6 +2,7 @@ package com.schematronQuickfix.xsm;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -12,10 +13,17 @@ import com.schematronQuickfix.xsm.operations.PositionalReplace;
 
 public class CmdProps {
 
-	private static final File HELP_MENU = new File(ManipulatorMain.baseFolder, "data/config/helpXSM.txt");
 
-	public static String getHelpText() throws IOException {
-		return TextSource.readTextFile(HELP_MENU).toString();
+	public static String getHelpText(){
+		InputStream helpStream = CmdProps.class.getResourceAsStream("/help.txt");
+		if(helpStream != null){
+			try {
+				return TextSource.readTextFile(helpStream).toString();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		return "No help text available!";
 	}
 	
 	private File sheet = null;
@@ -49,7 +57,7 @@ public class CmdProps {
 		try {
 			URI uri = new URI(systemId);
 			return new File(uri);
-		} catch (URISyntaxException e){
+		} catch (Exception e){
 			return new File(systemId);
 		}
 	}

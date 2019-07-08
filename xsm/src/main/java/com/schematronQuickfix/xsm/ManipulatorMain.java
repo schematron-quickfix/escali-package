@@ -8,18 +8,10 @@ import com.schematronQuickfix.xsm.operations.PositionalReplace;
 
 //http://apache.org/xml/features/xinclude
 public class ManipulatorMain {
-	private static final String VERSION = "0.1";
-	public static File baseFolder = new File(ManipulatorMain.class.getProtectionDomain().getCodeSource().getLocation().getPath()).getParentFile();
+//	public static File baseFolder = new File(ManipulatorMain.class.getProtectionDomain().getCodeSource().getLocation().getPath()).getParentFile();
 
 	private static void printHelp() {
-		System.out.println("XPath based string manipulator " + VERSION
-				+ " from Nico Kutscherauer\n"
-				+ "http://www.schematron-quickfix.com/scripts/xsm.html\n");
-		try {
-			System.out.println(CmdProps.getHelpText());
-		} catch (IOException e) {
-			System.out.println("No help text available!");
-		}
+		System.out.println(CmdProps.getHelpText());
 	}
 
 	/**

@@ -1,0 +1,7 @@
+XPath based string manipulator ${project.version} from Nico Kutscherauer
+http://www.schematron-quickfix.com/scripts/xsm.html
+
+Usage: java -jar xsm.jar [options] manipulator-sheet
+Options:
+-i source-file		source-document to override the declaration in /xsm:manipulator/@document
+-o result-file		result document to save the result of the manipulation
