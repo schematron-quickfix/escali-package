@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>com.schematron-quickfix</groupId>
+  <artifactId>xsm</artifactId>
+  <versioning>
+    <versions>
+      <version>0.2.1-SNAPSHOT</version>
+    </versions>
+    <lastUpdated>20190708100010</lastUpdated>
+  </versioning>
+</metadata>
