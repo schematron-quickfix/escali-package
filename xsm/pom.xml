@@ -19,6 +19,27 @@
 					<target>1.7</target>
 				</configuration>
 			</plugin>
+		    <plugin>
+		        <artifactId>maven-assembly-plugin</artifactId>
+		        <version>2.5.3</version>
+		        <configuration>
+		            <descriptor>src/assembly/jars-with-dependencies.xml</descriptor>
+		            <archive>
+		                <manifest>
+		                    <mainClass>com.schematronQuickfix.xsm.ManipulatorMain</mainClass>
+		                </manifest>
+		            </archive>
+		        </configuration>
+		        <executions>
+		            <execution>
+		                <id>make-assembly</id>
+		                <phase>package</phase>
+		                <goals>
+		                    <goal>single</goal>
+		                </goals>
+		            </execution>
+		        </executions>
+		    </plugin>
 		</plugins>
 	</build>
 </project>
